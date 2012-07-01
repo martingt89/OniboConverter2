@@ -6,3 +6,17 @@ Makefile.in
 
 /autom4te.cache
 /aclocal.m4
+Makefile
+compile/.deps/
+compile/Makefile
+config.h
+config.log
+config.status
+stamp-h1
+
+*.o
+.deps
+
+#binary file
+
+compile/OniboConverter2
