@@ -18,9 +18,9 @@ SuportedEncoders::SuportedEncoders() :
 
 SuportedEncoders::~SuportedEncoders() {}
 
-bool SuportedEncoders::isSuported(const std::string& name, std::string& description) const {
-	std::map<std::string, Encoder>::const_iterator it;
-	if((it = suportedEndcoders.find(name)) != suportedEndcoders.end()){
+bool SuportedEncoders::isSuported(const AVBox::Encoder& name, std::string& description) const {
+	std::map<std::string, EncoderStruct>::const_iterator it;
+		if((it = suportedEndcoders.find(name.getEncoder())) != suportedEndcoders.end()){
 		description = it->second.description;
 		return true;
 	}
@@ -55,7 +55,7 @@ void SuportedEncoders::rescan(){
 void SuportedEncoders::parseLine(const std::string& line){
 	RegexTools::Matcher mat = encoderDetector.getMatcher(line);
 	if(mat.find()){
-		Encoder en;
+		EncoderStruct en;
 		en.encoder = mat.getGroup(2);
 		en.description = mat.getGroup(3);
 		if(mat.getGroup(1) == "V"){

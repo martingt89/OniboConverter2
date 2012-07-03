@@ -10,9 +10,10 @@
 
 #include <string>
 #include <list>
-#include "encoder.h"
+//#include "encoder.h"
 #include "formattoencoders.h"
 #include "../FFTools/suportedencoders.h"
+
 namespace AVBox {
 
 class VideoFormat {

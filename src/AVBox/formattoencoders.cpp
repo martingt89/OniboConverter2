@@ -14,19 +14,22 @@ FormatToEncoders::FormatToEncoders() {}
 
 FormatToEncoders::~FormatToEncoders() {}
 
-void FormatToEncoders::addFormatEncoder(const std::string& format, const std::string& encoder){
-	convertTable[format].push_back(encoder);
+void FormatToEncoders::addFormatEncoder(const std::string& format, const std::string& encoder, std::string ffprefix=""){
+	Encoder enc(encoder);
+	enc.addOptions("ffprefix", ffprefix);
+
+	convertTable[format].push_back(enc);
 }
 
-std::list<std::string> FormatToEncoders::getEncoders(const std::string& format) const{
-	std::map<std::string, std::list<std::string> >::const_iterator it;
+std::list<Encoder> FormatToEncoders::getEncoders(const std::string& format) const{
+	std::map<std::string, std::list<Encoder> >::const_iterator it;
 
 	it = convertTable.find(format);
 	if(it != convertTable.end()){
-		std::list<std::string> enc(it->second);
+		std::list<Encoder> enc(it->second);
 		return enc;
 	}
-	return std::list<std::string>();
+	return std::list<Encoder>();
 }
 
 } /* namespace AVBox */

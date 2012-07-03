@@ -20,3 +20,14 @@ stamp-h1
 #binary file
 
 compile/OniboConverter2
+
+#eclipse
+.cproject
+.project
+.settings
+
+#xml
+./container_settings.xml
+./encoders_table.xml
+./gui_settings.xml
+

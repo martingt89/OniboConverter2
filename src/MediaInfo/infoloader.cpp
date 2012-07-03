@@ -37,7 +37,7 @@ InfoLoader::InfoLoader(std::string file):
 		mediaFile(file){
 	this->file = file;
 	parseState = State::START;
-	//TODO add settings try catch
+	//TODO try catch
 	std::string path = Settings::getSettings()->getValue(Settings::FFPATH);
 
 	std::list<std::string> args;

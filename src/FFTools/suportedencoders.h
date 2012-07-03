@@ -11,6 +11,7 @@
 #include <string>
 #include <map>
 #include "../regextools.h"
+#include "../AVBox/encoder.h"
 
 namespace FFTools {
 
@@ -19,7 +20,7 @@ public:
 	enum EncoderType{
 		VIDEO, AUDIO, SUBTITLE
 	};
-	struct Encoder{
+	struct EncoderStruct{
 		std::string encoder;
 		std::string description;
 		EncoderType type;
@@ -28,10 +29,10 @@ public:
 	SuportedEncoders();
 	virtual ~SuportedEncoders();
 	void rescan();
-	bool isSuported(const std::string& name, std::string& description) const;
+	bool isSuported(const AVBox::Encoder& name, std::string& description) const;
 private:
 	void parseLine(const std::string& line);
-	std::map<std::string, Encoder> suportedEndcoders;
+	std::map<std::string, EncoderStruct> suportedEndcoders;
 	RegexTools::Regex encoderDetector;
 };
 

@@ -33,12 +33,28 @@ std::ostream& operator<<(std::ostream& stream, const std::list<T>& list){
 	}
 	return stream;
 }
+template<class T1, class T2>
+std::ostream& operator<<(std::ostream& stream, const std::list<std::pair<T1, T2> >& list){
+	typename std::list<std::pair<T1, T2> >::const_iterator iter;
+	for(iter = list.begin(); iter != list.end(); ++iter){
+		stream << iter->first << " " << iter->second;
+	}
+	return stream;
+}
 
+std::ostream& operator<<(std::ostream& stream, const std::list<AVBox::Encoder>& list){
+	typename std::list<AVBox::Encoder>::const_iterator iter;
+	for(iter = list.begin(); iter != list.end(); ++iter){
+		stream << "Encoder: "<<iter->getEncoder() <<std::endl;
+		stream << "Comment: "<<iter->getDescription()<<std::endl;
+		stream << "Options: "<<iter->getOptions()<<std::endl;
+	}
+	return stream;
+}
 int main(int argc, char *argv[]){
 
 	Settings *set = Settings::getSettings();
 	set->setValue(Settings::FFPATH, "ffmpeg");
-
 	set->setValue(Settings::ENCODERS, "encoders_table.xml");
 	set->setValue(Settings::CONTAINERS, "container_settings.xml");
 
@@ -61,7 +77,7 @@ int main(int argc, char *argv[]){
 	std::cout<<box.getContainer("3gp").getVideoFormats()<<std::endl;
 
 	std::list<AVBox::Encoder> listEnc = box.getContainer("mkv").
-			getVideoFormat("MPEG4").getAvailableEncoders(encs, convert);
+			getVideoFormat("H264").getAvailableEncoders(encs, convert);
 
 	std::cout<<listEnc<<std::endl;
 

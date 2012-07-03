@@ -20,7 +20,7 @@ ContainersParser::ContainersParser() {
 ContainersParser::~ContainersParser() {}
 
 bool ContainersParser::parse(AVBox::AVBox& box){
-	//todo try - catch
+	//todo try catch
 	std::string file = Settings::getSettings()->getValue(Settings::CONTAINERS);
 	avBox = new AVBox::AVBox();
 	try{

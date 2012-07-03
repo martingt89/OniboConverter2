@@ -11,7 +11,7 @@
 #include <string>
 #include <list>
 #include "../FFTools/suportedencoders.h"
-#include "encoder.h"
+//#include "encoder.h"
 #include "formattoencoders.h"
 
 namespace AVBox {

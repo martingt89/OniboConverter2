@@ -27,11 +27,11 @@ std::string VideoFormat::getFormat() const{
 
 std::list<Encoder> VideoFormat::getAvailableEncoders(const FFTools::SuportedEncoders& suport,
 		const AVBox::FormatToEncoders& encoder) const{
-	std::list< std::string >::const_iterator it;
+	std::list< Encoder >::const_iterator it;
 	std::list<Encoder> list;
 	std::string description;
 
-	std::list<std::string> encs = encoder.getEncoders(format);
+	std::list<Encoder> encs = encoder.getEncoders(format);
 
 	for(it = encs.begin(); it != encs.end(); it++){
 		if(suport.isSuported(*it, description)){

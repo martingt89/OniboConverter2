@@ -36,7 +36,7 @@ std::string ImageCreator::createImage(MediaInfo::MediaFile file, double time){
 	args.push_back("-f");
 	args.push_back("image2");
 
-	args.push_back("/tmp/filename.png");	//todo dynamicky nazov
+	args.push_back("/tmp/filename.png");	//todo dinamicky nazov
 
 	Process::Executor exec(path, args);
 

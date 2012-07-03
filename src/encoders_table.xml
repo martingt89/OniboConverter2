@@ -2,7 +2,7 @@
 
 <convert_table>
 	<format id="H264">
-		<encoder>libx264</encoder>
+		<encoder ffprefix="libx264">libx264</encoder>
 		<encoder>h264</encoder>
 		<encoder>h264_vdpau</encoder>
 	</format>
@@ -25,7 +25,7 @@
 	</format>
 	
 	<format id="VP8">
-		<encoder>libvpx</encoder>
+		<encoder ffprefix="libx264">libvpx</encoder>
 		<encoder>vp8</encoder>
 	</format>
 	

@@ -34,6 +34,7 @@ protected:
 private:
 	AVBox::FormatToEncoders *encoders;
 	std::string actualFormat;
+	std::string presentsPrefix;
 	bool inEnc;
 };
 

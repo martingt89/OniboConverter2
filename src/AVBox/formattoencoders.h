@@ -11,6 +11,7 @@
 #include <string>
 #include <map>
 #include <list>
+#include "encoder.h"
 
 namespace AVBox {
 
@@ -18,10 +19,10 @@ class FormatToEncoders {
 public:
 	FormatToEncoders();
 	virtual ~FormatToEncoders();
-	void addFormatEncoder(const std::string& format, const std::string& encoder);
-	std::list<std::string> getEncoders(const std::string& format) const;
+	void addFormatEncoder(const std::string& format, const std::string& encoder, std::string ffprefix);
+	std::list<Encoder> getEncoders(const std::string& format) const;
 private:
-	std::map<std::string, std::list<std::string> > convertTable;
+	std::map<std::string, std::list<Encoder> > convertTable;
 };
 
 } /* namespace AVBox */
