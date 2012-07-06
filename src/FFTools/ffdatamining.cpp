@@ -1,37 +1,25 @@
 /*
- * suportedencoders.cpp
+ * ffdatamining.cpp
  *
  *  Created on: 28.6.2012
  *      Author: martint
  */
 
-#include "suportedencoders.h"
+#include "ffdatamining.h"
 #include "../settings.h"
 #include "../Process/processexecutor.h"
 
 namespace FFTools {
 
-SuportedEncoders::SuportedEncoders() :
+FFDataMining::FFDataMining() : suportEncoders(NULL),
 		encoderDetector("^ [ D]E([VAS])[ S][ D][ T][[:space:]]+([^[:space:]]+)[[:space:]]*(.+)$"){
-	rescan();
 }
 
-SuportedEncoders::~SuportedEncoders() {}
+FFDataMining::~FFDataMining() {}
 
-bool SuportedEncoders::isSuported(const AVBox::Encoder& name, std::string& description) const {
-	std::map<std::string, EncoderStruct>::const_iterator it;
-		if((it = suportedEndcoders.find(name.getEncoder())) != suportedEndcoders.end()){
-		description = it->second.description;
-		return true;
-	}
-	return false;
-}
-
-void SuportedEncoders::rescan(){
+bool FFDataMining::scan(AVBox::SupportedEncoders *encoders){
 	//todo try catch
 	std::string ffpath = Settings::getSettings()->getValue(Settings::FFPATH);
-
-	suportedEndcoders.clear();
 
 	std::list<std::string> args;
 
@@ -41,31 +29,35 @@ void SuportedEncoders::rescan(){
 
 	if(ffmpeg.waitForRunChild()){
 		std::string err;
-		//exception
+		//todo exception
 		while(ffmpeg.getLog() >> err)
 			std::cout<<err<<std::endl;
-		return;
+		return false;
 	}
+
+	suportEncoders = encoders;
 	std::string line;
 	while(ffmpeg.getStdOut() >> line){
 		parseLine(line);
 	}
+	suportEncoders = NULL;
+	return true;
 }
 
-void SuportedEncoders::parseLine(const std::string& line){
+void FFDataMining::parseLine(const std::string& line){
 	RegexTools::Matcher mat = encoderDetector.getMatcher(line);
 	if(mat.find()){
-		EncoderStruct en;
+		AVBox::SupportedEncoders::EncoderFFData en;
 		en.encoder = mat.getGroup(2);
 		en.description = mat.getGroup(3);
 		if(mat.getGroup(1) == "V"){
-			en.type = VIDEO;
+			en.type = AVBox::SupportedEncoders::VIDEO;
 		}else if(mat.getGroup(1) == "A"){
-			en.type = AUDIO;
+			en.type = AVBox::SupportedEncoders::AUDIO;
 		}else{
-			en.type = SUBTITLE;
+			en.type = AVBox::SupportedEncoders::SUBTITLE;
 		}
-		suportedEndcoders[en.encoder] = en;
+		suportEncoders->addEncoder(en);
 	}
 }
 

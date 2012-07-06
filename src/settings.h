@@ -34,13 +34,14 @@ private:
 	void operator=(const Settings&);
 public:
 	enum Set{
-		FFPATH, CONTAINERS, ENCODERS
+		FFPATH, CONTAINERS, ENCODERS, GUISETTINGS
 	};
 	std::string toString(Set s){
 		switch(s){
 			case FFPATH: return "FFPATH";
 			case CONTAINERS: return "CONTAINERS";
 			case ENCODERS: return "ENCODERS";
+			case GUISETTINGS: return "GUISETTINGS";
 			default: return "INVALID ENUM";
 		}
 	};

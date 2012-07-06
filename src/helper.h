@@ -26,4 +26,13 @@ std::string toS(const T &number){
 	return ss.str();
 }
 
+template<class T>
+T toN(const std::string& number, const T&){
+	std::stringstream ss;
+	T prem;
+	ss << number;
+	ss >> prem;
+	return prem;
+}
+
 #endif /* HELPER_H_ */

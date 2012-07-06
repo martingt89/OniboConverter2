@@ -11,7 +11,7 @@ IT_PROG_INTLTOOL([0.35.0])
 AC_PROG_CXX
 
 
-PKG_CHECK_MODULES([DEPS], [libxml++-2.6])
+PKG_CHECK_MODULES([DEPS], [libxml++-2.6, gtkmm-3.0 >= 3.0.0])
 
 top_builddir=`pwd`
 AC_SUBST([top_builddir])

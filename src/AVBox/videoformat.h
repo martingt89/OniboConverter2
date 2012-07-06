@@ -10,9 +10,8 @@
 
 #include <string>
 #include <list>
-//#include "encoder.h"
 #include "formattoencoders.h"
-#include "../FFTools/suportedencoders.h"
+#include "supportedencoders.h"
 
 namespace AVBox {
 
@@ -28,8 +27,8 @@ public:
 //	};
 //
 	std::string getFormat() const;
-	std::list<Encoder> getAvailableEncoders(const FFTools::SuportedEncoders& suport,
-			const AVBox::FormatToEncoders& encoder) const;
+	std::list<Encoder> getAvailableEncoders(const SupportedEncoders& support,
+			const FormatToEncoders& encoder) const;
 private:
 	std::string format;						//X264, MPEG4, MPEG2, etc.
 };

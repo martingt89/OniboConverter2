@@ -10,8 +10,7 @@
 
 #include <string>
 #include <list>
-#include "../FFTools/suportedencoders.h"
-//#include "encoder.h"
+#include "supportedencoders.h"
 #include "formattoencoders.h"
 
 namespace AVBox {
@@ -24,7 +23,7 @@ public:
 	bool operator==(const AudioFormat& enc) const;
 
 	std::string getFormat() const;
-	std::list<Encoder> getAvailableEncoders(const FFTools::SuportedEncoders& suport,
+	std::list<Encoder> getAvailableEncoders(const SupportedEncoders& support,
 			const AVBox::FormatToEncoders& encoder) const;
 private:
 	std::string format;						//MP3, MP2 ...
