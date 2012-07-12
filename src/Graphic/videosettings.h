@@ -24,7 +24,7 @@ class VideoSettings {
 public:
 	VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~VideoSettings();
-	void reload(const std::string& container);
+	void setActualContainer(const std::string& container);
 
 	void setNeedsData(AVBox::SupportedEncoders *suportedEncoders,
 						AVBox::AVBox *audioVideoData,

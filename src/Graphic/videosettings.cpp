@@ -88,7 +88,7 @@ void VideoSettings::enableVMode() {
 		vMode->set_sensitive(true);
 }
 
-void VideoSettings::reload(const std::string& container){
+void VideoSettings::setActualContainer(const std::string& container){
 	std::string vFormatOld = "";
 	activeContainer = container;
 	if(audioVideoData){

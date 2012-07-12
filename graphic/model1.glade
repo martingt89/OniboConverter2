@@ -138,7 +138,6 @@
                   <object class="GtkEntry" id="entry3">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="margin_right">10</property>
                     <property name="invisible_char">●</property>
                   </object>
                   <packing>

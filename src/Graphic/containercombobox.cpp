@@ -31,7 +31,7 @@ void ContainerComboBox::on_changed (){
 }
 
 void ContainerComboBox::changeContent(){
-	videoSettings.reload(this->get_active_text());
+	videoSettings.setActualContainer(this->get_active_text());
 }
 
 void ContainerComboBox::setNeedsData(AVBox::SupportedEncoders *suportedEncoders,
