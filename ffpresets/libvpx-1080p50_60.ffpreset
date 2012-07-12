@@ -1,0 +1,12 @@
+vcodec=libvpx
+g=120
+rc_lookahead=25
+profile=1
+qmax=51
+qmin=11
+slices=4
+vb=2M
+
+#ignored unless using -pass 2
+maxrate=24M
+minrate=100k

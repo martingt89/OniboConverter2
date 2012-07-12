@@ -16,6 +16,7 @@ OniboConverter2_SOURCES=../src/AVBox/audioformat.cpp \
 ../src/Tools/regextools.cpp \
 ../src/FFTools/imagecreator.cpp \
 ../src/FFTools/ffdatamining.cpp \
+../src/FFTools/ffpresets.cpp \
 ../src/MediaInfo/infoloader.cpp \
 ../src/MediaInfo/stream.cpp \
 ../src/MediaInfo/videostream.cpp \

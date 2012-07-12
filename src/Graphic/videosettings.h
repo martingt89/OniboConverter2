@@ -10,10 +10,13 @@
 
 #include <gtkmm/builder.h>
 #include <gtkmm/comboboxtext.h>
+#include <gtkmm/filechooserdialog.h>
 #include "../AVBox/avbox.h"
 #include "../AVBox/guisettings.h"
 #include "encodersdialog.h"
 #include "resolutiondialog.h"
+#include "../FFTools/ffpresets.h"
+
 namespace GUI {
 
 class VideoSettings {
@@ -27,11 +30,13 @@ public:
 	void rescanVideoFormat();
 	void rescanVideoEncoder();
 	void manageVideoResolution();
+	void manageVideoExtra();
 	void setNeedsData(AVBox::SupportedEncoders *suportedEncoders,
 						AVBox::AVBox *audioVideoData,
 						AVBox::GuiSettings *guiData,
 						AVBox::FormatToEncoders *convert);
 private:
+	FFTools::FFpresets ffpresets;
 	std::string activeContainer;
 	const Glib::RefPtr<Gtk::Builder>& refGlade;
 	int numberOfEncoderItems;
@@ -39,6 +44,8 @@ private:
 	int vFormatCount;
 	std::pair<int, int> mainResolution;
 	std::string lastFormat;
+	std::string lastEncoder;
+	std::string activePrefix;
 	//
 	AVBox::SupportedEncoders *suportedEncoders;
 	AVBox::AVBox *audioVideoData;
@@ -53,6 +60,7 @@ private:
 	Gtk::ComboBoxText *vExtra;
 	Gtk::Button *vResolution;
 	Gtk::Label *vResolutionLabel;
+	Gtk::FileChooserDialog fileChooserDialog;
 	ResolutionDialog *resolutionDialog;
 	EncodersDialog *encodersDialog;
 

@@ -11,6 +11,7 @@
 #include "Tools/settings.h"
 #include <gtkmm/main.h>
 #include "Graphic/onibowindow.h"
+#include "FFTools/ffpresets.h"
 
 void initSettings(){
 	Settings *set = Settings::getSettings();
@@ -18,10 +19,14 @@ void initSettings(){
 	set->setValue(Settings::ENCODERS, "encoders_table.xml");
 	set->setValue(Settings::CONTAINERS, "container_settings.xml");
 	set->setValue(Settings::GUISETTINGS, "gui_settings.xml");
+	set->setValue(Settings::FFPRESENTSFOLDER, "ffpresets/");
 }
 int main(int argc, char *argv[]){
 	Gtk::Main kit(argc, argv);
 	initSettings();
+
+	FFTools::FFpresets pres;
+
 
 	Gtk::Window *w;
 	GUI::OniboWindow *window = 0;
