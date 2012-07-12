@@ -16,6 +16,7 @@
 #include "encodersdialog.h"
 #include "resolutiondialog.h"
 #include "../FFTools/ffpresets.h"
+#include "Widgets/comboboxtextwraper.h"
 
 namespace GUI {
 
@@ -24,13 +25,7 @@ public:
 	VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~VideoSettings();
 	void reload(const std::string& container);
-	void setAllInsensitive();
-	void rescanVideoMode();
-	void enableVideoSettings();
-	void rescanVideoFormat();
-	void rescanVideoEncoder();
-	void manageVideoResolution();
-	void manageVideoExtra();
+
 	void setNeedsData(AVBox::SupportedEncoders *suportedEncoders,
 						AVBox::AVBox *audioVideoData,
 						AVBox::GuiSettings *guiData,
@@ -39,12 +34,7 @@ private:
 	FFTools::FFpresets ffpresets;
 	std::string activeContainer;
 	const Glib::RefPtr<Gtk::Builder>& refGlade;
-	int numberOfEncoderItems;
-	std::map<std::string, AVBox::Encoder> setEncoders;
-	int vFormatCount;
 	std::pair<int, int> mainResolution;
-	std::string lastFormat;
-	std::string lastEncoder;
 	std::string activePrefix;
 	//
 	AVBox::SupportedEncoders *suportedEncoders;
@@ -55,9 +45,10 @@ private:
 	Gtk::ComboBoxText *vMode;
 	Gtk::ComboBoxText *vBitrate;
 	Gtk::ComboBoxText *vFramerate;
-	Gtk::ComboBoxText *vEncoder;
-	Gtk::ComboBoxText *vFormat;
-	Gtk::ComboBoxText *vExtra;
+	ComboBoxTextWraper<AVBox::Encoder> vEncoder;
+	ComboBoxTextWraper<bool> vFormat;
+	ComboBoxTextWraper<std::string> vExtra;
+
 	Gtk::Button *vResolution;
 	Gtk::Label *vResolutionLabel;
 	Gtk::FileChooserDialog fileChooserDialog;
@@ -67,6 +58,13 @@ private:
 	void initGuiData(AVBox::GuiSettings* guiData);
 	std::list<AVBox::Encoder> getAvailableEncoders();
 	void enableVMode();
+	void setAllInsensitive();
+	void rescanVideoMode();
+	void enableVideoSettings();
+	void rescanVideoFormat();
+	void rescanVideoEncoder();
+	void manageVideoResolution();
+	void manageVideoExtra();
 };
 
 } /* namespace GUI */

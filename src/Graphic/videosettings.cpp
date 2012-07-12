@@ -9,8 +9,8 @@
 #include "../Tools/helper.h"
 #include <gtkmm/liststore.h>
 #include <gtkmm/stock.h>
-#include <iostream> //todo reomve
 #include <giomm/file.h>
+
 namespace GUI {
 
 VideoSettings::VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade) :
@@ -32,15 +32,19 @@ VideoSettings::VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	fileChooserDialog.add_filter(filterAny);
 
 	activeContainer = "";
-	lastFormat = "";
-	lastEncoder = "";
+	Gtk::ComboBoxText *tmp;
 	refGlade->get_widget("v_mode",vMode);
 	refGlade->get_widget("v_bitrate",vBitrate);
 	refGlade->get_widget("v_framerate",vFramerate);
 
-	refGlade->get_widget("v_format",vFormat);
-	refGlade->get_widget("v_encoder",vEncoder);
-	refGlade->get_widget("v_extra",vExtra);
+	refGlade->get_widget("v_format",tmp);
+	vFormat.set_widget(tmp);
+
+	refGlade->get_widget("v_encoder",tmp);
+	vEncoder.set_widget(tmp);
+
+	refGlade->get_widget("v_extra",tmp);
+	vExtra.set_widget(tmp);
 
 	refGlade->get_widget("v_resolution",vResolution);
 	refGlade->get_widget("v_res_label",vResolutionLabel);
@@ -61,10 +65,10 @@ VideoSettings::VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	vMode->set_active(1);
 
 	vMode->signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::rescanVideoMode));
-	vFormat->signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::rescanVideoFormat));
-	vEncoder->signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::rescanVideoEncoder));
+	vFormat.signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::rescanVideoFormat));
+	vEncoder.signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::rescanVideoEncoder));
 	vResolution->signal_clicked().connect(sigc::mem_fun(*this, &VideoSettings::manageVideoResolution));
-	vExtra->signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::manageVideoExtra));
+	vExtra.signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::manageVideoExtra));
 
 	this->setAllInsensitive();
 }
@@ -74,16 +78,13 @@ VideoSettings::~VideoSettings() {
 	delete vMode;
 	delete vBitrate;
 	delete vFramerate;
-	delete vEncoder;
-	delete vFormat;
-	delete vExtra;
 	delete vResolution;
 	delete resolutionDialog;
 	delete encodersDialog;
 }
 
 void VideoSettings::enableVMode() {
-	if(vFormatCount)
+	if(vFormat.count_of_elements())
 		vMode->set_sensitive(true);
 }
 
@@ -91,24 +92,22 @@ void VideoSettings::reload(const std::string& container){
 	std::string vFormatOld = "";
 	activeContainer = container;
 	if(audioVideoData){
-		vFormat->set_sensitive(true);
-		if(vFormat->get_active_row_number() != -1){
-			vFormatOld = vFormat->get_active_text();
+		vFormat.set_sensitive(true);
+		if(vFormat.is_selected()){
+			vFormatOld = vFormat.get_active_text();
 		}
-		vFormat->remove_all ();
-		vFormatCount = 0;
+		vFormat.remove_all ();
 		std::list<std::string> forms = audioVideoData->getContainer(container).getVideoFormats();
 		std::list<std::string>::iterator it;
 
 		for(it = forms.begin(); it != forms.end(); ++it){
-			vFormat->append(*it);
-			vFormatCount++;
+			vFormat.append(*it, true);
 		}
-		if(vFormatCount == 0){
-			vFormat->append("None format");
-			vFormat->set_active(0);
+		if(vFormat.count_of_elements() == 0){
+			vFormat.append("None format", false);
+			vFormat.set_active(0);
 		}else{
-			vFormat->set_active_text(vFormatOld);
+			vFormat.set_active_text(vFormatOld);
 		}
 	}
 
@@ -119,7 +118,7 @@ void VideoSettings::reload(const std::string& container){
 
 void VideoSettings::rescanVideoMode(){
 	int row = vMode->get_active_row_number();
-	if(row == 0 || row == 2 || row == -1 || vFormatCount == 0){
+	if(row == 0 || row == 2 || row == -1 || vFormat.get_active_row_data(true) == false){
 		setAllInsensitive();
 		enableVMode();
 	}else{
@@ -129,66 +128,62 @@ void VideoSettings::rescanVideoMode(){
 }
 
 std::list<AVBox::Encoder> VideoSettings::getAvailableEncoders() {
-	std::string format = vFormat->get_active_text();
+	std::string format = vFormat.get_active_text();
 	AVBox::VideoFormat videof =
-			audioVideoData->getContainer(activeContainer).getVideoFormat(
-					format);
+			audioVideoData->getContainer(activeContainer).getVideoFormat(format);
 	std::list<AVBox::Encoder> encoders = videof.getAvailableEncoders(
 			*suportedEncoders, *convert);
 	return encoders;
 }
 
 void VideoSettings::rescanVideoFormat() {
-	int row = vFormat->get_active_row_number();
-	if(row != -1){
-		vEncoder->set_sensitive(true);
-		if(lastFormat != vFormat->get_active_text()){
-			lastFormat = vFormat->get_active_text();
-			vEncoder->remove_all();
-			setEncoders.clear();
-			numberOfEncoderItems = 0;
+	if(vFormat.is_selected()){
+		if(!vFormat.is_same_row()){
+			vFormat.checkpoint();
+			vEncoder.remove_all();
 
 			std::list<AVBox::Encoder> encoders = getAvailableEncoders();
-
 			std::list<AVBox::Encoder>::iterator it;
 
 			for(it = encoders.begin(); it != encoders.end(); ++it){
-				vEncoder->append(it->getEncoder());
-				numberOfEncoderItems++;
-				setEncoders[it->getEncoder()] = *it;
+				vEncoder.append(it->getEncoder(), *it);
 			}
-			switch(numberOfEncoderItems){
+			vEncoder.set_activable(true);
+			switch(vEncoder.count_of_elements()){
 			case 1:
-				vEncoder->set_active(0);
-				vEncoder->append("---details---"); break;
+				vEncoder.append("---details---");
+				vEncoder.set_active(0);
+				break;
 			case 0:
-				vEncoder->append("None encoder");
-				vEncoder->set_active(0);
-				vEncoder->set_sensitive(false);
+				vEncoder.append("None encoder");
+				vEncoder.set_sensitive(false);
+				vEncoder.set_activable(false);
+				vEncoder.set_active(0);
 				break;
 			default:
-				vEncoder->append("---details---"); break;
+				vEncoder.append("---details---");
+				break;
 			}
 		}else{
+			vEncoder.set_sensitive(true);
 			rescanVideoEncoder();
 		}
 	}
 }
 void VideoSettings::rescanVideoEncoder(){
-	int row = vEncoder->get_active_row_number();
-	if(row >= 0 && lastEncoder == vEncoder->get_active_text()
-			&& vMode->get_sensitive()){
-		vExtra->set_sensitive(true);
+	int row = vEncoder.get_active_row_number();
+	if(vEncoder.is_selected() && vEncoder.is_same_row() && vMode->get_sensitive()){
+		vExtra.set_sensitive(true);
 		return;
 	}
-	lastEncoder = vEncoder->get_active_text();
-	vExtra->set_sensitive(true);
-	vExtra->remove_all();
+	vEncoder.checkpoint();
+	vExtra.set_sensitive(true);
+	vExtra.remove_all();
 	activePrefix = "";
-	vExtra->set_sensitive(false);
-	if(row < 0 || numberOfEncoderItems == 0) return;
+	vExtra.set_sensitive(false);
+	if(row < 0 || vEncoder.get_sensitive() == false) return;
 
-	if(row == numberOfEncoderItems){	//was selected "---details---"
+	if(row+1 == (vEncoder.count_of_elements())){	//was selected "---details---"
 		std::list<AVBox::Encoder> encoders = getAvailableEncoders();
 		std::list<AVBox::Encoder>::iterator it;
 		std::list<std::pair<std::string, std::string> > encoderWithDescription;
@@ -200,34 +195,27 @@ void VideoSettings::rescanVideoEncoder(){
 		std::string selectedEncoder;
 		bool ret = encodersDialog->start(encoderWithDescription, selectedEncoder);
 		if(ret){
-			vEncoder->set_active_text(selectedEncoder);
+			vEncoder.set_active_text(selectedEncoder);
 		}else{
-			vEncoder->unset_active();
+			vEncoder.unset_active();
 		}
 	}else{
-		std::string encoder = vEncoder->get_active_text();
-		std::map<std::string, AVBox::Encoder>::iterator it;
-		it = setEncoders.find(encoder);
-		if(it != setEncoders.end()){
-			std::map<std::string, std::string> options = it->second.getOptions();
-			if(options.find("ffprefix") != options.end()){	//encoder support config files
-				vExtra->set_sensitive(true);
-				vExtra->append("---choose file---");
-				activePrefix = options["ffprefix"];
-				std::list<std::pair<std::string, std::string> >
-						list = ffpresets.getShortNamesWithPaths(options["ffprefix"]);
-				std::list<std::pair<std::string, std::string> >::iterator iter;
-				for(iter = list.begin(); iter != list.end(); ++iter){
-					vExtra->append(iter->first);
-				}
+		std::string prefix;
+		if(vEncoder.get_active_row_data().getOptions("ffprefix", prefix)){
+			vExtra.set_sensitive(true);
+			vExtra.append("---choose file---", "");
+			activePrefix = prefix;
+			std::list<std::pair<std::string, std::string> >
+					list = ffpresets.getShortnamesWithPaths(prefix);
+			std::list<std::pair<std::string, std::string> >::iterator iter;
+			for(iter = list.begin(); iter != list.end(); ++iter){
+				vExtra.append(iter->first, iter->second);
 			}
 		}
 	}
 }
 void VideoSettings::manageVideoResolution(){
-	bool copy;
-	int x;
-	int y;
+	bool copy; int x; int y;
 	if(resolutionDialog->start(copy, x, y)){
 		if(copy) {
 			x = -1;
@@ -241,15 +229,16 @@ void VideoSettings::manageVideoResolution(){
 	}
 }
 void VideoSettings::manageVideoExtra(){
-	if(activePrefix.size() > 0 && vExtra->get_active_row_number() == 0 && vExtra->get_sensitive()){
+	if(activePrefix.size() > 0 && vExtra.get_active_row_number() == 0 && vExtra.get_sensitive()){
 		int stat = fileChooserDialog.run();
 		fileChooserDialog.hide();
 		if(stat == Gtk::RESPONSE_OK){
-			//std::cout<<"OK: "<<fileChooserDialog.get_filename();
 			Glib::RefPtr< Gio::File > file = fileChooserDialog.get_file ();
-			vExtra->append(file->get_basename());			//todo make save struct???
-			vExtra->set_active_text(file->get_basename());
+			vExtra.append(file->get_basename(), file->get_path());
+			vExtra.set_active_text(file->get_basename());
 			ffpresets.addUserDefinedFile(activePrefix, file);
+		}else{
+			vExtra.unset_active();
 		}
 	}
 }
@@ -257,15 +246,15 @@ void VideoSettings::setAllInsensitive(){
 	vMode->set_sensitive(false);
 	vBitrate->set_sensitive(false);
 	vFramerate->set_sensitive(false);
-	vFormat->set_sensitive(false);
-	vEncoder->set_sensitive(false);
+	vFormat.set_sensitive(false);
+	vEncoder.set_sensitive(false);
 	vResolution->set_sensitive(false);
-	vExtra->set_sensitive(false);
+	vExtra.set_sensitive(false);
 }
 void VideoSettings::enableVideoSettings(){
 	vBitrate->set_sensitive(true);
 	vFramerate->set_sensitive(true);
-	vFormat->set_sensitive(true);
+	vFormat.set_sensitive(true);
 	vResolution->set_sensitive(true);
 }
 void VideoSettings::initGuiData(AVBox::GuiSettings* guiData) {

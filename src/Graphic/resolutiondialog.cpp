@@ -14,8 +14,9 @@ ResolutionDialog::ResolutionDialog(BaseObjectType* cobject, const Glib::RefPtr<G
 	Gtk::Dialog(cobject), settings(NULL), disableEntryInterupt(false){
 	aspectCount = 0;
 	lastSetRatio = "";
-//	this->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-//	this->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+	this->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+	this->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
 	refGlade->get_widget("res_copy", copyMode);
 	refGlade->get_widget("res_aspect", aspectRatio);

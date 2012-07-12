@@ -28,6 +28,7 @@ public:
 	std::string getEncoder() const;
 	std::string getDescription() const;
 	std::map<std::string, std::string> getOptions() const;
+	bool getOptions(const std::string& name, std::string& returnValue) const;
 private:
 	std::string encoder;
 	std::string description;

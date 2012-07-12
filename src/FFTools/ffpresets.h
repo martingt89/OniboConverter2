@@ -25,7 +25,7 @@ private:
 public:
 	FFpresets();
 	virtual ~FFpresets();
-	std::list<std::pair<std::string, std::string> > getShortNamesWithPaths(const std::string &prefix) const;
+	std::list<std::pair<std::string, std::string> > getShortnamesWithPaths(const std::string &prefix) const;
 	void addUserDefinedFile(std::string prefix, const Glib::RefPtr< Gio::File >& file);
 private:
 	std::map<std::string, std::list<FFfile> > prefixToFiles;

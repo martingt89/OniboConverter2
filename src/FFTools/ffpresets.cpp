@@ -62,7 +62,7 @@ void FFpresets::copyPartOfListToList(
 	}
 }
 
-std::list<std::pair<std::string, std::string> > FFpresets::getShortNamesWithPaths(
+std::list<std::pair<std::string, std::string> > FFpresets::getShortnamesWithPaths(
 		const std::string &prefix) const {
 	std::list<std::pair<std::string, std::string> > ret;
 	std::map<std::string, std::list<FFfile> >::const_iterator it;

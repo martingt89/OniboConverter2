@@ -42,4 +42,13 @@ std::string Encoder::getDescription() const{
 std::map<std::string, std::string> Encoder::getOptions() const{
 	return options;
 }
+bool Encoder::getOptions(const std::string& name, std::string& returnValue) const{
+	std::map<std::string, std::string>::const_iterator it;
+	it = options.find(name);
+	if(it != options.end()){
+		returnValue = it->second;
+		return true;
+	}
+	return false;
+}
 } /* namespace AVBox */

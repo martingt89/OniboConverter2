@@ -25,10 +25,6 @@ int main(int argc, char *argv[]){
 	Gtk::Main kit(argc, argv);
 	initSettings();
 
-	FFTools::FFpresets pres;
-
-
-	Gtk::Window *w;
 	GUI::OniboWindow *window = 0;
 	Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("graphic/model1.glade");
 	builder->get_widget_derived("onibo_converter_window", window);
