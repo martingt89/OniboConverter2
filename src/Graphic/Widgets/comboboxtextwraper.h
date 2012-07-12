@@ -30,9 +30,12 @@ public:
 	}
 
 	void append(const std::string& text, const T &infoData = T()){
+		bool sens = widget->get_sensitive();
 		widget->set_sensitive(true);
 		widget->append(text, toS(data.size()));
 		data.push_back(infoData);
+		if(!sens)
+			widget->set_sensitive(sens);
 	}
 
 	void set_active(int index){
@@ -69,7 +72,7 @@ public:
 		widget->set_active_text(text);
 	}
 
-	bool get_sensitive(){
+	bool is_sensitive(){
 		return widget->get_sensitive();
 	}
 
@@ -93,6 +96,15 @@ public:
 	}
 	void set_activable(bool activable){
 		this->activable = activable;
+	}
+	bool is_activable(){
+		return activable;
+	}
+	bool is_set_last(){
+		return widget->get_active_row_number() == (data.size()-1);
+	}
+	bool is_set_first(){
+		return widget->get_active_row_number() == 0;
 	}
 private:
 	Gtk::ComboBoxText *widget;

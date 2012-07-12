@@ -65,6 +65,7 @@ private:
 	void rescanVideoEncoder();
 	void manageVideoResolution();
 	void manageVideoExtra();
+	void initFileChooserDialog(Gtk::FileChooserDialog &fileChooserDialog);
 };
 
 } /* namespace GUI */

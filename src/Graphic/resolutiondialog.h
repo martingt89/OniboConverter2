@@ -14,6 +14,7 @@
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/entry.h>
 #include "../AVBox/guisettings.h"
+#include "Widgets/comboboxtextwraper.h"
 
 class ResolutionDialog : public Gtk::Dialog {
 public:
@@ -22,25 +23,23 @@ public:
 	void setGuiSettings(AVBox::GuiSettings *settings);
 	bool start(bool &copy, int &xRes, int &yRes);
 	void setSensitivity(bool sensitiv);
+private:
 	void setCopyButtonLabel();
 	void changeCopyMode();
 	void rescanApectRatio();
 	void rescanResolution();
-private:
 	void setResolution(int x, int y);
 	void getRatioNumbers(const std::string& ratio, int &x, int &y);
 	void recalculeResolutionXtoY();
 	void recalculeResolutionYtoX();
 	bool disableEntryInterupt;
 	Gtk::ToggleButton *copyMode;
-	Gtk::ComboBoxText *aspectRatio;
-	int aspectCount;
+	ComboBoxTextWraper<bool> aspectRatio;
+
 	Gtk::ComboBoxText *resolutions;
 	Gtk::Entry *editableResolutionX;
 	Gtk::Entry *editableResolutionY;
 	Gtk::Label *errorMessage;
-
-	std::string lastSetRatio;
 
 	AVBox::GuiSettings *settings;
 	std::vector<AVBox::GuiSettings::ResolutionStruct> resolutionCeeper;

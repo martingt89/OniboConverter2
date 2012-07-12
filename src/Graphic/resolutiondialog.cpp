@@ -12,14 +12,14 @@
 
 ResolutionDialog::ResolutionDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refGlade):
 	Gtk::Dialog(cobject), settings(NULL), disableEntryInterupt(false){
-	aspectCount = 0;
-	lastSetRatio = "";
 
 	this->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 	this->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
 	refGlade->get_widget("res_copy", copyMode);
-	refGlade->get_widget("res_aspect", aspectRatio);
+	Gtk::ComboBoxText *tmp;
+	refGlade->get_widget("res_aspect", tmp);
+	aspectRatio.set_widget(tmp);
 	refGlade->get_widget("res_preddef_res", resolutions);
 	refGlade->get_widget("res_manually_x", editableResolutionX);
 	refGlade->get_widget("res_manually_y", editableResolutionY);
@@ -30,7 +30,7 @@ ResolutionDialog::ResolutionDialog(BaseObjectType* cobject, const Glib::RefPtr<G
 
 	copyMode->signal_clicked().connect(sigc::mem_fun(*this, &ResolutionDialog::setCopyButtonLabel));
 	copyMode->signal_clicked().connect(sigc::mem_fun(*this, &ResolutionDialog::changeCopyMode));
-	aspectRatio->signal_changed().connect(sigc::mem_fun(*this, &ResolutionDialog::rescanApectRatio));
+	aspectRatio.signal_changed().connect(sigc::mem_fun(*this, &ResolutionDialog::rescanApectRatio));
 	resolutions->signal_changed().connect(sigc::mem_fun(*this, &ResolutionDialog::rescanResolution));
 	editableResolutionX->signal_changed().connect(sigc::mem_fun(*this, &ResolutionDialog::recalculeResolutionXtoY));
 	editableResolutionY->signal_changed().connect(sigc::mem_fun(*this, &ResolutionDialog::recalculeResolutionYtoX));
@@ -38,7 +38,6 @@ ResolutionDialog::ResolutionDialog(BaseObjectType* cobject, const Glib::RefPtr<G
 }
 ResolutionDialog::~ResolutionDialog() {
 	delete copyMode;
-	delete aspectRatio;
 	delete resolutions;
 	delete editableResolutionX;
 	delete editableResolutionY;
@@ -59,10 +58,9 @@ void ResolutionDialog::recalculeResolutionXtoY(){
 		return;
 	}
 	errorMessage->set_text("");
-	int row = aspectRatio->get_active_row_number();
-	if(row >= 0 && row != aspectCount){
+	if(aspectRatio.is_selected() &&	aspectRatio.is_set_last()){
 		int x, y;
-		getRatioNumbers(aspectRatio->get_active_text(), x, y);
+		getRatioNumbers(aspectRatio.get_active_text(), x, y);
 		int w = toN(width, int());
 		setResolution(w, (w/(double)x*y));
 	}
@@ -78,30 +76,27 @@ void ResolutionDialog::recalculeResolutionYtoX(){
 		return;
 	}
 	errorMessage->set_text("");
-	int row = aspectRatio->get_active_row_number();
-	if(row >= 0 && row != aspectCount){
+	if(aspectRatio.is_selected() && aspectRatio.is_set_last()){
 		int x, y;
-		getRatioNumbers(aspectRatio->get_active_text(), x, y);
+		getRatioNumbers(aspectRatio.get_active_text(), x, y);
 		int h = toN(height, int());
 		setResolution((h/(double)y*x), h);
 	}
 }
 void ResolutionDialog::rescanApectRatio(){
-	int row = aspectRatio->get_active_row_number();
-	if(row < 0 || aspectRatio->get_sensitive() == false){
+	if(!aspectRatio.is_selected() || !aspectRatio.is_sensitive()){
 		resolutions->set_sensitive(false);
 		editableResolutionX->set_sensitive(false);
 		editableResolutionY->set_sensitive(false);
 		return;
 	}
 
-	if(lastSetRatio == aspectRatio->get_active_text())return;
-
-	lastSetRatio = aspectRatio->get_active_text();
+	if(aspectRatio.is_same_row())return;
+	aspectRatio.checkpoint();
 
 	std::list<AVBox::GuiSettings::ResolutionStruct> resol;
-	if(row != aspectCount){
-		resol = settings->getVideoResolution(aspectRatio->get_active_text());
+	if(!aspectRatio.is_set_last()){
+		resol = settings->getVideoResolution(aspectRatio.get_active_text());
 	}else{
 		resol = settings->getVideoResolution();
 	}
@@ -151,7 +146,7 @@ void ResolutionDialog::setCopyButtonLabel(){
 }
 
 void ResolutionDialog::setSensitivity(bool sensitiv){
-	aspectRatio->set_sensitive(sensitiv);
+	aspectRatio.set_sensitive(sensitiv);
 	resolutions->set_sensitive(sensitiv);
 	editableResolutionX->set_sensitive(sensitiv);
 	editableResolutionY->set_sensitive(sensitiv);
@@ -163,10 +158,9 @@ void ResolutionDialog::setGuiSettings(AVBox::GuiSettings *settings){
 
 	std::list<std::string>::iterator it;
 	for(it = ratios.begin(); it != ratios.end(); ++it){
-		aspectRatio->append(*it);
-		aspectCount++;
+		aspectRatio.append(*it);
 	}
-	aspectRatio->append("custom");
+	aspectRatio.append("custom");
 }
 void ResolutionDialog::getRatioNumbers(const std::string& ratio, int &x, int &y){
 	x = 1; y = 1;
@@ -180,7 +174,7 @@ void ResolutionDialog::getRatioNumbers(const std::string& ratio, int &x, int &y)
 bool ResolutionDialog::start(bool& copy, int& xRes, int& yRes){
 	errorMessage->set_label("");
 	bool ok = false;
-	while(this->run() == 1){
+	while(this->run() == Gtk::RESPONSE_OK){
 		if(!copyMode->get_active() ||
 				(isN(editableResolutionX->get_text(), unsigned()) &&
 				isN(editableResolutionY->get_text(), unsigned()))){
