@@ -42,8 +42,10 @@
 			<resolution name="">1280x854</resolution>
 			<resolution name="">1440x960</resolution>
 		</resolutions>
-		<resolutions ratio="extra">
+		<resolutions ratio="128:75">
 			<resolution name="WSVGA">1024x600</resolution>
+		</resolutions>
+		<resolutions ratio="11:9">
 			<resolution name="CIF">352x288</resolution>
 		</resolutions>
 		<bitrates>

@@ -6,9 +6,10 @@
  */
 
 #include "guisettings.h"
-#include "../regextools.h"
-#include "../helper.h"
-
+#include "../Tools/regextools.h"
+#include "../Tools/helper.h"
+#include <algorithm>
+#include <iostream> //todo remove
 namespace AVBox {
 
 GuiSettings::GuiSettings() {
@@ -53,5 +54,30 @@ std::list<int> GuiSettings::getVideoBitrates() const{
 }
 std::list<double> GuiSettings::getVideoFramerates() const{
 	return vframerate;
+}
+std::list<std::string> GuiSettings::getVideoRatios() const{
+	std::list<std::string> ratios;
+	std::map<std::string, std::list<ResolutionStruct> >::const_iterator it;
+	for(it = ratioToResolution.begin(); it != ratioToResolution.end(); ++it){
+		ratios.push_back(it->first);
+	}
+	return ratios;
+}
+std::list<GuiSettings::ResolutionStruct> GuiSettings::getVideoResolution() const{
+	std::list<GuiSettings::ResolutionStruct> resol;
+	std::map<std::string, std::list<ResolutionStruct> >::const_iterator it;
+	for(it = ratioToResolution.begin(); it != ratioToResolution.end(); ++it){
+		std::copy(it->second.begin(), it->second.end(),  std::front_inserter(resol));
+	}
+	return resol;
+}
+std::list<GuiSettings::ResolutionStruct> GuiSettings::getVideoResolution(const std::string &ratio) const{
+	std::list<GuiSettings::ResolutionStruct> resol;
+	std::map<std::string, std::list<ResolutionStruct> >::const_iterator it;
+	it = ratioToResolution.find(ratio);
+	if(it != ratioToResolution.end()){
+		std::copy(it->second.begin(), it->second.end(),  std::front_inserter(resol));
+	}
+	return resol;
 }
 } /* namespace AVBox */

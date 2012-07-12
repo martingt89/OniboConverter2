@@ -8,7 +8,7 @@
  */
 
 #include <iostream>
-#include "settings.h"
+#include "Tools/settings.h"
 #include <gtkmm/main.h>
 #include "Graphic/onibowindow.h"
 

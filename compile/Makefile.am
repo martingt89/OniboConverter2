@@ -12,8 +12,8 @@ OniboConverter2_SOURCES=../src/AVBox/audioformat.cpp \
 ../src/Process/safeinputstream.cpp \
 ../src/Process/safeoutputstream.cpp \
 ../src/Process/safestream.cpp \
-../src/settings.cpp \
-../src/regextools.cpp \
+../src/Tools/settings.cpp \
+../src/Tools/regextools.cpp \
 ../src/FFTools/imagecreator.cpp \
 ../src/FFTools/ffdatamining.cpp \
 ../src/MediaInfo/infoloader.cpp \
@@ -21,13 +21,14 @@ OniboConverter2_SOURCES=../src/AVBox/audioformat.cpp \
 ../src/MediaInfo/videostream.cpp \
 ../src/MediaInfo/mediafile.cpp \
 ../src/MediaInfo/audiostream.cpp \
-../src/helper.cpp \
 ../src/XML/encodersparser.cpp \
 ../src/XML/containersparser.cpp \
 ../src/XML/guisettingsparser.cpp \
 ../src/Graphic/onibowindow.cpp\
 ../src/Graphic/containercombobox.cpp\
 ../src/Graphic/videosettings.cpp\
+../src/Graphic/encodersdialog.cpp\
+../src/Graphic/resolutiondialog.cpp\
 ../src/main.cpp
 
 AM_CXXFLAGS = -lpthread -std=c++0x -g -O0 $(DEPS_CFLAGS) 

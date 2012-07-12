@@ -12,7 +12,8 @@
 #include <gtkmm/comboboxtext.h>
 #include "../AVBox/avbox.h"
 #include "../AVBox/guisettings.h"
-
+#include "encodersdialog.h"
+#include "resolutiondialog.h"
 namespace GUI {
 
 class VideoSettings {
@@ -24,6 +25,8 @@ public:
 	void rescanVideoMode();
 	void enableVideoSettings();
 	void rescanVideoFormat();
+	void rescanVideoEncoder();
+	void manageVideoResolution();
 	void setNeedsData(AVBox::SupportedEncoders *suportedEncoders,
 						AVBox::AVBox *audioVideoData,
 						AVBox::GuiSettings *guiData,
@@ -32,6 +35,10 @@ private:
 	std::string activeContainer;
 	const Glib::RefPtr<Gtk::Builder>& refGlade;
 	int numberOfEncoderItems;
+	std::map<std::string, AVBox::Encoder> setEncoders;
+	int vFormatCount;
+	std::pair<int, int> mainResolution;
+	std::string lastFormat;
 	//
 	AVBox::SupportedEncoders *suportedEncoders;
 	AVBox::AVBox *audioVideoData;
@@ -43,8 +50,15 @@ private:
 	Gtk::ComboBoxText *vFramerate;
 	Gtk::ComboBoxText *vEncoder;
 	Gtk::ComboBoxText *vFormat;
+	Gtk::ComboBoxText *vExtra;
+	Gtk::Button *vResolution;
+	Gtk::Label *vResolutionLabel;
+	ResolutionDialog *resolutionDialog;
+	EncodersDialog *encodersDialog;
 
 	void initGuiData(AVBox::GuiSettings* guiData);
+	std::list<AVBox::Encoder> getAvailableEncoders();
+	void enableVMode();
 };
 
 } /* namespace GUI */

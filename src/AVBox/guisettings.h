@@ -34,8 +34,11 @@ public:
 
 	std::list<int> getVideoBitrates() const;
 	std::list<double> getVideoFramerates() const;
+	std::list<std::string> getVideoRatios() const;
+	std::list<GuiSettings::ResolutionStruct> getVideoResolution(const std::string &ratio) const;
+	std::list<GuiSettings::ResolutionStruct> getVideoResolution() const;
 private:
-	std::map<std::string, std::list<ResolutionStruct>> ratioToResolution;
+	std::map<std::string, std::list<ResolutionStruct> > ratioToResolution;
 	std::list<int> vbitrate;
 	std::list<double> vframerate;
 	//

@@ -9,7 +9,8 @@
 #define ENCODER_H_
 
 #include <string>
-#include <list>
+//#include <list>
+#include <map>
 
 namespace AVBox {
 
@@ -18,6 +19,7 @@ public:
 	Encoder(const std::string& encoder, const std::string& description);
 	Encoder(const Encoder& old, const std::string& description);
 	Encoder(const std::string& encoder);
+	Encoder();
 	virtual ~Encoder();
 	operator std::string() const{
 		return encoder+"->"+description;
@@ -25,11 +27,11 @@ public:
 	void addOptions(std::string name, std::string value);
 	std::string getEncoder() const;
 	std::string getDescription() const;
-	std::list<std::pair<std::string, std::string> > getOptions() const;
+	std::map<std::string, std::string> getOptions() const;
 private:
 	std::string encoder;
 	std::string description;
-	std::list<std::pair<std::string, std::string> > options;
+	std::map<std::string, std::string> options;
 };
 
 } /* namespace AVBox */

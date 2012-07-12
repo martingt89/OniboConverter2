@@ -6,7 +6,7 @@
  */
 
 #include "mediafile.h"
-#include "../helper.h"
+#include "../Tools/helper.h"
 #include <iostream>
 namespace MediaInfo{
 
@@ -53,7 +53,7 @@ MediaFile::State MediaFile::getState(){
 }
 VideoStream MediaFile::getVideoStream(unsigned int index) throw(std::out_of_range){
 	if(index >= videos.size())
-		throw std::out_of_range (std::string("element count: ")+videos.size()+" requested index: "+index);
+		throw std::out_of_range (std::string("element count: ")<<videos.size()<<" requested index: "<<index);
 	return videos[index];
 }
 int MediaFile::getVideoStreamCaunt(){

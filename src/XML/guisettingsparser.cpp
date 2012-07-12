@@ -6,7 +6,7 @@
  */
 
 #include "guisettingsparser.h"
-#include "../settings.h"
+#include "../Tools/settings.h"
 #include <iostream> //todo remove
 
 namespace XML {

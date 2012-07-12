@@ -6,7 +6,7 @@
  */
 
 #include "ffdatamining.h"
-#include "../settings.h"
+#include "../Tools/settings.h"
 #include "../Process/processexecutor.h"
 
 namespace FFTools {

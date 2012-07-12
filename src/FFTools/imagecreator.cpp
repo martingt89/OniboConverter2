@@ -6,9 +6,9 @@
  */
 
 #include "imagecreator.h"
-#include "../settings.h"
+#include "../Tools/settings.h"
 #include "../Process/processexecutor.h"
-#include "../helper.h"
+#include "../Tools/helper.h"
 
 namespace FFTools {
 

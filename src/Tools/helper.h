@@ -12,7 +12,7 @@
 #include <string>
 
 template<class T>
-std::string operator+(const std::string &s,  T i){
+std::string operator << (const std::string &s,  T i){
 	std::stringstream ss;
 	ss << s;
 	ss << i;
@@ -33,6 +33,11 @@ T toN(const std::string& number, const T&){
 	ss << number;
 	ss >> prem;
 	return prem;
+}
+
+template<class T>
+bool isN(const std::string& number, const T& x){
+	return toS(toN(number, x)) == number;
 }
 
 #endif /* HELPER_H_ */

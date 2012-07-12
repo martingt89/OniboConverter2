@@ -10,7 +10,7 @@
 
 #include <string>
 #include "mediafile.h"
-#include "../regextools.h"
+#include "../Tools/regextools.h"
 
 namespace MediaInfo{
 

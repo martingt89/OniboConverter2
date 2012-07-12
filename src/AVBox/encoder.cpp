@@ -22,12 +22,15 @@ Encoder::Encoder(const std::string& encoder){
 	this->encoder = encoder;
 	this->description = "";
 }
-
+Encoder::Encoder(){
+	this->encoder = "";
+	this->description = "";
+}
 Encoder::~Encoder() {}
 
 void Encoder::addOptions(std::string name, std::string value){
 	if(value.size() > 0)
-		options.push_back(std::pair<std::string, std::string>(name, value));
+		options[name] = value;
 }
 
 std::string Encoder::getEncoder() const{
@@ -36,7 +39,7 @@ std::string Encoder::getEncoder() const{
 std::string Encoder::getDescription() const{
 	return description;
 }
-std::list<std::pair<std::string, std::string> > Encoder::getOptions() const{
+std::map<std::string, std::string> Encoder::getOptions() const{
 	return options;
 }
 } /* namespace AVBox */

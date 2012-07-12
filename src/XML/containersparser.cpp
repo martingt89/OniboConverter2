@@ -7,7 +7,7 @@
 
 #include "containersparser.h"
 #include <iostream>
-#include "../settings.h"
+#include "../Tools/settings.h"
 namespace XML {
 
 ContainersParser::ContainersParser() {
