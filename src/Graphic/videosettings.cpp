@@ -14,9 +14,9 @@
 namespace GUI {
 
 
-VideoSettings::VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade) :
-		refGlade(refGlade), audioVideoData(NULL), guiData(NULL),
-		suportedEncoders(NULL), convert(NULL),
+VideoSettings::VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade, sigc::signal<void>& userEvent) :
+		refGlade(refGlade), audioVideoData(NULL),
+		suportedEncoders(NULL), convert(NULL),userEvent(userEvent),
 		fileChooserDialog("Please choose a file", Gtk::FILE_CHOOSER_ACTION_OPEN){
 
 	initFileChooserDialog(fileChooserDialog);
@@ -60,6 +60,12 @@ VideoSettings::VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	vResolution->signal_clicked().connect(sigc::mem_fun(*this, &VideoSettings::manageVideoResolution));
 	vExtra.signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::manageVideoExtra));
 
+	vMode->signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::event));
+	vFormat.signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::event));
+	vEncoder.signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::event));
+	vExtra.signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::event));
+	vBitrate->signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::event));
+	vFramerate->signal_changed().connect(sigc::mem_fun(*this, &VideoSettings::event));
 	this->setAllInsensitive();
 }
 
@@ -70,6 +76,10 @@ VideoSettings::~VideoSettings() {
 	delete vResolution;
 	delete resolutionDialog;
 	delete encodersDialog;
+}
+
+void VideoSettings::event(){
+	userEvent();
 }
 
 void VideoSettings::enableVMode() {
@@ -210,15 +220,21 @@ void VideoSettings::rescanVideoEncoder(){
 }
 void VideoSettings::manageVideoResolution(){
 	bool copy; int x; int y;
+	std::string last = vResolutionLabel->get_text();
+	std::string newone = "";
 	if(resolutionDialog->start(copy, x, y)){
 		if(copy) {
 			x = -1;
 			y = -1;
-			vResolutionLabel->set_text("Copy");
+			newone = "Copy";
 		}else{
 			mainResolution.first = x;
 			mainResolution.second = y;
-			vResolutionLabel->set_text(toS(x) << "x" << y);
+			newone = toS(x) << "x" << y;
+		}
+		if(last != newone){
+			vResolutionLabel->set_text(newone);
+			event();
 		}
 	}
 }
@@ -281,17 +297,11 @@ void VideoSettings::initGuiData(AVBox::GuiSettings* guiData) {
 	}
 }
 
-void VideoSettings::setNeedsData(AVBox::SupportedEncoders *suportedEncoders,
-					AVBox::AVBox *audioVideoData,
-					AVBox::GuiSettings *guiData,
-					AVBox::FormatToEncoders *convert){
-	this->suportedEncoders = suportedEncoders;
-	this->audioVideoData = audioVideoData;
-	this->guiData = guiData;
-	this->convert = convert;
-
-	initGuiData(guiData);
-	resolutionDialog->setGuiSettings(guiData);
+void VideoSettings::setData(DataKeeper& keeper){
+	this->convert = keeper.getFormatToEncoders();
+	this->suportedEncoders = keeper.getSupportedEncoders();
+	this->audioVideoData = keeper.getAVBox();
+	initGuiData(keeper.getGuiSettings());
+	resolutionDialog->setGuiSettings(keeper.getGuiSettings());
 }
-
 } /* namespace GUI */

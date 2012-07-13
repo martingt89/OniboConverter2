@@ -17,20 +17,19 @@
 #include "resolutiondialog.h"
 #include "../FFTools/ffpresets.h"
 #include "Widgets/comboboxtextwraper.h"
+#include "../datakeeper.h"
 
 namespace GUI {
 
 class VideoSettings {
 public:
-	VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade);
+	VideoSettings(const Glib::RefPtr<Gtk::Builder>& refGlade, sigc::signal<void>& userEvent);
 	virtual ~VideoSettings();
 	void setActualContainer(const std::string& container);
-
-	void setNeedsData(AVBox::SupportedEncoders *suportedEncoders,
-						AVBox::AVBox *audioVideoData,
-						AVBox::GuiSettings *guiData,
-						AVBox::FormatToEncoders *convert);
+	void setData(DataKeeper& keeper);
 private:
+	void event();
+	sigc::signal<void>& userEvent;
 	FFTools::FFpresets ffpresets;
 	std::string activeContainer;
 	const Glib::RefPtr<Gtk::Builder>& refGlade;
@@ -39,7 +38,6 @@ private:
 	//
 	AVBox::SupportedEncoders *suportedEncoders;
 	AVBox::AVBox *audioVideoData;
-	AVBox::GuiSettings *guiData;
 	AVBox::FormatToEncoders *convert;
 	//
 	Gtk::ComboBoxText *vMode;

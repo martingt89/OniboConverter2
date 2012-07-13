@@ -24,9 +24,8 @@ public:
 			std::string description;
 			EncoderType type;
 		};
-	SupportedEncoders();
-	virtual ~SupportedEncoders();
-	bool isSuported(const AVBox::Encoder& name, std::string& description) const;	//todo struct
+
+	bool isSuported(const Encoder& name, std::string& description) const;	//todo struct
 	void addEncoder(const EncoderFFData& encoder);
 private:
 	std::map<std::string, EncoderFFData> suportedEndcoders;

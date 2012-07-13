@@ -12,33 +12,20 @@
 #include <gtkmm/builder.h>
 #include "videosettings.h"
 //#include "audiosettings.h" //todo implement
-
-#include "../AVBox/avbox.h"
-#include "../AVBox/supportedencoders.h"
-#include "../AVBox/formattoencoders.h"
-#include "../AVBox/guisettings.h"
+#include "../datakeeper.h"
 
 namespace GUI {
 
 class ContainerComboBox : public Gtk::ComboBoxText{
 public:
 	ContainerComboBox(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refGlade);
-	virtual ~ContainerComboBox();
-	void setNeedsData(AVBox::SupportedEncoders *suportedEncoders,
-						AVBox::AVBox *audioVideoData,
-						AVBox::GuiSettings *guiData,
-						AVBox::FormatToEncoders *convert);
+	void setData(DataKeeper& keeper);
+	sigc::signal<void> userEvent;
 protected:
 	virtual void on_changed ();
-	void changeContent();
 private:
 	const Glib::RefPtr<Gtk::Builder>& refGlade;
 	VideoSettings videoSettings;
-
-	AVBox::SupportedEncoders *suportedEncoders;
-	AVBox::AVBox *audioVideoData;
-	AVBox::GuiSettings *guiData;
-	AVBox::FormatToEncoders *convert;
 };
 
 } /* namespace GUI */

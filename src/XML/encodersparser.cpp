@@ -20,20 +20,19 @@ EncodersParser::EncodersParser() {
 
 EncodersParser::~EncodersParser() {}
 
-bool EncodersParser::parse(AVBox::FormatToEncoders& enc){
+bool EncodersParser::parse(AVBox::FormatToEncoders* enc){
 	//todo try catch
 	std::string file = Settings::getSettings()->getValue(Settings::ENCODERS);
 
-	encoders = new AVBox::FormatToEncoders();
+	encoders = enc;
 	try{
 		this->parse_file(file);
 	}catch(std::exception& ex){
 		std::cout<<"Parsovanie sa dojebalo: "<<ex.what()<<std::endl; //todo remove
-		delete encoders;
+		encoders = NULL;
 		return false;
 	}
-	enc = *encoders;
-	delete encoders;
+	encoders = NULL;
 	return true;
 }
 void EncodersParser::on_start_document(){}

@@ -20,7 +20,7 @@ class ContainersParser : public xmlpp::SaxParser{
 public:
 	ContainersParser();
 	virtual ~ContainersParser();
-	bool parse(AVBox::AVBox& box);
+	bool parse(AVBox::AVBox* box);
 protected:
 	virtual void on_start_document();
 	virtual void on_end_document();

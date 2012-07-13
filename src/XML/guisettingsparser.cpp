@@ -33,21 +33,20 @@ GuiSettingsParser::GuiSettingsParser() {
 
 GuiSettingsParser::~GuiSettingsParser() {}
 
-bool GuiSettingsParser::parse(AVBox::GuiSettings& gui){
+bool GuiSettingsParser::parse(AVBox::GuiSettings* gui){
 	//todo try catch
 	std::string file = Settings::getSettings()->getValue(Settings::GUISETTINGS);
 
-	guiSettings = new AVBox::GuiSettings();
+	guiSettings = gui;
 
 	try{
 		this->parse_file(file);
 	}catch(std::exception& ex){
 		std::cout<<"Parsovanie sa dojebalo: "<<ex.what()<<std::endl; //todo remove
-		delete guiSettings;
+		guiSettings = NULL;
 		return false;
 	}
-	gui = *guiSettings;
-	delete guiSettings;
+	guiSettings = NULL;
 	return true;
 }
 void GuiSettingsParser::on_start_document(){

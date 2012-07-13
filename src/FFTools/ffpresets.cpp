@@ -47,12 +47,7 @@ FFpresets::FFpresets() {
 		std::cerr<<ex.what()<<std::endl;
 	}
 }
-
-FFpresets::~FFpresets() {
-	// TODO Auto-generated destructor stub
-}
-
-void FFpresets::copyPartOfListToList(
+void FFpresets::appendMapToList(
 		const std::map<std::string, std::list<FFfile> >::const_iterator& it,
 		std::list<std::pair<std::string, std::string> >& ret) const {
 	std::list<FFfile>::const_iterator iter;
@@ -68,11 +63,11 @@ std::list<std::pair<std::string, std::string> > FFpresets::getShortnamesWithPath
 	std::map<std::string, std::list<FFfile> >::const_iterator it;
 	it = prefixToFiles.find(prefix);
 	if(it != prefixToFiles.end()){
-		copyPartOfListToList(it, ret);
+		appendMapToList(it, ret);
 	}
 	it = userDefined.find(prefix);
 	if(it != userDefined.end()){
-		copyPartOfListToList(it, ret);
+		appendMapToList(it, ret);
 	}
 	return ret;
 }

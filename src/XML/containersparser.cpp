@@ -19,20 +19,19 @@ ContainersParser::ContainersParser() {
 
 ContainersParser::~ContainersParser() {}
 
-bool ContainersParser::parse(AVBox::AVBox& box){
+bool ContainersParser::parse(AVBox::AVBox* box){
 	//todo try catch
 	std::string file = Settings::getSettings()->getValue(Settings::CONTAINERS);
-	avBox = new AVBox::AVBox();
+	avBox = box;
 	try{
 		this->parse_file(file);
 	}catch(std::exception& ex){
-		std::cout<<"Parsovanie sa dojebalo: "<<ex.what()<<std::endl;
-		delete avBox;
+		std::cout<<"Parsing Error: "<<ex.what()<<std::endl;
+		avBox = NULL;
 		return false;
 	}
 
-	box = *avBox;
-	delete avBox;
+	avBox = NULL;
 	return true;
 }
 

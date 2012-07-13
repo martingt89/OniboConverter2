@@ -34,7 +34,7 @@ private:
 	void operator=(const Settings&);
 public:
 	enum Set{
-		FFPATH, CONTAINERS, ENCODERS, GUISETTINGS, FFPRESENTSFOLDER
+		FFPATH, CONTAINERS, ENCODERS, GUISETTINGS, FFPRESENTSFOLDER, OUTPUTFOLDER
 	};
 	std::string toString(Set s){
 		switch(s){
@@ -43,6 +43,7 @@ public:
 			case ENCODERS: return "ENCODERS";
 			case GUISETTINGS: return "GUISETTINGS";
 			case FFPRESENTSFOLDER: return "FFPRESENTSFOLDER";
+			case OUTPUTFOLDER: return "OUTPUTFOLDER";
 			default: return "INVALID ENUM";
 		}
 	};

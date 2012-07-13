@@ -24,14 +24,13 @@ private:
 	};
 public:
 	FFpresets();
-	virtual ~FFpresets();
 	std::list<std::pair<std::string, std::string> > getShortnamesWithPaths(const std::string &prefix) const;
 	void addUserDefinedFile(std::string prefix, const Glib::RefPtr< Gio::File >& file);
 private:
 	std::map<std::string, std::list<FFfile> > prefixToFiles;
 	std::map<std::string, std::list<FFfile> > userDefined;
 
-	void copyPartOfListToList(
+	void appendMapToList(
 			const std::map<std::string, std::list<FFfile> >::const_iterator& it,
 			std::list<std::pair<std::string, std::string> >& ret) const;
 };

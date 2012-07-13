@@ -30,6 +30,8 @@ OniboConverter2_SOURCES=../src/AVBox/audioformat.cpp \
 ../src/Graphic/videosettings.cpp\
 ../src/Graphic/encodersdialog.cpp\
 ../src/Graphic/resolutiondialog.cpp\
+../src/Graphic/settingspart.cpp\
+../src/datakeeper.cpp\
 ../src/main.cpp
 
 AM_CXXFLAGS = -lpthread -std=c++0x -g -O0 $(DEPS_CFLAGS) 

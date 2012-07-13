@@ -9,15 +9,6 @@
 #include <iostream> //todo remove
 namespace AVBox {
 
-SupportedEncoders::SupportedEncoders() {
-	// TODO Auto-generated constructor stub
-
-}
-
-SupportedEncoders::~SupportedEncoders() {
-	// TODO Auto-generated destructor stub
-}
-
 bool SupportedEncoders::isSuported(const AVBox::Encoder& name, std::string& description) const {
 	std::map<std::string, EncoderFFData>::const_iterator it;
 		if((it = suportedEndcoders.find(name.getEncoder())) != suportedEndcoders.end()){

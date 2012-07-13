@@ -19,7 +19,7 @@ class EncodersParser : public xmlpp::SaxParser{
 public:
 	EncodersParser();
 	virtual ~EncodersParser();
-	bool parse(AVBox::FormatToEncoders& box);
+	bool parse(AVBox::FormatToEncoders* box);
 protected:
 	virtual void on_start_document();
 	virtual void on_end_document();

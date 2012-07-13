@@ -8,39 +8,26 @@
 #include "onibowindow.h"
 #include "gtkmm/main.h"
 
-//#include "../FFTools/imagecreator.h"
-#include "../FFTools/ffdatamining.h"
-
-#include "../XML/containersparser.h"
-#include "../XML/encodersparser.h"
-#include "../XML/guisettingsparser.h"
-
-#include <iostream>	//todo remove
-
 namespace GUI {
 
 OniboWindow::OniboWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refGlade) :
 		Gtk::Window(cobject), refGlade(refGlade){
 
-	refGlade->get_widget_derived("container_combo_box", container);
+	refGlade->get_widget_derived("a_v_settings", settings);
 
-	XML::ContainersParser parser;
-	parser.parse(audioVideoData);
+	startConvert = 0;
+	addFile = 0;
+	removeFile = 0;
+	clear = 0;
 
-	XML::GuiSettingsParser guiParser;
-	guiParser.parse(guiData);
-
-	XML::EncodersParser encodersParser;
-	encodersParser.parse(convert);
-
-	FFTools::FFDataMining dataMining;
-	dataMining.scan(&suportedEncoders);
-
-	container->setNeedsData(&suportedEncoders, &audioVideoData, &guiData, &convert);
+	memoryManager.addObject(settings);
+	memoryManager.addObject(startConvert);
+	memoryManager.addObject(addFile);
+	memoryManager.addObject(removeFile);
+	memoryManager.addObject(clear);
 }
-
-OniboWindow::~OniboWindow() {
-	// TODO Auto-generated destructor stub
+void OniboWindow::setData(DataKeeper& keeper){
+	settings->setData(keeper);
 }
 
 } /* namespace GUI */

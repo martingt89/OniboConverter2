@@ -20,7 +20,7 @@ class GuiSettingsParser : public xmlpp::SaxParser{
 public:
 	GuiSettingsParser();
 	virtual ~GuiSettingsParser();
-	bool parse(AVBox::GuiSettings& gui);
+	bool parse(AVBox::GuiSettings* gui);
 protected:
 	enum ParserState{
 		DOCUMENT, AUDIO, VIDEO, RESOLUTIONS, RESOLUTION, BITRATES,
