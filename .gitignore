@@ -26,9 +26,9 @@ compile/OniboConverter2
 .project
 .settings
 
-#xml
-./container_settings.xml
-./encoders_table.xml
-./gui_settings.xml
-
 /old
+
+#po
+po/POTFILES
+po/sk.gmo
+po/stamp-it

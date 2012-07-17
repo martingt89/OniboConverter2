@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 00:48+0200\n"
+"POT-Creation-Date: 2012-07-18 00:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,146 +17,146 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../graphic/model1.glade.h:1
+#: ../data/model1.glade.h:1
 msgid "Aspect ratio"
 msgstr ""
 
-#: ../graphic/model1.glade.h:2
+#: ../data/model1.glade.h:2
 msgid "Aspect ratio: "
 msgstr ""
 
-#: ../graphic/model1.glade.h:3
+#: ../data/model1.glade.h:3
 msgid "Audio mode"
 msgstr ""
 
-#: ../graphic/model1.glade.h:4
+#: ../data/model1.glade.h:4
 msgid "Audio settings"
 msgstr ""
 
-#: ../graphic/model1.glade.h:5
+#: ../data/model1.glade.h:5
 msgid "Available Encoders"
 msgstr ""
 
-#: ../graphic/model1.glade.h:6
+#: ../data/model1.glade.h:6
 msgid "Bitrate [kb/s]"
 msgstr ""
 
-#: ../graphic/model1.glade.h:7
+#: ../data/model1.glade.h:7
 msgid "Configure resolution"
 msgstr ""
 
-#: ../graphic/model1.glade.h:8
+#: ../data/model1.glade.h:8
 msgid "Configure video resolution"
 msgstr ""
 
-#: ../graphic/model1.glade.h:9
+#: ../data/model1.glade.h:9
 msgid "Container"
 msgstr ""
 
-#: ../graphic/model1.glade.h:10
+#: ../data/model1.glade.h:10
 msgid "Custom settings"
 msgstr ""
 
-#: ../graphic/model1.glade.h:11
+#: ../data/model1.glade.h:11
 msgid "Encoder"
 msgstr ""
 
-#: ../graphic/model1.glade.h:12
+#: ../data/model1.glade.h:12
 msgid "Format"
 msgstr ""
 
-#: ../graphic/model1.glade.h:13
+#: ../data/model1.glade.h:13
 msgid "Framerate [f/s]"
 msgstr ""
 
-#: ../graphic/model1.glade.h:14
+#: ../data/model1.glade.h:14
 msgid "General settings"
 msgstr ""
 
-#: ../graphic/model1.glade.h:15
+#: ../data/model1.glade.h:15
 msgid "Manually"
 msgstr ""
 
-#: ../graphic/model1.glade.h:16
+#: ../data/model1.glade.h:16
 msgid "On"
 msgstr ""
 
-#: ../graphic/model1.glade.h:17
+#: ../data/model1.glade.h:17
 msgid "Original resolution"
 msgstr ""
 
-#: ../graphic/model1.glade.h:18
+#: ../data/model1.glade.h:18
 msgid "Output folder"
 msgstr ""
 
-#: ../graphic/model1.glade.h:19
+#: ../data/model1.glade.h:19
 msgid "Predefined resolutions"
 msgstr ""
 
-#: ../graphic/model1.glade.h:20
+#: ../data/model1.glade.h:20
 msgid "Profile"
 msgstr ""
 
-#: ../graphic/model1.glade.h:21
+#: ../data/model1.glade.h:21
 msgid "Resolution"
 msgstr ""
 
-#: ../graphic/model1.glade.h:22
+#: ../data/model1.glade.h:22
 msgid "Samplerate [Hz]"
 msgstr ""
 
-#: ../graphic/model1.glade.h:23
+#: ../data/model1.glade.h:23
 msgid "Selected resolution: "
 msgstr ""
 
-#: ../graphic/model1.glade.h:24
+#: ../data/model1.glade.h:24
 msgid "Set video resolution"
 msgstr ""
 
-#: ../graphic/model1.glade.h:25
+#: ../data/model1.glade.h:25
 msgid "Video mode"
 msgstr ""
 
-#: ../graphic/model1.glade.h:26
+#: ../data/model1.glade.h:26
 msgid "Video settings"
 msgstr ""
 
-#: ../graphic/model1.glade.h:27
+#: ../data/model1.glade.h:27
 msgid "_Edit"
 msgstr ""
 
-#: ../graphic/model1.glade.h:28
+#: ../data/model1.glade.h:28
 msgid "_File"
 msgstr ""
 
-#: ../graphic/model1.glade.h:29
+#: ../data/model1.glade.h:29
 msgid "_Help"
 msgstr ""
 
-#: ../graphic/model1.glade.h:30
+#: ../data/model1.glade.h:30
 msgid "_View"
 msgstr ""
 
-#: ../graphic/model1.glade.h:31
+#: ../data/model1.glade.h:31
 msgid "add"
 msgstr ""
 
-#: ../graphic/model1.glade.h:32
+#: ../data/model1.glade.h:32
 msgid "clear"
 msgstr ""
 
-#: ../graphic/model1.glade.h:33
+#: ../data/model1.glade.h:33
 msgid "ffpresets"
 msgstr ""
 
-#: ../graphic/model1.glade.h:34
+#: ../data/model1.glade.h:34
 msgid "or"
 msgstr ""
 
-#: ../graphic/model1.glade.h:35
+#: ../data/model1.glade.h:35
 msgid "remove"
 msgstr ""
 
-#: ../graphic/model1.glade.h:36
+#: ../data/model1.glade.h:36
 msgid "x"
 msgstr ""
