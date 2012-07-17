@@ -17,13 +17,13 @@ top_builddir=`pwd`
 AC_SUBST([top_builddir])
 
 # I18n
-#GETTEXT_PACKAGE=manageros
-#AC_SUBST(GETTEXT_PACKAGE)
-#AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"],
-#		   [The domain name to use with gettext.])
+GETTEXT_PACKAGE=OniboConverter2
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"],
+		   [The domain name to use with gettext.])
 		   
-#ALL_LINGUAS="sk"
-#AM_GLIB_GNU_GETTEXT
+ALL_LINGUAS="sk"
+AM_GLIB_GNU_GETTEXT
 
 # List all available languages here
 
@@ -31,5 +31,5 @@ AC_SUBST([top_builddir])
 #PROGRAMNAME_LOCALEDIR=[${datadir}/locale]
 #AC_SUBST(PROGRAMNAME_LOCALEDIR)
 
-AC_CONFIG_FILES([Makefile compile/Makefile])
+AC_CONFIG_FILES([Makefile compile/Makefile po/Makefile.in])
 AC_OUTPUT

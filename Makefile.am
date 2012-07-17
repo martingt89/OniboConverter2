@@ -1,1 +1,1 @@
-SUBDIRS=compile
+SUBDIRS=compile po

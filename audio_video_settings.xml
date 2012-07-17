@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<audio_video_parameters>
+	<encoders>
+		<encoder bitrate="video_standard" ffpreset="libx264">libx264</encoder>
+		<encoder bitrate="video_standard">h264</encoder>
+		<encoder bitrate="video_standard">h264_vdpau</encoder>
+		<encoder bitrate="video_standard">mpeg4</encoder>
+		<encoder bitrate="video_standard">mpeg4_vdpau</encoder>
+		<encoder bitrate="video_standard">msmpeg4</encoder>
+		<encoder bitrate="video_standard">msmpeg4v1</encoder>
+		<encoder bitrate="video_standard">msmpeg4v2</encoder>
+		<encoder bitrate="video_standard">mpeg2video</encoder>
+		<encoder bitrate="video_standard">mpeg1video</encoder>
+		<encoder bitrate="video_standard">mpeg1video_vdpau</encoder>
+		<encoder bitrate="video_standard" ffpreset="libvpx">libvpx</encoder>
+		<encoder bitrate="video_standard">vp8</encoder>
+		<!-- Audio encoders -->
+		<encoder bitrate="audio_standard" samplerate="audio_standard">libvorbis</encoder>
+		<encoder bitrate="audio_standard" samplerate="audio_standard">vorbis</encoder>
+	<encoders>
+	
+	<bitrates>
+		<bitrate name="video_standard">
+			<item>200</item>
+			<item>500</item>
+			<item>700</item>
+			<item>1200</item>
+			<item>1225</item>
+			<item>1500</item>
+			<item>2000</item>
+			<item>2048</item>
+		</bitrate>
+			<bitrate name="audio_standard">
+			<item>64</item>
+			<item>80</item>
+			<item>96</item>
+			<item>112</item>
+			<item>128</item>
+			<item>160</item>
+			<item>192</item>
+			<item>224</item>
+			<item>256</item>
+			<item>320</item>
+			<item>500</item>
+		</bitrate>
+	</bitrates>
+	<samplerates>
+		<samplerate name="audio_standard">
+			<item>8000</item>
+			<item>11025</item>
+			<item>16000</item>
+			<item>22050</item>
+			<item>32000</item>
+			<item>44100</item>
+			<item>48000</item>
+		</samplerate>
+	</samplerates>
+	
+	<formats>
+		<format id="H264" type="video">
+			<encoder>libx264</encoder>
+			<encoder>h264</encoder>
+			<encoder>h264_vdpau</encoder>
+		</format>
+		
+		<format id="MPEG4" type="video">
+			<encoder>mpeg4</encoder>
+			<encoder>mpeg4_vdpau</encoder>
+			<encoder>msmpeg4</encoder>
+			<encoder>msmpeg4v1</encoder>
+			<encoder>msmpeg4v2</encoder>
+		</format>
+		
+		<format id="MPEG2" type="video">
+			<encoder>mpeg2video</encoder>
+		</format>
+		
+		<format id="MPEG1" type="video">
+			<encoder>mpeg1video</encoder>
+			<encoder>mpeg1video_vdpau</encoder>
+		</format>
+		
+		<format id="VP8" type="video">
+			<encoder ffprefix="libvpx">libvpx</encoder>
+			<encoder>vp8</encoder>
+		</format>
+		
+		<format id="VORBIS" type="audio">
+			<encoder>libvorbis</encoder>
+			<encoder>vorbis</encoder>
+		</format>
+	</formats>
+	
+	<containers>
+		<container name="3gp">
+			<format>MPEG4</format>
+			<format>MPEG2</format>
+			<format>H264</format>
+			<format>MP3</format>
+			<format>AAC</format>
+		</container>
+		<container name="webm">
+			<format>VP8</format>
+			<format>VORBIS</format>
+		</container>
+		<container name="avi">
+			<format>MPEG4</format>
+			<format>MPEG2</format>
+			<format>H264</format>
+			<format>XVID</format>
+			<format>WMV</format>
+			<format>MP3</format>
+			<format>AC3</format>
+			<format>WMA</format>
+			<format>MP2</format>
+		</container>
+		<container name="flv">
+			<format>H264</format>
+			<format>AAC</format>
+			<format>AAC</format>
+			<format>MP3</format>
+		</container>
+		<container name="mkv">
+			<format>THEORA</format>
+			<format>H264</format>
+			<format>MPEG4</format>
+			<format>MPEG2</format>
+			<format>XVID</format>
+			<format>VORBIS</format>
+			<format>MP3</format>
+			<format>AAC</format>
+			<format>AC3</format>
+			<format>MP2</format>
+		</container>
+		<container name="mp3">
+			<format>MP3</format>
+		</container>
+		<container name="mp4">
+			<format>MPEG4</format>
+			<format>H264</format>
+			<format>AAC</format>
+		</container>
+		<container name="mpeg">
+			<format>MPEG1</format>
+			<format>MPEG2</format>
+			<format>MP3</format>
+			<format>MP2</format>
+		</container>
+		<container name="ogg">
+			<format>VORBIS</format>
+			<format>FLAC</format>
+		</container>
+		<container name="wma">
+			<format>WMA</format>
+		</container>
+		<container name="wmv">
+			<format>WMV</format>
+			<format>WMA</format>
+			<format>MP3</format>
+		</container>
+	</containers>
+	
+	<framerates>
+		<framerate>10</framerate>
+		<framerate>15</framerate>
+		<framerate>20</framerate>
+		<framerate>23.976</framerate>
+		<framerate>24</framerate>
+		<framerate>25</framerate>
+		<framerate>29.97</framerate>
+		<framerate>30</framerate>
+	</framerates>
+	
+	<video_resolution>
+		<resolutions ratio="4:3">
+			<resolution name="QVGA">320x240</resolution>
+			<resolution name="VGA">640x480</resolution>
+			<resolution name="PAL">768x576</resolution>
+			<resolution name="SVGA">800x600</resolution>
+			<resolution name="XGA">1024x768</resolution>
+			<resolution name="">1280x960</resolution>
+			<resolution name="SXGA+">1400x1050</resolution>
+			<resolution name="UXGA">1600x1200</resolution>
+			<resolution name="QXGA">2048x1536</resolution>
+		</resolutions>
+		<resolutions ratio="5:4">
+			<resolution name="SXGA">1280x1024</resolution>
+			<resolution name="QSXGA">2560x2048</resolution>
+		</resolutions>
+		<resolutions ratio="16:10">
+			<resolution name="CGA">320x200</resolution>
+			<resolution name="WXGA">1280x800</resolution>
+			<resolution name="">1440x900</resolution>
+			<resolution name="WSXGA+">1680x1050</resolution>
+			<resolution name="WUXGA">1920x1200</resolution>
+			<resolution name="WQXGA">2560x1600</resolution>
+		</resolutions>
+		<resolutions ratio="17:9">
+			<resolution name="2K">2048x1080</resolution>
+		</resolutions>
+		<resolutions ratio="5:3">
+			<resolution name="WVGA">800x480</resolution>
+			<resolution name="WXGA">1280x768</resolution>
+		</resolutions>
+		<resolutions ratio="16:9">
+			<resolution name="WVGA">854x480</resolution>
+			<resolution name="HD 720">1280x720</resolution>
+			<resolution name="">1366x768</resolution>
+			<resolution name="HD 1080">1920x1080</resolution>
+		</resolutions>
+		<resolutions ratio="3:2">
+			<resolution name="">1152x768</resolution>
+			<resolution name="">1280x854</resolution>
+			<resolution name="">1440x960</resolution>
+		</resolutions>
+		<resolutions ratio="128:75">
+			<resolution name="WSVGA">1024x600</resolution>
+		</resolutions>
+		<resolutions ratio="11:9">
+			<resolution name="CIF">352x288</resolution>
+		</resolutions>
+	</video_resolution>
+</audio_video_parameters>
