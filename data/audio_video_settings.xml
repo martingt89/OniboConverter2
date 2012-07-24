@@ -18,7 +18,7 @@
 		<!-- Audio encoders -->
 		<encoder bitrate="audio_standard" samplerate="audio_standard">libvorbis</encoder>
 		<encoder bitrate="audio_standard" samplerate="audio_standard">vorbis</encoder>
-	<encoders>
+	</encoders>
 	
 	<bitrates>
 		<bitrate name="video_standard">
@@ -172,7 +172,7 @@
 		<framerate>30</framerate>
 	</framerates>
 	
-	<video_resolution>
+	<video_resolutions>
 		<resolutions ratio="4:3">
 			<resolution name="QVGA">320x240</resolution>
 			<resolution name="VGA">640x480</resolution>
@@ -220,5 +220,5 @@
 		<resolutions ratio="11:9">
 			<resolution name="CIF">352x288</resolution>
 		</resolutions>
-	</video_resolution>
+	</video_resolutions>
 </audio_video_parameters>
