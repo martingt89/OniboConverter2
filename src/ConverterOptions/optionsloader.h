@@ -8,6 +8,11 @@
 #ifndef OPTIONSLOADER_H_
 #define OPTIONSLOADER_H_
 
+#include "container.h"
+#include "framerate.h"
+#include "samplerate.h"
+#include "resolution.h"
+
 namespace ConverterOptions{
 
 class OptionsLoader{

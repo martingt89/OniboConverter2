@@ -18,13 +18,16 @@ class Encoder {
 public:
 	Encoder();
 	Encoder(std::string name, std::string description, Bitrates bitrate);
-	std::string getEncoderName() const;
-	std::string getEncoderDescription() const;
+	void setFFreset(const std::string& ffpreset);
+	std::string getName() const;
+	std::string getDescription() const;
 	Bitrates getBitrates() const;
 private:
 	std::string name;
 	std::string description;
 	Bitrates bitrate;
+	bool hasFFpreset;
+	std::string ffpreset;
 };
 
 class Encoders{

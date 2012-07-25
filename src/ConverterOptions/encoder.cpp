@@ -13,17 +13,24 @@ Encoder::Encoder(){
 	this->name = "";
 	this->description = "";
 	this->bitrate = Bitrates();
+	this->hasFFpreset = false;
+	this->ffpreset = "";
 }
 Encoder::Encoder(std::string name, std::string description, Bitrates bitrate) {
 	this->name = name;
 	this->description = description;
 	this->bitrate = bitrate;
-
+	this->hasFFpreset = false;
+	this->ffpreset = "";
 }
-std::string Encoder::getEncoderName() const{
+void Encoder::setFFreset(const std::string& ffpreset){
+	this->hasFFpreset = true;
+	this->ffpreset = ffpreset;
+}
+std::string Encoder::getName() const{
 	return name;
 }
-std::string Encoder::getEncoderDescription() const{
+std::string Encoder::getDescription() const{
 	return description;
 }
 Bitrates Encoder::getBitrates() const{
@@ -31,7 +38,7 @@ Bitrates Encoder::getBitrates() const{
 }
 
 void Encoders::addEncoder(const Encoder& encoder){
-	encoders[encoder.getEncoderName()] = encoder;
+	encoders[encoder.getName()] = encoder;
 }
 std::list<Encoder> Encoders::getEncoders() const{
 	std::list<Encoder> encodersList;

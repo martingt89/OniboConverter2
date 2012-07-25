@@ -53,6 +53,9 @@ std::list<Format> Formats::getAudioFormatsList() const{
 	}
 	return audioFormatsList;
 }
+bool Formats::isAudioOnly() const{
+	return videoFormats.size() == 0;
+}
 Format Formats::getFormatByName(std::string formatName) const{	//todo format not found
 	auto videoIterator = videoFormats.find(formatName);
 	if(videoIterator != videoFormats.end()){

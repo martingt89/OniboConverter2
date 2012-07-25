@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <audio_video_parameters>
+	<bitrates>
+		<bitrate name="video_standard">
+			<item>200</item>
+			<item>500</item>
+			<item>700</item>
+			<item>1200</item>
+			<item>1225</item>
+			<item>1500</item>
+			<item>2000</item>
+			<item>2048</item>
+		</bitrate>
+		
+		<bitrate name="audio_standard">
+			<item>64</item>
+			<item>80</item>
+			<item>96</item>
+			<item>112</item>
+			<item>128</item>
+			<item>160</item>
+			<item>192</item>
+			<item>224</item>
+			<item>256</item>
+			<item>320</item>
+			<item>500</item>
+		</bitrate>
+	</bitrates>
+	
 	<encoders>
 		<encoder bitrate="video_standard" ffpreset="libx264">libx264</encoder>
 		<encoder bitrate="video_standard">h264</encoder>
@@ -16,46 +43,9 @@
 		<encoder bitrate="video_standard" ffpreset="libvpx">libvpx</encoder>
 		<encoder bitrate="video_standard">vp8</encoder>
 		<!-- Audio encoders -->
-		<encoder bitrate="audio_standard" samplerate="audio_standard">libvorbis</encoder>
-		<encoder bitrate="audio_standard" samplerate="audio_standard">vorbis</encoder>
+		<encoder bitrate="audio_standard">libvorbis</encoder>
+		<encoder bitrate="audio_standard">vorbis</encoder>
 	</encoders>
-	
-	<bitrates>
-		<bitrate name="video_standard">
-			<item>200</item>
-			<item>500</item>
-			<item>700</item>
-			<item>1200</item>
-			<item>1225</item>
-			<item>1500</item>
-			<item>2000</item>
-			<item>2048</item>
-		</bitrate>
-			<bitrate name="audio_standard">
-			<item>64</item>
-			<item>80</item>
-			<item>96</item>
-			<item>112</item>
-			<item>128</item>
-			<item>160</item>
-			<item>192</item>
-			<item>224</item>
-			<item>256</item>
-			<item>320</item>
-			<item>500</item>
-		</bitrate>
-	</bitrates>
-	<samplerates>
-		<samplerate name="audio_standard">
-			<item>8000</item>
-			<item>11025</item>
-			<item>16000</item>
-			<item>22050</item>
-			<item>32000</item>
-			<item>44100</item>
-			<item>48000</item>
-		</samplerate>
-	</samplerates>
 	
 	<formats>
 		<format id="H264" type="video">
@@ -161,17 +151,6 @@
 		</container>
 	</containers>
 	
-	<framerates>
-		<framerate>10</framerate>
-		<framerate>15</framerate>
-		<framerate>20</framerate>
-		<framerate>23.976</framerate>
-		<framerate>24</framerate>
-		<framerate>25</framerate>
-		<framerate>29.97</framerate>
-		<framerate>30</framerate>
-	</framerates>
-	
 	<video_resolutions>
 		<resolutions ratio="4:3">
 			<resolution name="QVGA">320x240</resolution>
@@ -221,4 +200,25 @@
 			<resolution name="CIF">352x288</resolution>
 		</resolutions>
 	</video_resolutions>
+	
+	<samplerates>
+		<item>8000</item>
+		<item>11025</item>
+		<item>16000</item>
+		<item>22050</item>
+		<item>32000</item>
+		<item>44100</item>
+		<item>48000</item>
+	</samplerates>
+	
+	<framerates>
+		<item>10</item>
+		<item>15</item>
+		<item>20</item>
+		<item>23.976</item>
+		<item>24</item>
+		<item>25</item>
+		<item>29.97</item>
+		<item>30</item>
+	</framerates>
 </audio_video_parameters>

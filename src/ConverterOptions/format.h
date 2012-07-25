@@ -35,6 +35,7 @@ public:
 	std::list<Format> getVideoFormatsList() const;
 	std::list<Format> getAudioFormatsList() const;
 	Format getFormatByName(std::string formatName) const;
+	bool isAudioOnly() const;
 private:
 	std::map<std::string, Format> videoFormats;
 	std::map<std::string, Format> audioFormats;
