@@ -5,11 +5,13 @@
  *      Author: martint
  */
 
-#ifndef OPTIONSXMLPARSER_H_
-#define OPTIONSXMLPARSER_H_
+#ifndef OPTIONSLOADERXML_H_
+#define OPTIONSLOADERXML_H_
 
 #include "optionsloader.h"
 #include <set>
+
+class Path;
 
 namespace xmlpp{
 	class DomParser;
@@ -17,12 +19,15 @@ namespace xmlpp{
 	class Element;
 }
 namespace ConverterOptions {
+	class FFpreset;
 
-class OptionsXmlParser: public OptionsLoader {
+
+class OptionsLoaderXml: public OptionsLoader {
 public:
-	OptionsXmlParser(const std::string& filePath,
-			const std::map<std::string, std::string>& suportedEncodersWithDescription);
-	virtual ~OptionsXmlParser();
+	OptionsLoaderXml(const Path& xmlFilePath,
+			const std::map<std::string, std::string>& suportedEncodersWithDescription,
+			FFpreset* const ffpreset);
+	virtual ~OptionsLoaderXml();
 	virtual Containers loadContainers();
 	virtual Framerates loadFramerates();
 	virtual Samplerates loadSamplerates();
@@ -44,7 +49,8 @@ private:
 
 	xmlpp::DomParser* domParser;
 	std::map<std::string, std::string> encodersWithDescr;
+	FFpreset* const ffpreset;
 };
 
 } /* namespace ConverterOptions */
-#endif /* OPTIONSXMLPARSER_H_ */
+#endif /* OPTIONSLOADERXML_H_ */

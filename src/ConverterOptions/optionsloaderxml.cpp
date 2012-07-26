@@ -5,32 +5,34 @@
  *      Author: martint
  */
 
-#include "optionsxmlparser.h"
+#include "optionsloaderxml.h"
 #include <libxml++/libxml++.h>
 #include "../helper.h"
-
+#include "ffpreset.h"
+#include "../path.h"
 namespace ConverterOptions {
 
-OptionsXmlParser::OptionsXmlParser(
-		const std::string& filePath,
-		const std::map<std::string, std::string>& encodersWithDescr) {
+OptionsLoaderXml::OptionsLoaderXml(
+		const Path& xmlFilePath,
+		const std::map<std::string, std::string>& encodersWithDescr,
+		FFpreset* const ffpreset): ffpreset(ffpreset) {
 	domParser = NULL;
 	this->encodersWithDescr = encodersWithDescr;
 	try{
-		domParser = new xmlpp::DomParser(filePath);
+		domParser = new xmlpp::DomParser(xmlFilePath.getPath());
 	}
 	catch(const std::exception& exception){
 		//todo return status
 	}
 }
 
-OptionsXmlParser::~OptionsXmlParser() {
+OptionsLoaderXml::~OptionsLoaderXml() {
 	if(domParser != NULL){
 		delete domParser;
 	}
 }
 
-Containers OptionsXmlParser::loadContainers(){
+Containers OptionsLoaderXml::loadContainers(){
 	xmlpp::Element *root = domParser->get_document()->get_root_node();
 
 	std::map<std::string, Bitrates> nameToBitrates;
@@ -47,7 +49,7 @@ Containers OptionsXmlParser::loadContainers(){
 
 	return containers;
 }
-Framerates OptionsXmlParser::loadFramerates(){	//todo exception -> framerates not available...
+Framerates OptionsLoaderXml::loadFramerates(){	//todo exception -> framerates not available...
 	xmlpp::Element* root = domParser->get_document()->get_root_node();
 	xmlpp::NodeSet nodeSet = root->find("/audio_video_parameters/framerates");
 	Framerates framerates;
@@ -57,7 +59,7 @@ Framerates OptionsXmlParser::loadFramerates(){	//todo exception -> framerates no
 	}
 	return framerates;
 }
-Samplerates OptionsXmlParser::loadSamplerates(){
+Samplerates OptionsLoaderXml::loadSamplerates(){
 	xmlpp::Element *root = domParser->get_document()->get_root_node();
 	xmlpp::NodeSet nodeSet = root->find("/audio_video_parameters/samplerates");
 	Samplerates samplerates;
@@ -67,7 +69,7 @@ Samplerates OptionsXmlParser::loadSamplerates(){
 	}
 	return samplerates;
 }
-Resolutions OptionsXmlParser::loadResolutions(){
+Resolutions OptionsLoaderXml::loadResolutions(){
 	xmlpp::Element *root = domParser->get_document()->get_root_node();
 	xmlpp::NodeSet nodeSet = root->find("/audio_video_parameters/video_resolutions/resolutions");
 	Resolutions resolutions;
@@ -78,7 +80,7 @@ Resolutions OptionsXmlParser::loadResolutions(){
 	return resolutions;
 }
 
-void OptionsXmlParser::extractSampleratesFromNode(xmlpp::Node *xmlNode, Samplerates& samplerates){
+void OptionsLoaderXml::extractSampleratesFromNode(xmlpp::Node *xmlNode, Samplerates& samplerates){
 	xmlpp::NodeSet nodeSet = xmlNode->find("./item/child::text()");
 	for(auto iter = nodeSet.begin(); iter != nodeSet.end(); ++iter){
 		xmlpp::Node *xmlNode = *iter;
@@ -89,7 +91,7 @@ void OptionsXmlParser::extractSampleratesFromNode(xmlpp::Node *xmlNode, Samplera
 		}
 	}
 }
-void OptionsXmlParser::extractFrameratesFromNode(xmlpp::Node *xmlNode, Framerates& framerates){
+void OptionsLoaderXml::extractFrameratesFromNode(xmlpp::Node *xmlNode, Framerates& framerates){
 	xmlpp::NodeSet nodeSet = xmlNode->find("./item/child::text()");
 	for(auto iter = nodeSet.begin(); iter != nodeSet.end(); ++iter){
 		xmlpp::Node *xmlNode = *iter;
@@ -100,7 +102,7 @@ void OptionsXmlParser::extractFrameratesFromNode(xmlpp::Node *xmlNode, Framerate
 		}
 	}
 }
-void OptionsXmlParser::extractResolutionsFromNode(xmlpp::Node *xmlNode, Resolutions& resolutions){
+void OptionsLoaderXml::extractResolutionsFromNode(xmlpp::Node *xmlNode, Resolutions& resolutions){
 	std::string aspectRatio = getAttributValueFromNode(xmlNode, "ratio");
 
 	xmlpp::NodeSet resolutionSet = xmlNode->find("./resolution");
@@ -121,7 +123,7 @@ void OptionsXmlParser::extractResolutionsFromNode(xmlpp::Node *xmlNode, Resoluti
 	}
 }
 
-std::string OptionsXmlParser::getAttributValueFromNode(
+std::string OptionsLoaderXml::getAttributValueFromNode(
 		const xmlpp::Node *xmlNode,
 		const std::string& attributName){
 	const xmlpp::Element* nodeElement = dynamic_cast<const xmlpp::Element*>(xmlNode);
@@ -134,7 +136,7 @@ std::string OptionsXmlParser::getAttributValueFromNode(
 	return std::string();
 }
 
-void OptionsXmlParser::convertTextResolutionToInts(const std::string& textResolution, int& x, int& y){
+void OptionsLoaderXml::convertTextResolutionToInts(const std::string& textResolution, int& x, int& y){
 	std::string::size_type position = textResolution.find("x");
 	x = 0;
 	y = 0;
@@ -145,7 +147,7 @@ void OptionsXmlParser::convertTextResolutionToInts(const std::string& textResolu
 		y = toN(stringY, int());
 	}
 }
-void OptionsXmlParser::extractBitrates(
+void OptionsLoaderXml::extractBitrates(
 		xmlpp::Element* root,
 		std::map<std::string, Bitrates>& nameToBitrates) {
 	xmlpp::NodeSet bitrateSet = root->find("/audio_video_parameters/bitrates/bitrate");
@@ -163,14 +165,14 @@ void OptionsXmlParser::extractBitrates(
 		nameToBitrates[bitratesName] = bitrates;
 	}
 }
-void OptionsXmlParser::extractEncoders(
+void OptionsLoaderXml::extractEncoders(
 		xmlpp::Element* root, std::map<std::string, Bitrates>& nameToBitrates,
 		std::map<std::string, Encoder>& nameToEncoder) {
 	xmlpp::NodeSet encoderSet = root->find("/audio_video_parameters/encoders/encoder");
 	for (auto encoderIter = encoderSet.begin(); encoderIter != encoderSet.end(); ++encoderIter) {
 		xmlpp::Node *encoderNode = *encoderIter;
 		std::string bitrateName = getAttributValueFromNode(encoderNode, "bitrate");
-		std::string ffpreset = getAttributValueFromNode(encoderNode, "ffpreset");
+		std::string ffpresetPrefix = getAttributValueFromNode(encoderNode, "ffpreset");
 		const xmlpp::Element* nodeElement = dynamic_cast<const xmlpp::Element*>(encoderNode);
 		if (nodeElement == NULL) {
 			continue;
@@ -184,14 +186,14 @@ void OptionsXmlParser::extractEncoders(
 		if (encodersIter != encodersWithDescr.end()) {
 			Bitrates bitrates = nameToBitrates[bitrateName];
 			Encoder encoder(encoderName, encodersIter->second, bitrates);
-			if(ffpreset.size() > 0){
-				encoder.setFFreset(ffpreset);
+			if(ffpresetPrefix.size() > 0){
+				encoder.setFFpreset(ffpresetPrefix, ffpreset);
 			}
 			nameToEncoder[encoderName] = encoder;
 		}
 	}
 }
-void OptionsXmlParser::extractFormats(
+void OptionsLoaderXml::extractFormats(
 		xmlpp::Element* root,
 		const std::map<std::string, Encoder>& nameToEncoder,
 		std::map<std::string, Format>& nameToFormat) {
@@ -224,7 +226,7 @@ void OptionsXmlParser::extractFormats(
 		nameToFormat[formatName] = format;
 	}
 }
-void OptionsXmlParser::extractContainers(xmlpp::Element* root, std::map<std::string, Format> nameToFormat,
+void OptionsLoaderXml::extractContainers(xmlpp::Element* root, std::map<std::string, Format> nameToFormat,
 		Containers& containers) {
 	xmlpp::NodeSet containerSet = root->find("/audio_video_parameters/containers/container");
 	for (auto containerIter = containerSet.begin(); containerIter != containerSet.end(); ++containerIter) {

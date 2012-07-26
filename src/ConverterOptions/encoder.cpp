@@ -6,6 +6,7 @@
  */
 
 #include "encoder.h"
+#include "ffpreset.h"
 
 namespace ConverterOptions {
 
@@ -13,19 +14,22 @@ Encoder::Encoder(){
 	this->name = "";
 	this->description = "";
 	this->bitrate = Bitrates();
-	this->hasFFpreset = false;
-	this->ffpreset = "";
+	this->ffpreset = NULL;
+	this->ffpresetPrefix = "";
 }
 Encoder::Encoder(std::string name, std::string description, Bitrates bitrate) {
 	this->name = name;
 	this->description = description;
 	this->bitrate = bitrate;
-	this->hasFFpreset = false;
-	this->ffpreset = "";
+	this->ffpreset = NULL;
+	this->ffpresetPrefix = "";
 }
-void Encoder::setFFreset(const std::string& ffpreset){
-	this->hasFFpreset = true;
+void Encoder::setFFpreset(const std::string& ffpresetPrefix, FFpreset* ffpreset){
+	this->ffpresetPrefix = ffpresetPrefix;
 	this->ffpreset = ffpreset;
+}
+bool Encoder:: hasFFpreset(){
+	return (ffpreset != NULL);
 }
 std::string Encoder::getName() const{
 	return name;
@@ -35,6 +39,18 @@ std::string Encoder::getDescription() const{
 }
 Bitrates Encoder::getBitrates() const{
 	return bitrate;
+}
+void Encoder::getFFPresets(std::list<std::pair<std::string, std::string> > &ffpresets){
+	if(ffpreset == NULL){
+		//todo assert
+	}
+	ffpreset->getFFpresets(ffpresetPrefix, ffpresets);
+}
+void Encoder::addUserFileWithFFPreset(const std::string &path){
+	if(ffpreset == NULL){
+		//todo assert
+	}
+	ffpreset->addUserDefineFile(ffpresetPrefix, path);
 }
 
 void Encoders::addEncoder(const Encoder& encoder){

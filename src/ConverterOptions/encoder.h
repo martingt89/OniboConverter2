@@ -13,21 +13,25 @@
 #include "bitrate.h"
 
 namespace ConverterOptions {
+class FFpreset;
 
 class Encoder {
 public:
 	Encoder();
 	Encoder(std::string name, std::string description, Bitrates bitrate);
-	void setFFreset(const std::string& ffpreset);
+	void setFFpreset(const std::string& ffpresetPrefix, FFpreset* ffpreset);
+	bool hasFFpreset();
 	std::string getName() const;
 	std::string getDescription() const;
 	Bitrates getBitrates() const;
+	void getFFPresets(std::list<std::pair<std::string, std::string> > &ffpresets);
+	void addUserFileWithFFPreset(const std::string &path);
 private:
 	std::string name;
 	std::string description;
 	Bitrates bitrate;
-	bool hasFFpreset;
-	std::string ffpreset;
+	std::string ffpresetPrefix;
+	FFpreset* ffpreset;
 };
 
 class Encoders{
