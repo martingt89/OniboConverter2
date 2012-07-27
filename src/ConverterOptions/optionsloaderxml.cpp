@@ -5,19 +5,23 @@
  *      Author: martint
  */
 
+//TODO Refactor - switch to 2 class, a xml parser and a Options structure creator
+
 #include "optionsloaderxml.h"
 #include <libxml++/libxml++.h>
 #include "../helper.h"
 #include "ffpreset.h"
-#include "../path.h"
+#include "../CppExtension/path.h"
+#include "supportedencoders.h"
+
 namespace ConverterOptions {
 
 OptionsLoaderXml::OptionsLoaderXml(
 		const Path& xmlFilePath,
-		const std::map<std::string, std::string>& encodersWithDescr,
+		const SupportedEncoders& supportedEncoders,
 		FFpreset* const ffpreset): ffpreset(ffpreset) {
 	domParser = NULL;
-	this->encodersWithDescr = encodersWithDescr;
+	this->supprotedEncoders = supportedEncoders;
 	try{
 		domParser = new xmlpp::DomParser(xmlFilePath.getPath());
 	}
@@ -49,7 +53,7 @@ Containers OptionsLoaderXml::loadContainers(){
 
 	return containers;
 }
-Framerates OptionsLoaderXml::loadFramerates(){	//todo exception -> framerates not available...
+Framerates OptionsLoaderXml::loadFramerates(){
 	xmlpp::Element* root = domParser->get_document()->get_root_node();
 	xmlpp::NodeSet nodeSet = root->find("/audio_video_parameters/framerates");
 	Framerates framerates;
@@ -182,10 +186,10 @@ void OptionsLoaderXml::extractEncoders(
 			continue;
 		}
 		std::string encoderName = textNode->get_content();
-		auto encodersIter = encodersWithDescr.find(encoderName);
-		if (encodersIter != encodersWithDescr.end()) {
+		if(supprotedEncoders.isSupported(encoderName)){
+			std::string encoderDescription = supprotedEncoders.getEncoderDescription(encoderName);
 			Bitrates bitrates = nameToBitrates[bitrateName];
-			Encoder encoder(encoderName, encodersIter->second, bitrates);
+			Encoder encoder(encoderName, encoderDescription, bitrates);
 			if(ffpresetPrefix.size() > 0){
 				encoder.setFFpreset(ffpresetPrefix, ffpreset);
 			}

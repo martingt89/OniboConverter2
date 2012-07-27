@@ -8,7 +8,7 @@
 #include "path.h"
 
 Path::Path(std::string path) : path(path) {
-
+	//test if path exist
 }
 
 Path::~Path() {

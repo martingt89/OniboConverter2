@@ -38,7 +38,7 @@ FFpreset::FFpreset(const Path& path): ffpresetFolderPath(path){
 					file.path = Glib::build_filename(directory->get_path (), file_info->get_name());
 					std::string filePrefix = match.getGroup(1);
 					file.name = trimName(file_info->get_name(), filePrefix);
-					ffpreset[filePrefix].push_back(file);
+					ffpreset.set(filePrefix, file);
 				}
 			}
 			file_info = enumerator->next_file();
@@ -56,18 +56,16 @@ void FFpreset::addUserDefineFile(const std::string& prefix, const std::string& p
 	FFfile file;
 	file.path = path;
 	file.name = trimName(path, prefix);
-	ffpreset[prefix].push_back(file);
+	ffpreset.set(prefix, file);
 }
 
 bool FFpreset::getFFpresets(const std::string& prefix,
 		std::list<std::pair<std::string, std::string> > &ffpresets){
 
-	auto ffpresetIter = ffpreset.find(prefix);
-	if(ffpresetIter == ffpreset.end()){
+	if(!ffpreset.isExist(prefix)){
 		return false;
 	}
-
-	std::list<FFfile> files = ffpresetIter->second;
+	std::list<FFfile> files = ffpreset.get(prefix);
 	for(auto fileIter =files.begin(); fileIter != files.end(); ++fileIter){
 		ffpresets.push_back(std::make_pair(fileIter->name, fileIter->path));
 	}

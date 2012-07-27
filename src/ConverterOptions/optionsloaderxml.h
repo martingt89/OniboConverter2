@@ -9,7 +9,8 @@
 #define OPTIONSLOADERXML_H_
 
 #include "optionsloader.h"
-#include <set>
+#include "supportedencoders.h"
+#include "../CppExtension/hashmap.h"
 
 class Path;
 
@@ -25,7 +26,7 @@ namespace ConverterOptions {
 class OptionsLoaderXml: public OptionsLoader {
 public:
 	OptionsLoaderXml(const Path& xmlFilePath,
-			const std::map<std::string, std::string>& suportedEncodersWithDescription,
+			const SupportedEncoders& supportedEncoders,
 			FFpreset* const ffpreset);
 	virtual ~OptionsLoaderXml();
 	virtual Containers loadContainers();
@@ -48,7 +49,7 @@ private:
 			Containers& containers);
 
 	xmlpp::DomParser* domParser;
-	std::map<std::string, std::string> encodersWithDescr;
+	SupportedEncoders supprotedEncoders;
 	FFpreset* const ffpreset;
 };
 

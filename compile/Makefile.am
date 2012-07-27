@@ -11,8 +11,9 @@ OniboConverter2_SOURCES= \
 ../src/ConverterOptions/container.cpp \
 ../src/ConverterOptions/optionsloaderxml.cpp \
 ../src/ConverterOptions/ffpreset.cpp \
+../src/ConverterOptions/supportedencoders.cpp \
 ../src/RegexTools/regextools.cpp \
-../src/path.cpp \
+../src/CppExtension/path.cpp \
 ../src/main.cpp
 
 AM_CXXFLAGS = -lpthread -std=c++0x -g -O0 $(DEPS_CFLAGS) -Wall -pedantic

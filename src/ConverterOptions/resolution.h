@@ -34,7 +34,7 @@ public:
 	std::list<std::string> getAspectRatios() const;
 	std::list<Resolution> getResolutions() const;
 private:
-	std::map<std::string, std::list<Resolution> > resolutions;
+	std::map<std::string, std::list<Resolution> > resolutions; //todo
 };
 
 } /* namespace ConverterOptions */

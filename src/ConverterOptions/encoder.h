@@ -40,7 +40,7 @@ public:
 	std::list<Encoder> getEncoders() const;
 	Encoder getEncoderByName(const std::string& encoderName) const;
 private:
-	std::map<std::string, Encoder> encoders;
+	std::map<std::string, Encoder> encoders;	//todo CppExtension
 };
 
 } /* namespace ConverterOptions */

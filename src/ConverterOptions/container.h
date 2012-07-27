@@ -10,6 +10,7 @@
 
 #include <string>
 #include "format.h"
+#include "../CppExtension/hashmap.h"
 
 
 namespace ConverterOptions {
@@ -38,7 +39,8 @@ public:
 	std::list<Container> getContainers() const;
 	Container getContainerByName(std::string containerName) const;
 private:
-	std::map<std::string, Container> containers;
+	//std::map<std::string, Container> containers;
+	CppExtension::HashMap<std::string, Container> containers;
 };
 
 } /* namespace ConverterOptions */

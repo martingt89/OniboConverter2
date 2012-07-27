@@ -31,21 +31,13 @@ Container::ContainerType Container::getContainerType() const{
 }
 
 void Containers::addContainer(const Container& container){
-	containers[container.getName()] = container;
+	containers.set(container.getName(), container);
 }
 std::list<Container> Containers::getContainers() const{
-	std::list<Container> containersList;
-	for(auto iterator = containers.begin(); iterator != containers.end(); ++iterator){
-		containersList.push_back(iterator->second);
-	}
-	return containersList;
+	return containers.getListOfValues();
 }
 Container Containers::getContainerByName(std::string containerName) const{	//todo container not found
-	auto iterator = containers.find(containerName);
-	if(iterator != containers.end()){
-		return iterator->second;
-	}
-	return Container();
+	return containers.get(containerName);
 }
 
 } /* namespace ConverterOptions */
