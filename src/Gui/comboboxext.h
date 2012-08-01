@@ -1,22 +1,28 @@
 /*
- * comboboxtextextension.h
+ * comboboxext.h
  *
  *  Created on: 23.7.2012
  *      Author: martint
  */
 
-#ifndef COMBOBOXTEXTEXTENSION_H_
-#define COMBOBOXTEXTEXTENSION_H_
+#ifndef COMBOBOXEXT_H_
+#define COMBOBOXEXT_H_
 
 #include <gtkmm/comboboxtext.h>
 #include "../helper.h"
 
 template<class T>
-class ComboBoxTextExtension{
-	ComboBoxTextExtension(){
+class ComboBoxExt{
+public:
+	ComboBoxExt(){
 		comboBoxText = 0;
 		isActivable = true;
 		saveActiveRow = -1;
+	}
+	~ComboBoxExt(){
+		if(comboBoxText != 0){
+			delete comboBoxText;
+		}
 	}
 	void set_comboboxtext_widget(Gtk::ComboBoxText* _comboBoxText){
 		comboBoxText = _comboBoxText;
@@ -55,7 +61,9 @@ class ComboBoxTextExtension{
 		items.clear();
 		items.resize(0);
 	}
-
+	void set_sensitive(bool sensitive){
+		comboBoxText->set_sensitive(sensitive);
+	}
 	void set_active_text(const std::string& text){
 		comboBoxText->set_active_text(text);
 	}
@@ -102,4 +110,4 @@ private:
 };
 
 
-#endif /* COMBOBOXTEXTEXTENSION_H_ */
+#endif /* COMBOBOXEXT_H_ */

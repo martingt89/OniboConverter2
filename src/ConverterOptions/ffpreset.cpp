@@ -27,17 +27,17 @@ FFpreset::FFpreset(const Path& path): ffpresetFolderPath(path){
 			return;
 		}
 
-		RegexTools::Regex reg("^([^-]+)-.*\\.ffpreset");
+		RegexTools::Regex ffpresetPatern("^([^-]+)-.*\\.ffpreset");
 
 		Glib::RefPtr<Gio::FileInfo> file_info = enumerator->next_file();
 		while(file_info){
 			if(file_info->get_file_type() == Gio::FILE_TYPE_REGULAR ){
-				RegexTools::Matcher match = reg.getMatcher(file_info->get_name());
+				RegexTools::Matcher match = ffpresetPatern.getMatcher(file_info->get_name());
 				if(match.find()){
 					FFfile file;
 					file.path = Glib::build_filename(directory->get_path (), file_info->get_name());
 					std::string filePrefix = match.getGroup(1);
-					file.name = trimName(file_info->get_name(), filePrefix);
+					file.name = cropName(file_info->get_name(), filePrefix);
 					ffpreset.set(filePrefix, file);
 				}
 			}
@@ -55,11 +55,11 @@ FFpreset::~FFpreset(){
 void FFpreset::addUserDefineFile(const std::string& prefix, const std::string& path){
 	FFfile file;
 	file.path = path;
-	file.name = trimName(path, prefix);
+	file.name = cropName(path, prefix);
 	ffpreset.set(prefix, file);
 }
 
-bool FFpreset::getFFpresets(const std::string& prefix,
+bool FFpreset::getFFpresetsByPrefix(const std::string& prefix,
 		std::list<std::pair<std::string, std::string> > &ffpresets){
 
 	if(!ffpreset.isExist(prefix)){
@@ -72,7 +72,7 @@ bool FFpreset::getFFpresets(const std::string& prefix,
 	return true;
 }
 
-std::string FFpreset::trimName(const std::string& name, const std::string& prefix){
+std::string FFpreset::cropName(const std::string& name, const std::string& prefix){
 	std::string::size_type lastSeparator = name.find_last_of("/");
 	std::string fileName = name;
 	if(lastSeparator != std::string::npos){

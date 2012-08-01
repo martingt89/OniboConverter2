@@ -115,12 +115,13 @@ void OptionsLoaderXml::extractResolutionsFromNode(xmlpp::Node *xmlNode, Resoluti
 		const xmlpp::Element* nodeElement = dynamic_cast<const xmlpp::Element*>(*iter);
 		if(nodeElement != NULL){
 			std::string resolutionName = getAttributValueFromNode(*iter, "name");
+			bool isBasic = getAttributValueFromNode(*iter, "basic").size() > 0;
 			const xmlpp::TextNode* textNode = nodeElement->get_child_text();
 			if(textNode != NULL){
 				std::string xyresolution = textNode->get_content();
 				int x = 0, y = 0;
 				convertTextResolutionToInts(xyresolution, x, y);
-				Resolution resolutio(resolutionName, aspectRatio, x, y);
+				Resolution resolutio(resolutionName, aspectRatio, x, y, isBasic);
 				resolutions.addResolution(resolutio);
 			}
 		}

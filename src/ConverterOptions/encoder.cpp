@@ -44,7 +44,7 @@ void Encoder::getFFPresets(std::list<std::pair<std::string, std::string> > &ffpr
 	if(ffpreset == NULL){
 		//todo assert
 	}
-	ffpreset->getFFpresets(ffpresetPrefix, ffpresets);
+	ffpreset->getFFpresetsByPrefix(ffpresetPrefix, ffpresets);
 }
 void Encoder::addUserFileWithFFPreset(const std::string &path){
 	if(ffpreset == NULL){

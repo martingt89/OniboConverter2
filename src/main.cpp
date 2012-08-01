@@ -11,6 +11,8 @@
 #include "ConverterOptions/ffpreset.h"
 #include "ConverterOptions/supportedencoders.h"
 #include "CppExtension/path.h"
+#include "Gui/guicontrols.h"
+
 /*
 #include <iostream>
 
@@ -53,5 +55,12 @@ int main(int argc, char *argv[]) {
 	}
 */
 	ConverterOptions::OptionsDatabase optionsDatabase(&optionsLoaderFromXml);
+
+	Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/model3.glade");
+
+	Gui::GuiControls guiControls(optionsDatabase, builder);
+
+	Gtk::Main::run(guiControls.getProgramWindow());
+
 	return 0;
 }

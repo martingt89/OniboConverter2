@@ -153,12 +153,12 @@
 	
 	<video_resolutions>
 		<resolutions ratio="4:3">
-			<resolution name="QVGA">320x240</resolution>
-			<resolution name="VGA">640x480</resolution>
+			<resolution name="QVGA" basic="y">320x240</resolution>
+			<resolution name="VGA" basic="y">640x480</resolution>
 			<resolution name="PAL">768x576</resolution>
 			<resolution name="SVGA">800x600</resolution>
 			<resolution name="XGA">1024x768</resolution>
-			<resolution name="">1280x960</resolution>
+			<resolution name="" basic="y">1280x960</resolution>
 			<resolution name="SXGA+">1400x1050</resolution>
 			<resolution name="UXGA">1600x1200</resolution>
 			<resolution name="QXGA">2048x1536</resolution>
@@ -184,9 +184,9 @@
 		</resolutions>
 		<resolutions ratio="16:9">
 			<resolution name="WVGA">854x480</resolution>
-			<resolution name="HD 720">1280x720</resolution>
+			<resolution name="HD 720" basic="y">1280x720</resolution>
 			<resolution name="">1366x768</resolution>
-			<resolution name="HD 1080">1920x1080</resolution>
+			<resolution name="HD 1080" basic="y">1920x1080</resolution>
 		</resolutions>
 		<resolutions ratio="3:2">
 			<resolution name="">1152x768</resolution>

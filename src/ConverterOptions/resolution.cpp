@@ -10,10 +10,11 @@
 
 namespace ConverterOptions {
 
-Resolution::Resolution(std::string name, std::string aspectRatio, int x, int y): resolution(x,y) {
+Resolution::Resolution(std::string name, std::string aspectRatio, int x, int y, bool isBasic):
+		resolution(x,y) {
 	this->name = name;
 	this->aspectRatio = aspectRatio;
-
+	this->basic = isBasic;
 }
 
 std::pair<int, int> Resolution::getValue() const{
@@ -25,7 +26,9 @@ std::string Resolution::getName() const{
 std::string Resolution::getAspectRatio() const{
 	return aspectRatio;
 }
-
+bool Resolution::isBasic() const{
+	return basic;
+}
 bool Resolution::operator<(const Resolution& res2){
 	return this->resolution.first < res2.getValue().first;
 }
