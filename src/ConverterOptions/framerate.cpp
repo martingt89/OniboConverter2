@@ -20,6 +20,7 @@ double Framerate::getValue() const{
 void Framerates::addFramerate(const Framerate& framerate){
 	framerates.push_back(framerate);
 }
+
 std::list<Framerate> Framerates::getFramerats() const{
 	return framerates;
 }

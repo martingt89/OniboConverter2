@@ -5,7 +5,7 @@
  *      Author: martint
  */
 
-#include "profil.h"
+#include "profile.h"
 
 namespace Gui {
 

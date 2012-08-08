@@ -1,26 +1,26 @@
 bin_PROGRAMS=OniboConverter2
 
+SRCPATH=../src
+
 OniboConverter2_SOURCES= \
-../src/ConverterOptions/optionsdatabase.cpp \
-../src/ConverterOptions/bitrate.cpp \
-../src/ConverterOptions/resolution.cpp \
-../src/ConverterOptions/encoder.cpp \
-../src/ConverterOptions/samplerate.cpp \
-../src/ConverterOptions/framerate.cpp \
-../src/ConverterOptions/format.cpp \
-../src/ConverterOptions/container.cpp \
-../src/ConverterOptions/optionsloaderxml.cpp \
-../src/ConverterOptions/ffpreset.cpp \
-../src/ConverterOptions/supportedencoders.cpp \
-../src/RegexTools/regextools.cpp \
-../src/CppExtension/path.cpp \
-../src/Gui/guicontrols.cpp \
-../src/Gui/filecontrols.cpp \
-../src/Gui/Video/globalvideosettings.cpp \
-../src/Gui/Video/encodersettings.cpp \
-../src/Gui/settingsdialog.cpp \
-../src/profil.cpp \
-../src/main.cpp 
+$(SRCPATH)/ConverterOptions/optionsdatabase.cpp \
+$(SRCPATH)/ConverterOptions/bitrate.cpp \
+$(SRCPATH)/ConverterOptions/resolution.cpp \
+$(SRCPATH)/ConverterOptions/encoder.cpp \
+$(SRCPATH)/ConverterOptions/samplerate.cpp \
+$(SRCPATH)/ConverterOptions/framerate.cpp \
+$(SRCPATH)/ConverterOptions/format.cpp \
+$(SRCPATH)/ConverterOptions/container.cpp \
+$(SRCPATH)/ConverterOptions/optionsloaderxml.cpp \
+$(SRCPATH)/ConverterOptions/ffpreset.cpp \
+$(SRCPATH)/ConverterOptions/supportedencoders.cpp \
+$(SRCPATH)/RegexTools/regextools.cpp \
+$(SRCPATH)/CppExtension/path.cpp \
+$(SRCPATH)/Profile/profile.cpp \
+$(SRCPATH)/Gui/convertergui.cpp \
+$(SRCPATH)/Gui/mainsettings.cpp \
+$(SRCPATH)/Gui/Video/videosettingsgui.cpp \
+$(SRCPATH)/main.cpp 
 
 AM_CXXFLAGS = -lpthread -std=c++0x -g -O0 $(DEPS_CFLAGS) -Wall -pedantic
 

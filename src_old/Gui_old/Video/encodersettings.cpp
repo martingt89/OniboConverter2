@@ -6,14 +6,16 @@
  */
 
 #include "encodersettings.h"
-
+//#include <iostream> //todo remove
 namespace Gui {
 
 EncoderSettings::EncoderSettings(ConverterOptions::OptionsDatabase &database,
 		ComboBoxExt<ConverterOptions::Format>& videoFormat,
 		ComboBoxExt<ConverterOptions::Encoder>& videoEncoder,
-		ComboBoxExt<ConverterOptions::Bitrate>& videoBitrate): database(database),
-				videoFormat(videoFormat), videoEncoder(videoEncoder), videoBitrate(videoBitrate){
+		ComboBoxExt<ConverterOptions::Bitrate>& videoBitrate,
+		ComboBoxExt<Path>& videoFFpreset): database(database),
+				videoFormat(videoFormat), videoEncoder(videoEncoder),
+				videoBitrate(videoBitrate), videoFFpreset(videoFFpreset){
 
 }
 
@@ -27,8 +29,10 @@ void EncoderSettings::videoFormatChanged(){
 		setVideoEncoders(format.getEncoders().getEncoders(), isSetOldEncoder);
 		if(isSetOldEncoder){
 			videoBitrate.set_sensitive(true);
+			enableFFpresetIfSupport();
 		}else{
 			videoBitrate.set_sensitive(false);
+			disableAndClearFFpreset();
 		}
 	}
 }
@@ -38,13 +42,15 @@ void EncoderSettings::videoEncoderChanged(){
 	bool isSet;
 	encoder = videoEncoder.get_active_row_item(isSet);
 	if(isSet){
+		enableFFpresetIfSupport();
 		setVideoBitrates(encoder.getBitrates());
 	}
 }
-void EncoderSettings::setSensitive(bool sensitive){
-	videoFormat.set_sensitive(sensitive);
-	videoEncoder.set_sensitive(sensitive);
-	videoBitrate.set_sensitive(sensitive);
+void EncoderSettings::setUnsensitive(){
+	videoFormat.set_sensitive(false);
+	videoEncoder.set_sensitive(false);
+	videoBitrate.set_sensitive(false);
+	videoFFpreset.set_sensitive(false);
 }
 void EncoderSettings::fillVideoFormats(const std::list<ConverterOptions::Format>& formats){
 	bool isSetOldFormat = false;
@@ -53,8 +59,10 @@ void EncoderSettings::fillVideoFormats(const std::list<ConverterOptions::Format>
 		videoEncoder.set_sensitive(true);
 		if(videoEncoder.is_selected()){
 			videoBitrate.set_sensitive(true);
+			enableFFpresetIfSupport();
 		}
 	}else{
+		disableAndClearFFpreset();
 		videoEncoder.remove_all();
 		videoEncoder.set_sensitive(false);
 		videoBitrate.remove_all();
@@ -77,6 +85,37 @@ bool EncoderSettings::isAllSet(std::string& message){
 	return true;
 }
 //================================================
+void EncoderSettings::enableFFpresetIfSupport(){
+//	std::cout<<__FILE__<<" "<<__LINE__<<std::endl;
+	std::pair<std::string, Path> selectedFFpreset;
+	bool isSelected = false;
+	if(videoFFpreset.is_selected()){
+//		std::cout<<__FILE__<<" "<<__LINE__<<std::endl;
+		selectedFFpreset.first = videoFFpreset.get_active_text();
+		selectedFFpreset.second = videoFFpreset.get_active_row_item(isSelected);
+	}
+	bool setEncoder = false;
+	ConverterOptions::Encoder activeEnc = videoEncoder.get_active_row_item(setEncoder);
+	if(setEncoder && activeEnc.hasFFpreset()){
+//		std::cout<<__FILE__<<" "<<__LINE__<<std::endl;
+		videoFFpreset.remove_all();
+		videoFFpreset.set_sensitive(true);
+		std::list<std::pair<std::string, std::string> > ffpresets;
+		activeEnc.getFFPresets(ffpresets);
+		for(auto ffpresetsIter = ffpresets.begin(); ffpresetsIter != ffpresets.end(); ++ffpresetsIter){
+			videoFFpreset.append(ffpresetsIter->first, Path(ffpresetsIter->second));
+//			std::cout<<__FILE__<<" "<<__LINE__<<std::endl;
+		}
+		if(isSelected){
+			videoFFpreset.set_active_text(selectedFFpreset.first);
+//			std::cout<<__FILE__<<" "<<__LINE__<<std::endl;
+		}
+	}
+}
+void EncoderSettings::disableAndClearFFpreset(){
+	videoFFpreset.remove_all();
+	videoFFpreset.set_sensitive(false);
+}
 bool EncoderSettings::getActiveFormat(ConverterOptions::Format& activeFormat){
 	bool isSelected = false;
 	activeFormat = videoFormat.get_active_row_item(isSelected);

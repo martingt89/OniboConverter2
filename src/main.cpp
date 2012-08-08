@@ -6,12 +6,13 @@
  */
 
 #include <gtkmm/main.h>
+#include <gtkmm/builder.h>
 #include "ConverterOptions/optionsloaderxml.h"
 #include "ConverterOptions/optionsdatabase.h"
 #include "ConverterOptions/ffpreset.h"
 #include "ConverterOptions/supportedencoders.h"
 #include "CppExtension/path.h"
-#include "Gui/guicontrols.h"
+#include "Gui/convertergui.h"
 
 /*
 #include <iostream>
@@ -56,11 +57,13 @@ int main(int argc, char *argv[]) {
 */
 	ConverterOptions::OptionsDatabase optionsDatabase(&optionsLoaderFromXml);
 
-	Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/model3.glade");
+	Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/model5.glade");
 
-	Gui::GuiControls guiControls(optionsDatabase, builder);
+//	Gui::GuiControls guiControls(optionsDatabase, builder);
 
-	Gtk::Main::run(guiControls.getProgramWindow());
+	Gui::ConverterGui converter(optionsDatabase, builder);
+
+	Gtk::Main::run(converter.getWindow());
 
 	return 0;
 }

@@ -16,6 +16,7 @@ namespace ConverterOptions {
 
 class Resolution {
 public:
+	Resolution(){basic = false;};
 	Resolution(std::string name, std::string aspectRatio, int x, int y, bool isBasic);
 	std::pair<int, int> getValue() const;
 	std::string getName() const;

@@ -14,6 +14,8 @@ config.log
 config.status
 stamp-h1
 
+src_old/
+
 *.o
 .deps
 

@@ -12,6 +12,7 @@
 
 class Path {
 public:
+	Path(){};
 	Path(std::string path);
 	virtual ~Path();
 	std::string getPath() const;

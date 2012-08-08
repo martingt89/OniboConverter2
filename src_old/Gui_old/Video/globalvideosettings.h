@@ -17,6 +17,7 @@
 #include "../../ConverterOptions/optionsdatabase.h"
 #include "../settingsdialog.h"
 #include "encodersettings.h"
+#include "../../CppExtension/path.h"
 
 namespace Gui {
 
@@ -39,6 +40,8 @@ private:
 	void videoBitrateChanged();
 	bool isLockSignal;
 	//==============================================================
+	void saveActualSettings();
+	void restorActualSettings();
 	void setUnsesitiveVideoDialog();
 	bool isVideoModeEditable();
 	void setUnsensitiveVideoSettings();
@@ -61,7 +64,7 @@ private:
 	ComboBoxExt<int> videoFramerate;
 	ComboBoxExt<ConverterOptions::Bitrate> videoBitrate;
 	ComboBoxExt<std::string> videoResolution;
-	ComboBoxExt<int> videoFFpreset;
+	ComboBoxExt<Path> videoFFpreset;
 	Gtk::Button* showVideoSettings;
 	Gtk::Button* okVideoButton;
 	Gtk::Button* cancelVideoButton;

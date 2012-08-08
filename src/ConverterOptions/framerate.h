@@ -14,6 +14,7 @@ namespace ConverterOptions {
 
 class Framerate {
 public:
+	Framerate(){framerate = 0;};
 	Framerate(double framerate);
 	double getValue() const;
 private:

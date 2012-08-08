@@ -28,7 +28,7 @@ GlobalVideoSettings::GlobalVideoSettings(ConverterOptions::OptionsDatabase &data
 
 	loadComboBoxes(refGlade);
 
-	encoderSettings = new EncoderSettings(database, videoFormat, videoEncoder, videoBitrate);
+	encoderSettings = new EncoderSettings(database, videoFormat, videoEncoder, videoBitrate, videoFFpreset);
 
 	refGlade->get_widget("showVideoSettings",showVideoSettings);
 	showVideoSettings->set_sensitive(false);
@@ -78,6 +78,7 @@ void GlobalVideoSettings::setActiveContainer(ConverterOptions::Container contain
 			encoderSettings->fillVideoFormats(container.getFormats().getVideoFormatsList());
 			videoFormat.set_sensitive(true);
 			videoResolution.set_sensitive(true);
+			videoFramerate.set_sensitive(true);
 		}else{
 			setUnsensitiveVideoSettings();
 		}
@@ -92,6 +93,7 @@ void GlobalVideoSettings::videoModeChanged(){
 		encoderSettings->fillVideoFormats(container.getFormats().getVideoFormatsList());
 		videoFormat.set_sensitive(true);
 		videoResolution.set_sensitive(true);
+		videoFramerate.set_sensitive(true);
 	}else{
 		setUnsensitiveVideoSettings();
 	}
@@ -119,10 +121,12 @@ void GlobalVideoSettings::videoBitrateChanged(){
 }
 void GlobalVideoSettings::showVideoSettingsClicked(){
 	videoErrorMessage->set_text("");
+	saveActualSettings();
 	settingsDialog.showVideoSettings();
 }
 void GlobalVideoSettings::cancelButtonClicked(){
 	settingsDialog.close();
+	restorActualSettings();
 	std::cout<<"Cancel"<<std::endl;
 }
 void GlobalVideoSettings::okButtonClicked(){
@@ -135,12 +139,33 @@ void GlobalVideoSettings::okButtonClicked(){
 	}
 }
 //==========================================================================
+void GlobalVideoSettings::saveActualSettings(){
+	videoMode.save_actual_state();
+	videoFormat.save_actual_state();
+	videoEncoder.save_actual_state();
+	videoBitrate.save_actual_state();
+	videoFFpreset.save_actual_state();
+	videoFramerate.save_actual_state();
+	videoResolution.save_actual_state();
+}
+void GlobalVideoSettings::restorActualSettings(){
+	bool lock = isLockSignal;
+	isLockSignal = true;
+	videoMode.restor_saved_state();
+	videoFormat.restor_saved_state();
+	videoEncoder.restor_saved_state();
+	videoBitrate.restor_saved_state();
+	videoFFpreset.restor_saved_state();
+	videoFramerate.restor_saved_state();
+	videoResolution.restor_saved_state();
+	isLockSignal = lock;
+}
 void GlobalVideoSettings::setUnsesitiveVideoDialog(){
 	setUnsensitiveVideoSettings();
 	videoMode.set_sensitive(false);
 }
 void GlobalVideoSettings::setUnsensitiveVideoSettings(){
-	encoderSettings->setSensitive(false);
+	encoderSettings->setUnsensitive();
 	videoFramerate.set_sensitive(false);
 	videoResolution.set_sensitive(false);
 }

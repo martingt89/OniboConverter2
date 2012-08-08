@@ -16,8 +16,10 @@ class ComboBoxExt{
 public:
 	ComboBoxExt(){
 		comboBoxText = 0;
-		isActivable = true;
-		saveActiveRow = -1;
+//		isActivable = true;
+//		saveActiveRow = -1;
+		saveSelectedRow = -1;
+		sensitive = false;
 	}
 	~ComboBoxExt(){
 		if(comboBoxText != 0){
@@ -31,9 +33,16 @@ public:
 		bool wasSensitive = comboBoxText->get_sensitive();
 		comboBoxText->set_sensitive(true);
 		comboBoxText->append(text, toS(items.size()));
-		items.push_back(item);
-		if(! (wasSensitive && isActivable)){
+		items.push_back(std::make_pair(text, item));
+		if(! (wasSensitive)){
 			comboBoxText->set_sensitive(false);
+		}
+	}
+	bool isSet(){
+		if(/*isActivable &&*/ is_sensitive()){
+			return is_selected();
+		}else{
+			return true;
 		}
 	}
 	void set_active_row_number(int index){
@@ -49,7 +58,7 @@ public:
 		T selectedItem;
 		if(comboBoxText->get_active_row_number() >= 0){
 			isSelected = true;
-			selectedItem = items[comboBoxText->get_active_row_number()];
+			selectedItem = items[comboBoxText->get_active_row_number()].second;
 		}else{
 			isSelected = false;
 			selectedItem = T();
@@ -84,17 +93,27 @@ public:
 	int count_of_rows(){
 		return items.size();
 	}
-	void save_actual_row(){
-		saveActiveRow = comboBoxText->get_active_id();
+//	void set_activable(bool activable){
+//		this->isActivable = activable;
+//	}
+//	bool is_activable(){
+//		return isActivable;
+//	}
+	void save_actual_state(){
+		sensitive = comboBoxText->is_sensitive();
+		saveSelectedRow = comboBoxText->get_active_row_number();
+		saveItems.clear();
+		saveItems.resize(items.size());
+		std::copy(items.begin(), items.end(), saveItems.begin());
 	}
-	bool was_changed_saved_row(){
-		return saveActiveRow == comboBoxText->get_active_id();
-	}
-	void set_activable(bool activable){
-		this->isActivable = activable;
-	}
-	bool is_activable(){
-		return isActivable;
+	void restor_saved_state(){
+		this->remove_all();
+		std::for_each(saveItems.begin(), saveItems.end(), [&](std::pair<std::string, T> item) {
+			this->append(item.first, item.second);
+		});
+		this->set_sensitive(sensitive);
+		if(saveSelectedRow >= 0)
+			this->set_active_row_number(saveSelectedRow);
 	}
 	bool is_set_last(){
 		return comboBoxText->get_active_row_number() == (items.size()-1);
@@ -104,9 +123,11 @@ public:
 	}
 private:
 	Gtk::ComboBoxText* comboBoxText;
-	std::vector<T> items;
-	bool isActivable;
-	int saveActiveRow;
+	std::vector<std::pair<std::string, T> > items;
+
+	std::vector<std::pair<std::string, T> > saveItems;
+	int saveSelectedRow;
+	bool sensitive;
 };
 
 

@@ -10,6 +10,7 @@
 
 #include "../../ConverterOptions/optionsdatabase.h"
 #include "../comboboxext.h"
+#include "../../CppExtension/path.h"
 
 namespace Gui {
 
@@ -18,23 +19,27 @@ public:
 	EncoderSettings(ConverterOptions::OptionsDatabase &database,
 			ComboBoxExt<ConverterOptions::Format>& videoFormat,
 			ComboBoxExt<ConverterOptions::Encoder>& videoEncoder,
-			ComboBoxExt<ConverterOptions::Bitrate>& videoBitrate);
+			ComboBoxExt<ConverterOptions::Bitrate>& videoBitrate,
+			ComboBoxExt<Path>& videoFFpreset);
 	virtual ~EncoderSettings();
 
 	void videoFormatChanged();
 	void videoEncoderChanged();
 	void fillVideoFormats(const std::list<ConverterOptions::Format>& formats);
-	void setSensitive(bool sensitive);
+	void setUnsensitive();
 	bool isAllSet(std::string& message);
 private:
 	bool getActiveFormat(ConverterOptions::Format& activeFormat);
 	void setVideoFormats(const std::list<ConverterOptions::Format>& formats, bool& isSetOldFormat);
 	void setVideoEncoders(const std::list<ConverterOptions::Encoder>& encoders,	bool& isSetOldEncoder);
 	void setVideoBitrates(const ConverterOptions::Bitrates& bitrates);
+	void enableFFpresetIfSupport();
+	void disableAndClearFFpreset();
 	ConverterOptions::OptionsDatabase &database;
 	ComboBoxExt<ConverterOptions::Format>& videoFormat;
 	ComboBoxExt<ConverterOptions::Encoder>& videoEncoder;
 	ComboBoxExt<ConverterOptions::Bitrate>& videoBitrate;
+	ComboBoxExt<Path>& videoFFpreset;
 };
 
 } /* namespace Gui */
