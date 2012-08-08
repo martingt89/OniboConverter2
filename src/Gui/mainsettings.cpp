@@ -11,14 +11,14 @@ namespace Gui {
 
 MainSettings::MainSettings(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database),
-				videoSettingsGui(database, refGlade) {
+				videoSettingsGui(database, refGlade), containers(refGlade, "containres") {
 
 	multiPassState = false;
-	Gtk::ComboBoxText* _containers;
-	refGlade->get_widget("containres", _containers);
-	containers.set_comboboxtext_widget(_containers);
 
 	initContainers(database, containers);
+	videoSettingsGui.disableSettings();
+
+	containers.signal_changed().connect(sigc::mem_fun(*this, &MainSettings::containerChanged));
 	//todo videoSettingsGui signal
 }
 
@@ -49,7 +49,9 @@ void MainSettings::restoreSettingsState(){
 	containers.restor_saved_state();
 	videoSettingsGui.restoreSettingsState();
 }
-
+void MainSettings::containerChanged(){
+	videoSettingsGui.videoContainerChanged(containers.get_active_row_item());
+}
 void MainSettings::initContainers(ConverterOptions::OptionsDatabase &database,
 		ComboBoxExt<ConverterOptions::Container> &containers){
 	std::list<ConverterOptions::Container> cont = database.getContainers().getContainers();

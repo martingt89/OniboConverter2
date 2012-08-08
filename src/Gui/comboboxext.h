@@ -9,25 +9,29 @@
 #define COMBOBOXEXT_H_
 
 #include <gtkmm/comboboxtext.h>
+#include <gtkmm/builder.h>
 #include "../helper.h"
 
 template<class T>
 class ComboBoxExt{
 public:
-	ComboBoxExt(){
-		comboBoxText = 0;
+//	ComboBoxExt(){
+//		comboBoxText = 0;
 //		isActivable = true;
 //		saveActiveRow = -1;
+//		saveSelectedRow = -1;
+//		sensitive = false;
+//	}
+	ComboBoxExt(const Glib::RefPtr<Gtk::Builder>& refGlade, const std::string& name){
+		comboBoxText = 0;
 		saveSelectedRow = -1;
 		sensitive = false;
+		refGlade->get_widget(name, comboBoxText);
 	}
 	~ComboBoxExt(){
 		if(comboBoxText != 0){
 			delete comboBoxText;
 		}
-	}
-	void set_comboboxtext_widget(Gtk::ComboBoxText* _comboBoxText){
-		comboBoxText = _comboBoxText;
 	}
 	void append(const std::string& text, const T &item = T()){
 		bool wasSensitive = comboBoxText->get_sensitive();
@@ -42,8 +46,11 @@ public:
 		if(/*isActivable &&*/ is_sensitive()){
 			return is_selected();
 		}else{
-			return true;
+			return true; //isActivable
 		}
+	}
+	bool isSetSensitiveRow(){
+		return is_sensitive() && is_selected();
 	}
 	void set_active_row_number(int index){
 		comboBoxText->set_active(index);
@@ -61,6 +68,15 @@ public:
 			selectedItem = items[comboBoxText->get_active_row_number()].second;
 		}else{
 			isSelected = false;
+			selectedItem = T();
+		}
+		return selectedItem;
+	}
+	T get_active_row_item(){
+		T selectedItem;
+		if(comboBoxText->get_active_row_number() >= 0){
+			selectedItem = items[comboBoxText->get_active_row_number()].second;
+		}else{
 			selectedItem = T();
 		}
 		return selectedItem;

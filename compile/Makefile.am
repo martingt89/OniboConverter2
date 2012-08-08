@@ -20,6 +20,7 @@ $(SRCPATH)/Profile/profile.cpp \
 $(SRCPATH)/Gui/convertergui.cpp \
 $(SRCPATH)/Gui/mainsettings.cpp \
 $(SRCPATH)/Gui/Video/videosettingsgui.cpp \
+$(SRCPATH)/Gui/Video/videoencodergui.cpp \
 $(SRCPATH)/main.cpp 
 
 AM_CXXFLAGS = -lpthread -std=c++0x -g -O0 $(DEPS_CFLAGS) -Wall -pedantic

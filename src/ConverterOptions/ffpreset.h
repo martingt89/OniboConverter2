@@ -30,7 +30,6 @@ public:
 	bool getFFpresetsByPrefix(const std::string& prefix, std::list<std::pair<std::string, std::string> > &ffpresets);
 private:
 	std::string cropName(const std::string& name, const std::string& prefix);
-	//std::map<std::string, std::list<FFfile> > ffpreset;
 	CppExtension::MultiHashMap<std::string, FFfile> ffpreset;
 	std::set<std::string> searchedPrefixes;
 	Path ffpresetFolderPath;

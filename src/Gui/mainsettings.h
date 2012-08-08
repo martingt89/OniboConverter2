@@ -23,6 +23,7 @@ public:
 	void saveSettingsState();
 	void restoreSettingsState();
 private:
+	void containerChanged();
 	void initContainers(ConverterOptions::OptionsDatabase &database,
 			ComboBoxExt<ConverterOptions::Container> &containers);
 

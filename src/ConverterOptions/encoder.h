@@ -11,9 +11,9 @@
 #include <string>
 #include <map>
 #include "bitrate.h"
+#include "ffpreset.h"
 
 namespace ConverterOptions {
-class FFpreset;
 
 class Encoder {
 public:
