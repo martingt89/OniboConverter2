@@ -11,6 +11,8 @@
 #include <sstream>
 #include <string>
 
+int NSD(const int& x, const int& y);
+
 template<class T>
 std::string operator << (const std::string &s,  T i){
 	std::stringstream ss;
@@ -28,6 +30,9 @@ std::string toS(const T &number){
 
 template<class T>
 T toN(const std::string& number, const T&){
+	if(number.size() == 0){
+		return 0;
+	}
 	std::stringstream ss;
 	T prem;
 	ss << number;

@@ -23,6 +23,7 @@ public:
 	void saveSettingsState();
 	void restoreSettingsState();
 private:
+	void userInput();
 	void containerChanged();
 	void initContainers(ConverterOptions::OptionsDatabase &database,
 			ComboBoxExt<ConverterOptions::Container> &containers);
@@ -31,6 +32,7 @@ private:
 	VideoSettingsGui videoSettingsGui;
 	ComboBoxExt<ConverterOptions::Container> containers;
 	bool multiPassState;
+	bool isEnabledSignal;
 };
 
 } /* namespace Gui */

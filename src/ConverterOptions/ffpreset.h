@@ -26,7 +26,7 @@ public:
 public:
 	FFpreset(const Path& path);
 	virtual ~FFpreset();
-	void addUserDefineFile(const std::string& prefix, const std::string& path);
+	std::string addUserDefineFile(const std::string& prefix, const std::string& path);
 	bool getFFpresetsByPrefix(const std::string& prefix, std::list<std::pair<std::string, std::string> > &ffpresets);
 private:
 	std::string cropName(const std::string& name, const std::string& prefix);

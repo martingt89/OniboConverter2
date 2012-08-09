@@ -21,6 +21,8 @@ $(SRCPATH)/Gui/convertergui.cpp \
 $(SRCPATH)/Gui/mainsettings.cpp \
 $(SRCPATH)/Gui/Video/videosettingsgui.cpp \
 $(SRCPATH)/Gui/Video/videoencodergui.cpp \
+$(SRCPATH)/Gui/Video/videoresolutiongui.cpp \
+$(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 
 AM_CXXFLAGS = -lpthread -std=c++0x -g -O0 $(DEPS_CFLAGS) -Wall -pedantic

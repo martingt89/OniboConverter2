@@ -25,7 +25,7 @@ public:
 	std::string getDescription() const;
 	Bitrates getBitrates() const;
 	void getFFPresets(std::list<std::pair<std::string, std::string> > &ffpresets);
-	void addUserFileWithFFPreset(const std::string &path);
+	std::string addUserFileWithFFPreset(const std::string &path);
 private:
 	std::string name;
 	std::string description;

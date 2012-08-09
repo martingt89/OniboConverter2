@@ -11,6 +11,9 @@
 #include <gtkmm/builder.h>
 #include "../../ConverterOptions/optionsdatabase.h"
 #include "../comboboxext.h"
+#include <sigc++/signal.h>
+#include <gtkmm/filechooserdialog.h>
+#include "videoresolutiongui.h"
 
 namespace Gui {
 
@@ -23,6 +26,8 @@ public:
 	void disableSettings();
 	void saveSettingsState();
 	void restoreSettingsState();
+	sigc::signal<void>& signalUserInput();
+	bool checkSettingsComplete(std::string& message);
 private:
 	void videoFormatChanget();
 	void videoEncoderChanget();
@@ -32,10 +37,12 @@ private:
 	void setFormatsFromContainer(const ConverterOptions::Container& container);
 	void aktualizeEncoder();
 	void aktualizeBitrate();
-	void aktualizeFFpreset();
+	void aktualizeFFpreset(const std::string name = "");
 
 	void sendUserInputSignal();
+	void initFileChooserDialog(Gtk::FileChooserDialog &fileChooserDialog);
 
+	sigc::signal<void> userEvent;
 	bool isEnableSignals;
 	ConverterOptions::OptionsDatabase &database;
 
@@ -43,6 +50,7 @@ private:
 	ComboBoxExt<ConverterOptions::Encoder> videoEncoder;
 	ComboBoxExt<ConverterOptions::Bitrate> videoBitrate;
 	ComboBoxExt<Path> videoFFpreset;
+	Gtk::FileChooserDialog ffpresetChooser;
 };
 
 } /* namespace Gui */

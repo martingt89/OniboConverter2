@@ -1,0 +1,8 @@
+Video mode:
+ - rozsirene enkodery
+ - ulozenie bitrate
+ - ulozenie rozlisenia
+ 
+Audio mode:
+ - pridat kanaly do xml
+ - implementovat

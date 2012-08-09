@@ -46,11 +46,11 @@ void Encoder::getFFPresets(std::list<std::pair<std::string, std::string> > &ffpr
 	}
 	ffpreset->getFFpresetsByPrefix(ffpresetPrefix, ffpresets);
 }
-void Encoder::addUserFileWithFFPreset(const std::string &path){
+std::string Encoder::addUserFileWithFFPreset(const std::string &path){
 	if(ffpreset == NULL){
 		//todo assert
 	}
-	ffpreset->addUserDefineFile(ffpresetPrefix, path);
+	return ffpreset->addUserDefineFile(ffpresetPrefix, path);
 }
 
 void Encoders::addEncoder(const Encoder& encoder){

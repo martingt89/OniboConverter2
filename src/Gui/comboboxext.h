@@ -15,13 +15,6 @@
 template<class T>
 class ComboBoxExt{
 public:
-//	ComboBoxExt(){
-//		comboBoxText = 0;
-//		isActivable = true;
-//		saveActiveRow = -1;
-//		saveSelectedRow = -1;
-//		sensitive = false;
-//	}
 	ComboBoxExt(const Glib::RefPtr<Gtk::Builder>& refGlade, const std::string& name){
 		comboBoxText = 0;
 		saveSelectedRow = -1;
@@ -42,16 +35,22 @@ public:
 			comboBoxText->set_sensitive(false);
 		}
 	}
-	bool isSet(){
+	//
+
+	bool isSelectedIfActivable(){
 		if(/*isActivable &&*/ is_sensitive()){
 			return is_selected();
 		}else{
 			return true; //isActivable
 		}
 	}
-	bool isSetSensitiveRow(){
+
+	bool isSelectedActivableRow(){
 		return is_sensitive() && is_selected();
 	}
+
+
+
 	void set_active_row_number(int index){
 		comboBoxText->set_active(index);
 	}
@@ -103,7 +102,7 @@ public:
 	Glib::SignalProxy0< void > signal_changed(){
 		return comboBoxText->signal_changed();
 	}
-	void unset_sctive(){
+	void unset_active(){
 		comboBoxText->unset_active();
 	}
 	int count_of_rows(){
@@ -128,11 +127,12 @@ public:
 			this->append(item.first, item.second);
 		});
 		this->set_sensitive(sensitive);
-		if(saveSelectedRow >= 0)
+		if(saveSelectedRow >= 0){
 			this->set_active_row_number(saveSelectedRow);
+		}
 	}
 	bool is_set_last(){
-		return comboBoxText->get_active_row_number() == (items.size()-1);
+		return comboBoxText->get_active_row_number() == (int)(items.size()-1);
 	}
 	bool is_set_first(){
 		return comboBoxText->get_active_row_number() == 0;

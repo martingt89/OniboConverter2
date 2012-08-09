@@ -52,11 +52,12 @@ FFpreset::~FFpreset(){
 
 }
 
-void FFpreset::addUserDefineFile(const std::string& prefix, const std::string& path){
+std::string FFpreset::addUserDefineFile(const std::string& prefix, const std::string& path){
 	FFfile file;
 	file.path = path;
 	file.name = cropName(path, prefix);
 	ffpreset.set(prefix, file);
+	return file.name;
 }
 
 bool FFpreset::getFFpresetsByPrefix(const std::string& prefix,

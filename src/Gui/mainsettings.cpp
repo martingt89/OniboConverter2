@@ -6,7 +6,6 @@
  */
 
 #include "mainsettings.h"
-
 namespace Gui {
 
 MainSettings::MainSettings(ConverterOptions::OptionsDatabase &database,
@@ -14,12 +13,13 @@ MainSettings::MainSettings(ConverterOptions::OptionsDatabase &database,
 				videoSettingsGui(database, refGlade), containers(refGlade, "containres") {
 
 	multiPassState = false;
+	isEnabledSignal = true;
 
 	initContainers(database, containers);
 	videoSettingsGui.disableSettings();
 
 	containers.signal_changed().connect(sigc::mem_fun(*this, &MainSettings::containerChanged));
-	//todo videoSettingsGui signal
+	//videoSettingsGui.signalUserInput().connect(sigc::mem_fun(*this, &MainSettings::userInput));
 }
 
 MainSettings::~MainSettings() {
@@ -28,7 +28,7 @@ MainSettings::~MainSettings() {
 
 bool MainSettings::checkSettingsComplete(std::string& message){
 	message = "";
-	if(!containers.isSet()){
+	if(!containers.isSelectedActivableRow()){
 		message = "Container is not set";
 		return false;
 	}
@@ -41,16 +41,26 @@ bool MainSettings::checkSettingsComplete(std::string& message){
 }
 void MainSettings::saveSettingsState(){
 	containers.save_actual_state();
-	//multiPassState
 	videoSettingsGui.saveSettingsState();
 }
 void MainSettings::restoreSettingsState(){
-	//multiPassState
+	isEnabledSignal = false;
 	containers.restor_saved_state();
 	videoSettingsGui.restoreSettingsState();
+	isEnabledSignal = true;
+}
+void MainSettings::userInput(){
+//	std::cout<<"user input"<<std::endl;
 }
 void MainSettings::containerChanged(){
-	videoSettingsGui.videoContainerChanged(containers.get_active_row_item());
+	if(isEnabledSignal){
+		isEnabledSignal = false;
+		if(containers.isSelectedActivableRow()){
+			videoSettingsGui.videoContainerChanged(containers.get_active_row_item());
+		}
+		userInput();
+		isEnabledSignal = true;
+	}
 }
 void MainSettings::initContainers(ConverterOptions::OptionsDatabase &database,
 		ComboBoxExt<ConverterOptions::Container> &containers){
