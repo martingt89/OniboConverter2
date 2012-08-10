@@ -5,15 +5,16 @@
  *      Author: martint
  */
 
-#include "videoencodergui.h"
+#include "encodercontrol.h"
 #include "../../helper.h"
 #include <gtkmm/stock.h>
 
+#include <iostream> //todo remove
 namespace Gui {
-
+namespace Video {
 static const std::string EXTEND_SETTING = "--- more ---";
 
-VideoEncoderGui::VideoEncoderGui(ConverterOptions::OptionsDatabase &database,
+EncoderControl::EncoderControl(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database),
 				videoFormat(refGlade, "videoFormat"), videoEncoder(refGlade, "videoEncoder"),
 				videoBitrate(refGlade, "videoBitrate"), videoFFpreset(refGlade, "videoFFpreset"),
@@ -22,15 +23,15 @@ VideoEncoderGui::VideoEncoderGui(ConverterOptions::OptionsDatabase &database,
 	isEnableSignals = true;
 	initFileChooserDialog(ffpresetChooser);
 
-	videoFormat.signal_changed().connect(sigc::mem_fun(*this, &VideoEncoderGui::videoFormatChanget));
-	videoEncoder.signal_changed().connect(sigc::mem_fun(*this, &VideoEncoderGui::videoEncoderChanget));
-	videoBitrate.signal_changed().connect(sigc::mem_fun(*this, &VideoEncoderGui::videoBitrateChanget));
-	videoFFpreset.signal_changed().connect(sigc::mem_fun(*this, &VideoEncoderGui::videoFFpresetChanget));
+	videoFormat.signal_changed().connect(sigc::mem_fun(*this, &EncoderControl::videoFormatChanged));
+	videoEncoder.signal_changed().connect(sigc::mem_fun(*this, &EncoderControl::videoEncoderChanged));
+	videoBitrate.signal_changed().connect(sigc::mem_fun(*this, &EncoderControl::videoBitrateChanged));
+	videoFFpreset.signal_changed().connect(sigc::mem_fun(*this, &EncoderControl::videoFFpresetChanged));
 }
 
-VideoEncoderGui::~VideoEncoderGui() {}
+EncoderControl::~EncoderControl() {}
 
-void VideoEncoderGui::aktualizeSettings(const bool& isVideoActive,
+void EncoderControl::aktualizeSettings(const bool& isVideoActive,
 		const ConverterOptions::Container& container){
 	isEnableSignals = false;
 	if(isVideoActive){
@@ -46,13 +47,13 @@ void VideoEncoderGui::aktualizeSettings(const bool& isVideoActive,
 	}
 	isEnableSignals = true;
 }
-void VideoEncoderGui::disableSettings(){
+void EncoderControl::disableSettings(){
 	videoFormat.set_sensitive(false);
 	videoEncoder.set_sensitive(false);
 	videoBitrate.set_sensitive(false);
 	videoFFpreset.set_sensitive(false);
 }
-void VideoEncoderGui::videoFormatChanget(){
+void EncoderControl::videoFormatChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;
 		aktualizeEncoder();
@@ -62,13 +63,13 @@ void VideoEncoderGui::videoFormatChanget(){
 		sendUserInputSignal();
 	}
 }
-void VideoEncoderGui::saveSettingsState(){
+void EncoderControl::saveSettingsState(){
 	videoFormat.save_actual_state();
 	videoEncoder.save_actual_state();
 	videoBitrate.save_actual_state();
 	videoFFpreset.save_actual_state();
 }
-void VideoEncoderGui::restoreSettingsState(){
+void EncoderControl::restoreSettingsState(){
 	isEnableSignals = false;
 	videoFormat.restor_saved_state();
 	videoEncoder.restor_saved_state();
@@ -77,10 +78,10 @@ void VideoEncoderGui::restoreSettingsState(){
 	isEnableSignals = true;
 }
 
-sigc::signal<void>& VideoEncoderGui::signalUserInput(){
+sigc::signal<void>& EncoderControl::signalUserInput(){
 	return userEvent;
 }
-bool VideoEncoderGui::checkSettingsComplete(std::string& message){
+bool EncoderControl::checkSettingsComplete(std::string& message){
 	if(!videoFormat.isSelectedActivableRow()){
 		message = "Video format is not set";
 		return false;
@@ -99,7 +100,7 @@ bool VideoEncoderGui::checkSettingsComplete(std::string& message){
 	}
 	return true;
 }
-void VideoEncoderGui::videoEncoderChanget(){
+void EncoderControl::videoEncoderChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;
 		aktualizeBitrate();
@@ -109,16 +110,17 @@ void VideoEncoderGui::videoEncoderChanget(){
 	}
 }
 
-void VideoEncoderGui::videoBitrateChanget(){
+void EncoderControl::videoBitrateChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;
-		aktualizeFFpreset();
+		std::cout<<"videoBitrateChanget"<<std::endl;
+		//aktualizeFFpreset();
 		isEnableSignals = true;
 		sendUserInputSignal();
 	}
 }
 
-void VideoEncoderGui::videoFFpresetChanget(){
+void EncoderControl::videoFFpresetChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;
 
@@ -139,7 +141,7 @@ void VideoEncoderGui::videoFFpresetChanget(){
 	}
 }
 
-void VideoEncoderGui::setFormatsFromContainer(const ConverterOptions::Container& container){
+void EncoderControl::setFormatsFromContainer(const ConverterOptions::Container& container){
 	bool isSet = videoFormat.is_selected();
 	std::string actualFormat = "";
 	if(isSet){
@@ -158,7 +160,7 @@ void VideoEncoderGui::setFormatsFromContainer(const ConverterOptions::Container&
 		videoFormat.set_active_text(actualFormat);
 	}
 }
-void VideoEncoderGui::aktualizeEncoder(){
+void EncoderControl::aktualizeEncoder(){
 	if(!videoFormat.isSelectedActivableRow()){
 		videoEncoder.set_sensitive(false);
 		return;
@@ -183,7 +185,7 @@ void VideoEncoderGui::aktualizeEncoder(){
 	}
 }
 
-void VideoEncoderGui::aktualizeBitrate(){
+void EncoderControl::aktualizeBitrate(){
 	if(!videoEncoder.isSelectedActivableRow()){
 		videoBitrate.set_sensitive(false);
 		return;
@@ -207,7 +209,7 @@ void VideoEncoderGui::aktualizeBitrate(){
 	}
 }
 
-void VideoEncoderGui::aktualizeFFpreset(const std::string name){
+void EncoderControl::aktualizeFFpreset(const std::string name){
 	if(!videoEncoder.isSelectedActivableRow() || !videoEncoder.get_active_row_item().hasFFpreset()){
 		videoFFpreset.set_sensitive(false);
 		return;
@@ -234,11 +236,11 @@ void VideoEncoderGui::aktualizeFFpreset(const std::string name){
 	videoFFpreset.append(EXTEND_SETTING);
 }
 
-void VideoEncoderGui::sendUserInputSignal(){
+void EncoderControl::sendUserInputSignal(){
 	userEvent();
 }
 
-void VideoEncoderGui::initFileChooserDialog(Gtk::FileChooserDialog &fileChooserDialog) {
+void EncoderControl::initFileChooserDialog(Gtk::FileChooserDialog &fileChooserDialog) {
 	fileChooserDialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 	fileChooserDialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
 	Glib::RefPtr<Gtk::FileFilter> filterFFpresets = Gtk::FileFilter::create();
@@ -251,4 +253,5 @@ void VideoEncoderGui::initFileChooserDialog(Gtk::FileChooserDialog &fileChooserD
 	fileChooserDialog.add_filter(filterAny);
 }
 
+}
 } /* namespace Gui */

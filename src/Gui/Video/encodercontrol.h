@@ -5,23 +5,24 @@
  *      Author: martint
  */
 
-#ifndef VIDEOENCODERGUI_H_
-#define VIDEOENCODERGUI_H_
+#ifndef ENCODERCONTROL_H_
+#define ENCODERCONTROL_H_
 
 #include <gtkmm/builder.h>
 #include "../../ConverterOptions/optionsdatabase.h"
-#include "../comboboxext.h"
+#include "../WidgetAdapter/comboboxext.h"
 #include <sigc++/signal.h>
 #include <gtkmm/filechooserdialog.h>
-#include "videoresolutiongui.h"
+#include "resolutioncontrol.h"
 
 namespace Gui {
+namespace Video {
 
-class VideoEncoderGui {
+class EncoderControl {
 public:
-	VideoEncoderGui(ConverterOptions::OptionsDatabase &database,
+	EncoderControl(ConverterOptions::OptionsDatabase &database,
 			const Glib::RefPtr<Gtk::Builder>& refGlade);
-	virtual ~VideoEncoderGui();
+	virtual ~EncoderControl();
 	void aktualizeSettings(const bool& isVideoActive, const ConverterOptions::Container& container);
 	void disableSettings();
 	void saveSettingsState();
@@ -29,10 +30,10 @@ public:
 	sigc::signal<void>& signalUserInput();
 	bool checkSettingsComplete(std::string& message);
 private:
-	void videoFormatChanget();
-	void videoEncoderChanget();
-	void videoBitrateChanget();
-	void videoFFpresetChanget();
+	void videoFormatChanged();
+	void videoEncoderChanged();
+	void videoBitrateChanged();
+	void videoFFpresetChanged();
 
 	void setFormatsFromContainer(const ConverterOptions::Container& container);
 	void aktualizeEncoder();
@@ -53,5 +54,6 @@ private:
 	Gtk::FileChooserDialog ffpresetChooser;
 };
 
+}
 } /* namespace Gui */
-#endif /* VIDEOENCODERGUI_H_ */
+#endif /* ENCODERCONTROL_H_ */

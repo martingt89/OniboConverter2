@@ -16,7 +16,7 @@
 #include <gtkmm/notebook.h>
 #include "../Profile/profile.h"
 #include "../ConverterOptions/optionsdatabase.h"
-#include "mainsettings.h"
+#include "avcontrol.h"
 
 namespace Gui {
 
@@ -30,13 +30,16 @@ private:
 	void settingsButtonClicked();
 	void okSettingsButtonClicked();
 	void cancelSettingsButtonClicked();
+
 	ConverterOptions::OptionsDatabase &database;
-	MainSettings mainSettings;
+	AVControl mainSettings;
 	Gtk::Window* mainWindow;
 	Gtk::Button* settingsButton;
 	Gtk::Button* okSettingsButton;
 	Gtk::Button* cancelSettingsButton;
 	Gtk::Notebook* mainNotebook;
+
+	Gtk::Entry* entry;
 };
 
 } /* namespace Gui */

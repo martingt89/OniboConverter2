@@ -5,20 +5,21 @@
  *      Author: martint
  */
 
-#ifndef VIDEORESOLUTIONGUI_H_
-#define VIDEORESOLUTIONGUI_H_
+#ifndef RESOLUTIONCONTROL_H_
+#define RESOLUTIONCONTROL_H_
 
 #include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
-#include "../comboboxext.h"
+#include "../WidgetAdapter/comboboxext.h"
 #include "../../ConverterOptions/optionsdatabase.h"
 
 namespace Gui {
+namespace Video {
 
-class VideoResolutionGui {
+class ResolutionControl {
 private:
 	class ModelColumns : public Gtk::TreeModel::ColumnRecord{
 	public:
@@ -34,9 +35,9 @@ private:
 		Gtk::TreeModelColumn<ConverterOptions::Resolution> resolution;
 	};
 public:
-	VideoResolutionGui(ConverterOptions::OptionsDatabase &database,
+	ResolutionControl(ConverterOptions::OptionsDatabase &database,
 			const Glib::RefPtr<Gtk::Builder>& refGlade);
-	virtual ~VideoResolutionGui();
+	virtual ~ResolutionControl();
 	bool start(ConverterOptions::Resolution& resolution);
 private:
 	void doubleClickOnBoard(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn*);
@@ -62,5 +63,6 @@ private:
 	bool isEnableSignal;
 };
 
+}
 } /* namespace Gui */
-#endif /* VIDEORESOLUTIONGUI_H_ */
+#endif /* RESOLUTIONCONTROL_H_ */

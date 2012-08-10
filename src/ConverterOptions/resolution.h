@@ -49,7 +49,7 @@ public:
 	std::list<Resolution> getResolutionsByAspectRatio(const std::string& aspectRatio) const;
 	std::list<AspectRatio> getAspectRatios() const;
 	std::list<Resolution> getResolutions() const;
-	std::string getNameByResolution(const int& x, const int& y) const;
+	Resolution getResolutionBySize(const int& x, const int& y, bool& found) const;
 private:
 	std::map<std::string, std::list<Resolution> > resolutions; //todo
 };

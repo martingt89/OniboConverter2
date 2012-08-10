@@ -5,17 +5,18 @@
  *      Author: martint
  */
 
-#include "videoresolutiongui.h"
+#include "resolutioncontrol.h"
 
 #include <gtkmm/stock.h>
 #include "../../helper.h"
 #include <vector>
 
 namespace Gui {
+namespace Video {
 static const std::string INVALID_RESOLUTION = "Invalid final resolution";
 static const std::string CUSTOM_MODE = "--- custom ---";
 
-VideoResolutionGui::VideoResolutionGui(ConverterOptions::OptionsDatabase &database,
+ResolutionControl::ResolutionControl(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database),
 				aspectRatio(refGlade, "aspectRatio"){
 
@@ -54,18 +55,18 @@ VideoResolutionGui::VideoResolutionGui(ConverterOptions::OptionsDatabase &databa
 	  pColumn->set_sort_column(model.colResolution);
 
 	resolutionCanavas->signal_row_activated().connect(
-			sigc::mem_fun(this, &VideoResolutionGui::doubleClickOnBoard));
+			sigc::mem_fun(this, &ResolutionControl::doubleClickOnBoard));
 	treeSelection->signal_changed().connect(
-		    sigc::mem_fun(*this, &VideoResolutionGui::clickOnBoard));
+		    sigc::mem_fun(*this, &ResolutionControl::clickOnBoard));
 	resolutionEntryX->signal_changed().connect(
-		    sigc::mem_fun(*this, &VideoResolutionGui::changedX));
+		    sigc::mem_fun(*this, &ResolutionControl::changedX));
 	resolutionEntryY->signal_changed().connect(
-		    sigc::mem_fun(*this, &VideoResolutionGui::changedY));
+		    sigc::mem_fun(*this, &ResolutionControl::changedY));
 	aspectRatio.signal_changed().connect(
-		    sigc::mem_fun(*this, &VideoResolutionGui::aspectChanged));
+		    sigc::mem_fun(*this, &ResolutionControl::aspectChanged));
 }
 
-VideoResolutionGui::~VideoResolutionGui() {
+ResolutionControl::~ResolutionControl() {
 	delete resolutionDialog;
 	delete resolutionEntryX;
 	delete resolutionEntryY;
@@ -73,7 +74,7 @@ VideoResolutionGui::~VideoResolutionGui() {
 	delete resolutionError;
 }
 
-bool VideoResolutionGui::start(ConverterOptions::Resolution& resolution){
+bool ResolutionControl::start(ConverterOptions::Resolution& resolution){
 	resolutionError->set_text("");
 	while(1){
 		int res = resolutionDialog->run();
@@ -86,7 +87,13 @@ bool VideoResolutionGui::start(ConverterOptions::Resolution& resolution){
 				continue;
 			}
 			std::string aspect = calcAspect(x, y);
-			std::string name = database.getResolutions().getNameByResolution(x, y);
+			std::string name = "";
+			bool found = false;
+			ConverterOptions::Resolution res = database.getResolutions().getResolutionBySize(x, y, found);
+			if(found){
+				aspect = res.getAspectRatio();
+				name = res.getName();
+			}
 			resolution = ConverterOptions::Resolution(name, aspect, x, y, false);
 			resolutionDialog->hide();
 			return true;
@@ -96,7 +103,7 @@ bool VideoResolutionGui::start(ConverterOptions::Resolution& resolution){
 	resolutionDialog->hide();
 	return false;
 }
-void VideoResolutionGui::initAspectRatio(ComboBoxExt<ConverterOptions::AspectRatio>& aspectRatio){
+void ResolutionControl::initAspectRatio(ComboBoxExt<ConverterOptions::AspectRatio>& aspectRatio){
 	aspectRatio.append(CUSTOM_MODE);
 	aspectRatio.set_active_row_number(0);
 
@@ -105,7 +112,7 @@ void VideoResolutionGui::initAspectRatio(ComboBoxExt<ConverterOptions::AspectRat
 		aspectRatio.append((std::string)*aspectIter, *aspectIter);
 	}
 }
-void VideoResolutionGui::fillCanavas(Glib::RefPtr<Gtk::ListStore>& treeModel){
+void ResolutionControl::fillCanavas(Glib::RefPtr<Gtk::ListStore>& treeModel){
 	treeModel->clear();
 	if(aspectRatio.is_set_first()){	//custom mode
 		auto resolutionList = database.getResolutions().getResolutions();
@@ -133,7 +140,7 @@ void VideoResolutionGui::fillCanavas(Glib::RefPtr<Gtk::ListStore>& treeModel){
 		});
 	}
 }
-void VideoResolutionGui::changedX(){
+void ResolutionControl::changedX(){
 	if(isEnableSignal){
 		isEnableSignal = false;
 		if(!aspectRatio.is_set_first()){
@@ -144,7 +151,7 @@ void VideoResolutionGui::changedX(){
 		isEnableSignal = true;
 	}
 }
-void VideoResolutionGui::changedY(){
+void ResolutionControl::changedY(){
 	if(isEnableSignal){
 		isEnableSignal = false;
 		if(!aspectRatio.is_set_first()){
@@ -155,7 +162,7 @@ void VideoResolutionGui::changedY(){
 		isEnableSignal = true;
 	}
 }
-void VideoResolutionGui::doubleClickOnBoard(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn*){
+void ResolutionControl::doubleClickOnBoard(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn*){
 	Gtk::TreeModel::Row row = *(treeModel->get_iter(path));
 	if(row){
 		ConverterOptions::Resolution resol = row[model.resolution];
@@ -163,7 +170,7 @@ void VideoResolutionGui::doubleClickOnBoard(const Gtk::TreeModel::Path& path, Gt
 		resolutionDialog->response(Gtk::RESPONSE_OK);
 	}
 }
-void VideoResolutionGui::clickOnBoard(){
+void ResolutionControl::clickOnBoard(){
 	std::vector<Gtk::TreeModel::Path> rows = treeSelection->get_selected_rows();
 	if(rows.size() > 0){
 		Gtk::TreeModel::Row row = *(treeModel->get_iter(rows[0]));
@@ -171,21 +178,21 @@ void VideoResolutionGui::clickOnBoard(){
 		setResolutiontoEntry(resol);
 	}
 }
-void VideoResolutionGui::aspectChanged(){
+void ResolutionControl::aspectChanged(){
 	fillCanavas(treeModel);
 }
-void VideoResolutionGui::setResolutiontoEntry(const ConverterOptions::Resolution& resolution){
+void ResolutionControl::setResolutiontoEntry(const ConverterOptions::Resolution& resolution){
 	isEnableSignal = false;
 	resolutionEntryX->set_text(toS(resolution.getValue().first));
 	resolutionEntryY->set_text(toS(resolution.getValue().second));
 	isEnableSignal = true;
 }
-std::string VideoResolutionGui::calcAspect(const int& x, const int& y){
+std::string ResolutionControl::calcAspect(const int& x, const int& y){
 	int nsd = NSD(x, y);
 	int tx = x / nsd;
 	int ty = y / nsd;
 	return toS(tx)+":"+toS(ty);
 }
 
-
+}
 } /* namespace Gui */

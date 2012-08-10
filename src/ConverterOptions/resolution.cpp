@@ -60,15 +60,17 @@ std::list<Resolution> Resolutions::getResolutions() const{
 	return resolution;
 }
 
-std::string Resolutions::getNameByResolution(const int& x, const int& y) const{
+Resolution Resolutions::getResolutionBySize(const int& x, const int& y, bool& found) const{
 	auto resol = getResolutions();
 	auto find = std::find_if(resol.begin(), resol.end(), [&, x, y](const Resolution& resolution) -> bool{
 		return (resolution.getValue().first == x) && (resolution.getValue().second == y);
 	});
 	if(find != resol.end()){
-		return find->getName();
+		found = true;
+		return *find;
 	}
-	return "";
+	found = false;
+	return Resolution();
 }
 
 AspectRatio::AspectRatio(){

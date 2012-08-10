@@ -5,10 +5,10 @@
  *      Author: martint
  */
 
-#include "mainsettings.h"
+#include "avcontrol.h"
 namespace Gui {
 
-MainSettings::MainSettings(ConverterOptions::OptionsDatabase &database,
+AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database),
 				videoSettingsGui(database, refGlade), containers(refGlade, "containres") {
 
@@ -18,15 +18,15 @@ MainSettings::MainSettings(ConverterOptions::OptionsDatabase &database,
 	initContainers(database, containers);
 	videoSettingsGui.disableSettings();
 
-	containers.signal_changed().connect(sigc::mem_fun(*this, &MainSettings::containerChanged));
+	containers.signal_changed().connect(sigc::mem_fun(*this, &AVControl::containerChanged));
 	//videoSettingsGui.signalUserInput().connect(sigc::mem_fun(*this, &MainSettings::userInput));
 }
 
-MainSettings::~MainSettings() {
+AVControl::~AVControl() {
 	// TODO Auto-generated destructor stub
 }
 
-bool MainSettings::checkSettingsComplete(std::string& message){
+bool AVControl::checkSettingsComplete(std::string& message){
 	message = "";
 	if(!containers.isSelectedActivableRow()){
 		message = "Container is not set";
@@ -39,20 +39,20 @@ bool MainSettings::checkSettingsComplete(std::string& message){
 	//audio settings
 	return true;
 }
-void MainSettings::saveSettingsState(){
+void AVControl::saveSettingsState(){
 	containers.save_actual_state();
 	videoSettingsGui.saveSettingsState();
 }
-void MainSettings::restoreSettingsState(){
+void AVControl::restoreSettingsState(){
 	isEnabledSignal = false;
 	containers.restor_saved_state();
 	videoSettingsGui.restoreSettingsState();
 	isEnabledSignal = true;
 }
-void MainSettings::userInput(){
+void AVControl::userInput(){
 //	std::cout<<"user input"<<std::endl;
 }
-void MainSettings::containerChanged(){
+void AVControl::containerChanged(){
 	if(isEnabledSignal){
 		isEnabledSignal = false;
 		if(containers.isSelectedActivableRow()){
@@ -62,7 +62,7 @@ void MainSettings::containerChanged(){
 		isEnabledSignal = true;
 	}
 }
-void MainSettings::initContainers(ConverterOptions::OptionsDatabase &database,
+void AVControl::initContainers(ConverterOptions::OptionsDatabase &database,
 		ComboBoxExt<ConverterOptions::Container> &containers){
 	std::list<ConverterOptions::Container> cont = database.getContainers().getContainers();
 	for(auto containerIter = cont.begin(); containerIter!= cont.end(); ++containerIter){

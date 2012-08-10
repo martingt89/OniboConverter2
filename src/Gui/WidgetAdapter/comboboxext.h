@@ -10,7 +10,7 @@
 
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/builder.h>
-#include "../helper.h"
+#include "../../helper.h"
 
 template<class T>
 class ComboBoxExt{
@@ -35,8 +35,30 @@ public:
 			comboBoxText->set_sensitive(false);
 		}
 	}
-	//
+	void insertAfterLast(const std::string& text, const T &item = T()){
+		const int lastIndex = items.size()-1;
+		if(lastIndex >= 0){
 
+			const std::string lastText = items[lastIndex].first;
+			const T lastItem = items[lastIndex].second;
+
+			comboBoxText->remove_text(lastIndex);
+			items.pop_back();
+
+			this->append(text, item);
+			this->append(lastText, lastItem);
+		}else{
+			this->append(text, item);
+		}
+	}
+	//
+	bool containes(const std::string& text){
+		auto iter = std::find_if(items.begin(), items.end(),
+				[text](const std::pair<std::string, T>& pair) -> bool {
+			return pair.first == text;
+		});
+		return iter != items.end();
+	}
 	bool isSelectedIfActivable(){
 		if(/*isActivable &&*/ is_sensitive()){
 			return is_selected();

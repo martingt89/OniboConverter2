@@ -5,11 +5,12 @@
  *      Author: martint
  */
 
-#include "videosettingsgui.h"
+#include "videocontrol.h"
 #include "../../helper.h"
 #include <iostream> //todo remove
 
 namespace Gui {
+namespace Video {
 static const std::string ORIGINAL = "original";
 
 static const std::string COPY_MODE = "copy";
@@ -131,7 +132,13 @@ void VideoSettingsGui::videoResolutinChanged(){
 		if(videoResolution.is_set_last()){
 			ConverterOptions::Resolution newResolution;
 			if(resolutionDialog.start(newResolution)){
-				std::cout<<"Nastavene"<<std::endl;
+				std::string resolutionDescription = createResolutionText(newResolution);
+				if(videoResolution.containes(resolutionDescription)){
+					videoResolution.set_active_text(resolutionDescription);
+				}else{
+					videoResolution.insertAfterLast(resolutionDescription, newResolution);
+					videoResolution.set_active_text(resolutionDescription);
+				}
 			}else{
 				videoResolution.unset_active();
 			}
@@ -161,9 +168,7 @@ void VideoSettingsGui::initVideoResolution(ComboBoxExt<ConverterOptions::Resolut
 
 	for(auto resolIter = resolutions.begin(); resolIter != resolutions.end(); ++resolIter){
 		if(resolIter->isBasic()){
-			std::string resolution = toS(resolIter->getValue().first)+" x "+toS(resolIter->getValue().second);
-			resolution = resolution + "\t" + (std::string)resolIter->getAspectRatio();
-			videoResolution.append(resolution, *resolIter);
+			videoResolution.append(createResolutionText(*resolIter), *resolIter);
 		}
 	}
 	videoResolution.append("--- more ---");
@@ -171,4 +176,10 @@ void VideoSettingsGui::initVideoResolution(ComboBoxExt<ConverterOptions::Resolut
 void VideoSettingsGui::sendUserInputSignal(){
 	userEvent();
 }
+std::string VideoSettingsGui::createResolutionText(const ConverterOptions::Resolution& resolution){
+	std::string resol = toS(resolution.getValue().first)+" x "+toS(resolution.getValue().second);
+	return resol + "\t" + (std::string)resolution.getAspectRatio();
+}
+}
+
 } /* namespace Gui */

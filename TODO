@@ -1,8 +1,13 @@
+Main
+ - 2 pass encoding
 Video mode:
- - rozsirene enkodery
+ - rozsirene enkodery	//low priority
  - ulozenie bitrate
- - ulozenie rozlisenia
  
 Audio mode:
  - pridat kanaly do xml
- - implementovat
+ - implementovat rozhranie
+ 
+ - implementovat special settings	//low priority
+ 
+ - implementovat profily!!!

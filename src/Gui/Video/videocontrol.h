@@ -5,16 +5,17 @@
  *      Author: martint
  */
 
-#ifndef VIDEOSETTINGSGUI_H_
-#define VIDEOSETTINGSGUI_H_
+#ifndef VIDEOCONTROL_H_
+#define VIDEOCONTROL_H_
 
 #include <gtkmm/builder.h>
 #include "../../ConverterOptions/optionsdatabase.h"
-#include "../comboboxext.h"
-#include "videoencodergui.h"
-#include "videoresolutiongui.h"
+#include "../WidgetAdapter/comboboxext.h"
+#include "encodercontrol.h"
+#include "resolutioncontrol.h"
 
 namespace Gui {
+namespace Video {
 
 class VideoSettingsGui {
 public:
@@ -35,18 +36,20 @@ private:
 	void initVideoFramerate(ComboBoxExt<ConverterOptions::Framerate> &videoFramerate);
 	void initVideoResolution(ComboBoxExt<ConverterOptions::Resolution> &videoResolution);
 	void sendUserInputSignal();
+	std::string createResolutionText(const ConverterOptions::Resolution& resolution);
 	ConverterOptions::OptionsDatabase &database;
 
 	sigc::signal<void> userEvent;
-	VideoEncoderGui encoder;
+	EncoderControl encoder;
 	ConverterOptions::Container actualContainer;
 	bool isEnabledSignals;
 
 	ComboBoxExt<int> videoMode;
 	ComboBoxExt<ConverterOptions::Framerate> videoFramerate;
 	ComboBoxExt<ConverterOptions::Resolution> videoResolution;
-	VideoResolutionGui resolutionDialog;
+	ResolutionControl resolutionDialog;
 };
 
+}
 } /* namespace Gui */
-#endif /* VIDEOSETTINGSGUI_H_ */
+#endif /* VIDEOCONTROL_H_ */

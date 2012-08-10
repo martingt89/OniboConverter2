@@ -5,20 +5,20 @@
  *      Author: martint
  */
 
-#ifndef MAINSETTINGS_H_
-#define MAINSETTINGS_H_
+#ifndef AVCONTROL_H_
+#define AVCONTROL_H_
 
 #include <gtkmm/builder.h>
 #include "../ConverterOptions/optionsdatabase.h"
-#include "comboboxext.h"
-#include "Video/videosettingsgui.h"
+#include "WidgetAdapter/comboboxext.h"
+#include "Video/videocontrol.h"
 
 namespace Gui {
 
-class MainSettings {
+class AVControl {
 public:
-	MainSettings(ConverterOptions::OptionsDatabase &database, const Glib::RefPtr<Gtk::Builder>& refGlade);
-	virtual ~MainSettings();
+	AVControl(ConverterOptions::OptionsDatabase &database, const Glib::RefPtr<Gtk::Builder>& refGlade);
+	virtual ~AVControl();
 	bool checkSettingsComplete(std::string& message);
 	void saveSettingsState();
 	void restoreSettingsState();
@@ -29,11 +29,11 @@ private:
 			ComboBoxExt<ConverterOptions::Container> &containers);
 
 	ConverterOptions::OptionsDatabase &database;
-	VideoSettingsGui videoSettingsGui;
+	Video::VideoSettingsGui videoSettingsGui;
 	ComboBoxExt<ConverterOptions::Container> containers;
 	bool multiPassState;
 	bool isEnabledSignal;
 };
 
 } /* namespace Gui */
-#endif /* MAINSETTINGS_H_ */
+#endif /* AVCONTROL_H_ */

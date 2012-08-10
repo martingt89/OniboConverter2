@@ -18,10 +18,10 @@ $(SRCPATH)/RegexTools/regextools.cpp \
 $(SRCPATH)/CppExtension/path.cpp \
 $(SRCPATH)/Profile/profile.cpp \
 $(SRCPATH)/Gui/convertergui.cpp \
-$(SRCPATH)/Gui/mainsettings.cpp \
-$(SRCPATH)/Gui/Video/videosettingsgui.cpp \
-$(SRCPATH)/Gui/Video/videoencodergui.cpp \
-$(SRCPATH)/Gui/Video/videoresolutiongui.cpp \
+$(SRCPATH)/Gui/avcontrol.cpp \
+$(SRCPATH)/Gui/Video/videocontrol.cpp \
+$(SRCPATH)/Gui/Video/encodercontrol.cpp \
+$(SRCPATH)/Gui/Video/resolutioncontrol.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 
