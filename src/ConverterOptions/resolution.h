@@ -29,18 +29,21 @@ private:
 
 class Resolution {
 public:
-	Resolution(){basic = false;};
+	Resolution(){basic = false; isset = false;};
 	Resolution(std::string name, std::string aspectRatio, int x, int y, bool isBasic);
+	bool isSet();
 	std::pair<int, int> getValue() const;
 	std::string getName() const;
 	AspectRatio getAspectRatio() const;
 	bool isBasic() const;
 	bool operator<(const Resolution& res2);
+	operator std::string() const;
 private:
 	std::pair<int, int> resolution;
 	AspectRatio aspectRatio;
 	std::string name;
 	bool basic;
+	bool isset;
 };
 
 class Resolutions{

@@ -46,6 +46,7 @@ private:
 
 	sigc::signal<void> userEvent;
 	bool isEnableSignals;
+	bool isUserInput;
 	ConverterOptions::OptionsDatabase &database;
 
 	ComboBoxExt<ConverterOptions::Format> videoFormat;
@@ -54,6 +55,8 @@ private:
 	ComboBoxExt<Path> videoFFpreset;
 	Gtk::FileChooserDialog ffpresetChooser;
 	BitrateDialog bitrateDialog;
+
+	ConverterOptions::Bitrate lastSetBitrate;
 };
 
 }

@@ -33,6 +33,7 @@ private:
 	ComboBoxExt<ConverterOptions::Container> containers;
 	bool multiPassState;
 	bool isEnabledSignal;
+	bool isUserInput;
 };
 
 } /* namespace Gui */

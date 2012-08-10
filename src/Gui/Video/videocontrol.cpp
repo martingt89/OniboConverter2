@@ -12,7 +12,8 @@
 namespace Gui {
 namespace Video {
 
-static const std::string ORIGINAL = "original";
+static const std::string ORIGINAL = "--- original ---";
+static const std::string MORE_SETTINGS = "--- more ---";
 
 static const std::string COPY_MODE = "copy";
 static const int COPY_MODE_ID = 0;
@@ -54,18 +55,18 @@ void VideoSettingsGui::videoContainerChanged(const ConverterOptions::Container& 
 	actualContainer = container;
 	if(container.getContainerType() == ConverterOptions::Container::CONTAINER_TYPE_AUDIO){
 		disableSettings();
-		return;
-	}
-	bool isSelected = videoMode.is_selected();
-	bool isEnableVideo = isSelected && (videoMode.get_active_row_item() == CUSTOM_MODE_ID);
-	encoder.aktualizeSettings(isEnableVideo, container);
-
-	if(isEnableVideo){
-		videoFramerate.set_sensitive(true);
-		videoResolution.set_sensitive(true);
 	}else{
-		videoFramerate.set_sensitive(false);
-		videoResolution.set_sensitive(false);
+		bool isSelected = videoMode.is_selected();
+		bool isEnableVideo = isSelected && (videoMode.get_active_row_item() == CUSTOM_MODE_ID);
+		encoder.aktualizeSettings(isEnableVideo, container);
+
+		if(isEnableVideo){
+			videoFramerate.set_sensitive(true);
+			videoResolution.set_sensitive(true);
+		}else{
+			videoFramerate.set_sensitive(false);
+			videoResolution.set_sensitive(false);
+		}
 	}
 }
 
@@ -104,7 +105,7 @@ bool VideoSettingsGui::checkSettingsComplete(std::string& message){
 	return true;
 }
 void VideoSettingsGui::encoderUserInput(){
-	//std::cout<<"Encoder user input"<<std::endl;
+	sendUserInputSignal();
 }
 void VideoSettingsGui::videoModeChanged(){
 	if(isEnabledSignals){
@@ -133,7 +134,8 @@ void VideoSettingsGui::videoResolutinChanged(){
 		if(videoResolution.is_set_last()){
 			ConverterOptions::Resolution newResolution;
 			if(resolutionDialog.start(newResolution)){
-				std::string resolutionDescription = createResolutionText(newResolution);
+				std::string resolutionDescription = newResolution;
+				database.addUserResolution(newResolution);
 				if(videoResolution.containes(resolutionDescription)){
 					videoResolution.set_active_text(resolutionDescription);
 				}else{
@@ -141,11 +143,16 @@ void VideoSettingsGui::videoResolutinChanged(){
 					videoResolution.set_active_text(resolutionDescription);
 				}
 			}else{
-				videoResolution.unset_active();
+				if(lastSetResolution.isSet()){
+					videoResolution.set_active_text(lastSetResolution);
+				}else{
+					videoResolution.set_active_row_number(0);
+				}
 			}
 		}
 		sendUserInputSignal();
 	}
+	lastSetResolution = videoResolution.get_active_row_item();
 }
 void VideoSettingsGui::initVideoMode(ComboBoxExt<int> &videoMode){
 	videoMode.append(COPY_MODE, COPY_MODE_ID);
@@ -169,18 +176,15 @@ void VideoSettingsGui::initVideoResolution(ComboBoxExt<ConverterOptions::Resolut
 
 	for(auto resolIter = resolutions.begin(); resolIter != resolutions.end(); ++resolIter){
 		if(resolIter->isBasic()){
-			videoResolution.append(createResolutionText(*resolIter), *resolIter);
+			videoResolution.append((std::string)*resolIter, *resolIter);
 		}
 	}
-	videoResolution.append("--- more ---");
+	videoResolution.append(MORE_SETTINGS);
 }
 void VideoSettingsGui::sendUserInputSignal(){
 	userEvent();
 }
-std::string VideoSettingsGui::createResolutionText(const ConverterOptions::Resolution& resolution){
-	std::string resol = toS(resolution.getValue().first)+" x "+toS(resolution.getValue().second);
-	return resol + "\t" + (std::string)resolution.getAspectRatio();
-}
+
 }
 
 } /* namespace Gui */

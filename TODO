@@ -1,5 +1,8 @@
 Main
  - 2 pass encoding		//low priority
+ 
+ - vytvorenie centralneho uschovneho systemu pre user defined settings
+ 
 Video mode:
  - rozsirene enkodery	//low priority
  - ulozenie bitrate

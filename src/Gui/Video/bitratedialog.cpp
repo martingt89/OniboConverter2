@@ -8,6 +8,7 @@
 #include "bitratedialog.h"
 #include <gtkmm/stock.h>
 #include "../../helper.h"
+#include <iostream>
 
 namespace Gui {
 namespace Video{
@@ -39,16 +40,27 @@ BitrateDialog::BitrateDialog(ConverterOptions::OptionsDatabase &database,
 }
 
 BitrateDialog::~BitrateDialog() {
-	// TODO Auto-generated destructor stub
+	delete videoBitrateDialog;
+	delete vbdMinBitrate;
+	delete vbdMaxBitrate;
+	delete vbdDispersion;
+	delete vbdMinEnable;
+	delete vbdMaxEnable;
+	delete vbdDisperEnable;
+	delete vbdError;
 }
 bool BitrateDialog::start(const ConverterOptions::Encoder& encoder, ConverterOptions::Bitrate &bitrate){
 	auto bitrates = encoder.getBitrates();
+	auto userBitrates = database.getUserVideoBitrate();
+	std::copy(userBitrates.begin(), userBitrates.end(), std::back_inserter(bitrates));
 	vbdError->set_visible(false);
 	vbdBitrate.remove_all();
 	for(auto bitIter = bitrates.begin(); bitIter != bitrates.end(); ++bitIter){
-		vbdBitrate.append(toS(bitIter->getValue()), *bitIter);
+		vbdBitrate.append(*bitIter, *bitIter);
 	}
-	vbdBitrate.set_active_row_number(0);
+	vbdBitrate.set_active_text((std::string)bitrate);
+	vbdMinBitrate->set_value(bitrate.getMinBitrate());
+	vbdMaxBitrate->set_value(bitrate.getMaxBitrate());
 	while(1){
 		int res = videoBitrateDialog->run();
 		if(res == Gtk::RESPONSE_OK){

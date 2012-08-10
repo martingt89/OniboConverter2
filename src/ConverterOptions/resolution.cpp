@@ -15,8 +15,11 @@ Resolution::Resolution(std::string name, std::string aspectRatio, int x, int y, 
 		resolution(x,y), aspectRatio(aspectRatio) {
 	this->name = name;
 	this->basic = isBasic;
+	isset = true;
 }
-
+bool Resolution::isSet(){
+	return isset;
+}
 std::pair<int, int> Resolution::getValue() const{
 	return resolution;
 }
@@ -31,6 +34,10 @@ bool Resolution::isBasic() const{
 }
 bool Resolution::operator<(const Resolution& res2){
 	return this->resolution.first < res2.getValue().first;
+}
+Resolution::operator std::string() const{
+	std::string resol = toS(resolution.first)+" x "+toS(resolution.second);
+	return resol + "\t" + (std::string)this->getAspectRatio();
 }
 void Resolutions::addResolution(const Resolution& resolution){
 	resolutions[resolution.getAspectRatio()].push_back(resolution);

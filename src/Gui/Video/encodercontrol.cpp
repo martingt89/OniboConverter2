@@ -9,7 +9,6 @@
 #include "../../helper.h"
 #include <gtkmm/stock.h>
 
-#include <iostream> //todo remove
 namespace Gui {
 namespace Video {
 static const std::string EXTEND_SETTING = "--- more ---";
@@ -22,6 +21,7 @@ EncoderControl::EncoderControl(ConverterOptions::OptionsDatabase &database,
 				bitrateDialog(database, refGlade){
 
 	isEnableSignals = true;
+	isUserInput = true;
 	initFileChooserDialog(ffpresetChooser);
 
 	videoFormat.signal_changed().connect(sigc::mem_fun(*this, &EncoderControl::videoFormatChanged));
@@ -115,17 +115,23 @@ void EncoderControl::videoBitrateChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;
 		if(videoBitrate.is_set_last()){
-			ConverterOptions::Bitrate userBitrate;
+			ConverterOptions::Bitrate userBitrate = lastSetBitrate;
 			bool set = bitrateDialog.start(videoEncoder.get_active_row_item(), userBitrate);
 			if(set){
-				videoBitrate.insertAfterLast((std::string)userBitrate, userBitrate);	//todo if exist
+				if(!videoBitrate.containes(userBitrate)){
+					videoBitrate.insertAfterLast((std::string)userBitrate, userBitrate);
+					database.addUserVideoBitrate(userBitrate);
+				}
 				videoBitrate.set_active_text((std::string)userBitrate);
+			}else{
+				videoBitrate.set_active_text((std::string)lastSetBitrate);
 			}
 		}
 
 		isEnableSignals = true;
 		sendUserInputSignal();
 	}
+	lastSetBitrate = videoBitrate.get_active_row_item();
 }
 
 void EncoderControl::videoFFpresetChanged(){
@@ -151,7 +157,7 @@ void EncoderControl::videoFFpresetChanged(){
 
 void EncoderControl::setFormatsFromContainer(const ConverterOptions::Container& container){
 	bool isSet = videoFormat.is_selected();
-	std::string actualFormat = "";
+	std::string actualFormat = "-";
 	if(isSet){
 		actualFormat = videoFormat.get_active_text();
 	}
@@ -167,6 +173,9 @@ void EncoderControl::setFormatsFromContainer(const ConverterOptions::Container& 
 	if(isSet){
 		videoFormat.set_active_text(actualFormat);
 	}
+	if(videoFormat.get_active_text() != actualFormat){
+		videoFormat.set_active_row_number(0);
+	}
 }
 void EncoderControl::aktualizeEncoder(){
 	if(!videoFormat.isSelectedActivableRow()){
@@ -174,7 +183,7 @@ void EncoderControl::aktualizeEncoder(){
 		return;
 	}
 	bool isSet = videoEncoder.is_selected();
-	std::string actualEncoder = "";
+	std::string actualEncoder = "-";
 	if(isSet){
 		actualEncoder = videoEncoder.get_active_text();
 	}
@@ -187,6 +196,9 @@ void EncoderControl::aktualizeEncoder(){
 	});
 	if(isSet){
 		videoEncoder.set_active_text(actualEncoder);
+	}
+	if(videoEncoder.get_active_text() != actualEncoder && encodersList.size() > 0){
+		videoEncoder.set_active_row_number(0);
 	}
 	if(encodersList.size() == 0){
 		videoEncoder.set_sensitive(false);	//todo text "no supported encoder"
@@ -207,6 +219,8 @@ void EncoderControl::aktualizeBitrate(){
 	videoBitrate.remove_all();
 	auto actualEncoder = videoEncoder.get_active_row_item();
 	auto bitratesList = actualEncoder.getBitrates();
+	auto userBitrateList = database.getUserVideoBitrate();
+	std::copy(userBitrateList.begin(), userBitrateList.end(), std::back_inserter(bitratesList));
 	std::for_each(bitratesList.begin(), bitratesList.end(), [&](const ConverterOptions::Bitrate& bitrate){
 		videoBitrate.append((std::string)bitrate, bitrate);
 	});
@@ -246,7 +260,9 @@ void EncoderControl::aktualizeFFpreset(const std::string name){
 }
 
 void EncoderControl::sendUserInputSignal(){
-	userEvent();
+	if(isUserInput){
+		userEvent();
+	}
 }
 
 void EncoderControl::initFileChooserDialog(Gtk::FileChooserDialog &fileChooserDialog) {

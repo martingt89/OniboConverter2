@@ -549,6 +549,7 @@
                       <object class="GtkButton" id="button1">
                         <property name="label" translatable="yes">Special settings</property>
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
@@ -563,6 +564,7 @@
                       <object class="GtkButton" id="button6">
                         <property name="label" translatable="yes">Save profil as</property>
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
@@ -1221,6 +1223,7 @@
                             <child>
                               <object class="GtkComboBoxText" id="comboboxtext3">
                                 <property name="visible">True</property>
+                                <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
                                 <property name="entry_text_column">0</property>
                                 <property name="id_column">0</property>

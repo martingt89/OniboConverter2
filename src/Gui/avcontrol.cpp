@@ -6,6 +6,7 @@
  */
 
 #include "avcontrol.h"
+#include <iostream> //todo remove
 namespace Gui {
 
 AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
@@ -14,12 +15,17 @@ AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 
 	multiPassState = false;
 	isEnabledSignal = true;
+	isUserInput = true;
 
 	initContainers(database, containers);
 	videoSettingsGui.disableSettings();
 
 	containers.signal_changed().connect(sigc::mem_fun(*this, &AVControl::containerChanged));
-	//videoSettingsGui.signalUserInput().connect(sigc::mem_fun(*this, &MainSettings::userInput));
+	videoSettingsGui.signalUserInput().connect(sigc::mem_fun(*this, &AVControl::userInput));
+
+	isUserInput = false;
+	containers.set_active_row_number(0);
+	isUserInput = true;
 }
 
 AVControl::~AVControl() {
@@ -50,7 +56,9 @@ void AVControl::restoreSettingsState(){
 	isEnabledSignal = true;
 }
 void AVControl::userInput(){
-//	std::cout<<"user input"<<std::endl;
+	if(isUserInput){
+		std::cout<<"user input"<<std::endl;
+	}
 }
 void AVControl::containerChanged(){
 	if(isEnabledSignal){

@@ -16,9 +16,13 @@ OptionsDatabase::OptionsDatabase(OptionsLoader* optionsLoader) {
 	resolutions = optionsLoader->loadResolutions();
 }
 
-OptionsDatabase::~OptionsDatabase() {
-	// TODO Auto-generated destructor stub
+OptionsDatabase::~OptionsDatabase() {}
+
+const OptionsDatabase& OptionsDatabase::operator=(const OptionsDatabase& database){
+	return database;
 }
+
+OptionsDatabase::OptionsDatabase(const OptionsDatabase&){}
 
 const Framerates& OptionsDatabase::getFramerates() const{
 	return framerates;
@@ -31,6 +35,25 @@ const Containers& OptionsDatabase::getContainers() const{
 }
 const Resolutions& OptionsDatabase::getResolutions() const{
 	return resolutions;
+}
+void OptionsDatabase::addUserResolution(const Resolution& resolution){
+	userResolutions.push_back(resolution);
+}
+void OptionsDatabase::addUserVideoBitrate(const Bitrate& bitrate){
+	userVideoBitrate.push_back(bitrate);
+}
+void OptionsDatabase::addUserAudioBitrate(const Bitrate& bitrate){
+	userAudioBitrate.push_back(bitrate);
+}
+//
+std::list<Resolution> OptionsDatabase::getUserResolutions() const{
+	return userResolutions;
+}
+std::list<Bitrate> OptionsDatabase::getUserVideoBitrate() const{
+	return userVideoBitrate;
+}
+std::list<Bitrate> OptionsDatabase::getUserAudioBitrate() const{
+	return userAudioBitrate;
 }
 
 } /* namespace ConverterOptions */

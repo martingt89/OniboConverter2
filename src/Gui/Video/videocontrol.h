@@ -36,7 +36,6 @@ private:
 	void initVideoFramerate(ComboBoxExt<ConverterOptions::Framerate> &videoFramerate);
 	void initVideoResolution(ComboBoxExt<ConverterOptions::Resolution> &videoResolution);
 	void sendUserInputSignal();
-	std::string createResolutionText(const ConverterOptions::Resolution& resolution);
 	ConverterOptions::OptionsDatabase &database;
 
 	sigc::signal<void> userEvent;
@@ -48,6 +47,7 @@ private:
 	ComboBoxExt<ConverterOptions::Framerate> videoFramerate;
 	ComboBoxExt<ConverterOptions::Resolution> videoResolution;
 	ResolutionControl resolutionDialog;
+	ConverterOptions::Resolution lastSetResolution;
 };
 
 }
