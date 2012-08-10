@@ -18,7 +18,8 @@ EncoderControl::EncoderControl(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database),
 				videoFormat(refGlade, "videoFormat"), videoEncoder(refGlade, "videoEncoder"),
 				videoBitrate(refGlade, "videoBitrate"), videoFFpreset(refGlade, "videoFFpreset"),
-				ffpresetChooser("Please choose a file", Gtk::FILE_CHOOSER_ACTION_OPEN){
+				ffpresetChooser("Please choose a file", Gtk::FILE_CHOOSER_ACTION_OPEN),
+				bitrateDialog(database, refGlade){
 
 	isEnableSignals = true;
 	initFileChooserDialog(ffpresetChooser);
@@ -113,8 +114,15 @@ void EncoderControl::videoEncoderChanged(){
 void EncoderControl::videoBitrateChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;
-		std::cout<<"videoBitrateChanget"<<std::endl;
-		//aktualizeFFpreset();
+		if(videoBitrate.is_set_last()){
+			ConverterOptions::Bitrate userBitrate;
+			bool set = bitrateDialog.start(videoEncoder.get_active_row_item(), userBitrate);
+			if(set){
+				videoBitrate.insertAfterLast((std::string)userBitrate, userBitrate);	//todo if exist
+				videoBitrate.set_active_text((std::string)userBitrate);
+			}
+		}
+
 		isEnableSignals = true;
 		sendUserInputSignal();
 	}
@@ -200,8 +208,9 @@ void EncoderControl::aktualizeBitrate(){
 	auto actualEncoder = videoEncoder.get_active_row_item();
 	auto bitratesList = actualEncoder.getBitrates();
 	std::for_each(bitratesList.begin(), bitratesList.end(), [&](const ConverterOptions::Bitrate& bitrate){
-		videoBitrate.append(toS(bitrate.getValue()), bitrate);
+		videoBitrate.append((std::string)bitrate, bitrate);
 	});
+	videoBitrate.append(EXTEND_SETTING);
 	if(isSetBitrate){
 		videoBitrate.set_active_text(actualBitrate);
 	}else{

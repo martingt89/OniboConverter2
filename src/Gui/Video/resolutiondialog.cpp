@@ -5,7 +5,7 @@
  *      Author: martint
  */
 
-#include "resolutioncontrol.h"
+#include "resolutiondialog.h"
 
 #include <gtkmm/stock.h>
 #include "../../helper.h"

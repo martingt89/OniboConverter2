@@ -71,7 +71,9 @@ public:
 		return is_sensitive() && is_selected();
 	}
 
-
+	std::string getValue(){
+		return comboBoxText->get_entry_text();
+	}
 
 	void set_active_row_number(int index){
 		comboBoxText->set_active(index);

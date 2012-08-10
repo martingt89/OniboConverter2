@@ -21,7 +21,8 @@ $(SRCPATH)/Gui/convertergui.cpp \
 $(SRCPATH)/Gui/avcontrol.cpp \
 $(SRCPATH)/Gui/Video/videocontrol.cpp \
 $(SRCPATH)/Gui/Video/encodercontrol.cpp \
-$(SRCPATH)/Gui/Video/resolutioncontrol.cpp \
+$(SRCPATH)/Gui/Video/resolutiondialog.cpp \
+$(SRCPATH)/Gui/Video/bitratedialog.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 

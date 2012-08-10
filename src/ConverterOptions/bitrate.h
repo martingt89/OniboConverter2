@@ -9,16 +9,22 @@
 #define BITRATE_H_
 
 #include <list>
+#include <string>
 
 namespace ConverterOptions {
 
 class Bitrate {
 public:
 	Bitrate();
-	Bitrate(int bitrate);
+	Bitrate(int bitrate, int minBitrate = -1, int maxBitrate = -1);
 	int getValue() const;
+	int getMinBitrate() const;
+	int getMaxBitrate() const;
+	operator std::string() const;
 private:
 	int bitrate;
+	int minBitrate;
+	int maxBitrate;
 };
 
 typedef std::list<Bitrate> Bitrates;

@@ -12,7 +12,7 @@
 #include "../../ConverterOptions/optionsdatabase.h"
 #include "../WidgetAdapter/comboboxext.h"
 #include "encodercontrol.h"
-#include "resolutioncontrol.h"
+#include "resolutiondialog.h"
 
 namespace Gui {
 namespace Video {

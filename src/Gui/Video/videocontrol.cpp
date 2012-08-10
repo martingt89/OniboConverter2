@@ -11,6 +11,7 @@
 
 namespace Gui {
 namespace Video {
+
 static const std::string ORIGINAL = "original";
 
 static const std::string COPY_MODE = "copy";

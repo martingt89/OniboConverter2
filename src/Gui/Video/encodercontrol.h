@@ -8,12 +8,13 @@
 #ifndef ENCODERCONTROL_H_
 #define ENCODERCONTROL_H_
 
-#include <gtkmm/builder.h>
-#include "../../ConverterOptions/optionsdatabase.h"
-#include "../WidgetAdapter/comboboxext.h"
 #include <sigc++/signal.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/filechooserdialog.h>
-#include "resolutioncontrol.h"
+#include "resolutiondialog.h"
+#include "bitratedialog.h"
+#include "../WidgetAdapter/comboboxext.h"
+#include "../../ConverterOptions/optionsdatabase.h"
 
 namespace Gui {
 namespace Video {
@@ -52,6 +53,7 @@ private:
 	ComboBoxExt<ConverterOptions::Bitrate> videoBitrate;
 	ComboBoxExt<Path> videoFFpreset;
 	Gtk::FileChooserDialog ffpresetChooser;
+	BitrateDialog bitrateDialog;
 };
 
 }
