@@ -1114,12 +1114,13 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBoxText" id="comboboxtext1">
+                              <object class="GtkComboBoxText" id="audioMode">
                                 <property name="width_request">200</property>
                                 <property name="visible">True</property>
-                                <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
+                                <property name="entry_text_column">0</property>
                                 <property name="popup_fixed_width">False</property>
+                                <property name="id_column">0</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1189,6 +1190,8 @@
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
+                                <property name="entry_text_column">0</property>
+                                <property name="id_column">0</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1296,6 +1299,8 @@
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
+                                <property name="entry_text_column">0</property>
+                                <property name="id_column">0</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1328,10 +1333,11 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBoxText" id="comboboxtext10">
+                              <object class="GtkComboBoxText" id="audioSamplerate">
                                 <property name="visible">True</property>
-                                <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
+                                <property name="entry_text_column">0</property>
+                                <property name="id_column">0</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1396,10 +1402,11 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBoxText" id="comboboxtext5">
+                              <object class="GtkComboBoxText" id="audioChannels">
                                 <property name="visible">True</property>
-                                <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
+                                <property name="entry_text_column">0</property>
+                                <property name="id_column">0</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2971,8 +2978,8 @@
       <widget name="comboboxtext2"/>
       <widget name="comboboxtext3"/>
       <widget name="comboboxtext4"/>
-      <widget name="comboboxtext10"/>
-      <widget name="comboboxtext5"/>
+      <widget name="audioSamplerate"/>
+      <widget name="audioChannels"/>
       <widget name="fixed39"/>
     </widgets>
   </object>

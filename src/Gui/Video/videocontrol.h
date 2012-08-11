@@ -8,6 +8,7 @@
 #ifndef VIDEOCONTROL_H_
 #define VIDEOCONTROL_H_
 
+#include <sigc++/sigc++.h>
 #include <gtkmm/builder.h>
 #include "../../ConverterOptions/optionsdatabase.h"
 #include "../WidgetAdapter/comboboxext.h"
@@ -17,11 +18,11 @@
 namespace Gui {
 namespace Video {
 
-class VideoSettingsGui {
+class VideoControl {
 public:
-	VideoSettingsGui(ConverterOptions::OptionsDatabase &database, const Glib::RefPtr<Gtk::Builder>& refGlade);
-	virtual ~VideoSettingsGui();
-	void videoContainerChanged(const ConverterOptions::Container& container);
+	VideoControl(ConverterOptions::OptionsDatabase &database, const Glib::RefPtr<Gtk::Builder>& refGlade);
+	virtual ~VideoControl();
+	void containerChanged(const ConverterOptions::Container& container);
 	void saveSettingsState();
 	void restoreSettingsState();
 	bool checkSettingsComplete(std::string& message);

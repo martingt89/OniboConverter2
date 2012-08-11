@@ -33,10 +33,12 @@ public:
 	virtual Framerates loadFramerates();
 	virtual Samplerates loadSamplerates();
 	virtual Resolutions loadResolutions();
+	virtual Channels loadChannels();
 private:
 	void extractResolutionsFromNode(xmlpp::Node *xmlNode, Resolutions& resolutions);
 	void extractFrameratesFromNode(xmlpp::Node *xmlNode, Framerates& framerates);
 	void extractSampleratesFromNode(xmlpp::Node *xmlNode, Samplerates& samplerates);
+	void extractChannelsFromNode(xmlpp::Node *xmlNode, Channels& channels);
 	std::string getAttributValueFromNode(const xmlpp::Node *xmlNode, const std::string& attributName);
 	void convertTextResolutionToInts(const std::string& textResolution, int& x, int& y);
 	void extractBitrates(xmlpp::Element* root, std::map<std::string, Bitrates>& nameToBitrates);

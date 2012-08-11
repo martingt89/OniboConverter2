@@ -13,6 +13,7 @@
 #include "container.h"
 #include "resolution.h"
 #include "optionsloader.h"
+#include "channel.h"
 
 namespace ConverterOptions {
 
@@ -24,6 +25,7 @@ public:
 	const Samplerates& getSamplerates() const;
 	const Containers& getContainers() const;
 	const Resolutions& getResolutions() const;
+	const Channels& getChannels() const;
 	//
 	void addUserResolution(const Resolution& resolution);
 	void addUserVideoBitrate(const Bitrate& bitrate);
@@ -39,6 +41,7 @@ private:
 	Samplerates samplerates;
 	Containers containers;
 	Resolutions resolutions;
+	Channels channels;
 
 	std::list<Resolution> userResolutions;
 	std::list<Bitrate> userVideoBitrate;

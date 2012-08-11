@@ -12,6 +12,7 @@
 #include "framerate.h"
 #include "samplerate.h"
 #include "resolution.h"
+#include "channel.h"
 
 namespace ConverterOptions{
 
@@ -22,6 +23,7 @@ public:
 	virtual Framerates loadFramerates() = 0;
 	virtual Samplerates loadSamplerates() = 0;
 	virtual Resolutions loadResolutions() = 0;
+	virtual Channels loadChannels() = 0;
 };
 
 }

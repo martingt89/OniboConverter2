@@ -12,6 +12,7 @@
 #include "../ConverterOptions/optionsdatabase.h"
 #include "WidgetAdapter/comboboxext.h"
 #include "Video/videocontrol.h"
+#include "Audio/audiocontrol.h"
 
 namespace Gui {
 
@@ -29,7 +30,8 @@ private:
 			ComboBoxExt<ConverterOptions::Container> &containers);
 
 	ConverterOptions::OptionsDatabase &database;
-	Video::VideoSettingsGui videoSettingsGui;
+	Video::VideoControl videoControlGui;
+	Audio::AudioControl audioControlGui;
 	ComboBoxExt<ConverterOptions::Container> containers;
 	bool multiPassState;
 	bool isEnabledSignal;

@@ -11,6 +11,7 @@ $(SRCPATH)/ConverterOptions/samplerate.cpp \
 $(SRCPATH)/ConverterOptions/framerate.cpp \
 $(SRCPATH)/ConverterOptions/format.cpp \
 $(SRCPATH)/ConverterOptions/container.cpp \
+$(SRCPATH)/ConverterOptions/channel.cpp \
 $(SRCPATH)/ConverterOptions/optionsloaderxml.cpp \
 $(SRCPATH)/ConverterOptions/ffpreset.cpp \
 $(SRCPATH)/ConverterOptions/supportedencoders.cpp \
@@ -23,6 +24,7 @@ $(SRCPATH)/Gui/Video/videocontrol.cpp \
 $(SRCPATH)/Gui/Video/encodercontrol.cpp \
 $(SRCPATH)/Gui/Video/resolutiondialog.cpp \
 $(SRCPATH)/Gui/Video/bitratedialog.cpp \
+$(SRCPATH)/Gui/Audio/audiocontrol.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 

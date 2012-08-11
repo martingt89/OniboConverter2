@@ -221,4 +221,11 @@
 		<item>29.97</item>
 		<item>30</item>
 	</framerates>
+	
+	<channels>
+		<item name="mono">1</item>
+		<item name="stereo">2</item>
+		<item name="5.1">6</item>
+		<item name="7.1">8</item>
+	</channels>
 </audio_video_parameters>

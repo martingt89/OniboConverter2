@@ -83,7 +83,28 @@ Resolutions OptionsLoaderXml::loadResolutions(){
 	}
 	return resolutions;
 }
-
+Channels OptionsLoaderXml::loadChannels(){
+	xmlpp::Element *root = domParser->get_document()->get_root_node();
+	xmlpp::NodeSet nodeSet = root->find("/audio_video_parameters/channels");
+	Channels channels;
+	for(auto iter = nodeSet.begin(); iter != nodeSet.end(); ++iter){
+		xmlpp::Node *xmlNode = *iter;
+		extractChannelsFromNode(xmlNode, channels);
+	}
+	return channels;
+}
+void OptionsLoaderXml::extractChannelsFromNode(xmlpp::Node *xmlNode, Channels& channels){
+	xmlpp::NodeSet nodeSet = xmlNode->find("./item/child::text()");
+	for(auto iter = nodeSet.begin(); iter != nodeSet.end(); ++iter){
+		xmlpp::Node *xmlNode = *iter;
+		const xmlpp::TextNode* textNode = dynamic_cast<const xmlpp::TextNode*>(xmlNode);
+		if(textNode != NULL){
+			std::string name = getAttributValueFromNode(xmlNode->get_parent(), "name");
+			Channel channel(name, toN(textNode->get_content(), int()));
+			channels.push_back(channel);
+		}
+	}
+}
 void OptionsLoaderXml::extractSampleratesFromNode(xmlpp::Node *xmlNode, Samplerates& samplerates){
 	xmlpp::NodeSet nodeSet = xmlNode->find("./item/child::text()");
 	for(auto iter = nodeSet.begin(); iter != nodeSet.end(); ++iter){

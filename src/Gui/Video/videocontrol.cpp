@@ -22,7 +22,7 @@ static const int CUSTOM_MODE_ID = 1;
 static const std::string DISABLE_MODE = "disable";
 static const int DISABLE_MODE_ID = 2;
 
-VideoSettingsGui::VideoSettingsGui(ConverterOptions::OptionsDatabase &database,
+VideoControl::VideoControl(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database), encoder(database, refGlade),
 				videoMode(refGlade, "videoMode"), videoFramerate(refGlade,"videoFramerate"),
 				videoResolution(refGlade, "videoResolution"),resolutionDialog(database, refGlade) {
@@ -33,24 +33,24 @@ VideoSettingsGui::VideoSettingsGui(ConverterOptions::OptionsDatabase &database,
 	initVideoFramerate(videoFramerate);
 	initVideoResolution(videoResolution);
 
-	videoMode.signal_changed().connect(sigc::mem_fun(*this, &VideoSettingsGui::videoModeChanged));
-	videoFramerate.signal_changed().connect(sigc::mem_fun(*this, &VideoSettingsGui::videoFramerateChanged));
-	videoResolution.signal_changed().connect(sigc::mem_fun(*this, &VideoSettingsGui::videoResolutinChanged));
-	encoder.signalUserInput().connect(sigc::mem_fun(*this, &VideoSettingsGui::encoderUserInput));
+	videoMode.signal_changed().connect(sigc::mem_fun(*this, &VideoControl::videoModeChanged));
+	videoFramerate.signal_changed().connect(sigc::mem_fun(*this, &VideoControl::videoFramerateChanged));
+	videoResolution.signal_changed().connect(sigc::mem_fun(*this, &VideoControl::videoResolutinChanged));
+	encoder.signalUserInput().connect(sigc::mem_fun(*this, &VideoControl::encoderUserInput));
 }
 
-VideoSettingsGui::~VideoSettingsGui() {}
+VideoControl::~VideoControl() {}
 
-void VideoSettingsGui::disableSettings(){
+void VideoControl::disableSettings(){
 	videoMode.set_sensitive(false);
 	videoFramerate.set_sensitive(false);
 	videoResolution.set_sensitive(false);
 	encoder.disableSettings();
 }
-sigc::signal<void>& VideoSettingsGui::signalUserInput(){
+sigc::signal<void>& VideoControl::signalUserInput(){
 	return userEvent;
 }
-void VideoSettingsGui::videoContainerChanged(const ConverterOptions::Container& container){
+void VideoControl::containerChanged(const ConverterOptions::Container& container){
 	videoMode.set_sensitive(true);
 	actualContainer = container;
 	if(container.getContainerType() == ConverterOptions::Container::CONTAINER_TYPE_AUDIO){
@@ -70,13 +70,13 @@ void VideoSettingsGui::videoContainerChanged(const ConverterOptions::Container& 
 	}
 }
 
-void VideoSettingsGui::saveSettingsState(){
+void VideoControl::saveSettingsState(){
 	videoMode.save_actual_state();
 	videoFramerate.save_actual_state();
 	videoResolution.save_actual_state();
 	encoder.saveSettingsState();
 }
-void VideoSettingsGui::restoreSettingsState(){
+void VideoControl::restoreSettingsState(){
 	isEnabledSignals = false;
 	videoResolution.restor_saved_state();
 	videoFramerate.restor_saved_state();
@@ -84,7 +84,7 @@ void VideoSettingsGui::restoreSettingsState(){
 	encoder.restoreSettingsState();
 	isEnabledSignals = true;
 }
-bool VideoSettingsGui::checkSettingsComplete(std::string& message){
+bool VideoControl::checkSettingsComplete(std::string& message){
 	if(!videoMode.isSelectedActivableRow()){
 		message = "Video mode is not set";
 		return false;
@@ -104,10 +104,10 @@ bool VideoSettingsGui::checkSettingsComplete(std::string& message){
 	}
 	return true;
 }
-void VideoSettingsGui::encoderUserInput(){
+void VideoControl::encoderUserInput(){
 	sendUserInputSignal();
 }
-void VideoSettingsGui::videoModeChanged(){
+void VideoControl::videoModeChanged(){
 	if(isEnabledSignals){
 		isEnabledSignals = false;
 		bool isSelected = videoMode.is_selected();
@@ -124,12 +124,12 @@ void VideoSettingsGui::videoModeChanged(){
 		isEnabledSignals = true;
 	}
 }
-void VideoSettingsGui::videoFramerateChanged(){
+void VideoControl::videoFramerateChanged(){
 	if(isEnabledSignals){
 		sendUserInputSignal();
 	}
 }
-void VideoSettingsGui::videoResolutinChanged(){
+void VideoControl::videoResolutinChanged(){
 	if(isEnabledSignals){
 		if(videoResolution.is_set_last()){
 			ConverterOptions::Resolution newResolution;
@@ -154,13 +154,13 @@ void VideoSettingsGui::videoResolutinChanged(){
 	}
 	lastSetResolution = videoResolution.get_active_row_item();
 }
-void VideoSettingsGui::initVideoMode(ComboBoxExt<int> &videoMode){
+void VideoControl::initVideoMode(ComboBoxExt<int> &videoMode){
 	videoMode.append(COPY_MODE, COPY_MODE_ID);
 	videoMode.append(CUSTOM_MODE, CUSTOM_MODE_ID);
 	videoMode.append(DISABLE_MODE, DISABLE_MODE_ID);
 	videoMode.set_active_text(CUSTOM_MODE);
 }
-void VideoSettingsGui::initVideoFramerate(ComboBoxExt<ConverterOptions::Framerate> &videoFramerate){
+void VideoControl::initVideoFramerate(ComboBoxExt<ConverterOptions::Framerate> &videoFramerate){
 	const std::list<ConverterOptions::Framerate> framerates = database.getFramerates().getFramerats();
 	videoFramerate.append(ORIGINAL);
 	videoFramerate.set_active_row_number(0);
@@ -169,7 +169,7 @@ void VideoSettingsGui::initVideoFramerate(ComboBoxExt<ConverterOptions::Framerat
 		videoFramerate.append(toS(framerateIter->getValue()), *framerateIter);
 	}
 }
-void VideoSettingsGui::initVideoResolution(ComboBoxExt<ConverterOptions::Resolution> &videoResolution){
+void VideoControl::initVideoResolution(ComboBoxExt<ConverterOptions::Resolution> &videoResolution){
 	const std::list<ConverterOptions::Resolution> resolutions = database.getResolutions().getResolutions();
 	videoResolution.append(ORIGINAL);
 	videoResolution.set_active_row_number(0);
@@ -181,7 +181,7 @@ void VideoSettingsGui::initVideoResolution(ComboBoxExt<ConverterOptions::Resolut
 	}
 	videoResolution.append(MORE_SETTINGS);
 }
-void VideoSettingsGui::sendUserInputSignal(){
+void VideoControl::sendUserInputSignal(){
 	userEvent();
 }
 

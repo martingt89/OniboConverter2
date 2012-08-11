@@ -6,6 +6,7 @@
  */
 
 #include "samplerate.h"
+#include "../helper.h"
 
 namespace ConverterOptions {
 
@@ -20,12 +21,15 @@ Samplerate::Samplerate(int samplerate) {
 int Samplerate::getValue() const{
 	return samplerate;
 }
-
+Samplerate::operator std::string() const{
+	return toS(samplerate);
+}
 void Samplerates::addSamplerate(const Samplerate& samplerate){
 	samplerates.push_back(samplerate);
 }
 std::list<Samplerate> Samplerates::getSamplerates() const{
 	return samplerates;
 }
+
 
 } /* namespace ConverterOptions */

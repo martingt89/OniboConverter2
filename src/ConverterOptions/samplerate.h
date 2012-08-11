@@ -9,6 +9,7 @@
 #define SAMPLERATE_H_
 
 #include <list>
+#include <string>
 
 namespace ConverterOptions {
 
@@ -17,6 +18,7 @@ public:
 	Samplerate();
 	Samplerate(int samplerate);
 	int getValue() const;
+	operator std::string() const;
 private:
 	int samplerate;
 };

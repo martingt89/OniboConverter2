@@ -14,6 +14,7 @@ OptionsDatabase::OptionsDatabase(OptionsLoader* optionsLoader) {
 	samplerates = optionsLoader->loadSamplerates();
 	containers = optionsLoader->loadContainers();
 	resolutions = optionsLoader->loadResolutions();
+	channels = optionsLoader->loadChannels();
 }
 
 OptionsDatabase::~OptionsDatabase() {}
@@ -35,6 +36,9 @@ const Containers& OptionsDatabase::getContainers() const{
 }
 const Resolutions& OptionsDatabase::getResolutions() const{
 	return resolutions;
+}
+const Channels& OptionsDatabase::getChannels() const{
+	return channels;
 }
 void OptionsDatabase::addUserResolution(const Resolution& resolution){
 	userResolutions.push_back(resolution);
