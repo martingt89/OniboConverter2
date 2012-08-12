@@ -26,6 +26,11 @@ $(SRCPATH)/Gui/Video/resolutiondialog.cpp \
 $(SRCPATH)/Gui/Video/bitratedialog.cpp \
 $(SRCPATH)/Gui/Audio/audiocontrol.cpp \
 $(SRCPATH)/Gui/Audio/encodercontrola.cpp \
+$(SRCPATH)/ExternalTools/supportedencodersloader.cpp \
+$(SRCPATH)/ProcessExecutor/process.cpp \
+$(SRCPATH)/ProcessExecutor/safestream.cpp \
+$(SRCPATH)/ProcessExecutor/safeinputstream.cpp \
+$(SRCPATH)/ProcessExecutor/safeoutputstream.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 
