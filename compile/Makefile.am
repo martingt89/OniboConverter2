@@ -25,6 +25,7 @@ $(SRCPATH)/Gui/Video/encodercontrol.cpp \
 $(SRCPATH)/Gui/Video/resolutiondialog.cpp \
 $(SRCPATH)/Gui/Video/bitratedialog.cpp \
 $(SRCPATH)/Gui/Audio/audiocontrol.cpp \
+$(SRCPATH)/Gui/Audio/encodercontrola.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 

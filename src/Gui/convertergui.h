@@ -14,6 +14,7 @@
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/notebook.h>
+#include <gtkmm/messagedialog.h>
 #include "../Profile/profile.h"
 #include "../ConverterOptions/optionsdatabase.h"
 #include "avcontrol.h"
@@ -38,6 +39,7 @@ private:
 	Gtk::Button* okSettingsButton;
 	Gtk::Button* cancelSettingsButton;
 	Gtk::Notebook* mainNotebook;
+	Gtk::MessageDialog warningDialog;
 
 	Gtk::Entry* entry;
 };

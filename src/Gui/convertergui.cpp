@@ -7,8 +7,6 @@
 
 #include "convertergui.h"
 
-#include <iostream> //todo remove
-
 namespace Gui {
 
 static const int MAIN_SCREEN_PAGE = 0;
@@ -16,7 +14,9 @@ static const int CONFIG_SCREEN_PAGE = 1;
 
 ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) :
-		database(database), mainSettings(database, refGlade) {
+		database(database), mainSettings(database, refGlade),
+		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
+
 	refGlade->get_widget("converterMainWindow", mainWindow);
 	refGlade->get_widget("mainNotebook", mainNotebook);
 	refGlade->get_widget("settingsButton", settingsButton);
@@ -27,12 +27,14 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 	okSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::okSettingsButtonClicked));
 	cancelSettingsButton->signal_clicked().connect(
 			sigc::mem_fun(*this, &ConverterGui::cancelSettingsButtonClicked));
-
-	//todo mainSettings signal
 }
 
 ConverterGui::~ConverterGui() {
-	// TODO Auto-generated destructor stub
+	delete mainWindow;
+	delete mainNotebook;
+	delete settingsButton;
+	delete okSettingsButton;
+	delete cancelSettingsButton;
 }
 
 void ConverterGui::setAvailableProfiles(const std::list<Profile>& availableProfiles) {
@@ -51,9 +53,14 @@ void ConverterGui::okSettingsButtonClicked(){
 	std::string message = "";
 	bool isComplete = mainSettings.checkSettingsComplete(message);
 	if(!isComplete){
-		std::cout<<"Message: "<<message<<std::endl;
+		warningDialog.set_title("Settings are not complete");
+		warningDialog.set_message("Settings are not complete");
+		warningDialog.set_secondary_text(message, false);
+		warningDialog.run();
+		warningDialog.hide();
+	}else{
+		mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
 	}
-	mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
 }
 void ConverterGui::cancelSettingsButtonClicked(){
 	mainSettings.restoreSettingsState();

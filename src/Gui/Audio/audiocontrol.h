@@ -12,6 +12,7 @@
 #include <sigc++/sigc++.h>
 #include "../WidgetAdapter/comboboxext.h"
 #include "../../ConverterOptions/optionsdatabase.h"
+#include "encodercontrola.h"
 
 namespace Gui {
 
@@ -36,6 +37,7 @@ private:
 	void audioChannelsChanged();
 	void sendUserInputSignal();
 	ConverterOptions::OptionsDatabase &database;
+	EncoderControlA encoderControl;
 	ComboBoxExt<int> audioMode;
 	ComboBoxExt<ConverterOptions::Samplerate> audioSamplerate;
 	ComboBoxExt<ConverterOptions::Channel> audioChannels;

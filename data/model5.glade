@@ -1186,7 +1186,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBoxText" id="comboboxtext2">
+                              <object class="GtkComboBoxText" id="audioFormat">
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
@@ -1224,7 +1224,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBoxText" id="comboboxtext3">
+                              <object class="GtkComboBoxText" id="audioBitrate">
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
@@ -1295,7 +1295,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBoxText" id="comboboxtext4">
+                              <object class="GtkComboBoxText" id="audioEncoder">
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
@@ -2560,6 +2560,7 @@
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="type_hint">dialog</property>
+    <property name="transient_for">converterMainWindow</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox2">
         <property name="can_focus">False</property>
@@ -2975,9 +2976,9 @@
       <widget name="videoResolution"/>
       <widget name="videoFramerate"/>
       <widget name="videoFFpreset"/>
-      <widget name="comboboxtext2"/>
-      <widget name="comboboxtext3"/>
-      <widget name="comboboxtext4"/>
+      <widget name="audioFormat"/>
+      <widget name="audioBitrate"/>
+      <widget name="audioEncoder"/>
       <widget name="audioSamplerate"/>
       <widget name="audioChannels"/>
       <widget name="fixed39"/>

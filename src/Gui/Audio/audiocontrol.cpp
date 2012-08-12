@@ -19,7 +19,7 @@ static const std::string DISABLE_MODE = "disable";
 static const int DISABLE_MODE_ID = 2;
 
 AudioControl::AudioControl(ConverterOptions::OptionsDatabase &database,
-		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database),
+		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database), encoderControl(database, refGlade),
 				audioMode(refGlade, "audioMode") , audioSamplerate(refGlade, "audioSamplerate"),
 				audioChannels(refGlade, "audioChannels"){
 
@@ -31,7 +31,7 @@ AudioControl::AudioControl(ConverterOptions::OptionsDatabase &database,
 	audioMode.signal_changed().connect(sigc::mem_fun(*this, &AudioControl::audioModeChanged));
 	audioSamplerate.signal_changed().connect(sigc::mem_fun(*this, &AudioControl::audioSamplerateChanged));
 	audioChannels.signal_changed().connect(sigc::mem_fun(*this, &AudioControl::audioChannelsChanged));
-	//todo encoder
+	encoderControl.signalUserInput().connect(sigc::mem_fun(*this, &AudioControl::sendUserInputSignal));
 }
 
 AudioControl::~AudioControl() {
@@ -44,9 +44,9 @@ void AudioControl::containerChanged(const ConverterOptions::Container& container
 
 	bool isSelected = audioMode.is_selected();
 	bool isEnableAudio = isSelected && (audioMode.get_active_row_item() == CUSTOM_MODE_ID);
-	//encoder.aktualizeSettings(isEnableVideo, container);
+	encoderControl.aktualizeSettings(isEnableAudio, container);
 
-	if(isEnableAudio){
+	if(isEnableAudio){	//TODO add encoderControl.isFormat
 		audioSamplerate.set_sensitive(true);
 		audioChannels.set_sensitive(true);
 	}else{
@@ -58,14 +58,14 @@ void AudioControl::saveSettingsState(){
 	audioMode.save_actual_state();
 	audioSamplerate.save_actual_state();
 	audioChannels.save_actual_state();
-	//todo encoder
+	encoderControl.saveSettingsState();
 }
 void AudioControl::restoreSettingsState(){
 	isEnabledSignals = false;
 	audioMode.restor_saved_state();
 	audioSamplerate.restor_saved_state();
 	audioChannels.restor_saved_state();
-	//todo encoder
+	encoderControl.restoreSettingsState();
 	isEnabledSignals = true;
 }
 bool AudioControl::checkSettingsComplete(std::string& message){
@@ -82,9 +82,9 @@ bool AudioControl::checkSettingsComplete(std::string& message){
 			message = "Channel is not set";
 			return false;
 		}
-//		if(!encoder.checkSettingsComplete(message)){	todo encoder
-//			return false;
-//		}
+		if(!encoderControl.checkSettingsComplete(message)){
+			return false;
+		}
 	}
 	return true;
 }
@@ -92,7 +92,7 @@ void AudioControl::disableSettings(){
 	audioMode.set_sensitive(false);
 	audioSamplerate.set_sensitive(false);
 	audioChannels.set_sensitive(false);
-	//todo encoder
+	encoderControl.disableSettings();
 }
 sigc::signal<void>& AudioControl::signalUserInput(){
 	return userEvent;
@@ -102,7 +102,7 @@ void AudioControl::audioModeChanged(){
 		isEnabledSignals = false;
 		bool isSelected = audioMode.is_selected();
 		bool isEnableAudio = isSelected && (audioMode.get_active_row_item() == CUSTOM_MODE_ID);
-		//encoder.aktualizeSettings(isEnableVideo, actualContainer);
+		encoderControl.aktualizeSettings(isEnableAudio, actualContainer);
 		if(isEnableAudio){
 			audioSamplerate.set_sensitive(true);
 			audioChannels.set_sensitive(true);
