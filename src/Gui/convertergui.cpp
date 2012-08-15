@@ -13,8 +13,9 @@ static const int MAIN_SCREEN_PAGE = 0;
 static const int CONFIG_SCREEN_PAGE = 1;
 
 ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
-		const Glib::RefPtr<Gtk::Builder>& refGlade) :
-		database(database), mainSettings(database, refGlade),
+		const Glib::RefPtr<Gtk::Builder>& refGlade,
+		const Profile::Profiles& profiles) :
+		database(database), mainSettings(database, refGlade, profiles),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
 
 	refGlade->get_widget("converterMainWindow", mainWindow);
@@ -37,7 +38,7 @@ ConverterGui::~ConverterGui() {
 	delete cancelSettingsButton;
 }
 
-void ConverterGui::setAvailableProfiles(const std::list<Profile>& availableProfiles) {
+void ConverterGui::setAvailableProfiles(const std::list<Profile::Profile>& availableProfiles) {
 
 }
 

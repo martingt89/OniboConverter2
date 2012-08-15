@@ -19,19 +19,21 @@ class Encoder {
 public:
 	Encoder();
 	Encoder(std::string name, std::string description, Bitrates bitrate);
-	void setFFpreset(const std::string& ffpresetPrefix, FFpreset* ffpreset);
+	void setFFpresets(const FFpresets& ffpresets, const std::string& prefix);
 	bool hasFFpreset();
 	std::string getName() const;
 	std::string getDescription() const;
 	Bitrates getBitrates() const;
-	void getFFPresets(std::list<std::pair<std::string, std::string> > &ffpresets);
-	std::string addUserFileWithFFPreset(const std::string &path);
+	bool getFFPresets(FFpresets& ffpresets);
+	std::string getFFPrefix();
+	//std::string addUserFileWithFFPreset(const std::string &path);
 private:
 	std::string name;
 	std::string description;
 	Bitrates bitrate;
-	std::string ffpresetPrefix;
-	FFpreset* ffpreset;
+	FFpresets ffpresets;
+	bool isSetFFpresets;
+	std::string prefix;
 };
 
 class Encoders{

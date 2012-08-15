@@ -13,13 +13,14 @@
 #include "ffpreset.h"
 #include "../CppExtension/path.h"
 #include "supportedencoders.h"
+#include <iostream> //todo remove
 
 namespace ConverterOptions {
 
 OptionsLoaderXml::OptionsLoaderXml(
 		const Path& xmlFilePath,
 		const SupportedEncoders& supportedEncoders,
-		FFpreset* const ffpreset): ffpreset(ffpreset) {
+		const Path& ffpresetPath) : ffpresetPath(ffpresetPath){
 	domParser = NULL;
 	this->supprotedEncoders = supportedEncoders;
 	try{
@@ -213,7 +214,12 @@ void OptionsLoaderXml::extractEncoders(
 			Bitrates bitrates = nameToBitrates[bitrateName];
 			Encoder encoder(encoderName, encoderDescription, bitrates);
 			if(ffpresetPrefix.size() > 0){
-				encoder.setFFpreset(ffpresetPrefix, ffpreset);
+				if(!prefixToFFpresets.isExistKey(ffpresetPrefix)){
+					prefixToFFpresets.set(ffpresetPrefix, FFpresets(ffpresetPrefix, ffpresetPath));
+					std::cout<<"prefix doesnt exist"<<std::endl;
+				}
+				encoder.setFFpresets(prefixToFFpresets.get(ffpresetPrefix), ffpresetPrefix);
+				std::cout<<"add ffpresets"<<std::endl;
 			}
 			nameToEncoder[encoderName] = encoder;
 		}

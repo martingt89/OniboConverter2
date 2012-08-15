@@ -14,6 +14,7 @@
 #include "../WidgetAdapter/comboboxext.h"
 #include "encodercontrol.h"
 #include "resolutiondialog.h"
+#include "../../Profile/profile.h"
 
 namespace Gui {
 namespace Video {
@@ -27,6 +28,7 @@ public:
 	void restoreSettingsState();
 	bool checkSettingsComplete(std::string& message);
 	void disableSettings();
+	void setActiveProfile(const Profile::Profile& activeProfile);
 	sigc::signal<void>& signalUserInput();
 private:
 	void encoderUserInput();

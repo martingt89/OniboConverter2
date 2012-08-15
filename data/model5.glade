@@ -301,10 +301,11 @@
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkComboBox" id="combobox3">
+                  <object class="GtkComboBoxText" id="profilesComboBox">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
+                    <property name="entry_text_column">0</property>
+                    <property name="id_column">0</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

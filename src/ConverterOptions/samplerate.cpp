@@ -21,7 +21,7 @@ Samplerate::Samplerate(int samplerate) {
 int Samplerate::getValue() const{
 	return samplerate;
 }
-Samplerate::operator std::string() const{
+std::string Samplerate::toStr() const{
 	return toS(samplerate);
 }
 void Samplerates::addSamplerate(const Samplerate& samplerate){

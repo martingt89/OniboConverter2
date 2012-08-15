@@ -13,6 +13,8 @@
 
 int NSD(const int& x, const int& y);
 
+std::string clearString(const std::string& str);
+
 template<class T>
 std::string operator << (const std::string &s,  T i){
 	std::stringstream ss;

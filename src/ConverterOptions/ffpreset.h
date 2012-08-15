@@ -19,20 +19,29 @@ namespace ConverterOptions {
 
 class FFpreset {
 public:
-	struct FFfile{
-		std::string path;
-		std::string name;
-	};
-public:
-	FFpreset(const Path& path);
+	FFpreset();
+	FFpreset(const Path& path, const std::string& prefix);
+	std::string getPrefix() const;
 	virtual ~FFpreset();
-	std::string addUserDefineFile(const std::string& prefix, const std::string& path);
-	bool getFFpresetsByPrefix(const std::string& prefix, std::list<std::pair<std::string, std::string> > &ffpresets);
+	std::string toStr() const;
 private:
 	std::string cropName(const std::string& name, const std::string& prefix);
-	CppExtension::MultiHashMap<std::string, FFfile> ffpreset;
-	std::set<std::string> searchedPrefixes;
-	Path ffpresetFolderPath;
+	std::string name;
+	std::string prefix;
+	Path ffpresetFilePath;
+};
+
+class FFpresets{
+public:
+	FFpresets();
+	FFpresets(const std::string& prefix);
+	FFpresets(const std::string& prefix, const Path& ffpresetsDirectory);
+	void addFFpreset(const FFpreset& ffpreset);
+	bool loadFromFolder(const Path& path);
+	std::list<FFpreset> getFFpresetList();
+private:
+	std::list<FFpreset> ffpresets;
+	std::string prefix;
 };
 
 } /* namespace ConverterOptions */

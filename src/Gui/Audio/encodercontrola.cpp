@@ -166,7 +166,7 @@ void EncoderControlA::aktualizeBitrate(){
 	auto userBitrateList = database.getUserVideoBitrate();
 	std::copy(userBitrateList.begin(), userBitrateList.end(), std::back_inserter(bitratesList));
 	std::for_each(bitratesList.begin(), bitratesList.end(), [&](const ConverterOptions::Bitrate& bitrate){
-		audioBitrate.append((std::string)bitrate, bitrate);
+		audioBitrate.append(bitrate.toStr(), bitrate);
 	});
 	if(isSetBitrate){
 		audioBitrate.set_active_text(actualBitrate);

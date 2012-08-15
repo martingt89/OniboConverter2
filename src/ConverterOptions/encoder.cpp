@@ -14,23 +14,26 @@ Encoder::Encoder(){
 	this->name = "";
 	this->description = "";
 	this->bitrate = Bitrates();
-	this->ffpreset = NULL;
-	this->ffpresetPrefix = "";
+	isSetFFpresets = false;
 }
 Encoder::Encoder(std::string name, std::string description, Bitrates bitrate) {
 	this->name = name;
 	this->description = description;
 	this->bitrate = bitrate;
-	this->ffpreset = NULL;
-	this->ffpresetPrefix = "";
+	isSetFFpresets = false;
 }
-void Encoder::setFFpreset(const std::string& ffpresetPrefix, FFpreset* ffpreset){
-	this->ffpresetPrefix = ffpresetPrefix;
-	this->ffpreset = ffpreset;
+void Encoder::setFFpresets(const FFpresets& ffpresets, const std::string& prefix){
+	this->ffpresets = ffpresets;
+	isSetFFpresets = true;
+	this->prefix = prefix;
 }
-bool Encoder:: hasFFpreset(){
-	return (ffpreset != NULL);
+bool Encoder::hasFFpreset(){
+	return isSetFFpresets;
 }
+std::string Encoder::getFFPrefix(){
+	return prefix;
+}
+
 std::string Encoder::getName() const{
 	return name;
 }
@@ -40,18 +43,16 @@ std::string Encoder::getDescription() const{
 Bitrates Encoder::getBitrates() const{
 	return bitrate;
 }
-void Encoder::getFFPresets(std::list<std::pair<std::string, std::string> > &ffpresets){
-	if(ffpreset == NULL){
-		//todo assert
-	}
-	ffpreset->getFFpresetsByPrefix(ffpresetPrefix, ffpresets);
+bool Encoder::getFFPresets(FFpresets& ffpresets){
+	ffpresets = this->ffpresets;
+	return isSetFFpresets;
 }
-std::string Encoder::addUserFileWithFFPreset(const std::string &path){
-	if(ffpreset == NULL){
-		//todo assert
-	}
-	return ffpreset->addUserDefineFile(ffpresetPrefix, path);
-}
+//std::string Encoder::addUserFileWithFFPreset(const std::string &path){
+//	if(ffpreset == NULL){
+//		//todo assert
+//	}
+//	return ffpreset->addUserDefineFile(ffpresetPrefix, path);
+//}
 
 void Encoders::addEncoder(const Encoder& encoder){
 	encoders[encoder.getName()] = encoder;

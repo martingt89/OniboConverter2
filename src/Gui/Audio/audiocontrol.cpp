@@ -139,7 +139,7 @@ void AudioControl::initSamplerate(ComboBoxExt<ConverterOptions::Samplerate>& aud
 	auto samplerates = database.getSamplerates().getSamplerates();
 	std::for_each(samplerates.begin(), samplerates.end(),
 			[&audioSamplerate](const ConverterOptions::Samplerate& sample){
-		audioSamplerate.append((std::string)sample, sample);
+		audioSamplerate.append(sample.toStr(), sample);
 	});
 	if(samplerates.size() > 2){
 		audioSamplerate.set_active_row_number(samplerates.size()-2);
@@ -151,7 +151,7 @@ void AudioControl::initChannels(ComboBoxExt<ConverterOptions::Channel>& audioCha
 	auto channels = database.getChannels();
 	std::for_each(channels.begin(), channels.end(),
 			[&audioChannels](const ConverterOptions::Channel& channel){
-		audioChannels.append((std::string)channel, channel);
+		audioChannels.append(channel.toStr(), channel);
 	});
 	audioChannels.set_active_row_number(0);
 }

@@ -56,9 +56,9 @@ bool BitrateDialog::start(const ConverterOptions::Encoder& encoder, ConverterOpt
 	vbdError->set_visible(false);
 	vbdBitrate.remove_all();
 	for(auto bitIter = bitrates.begin(); bitIter != bitrates.end(); ++bitIter){
-		vbdBitrate.append(*bitIter, *bitIter);
+		vbdBitrate.uniqueAppend(toS(bitIter->getValue()), *bitIter);
 	}
-	vbdBitrate.set_active_text((std::string)bitrate);
+	vbdBitrate.set_active_text(toS(bitrate.getValue()));
 	vbdMinBitrate->set_value(bitrate.getMinBitrate());
 	vbdMaxBitrate->set_value(bitrate.getMaxBitrate());
 	while(1){

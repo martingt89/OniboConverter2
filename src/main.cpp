@@ -15,6 +15,11 @@
 #include "ExternalTools/supportedencodersloader.h"
 #include "Gui/convertergui.h"
 
+#include "Profile/profile.h"
+#include "Profile/profileloader.h"
+
+#include <iostream> //todo remove
+
 /*
 #include <iostream>
 
@@ -33,20 +38,30 @@ int main(int argc, char *argv[]) {
 	Path ffpresetPath("ffpresets");
 	Path xmlFilePath("data/audio_video_settings.xml");
 	Path ffmpeg("ffmpeg");
+	Path profilesFolder("data/profiles");
 
 	ExternalTools::SupportedEncodersLoader encodersLoader;
 	ConverterOptions::SupportedEncoders encoders;
-	bool res = encodersLoader.scan(encoders, ffmpeg);
+														//todo test if ffmpeg exist
+	//bool res =
+	encodersLoader.scan(encoders, ffmpeg);	//todo error message
 
-	ConverterOptions::FFpreset ffpreset(ffpresetPath);
+	//Conv erterOptions::FFpreset ffpreset(ffpresetPath);
 
-	ConverterOptions::OptionsLoaderXml optionsLoaderFromXml(xmlFilePath, encoders, &ffpreset);
+	ConverterOptions::OptionsLoaderXml optionsLoaderFromXml(xmlFilePath, encoders, ffpresetPath);
 
 	ConverterOptions::OptionsDatabase optionsDatabase(&optionsLoaderFromXml);
 
+	Profile::Profiles profiles;
+
+	Profile::ProfileLoader loader;
+	loader.load(profilesFolder, profiles);
+
+	std::cout<<profiles.size()<<std::endl;
+
 	Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/model5.glade");
 
-	Gui::ConverterGui converter(optionsDatabase, builder);
+	Gui::ConverterGui converter(optionsDatabase, builder, profiles);
 
 	Gtk::Main::run(converter.getWindow());
 

@@ -30,14 +30,14 @@ private:
 class Resolution {
 public:
 	Resolution(){basic = false; isset = false;};
-	Resolution(std::string name, std::string aspectRatio, int x, int y, bool isBasic);
+	Resolution(std::string name, std::string aspectRatio, int x, int y, bool isBasic = false);
 	bool isSet();
 	std::pair<int, int> getValue() const;
 	std::string getName() const;
 	AspectRatio getAspectRatio() const;
 	bool isBasic() const;
 	bool operator<(const Resolution& res2);
-	operator std::string() const;
+	std::string toStr() const;
 private:
 	std::pair<int, int> resolution;
 	AspectRatio aspectRatio;

@@ -27,7 +27,7 @@ int Bitrate::getMinBitrate() const{
 int Bitrate::getMaxBitrate() const{
 	return maxBitrate;
 }
-Bitrate::operator std::string() const{
+std::string Bitrate::toStr() const{
 	std::string min = " ";
 	if(minBitrate > 0){
 		min = " "+toS(minBitrate);
@@ -42,5 +42,9 @@ Bitrate::operator std::string() const{
 int Bitrate::getValue() const{
 	return bitrate;
 }
-
+bool Bitrate::operator== (const Bitrate& second) const{
+	return (bitrate == second.bitrate) &&
+			(minBitrate == second.minBitrate) &&
+			(maxBitrate == second.maxBitrate);
+}
 } /* namespace ConverterOptions */

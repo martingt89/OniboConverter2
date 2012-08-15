@@ -24,7 +24,7 @@ Channel::~Channel() {
 int Channel::getValue() const{
 	return value;
 }
-Channel::operator std::string() const{
+std::string Channel::toStr() const{
 	if(name.size() > 0){
 		return name;
 	}

@@ -35,7 +35,7 @@ bool Resolution::isBasic() const{
 bool Resolution::operator<(const Resolution& res2){
 	return this->resolution.first < res2.getValue().first;
 }
-Resolution::operator std::string() const{
+std::string Resolution::toStr() const{
 	std::string resol = toS(resolution.first)+" x "+toS(resolution.second);
 	return resol + "\t" + (std::string)this->getAspectRatio();
 }

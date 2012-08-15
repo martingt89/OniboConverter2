@@ -27,7 +27,7 @@ class OptionsLoaderXml: public OptionsLoader {
 public:
 	OptionsLoaderXml(const Path& xmlFilePath,
 			const SupportedEncoders& supportedEncoders,
-			FFpreset* const ffpreset);
+			const Path& ffpresetPath);
 	virtual ~OptionsLoaderXml();
 	virtual Containers loadContainers();
 	virtual Framerates loadFramerates();
@@ -52,7 +52,8 @@ private:
 
 	xmlpp::DomParser* domParser;
 	SupportedEncoders supprotedEncoders;
-	FFpreset* const ffpreset;
+	CppExtension::HashMap<std::string, FFpresets> prefixToFFpresets;
+	Path ffpresetPath;
 };
 
 } /* namespace ConverterOptions */

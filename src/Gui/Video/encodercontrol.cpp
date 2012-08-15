@@ -101,6 +101,31 @@ bool EncoderControl::checkSettingsComplete(std::string& message){
 	}
 	return true;
 }
+void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
+	std::string formatName;
+	if(activeProfile.getVideoFormatName(formatName)){
+		videoFormat.set_active_text(formatName);
+		std::string encoderName;
+		if(activeProfile.getVideoEncoderName(encoderName)){
+			videoEncoder.set_active_text(encoderName);
+			ConverterOptions::Bitrate bitrate;
+			if(activeProfile.getVideoBitrate(bitrate)){
+				if(!videoBitrate.containes(bitrate.toStr())){
+					videoBitrate.insertAfterLast(bitrate.toStr(), bitrate);
+					database.addUserVideoBitrate(bitrate);
+				}
+				videoBitrate.set_active_text(bitrate.toStr());
+			}else{
+				videoBitrate.unset_active();
+			}
+			//ffpreset
+		}else{
+			videoEncoder.unset_active();
+		}
+	}else{
+		videoFormat.unset_active();
+	}
+}
 void EncoderControl::videoEncoderChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;
@@ -116,20 +141,24 @@ void EncoderControl::videoBitrateChanged(){
 		isEnableSignals = false;
 		if(videoBitrate.is_set_last()){
 			ConverterOptions::Bitrate userBitrate = lastSetBitrate;
+			ConverterOptions::Bitrate savedBitrate = lastSetBitrate;
 			bool set = bitrateDialog.start(videoEncoder.get_active_row_item(), userBitrate);
 			if(set){
-				if(!videoBitrate.containes(userBitrate)){
-					videoBitrate.insertAfterLast((std::string)userBitrate, userBitrate);
+				if(!videoBitrate.containes(userBitrate.toStr())){
+					videoBitrate.insertAfterLast(userBitrate.toStr(), userBitrate);
 					database.addUserVideoBitrate(userBitrate);
 				}
-				videoBitrate.set_active_text((std::string)userBitrate);
+				videoBitrate.set_active_text(userBitrate.toStr());
+				if(!(userBitrate == savedBitrate)){
+					sendUserInputSignal();
+				}
 			}else{
-				videoBitrate.set_active_text((std::string)lastSetBitrate);
+				videoBitrate.set_active_text(lastSetBitrate.toStr());
 			}
+		}else{
+			sendUserInputSignal();
 		}
-
 		isEnableSignals = true;
-		sendUserInputSignal();
 	}
 	lastSetBitrate = videoBitrate.get_active_row_item();
 }
@@ -143,9 +172,10 @@ void EncoderControl::videoFFpresetChanged(){
 			ffpresetChooser.hide();
 			if(res == Gtk::RESPONSE_OK){
 				Glib::RefPtr< Gio::File > file = ffpresetChooser.get_file ();
-				std::string name = videoEncoder.get_active_row_item()
-						.addUserFileWithFFPreset(file->get_path());
-				aktualizeFFpreset(name);
+				Path ffFile(file->get_path());
+				ConverterOptions::FFpreset ff(ffFile, videoEncoder.get_active_row_item().getFFPrefix());
+				database.addUserFFpreset(ff);
+				aktualizeFFpreset(ff.toStr());
 			}else{
 				videoFFpreset.unset_active();
 			}
@@ -222,7 +252,7 @@ void EncoderControl::aktualizeBitrate(){
 	auto userBitrateList = database.getUserVideoBitrate();
 	std::copy(userBitrateList.begin(), userBitrateList.end(), std::back_inserter(bitratesList));
 	std::for_each(bitratesList.begin(), bitratesList.end(), [&](const ConverterOptions::Bitrate& bitrate){
-		videoBitrate.append((std::string)bitrate, bitrate);
+		videoBitrate.append(bitrate.toStr(), bitrate);
 	});
 	videoBitrate.append(EXTEND_SETTING);
 	if(isSetBitrate){
@@ -244,13 +274,18 @@ void EncoderControl::aktualizeFFpreset(const std::string name){
 	}
 	videoFFpreset.set_sensitive(true);
 	videoFFpreset.remove_all();
-	std::list<std::pair<std::string, std::string> > ffpresets;
+	ConverterOptions::FFpresets ffpresets;
 	videoEncoder.get_active_row_item().getFFPresets(ffpresets);
+	std::list<ConverterOptions::FFpreset> ffpreset = ffpresets.getFFpresetList();
+	for(auto ff : ffpreset){
+		videoFFpreset.append(ff.toStr(), ff);
+	}
 
-	std::for_each(ffpresets.begin(), ffpresets.end(),
-			[&](const std::pair<std::string, std::string>& ffpreset){
-		videoFFpreset.append(ffpreset.first, Path(ffpreset.second));
-	});
+	ffpreset = database.getUserFFpreset(videoEncoder.get_active_row_item().getFFPrefix());
+	for(auto ff : ffpreset){
+		videoFFpreset.append(ff.toStr(), ff);
+	}
+
 	if(name.size() > 0){
 		videoFFpreset.set_active_text(name);
 	}else if(isSetFFpreset){

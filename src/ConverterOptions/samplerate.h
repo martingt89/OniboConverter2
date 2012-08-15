@@ -18,7 +18,7 @@ public:
 	Samplerate();
 	Samplerate(int samplerate);
 	int getValue() const;
-	operator std::string() const;
+	std::string toStr() const;
 private:
 	int samplerate;
 };

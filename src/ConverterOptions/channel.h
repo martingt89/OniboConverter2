@@ -19,7 +19,7 @@ public:
 	Channel(const std::string& name, const int& value);
 	virtual ~Channel();
 	int getValue() const;
-	operator std::string() const;
+	std::string toStr() const;
 
 private:
 	std::string name;

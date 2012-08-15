@@ -30,10 +30,12 @@ public:
 	void addUserResolution(const Resolution& resolution);
 	void addUserVideoBitrate(const Bitrate& bitrate);
 	void addUserAudioBitrate(const Bitrate& bitrate);
+	void addUserFFpreset(const FFpreset& ffpreset);
 	//
 	std::list<Resolution> getUserResolutions() const;
 	std::list<Bitrate> getUserVideoBitrate() const;
 	std::list<Bitrate> getUserAudioBitrate() const;
+	std::list<FFpreset> getUserFFpreset(const std::string& prefix) const;
 private:
 	const OptionsDatabase& operator=(const OptionsDatabase& database);
 	OptionsDatabase(const OptionsDatabase& database);
@@ -46,6 +48,7 @@ private:
 	std::list<Resolution> userResolutions;
 	std::list<Bitrate> userVideoBitrate;
 	std::list<Bitrate> userAudioBitrate;
+	CppExtension::MultiHashMap<std::string, FFpreset> prefixToFFpreset;
 };
 
 } /* namespace ConverterOptions */

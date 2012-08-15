@@ -13,12 +13,15 @@
 #include "WidgetAdapter/comboboxext.h"
 #include "Video/videocontrol.h"
 #include "Audio/audiocontrol.h"
+#include "../Profile/profile.h"
 
 namespace Gui {
 
 class AVControl {
 public:
-	AVControl(ConverterOptions::OptionsDatabase &database, const Glib::RefPtr<Gtk::Builder>& refGlade);
+	AVControl(ConverterOptions::OptionsDatabase &database,
+			const Glib::RefPtr<Gtk::Builder>& refGlade,
+			const Profile::Profiles& profiles);
 	virtual ~AVControl();
 	bool checkSettingsComplete(std::string& message);
 	void saveSettingsState();
@@ -26,13 +29,17 @@ public:
 private:
 	void userInput();
 	void containerChanged();
+	void profileChanged();
 	void initContainers(ConverterOptions::OptionsDatabase &database,
 			ComboBoxExt<ConverterOptions::Container> &containers);
-
+	void initProfiles(const Profile::Profiles& profiles,
+			ComboBoxExt<Profile::Profile> &profilesComboBox);
 	ConverterOptions::OptionsDatabase &database;
+	const Profile::Profiles& profiles;
 	Video::VideoControl videoControlGui;
 	Audio::AudioControl audioControlGui;
 	ComboBoxExt<ConverterOptions::Container> containers;
+	ComboBoxExt<Profile::Profile> profilesComboBox;
 	bool multiPassState;
 	bool isEnabledSignal;
 	bool isUserInput;

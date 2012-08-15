@@ -20,7 +20,8 @@ public:
 	int getValue() const;
 	int getMinBitrate() const;
 	int getMaxBitrate() const;
-	operator std::string() const;
+	bool operator== (const Bitrate& second) const;
+	std::string toStr() const;
 private:
 	int bitrate;
 	int minBitrate;

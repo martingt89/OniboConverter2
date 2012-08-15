@@ -50,6 +50,42 @@ void VideoControl::disableSettings(){
 sigc::signal<void>& VideoControl::signalUserInput(){
 	return userEvent;
 }
+void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
+	//set mode
+	int row;
+	if(activeProfile.getVideoMode(row)){
+		videoMode.set_active_row_number(row);
+		encoder.setActiveProfile(activeProfile);
+	}else{
+		disableSettings();
+	}
+	//set framerate
+	ConverterOptions::Framerate framerate;
+	bool isOriginal;
+	if(activeProfile.getVideoFramerate(framerate, isOriginal)){
+		if(isOriginal){
+			videoFramerate.set_active_row_number(0);
+		}else{
+			videoFramerate.set_active_text(toS(framerate.getValue()));
+		}
+	}else{
+		videoFramerate.unset_active();
+	}
+	//set resolution
+	ConverterOptions::Resolution resolution;
+	if(activeProfile.getVideoResolution(resolution, isOriginal)){
+		if(isOriginal){
+			videoResolution.set_active_row_number(0);
+		}else{
+			if(!videoResolution.containes(resolution.toStr())){
+				videoResolution.insertAfterLast(resolution.toStr(), resolution);
+			}
+			videoResolution.set_active_text(resolution.toStr());
+		}
+	}else{
+		videoFramerate.unset_active();
+	}
+}
 void VideoControl::containerChanged(const ConverterOptions::Container& container){
 	videoMode.set_sensitive(true);
 	actualContainer = container;
@@ -134,7 +170,7 @@ void VideoControl::videoResolutinChanged(){
 		if(videoResolution.is_set_last()){
 			ConverterOptions::Resolution newResolution;
 			if(resolutionDialog.start(newResolution)){
-				std::string resolutionDescription = newResolution;
+				std::string resolutionDescription = newResolution.toStr();
 				database.addUserResolution(newResolution);
 				if(videoResolution.containes(resolutionDescription)){
 					videoResolution.set_active_text(resolutionDescription);
@@ -144,7 +180,7 @@ void VideoControl::videoResolutinChanged(){
 				}
 			}else{
 				if(lastSetResolution.isSet()){
-					videoResolution.set_active_text(lastSetResolution);
+					videoResolution.set_active_text(lastSetResolution.toStr());
 				}else{
 					videoResolution.set_active_row_number(0);
 				}
@@ -176,7 +212,7 @@ void VideoControl::initVideoResolution(ComboBoxExt<ConverterOptions::Resolution>
 
 	for(auto resolIter = resolutions.begin(); resolIter != resolutions.end(); ++resolIter){
 		if(resolIter->isBasic()){
-			videoResolution.append((std::string)*resolIter, *resolIter);
+			videoResolution.append(resolIter->toStr(), *resolIter);
 		}
 	}
 	videoResolution.append(MORE_SETTINGS);

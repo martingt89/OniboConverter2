@@ -49,6 +49,9 @@ void OptionsDatabase::addUserVideoBitrate(const Bitrate& bitrate){
 void OptionsDatabase::addUserAudioBitrate(const Bitrate& bitrate){
 	userAudioBitrate.push_back(bitrate);
 }
+void OptionsDatabase::addUserFFpreset(const FFpreset& ffpreset){
+	prefixToFFpreset.set(ffpreset.getPrefix(), ffpreset);
+}
 //
 std::list<Resolution> OptionsDatabase::getUserResolutions() const{
 	return userResolutions;
@@ -58,6 +61,9 @@ std::list<Bitrate> OptionsDatabase::getUserVideoBitrate() const{
 }
 std::list<Bitrate> OptionsDatabase::getUserAudioBitrate() const{
 	return userAudioBitrate;
+}
+std::list<FFpreset> OptionsDatabase::getUserFFpreset(const std::string& prefix) const{
+	return prefixToFFpreset.get(prefix);
 }
 
 } /* namespace ConverterOptions */

@@ -19,3 +19,15 @@ int NSD(const int& x, const int& y){
 	return nsd;
 }
 
+std::string clearString(const std::string& str){
+	std::string::size_type pos = str.find_first_not_of(" \n\t");
+	if(pos == std::string::npos){
+		return "";
+	}
+	std::string beginClear = str.substr(pos);
+	pos = beginClear.find_last_not_of(" \n\t");
+	if(pos == std::string::npos){
+		return "";
+	}
+	return beginClear.substr(0, pos+1);
+}

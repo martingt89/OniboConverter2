@@ -23,8 +23,10 @@ namespace Gui {
 
 class ConverterGui {
 public:
-	ConverterGui(ConverterOptions::OptionsDatabase &database, const Glib::RefPtr<Gtk::Builder>& refGlade);
-	void setAvailableProfiles(const std::list<Profile>& availableProfiles);
+	ConverterGui(ConverterOptions::OptionsDatabase &database,
+			const Glib::RefPtr<Gtk::Builder>& refGlade,
+			const Profile::Profiles& profiles);
+	void setAvailableProfiles(const std::list<Profile::Profile>& availableProfiles);
 	Gtk::Window& getWindow();
 	virtual ~ConverterGui();
 private:

@@ -18,6 +18,8 @@ $(SRCPATH)/ConverterOptions/supportedencoders.cpp \
 $(SRCPATH)/RegexTools/regextools.cpp \
 $(SRCPATH)/CppExtension/path.cpp \
 $(SRCPATH)/Profile/profile.cpp \
+$(SRCPATH)/Profile/profileloader.cpp \
+$(SRCPATH)/Profile/xmlprofileparser.cpp \
 $(SRCPATH)/Gui/convertergui.cpp \
 $(SRCPATH)/Gui/avcontrol.cpp \
 $(SRCPATH)/Gui/Video/videocontrol.cpp \

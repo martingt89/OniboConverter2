@@ -15,7 +15,7 @@
 #include "bitratedialog.h"
 #include "../WidgetAdapter/comboboxext.h"
 #include "../../ConverterOptions/optionsdatabase.h"
-
+#include "../../Profile/profile.h"
 namespace Gui {
 namespace Video {
 
@@ -30,6 +30,7 @@ public:
 	void restoreSettingsState();
 	sigc::signal<void>& signalUserInput();
 	bool checkSettingsComplete(std::string& message);
+	void setActiveProfile(const Profile::Profile& activeProfile);
 private:
 	void videoFormatChanged();
 	void videoEncoderChanged();
@@ -52,7 +53,7 @@ private:
 	ComboBoxExt<ConverterOptions::Format> videoFormat;
 	ComboBoxExt<ConverterOptions::Encoder> videoEncoder;
 	ComboBoxExt<ConverterOptions::Bitrate> videoBitrate;
-	ComboBoxExt<Path> videoFFpreset;
+	ComboBoxExt<ConverterOptions::FFpreset> videoFFpreset;
 	Gtk::FileChooserDialog ffpresetChooser;
 	BitrateDialog bitrateDialog;
 
