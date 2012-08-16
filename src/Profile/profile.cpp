@@ -76,7 +76,20 @@ bool Profile::getVideoResolution(ConverterOptions::Resolution& resolution, bool&
 	resolution = ConverterOptions::Resolution(name, aspect, x, y);
 	return true;
 }
-//bool getFFpreset(ConverterOptions::FFpreset&)
+bool Profile::getVideoFFpreset(ConverterOptions::FFpreset& ffpreset) const{
+	bool exist = true;
+	std::string path = optionsToValue.get(VIDEO_FFPRESET_PATH_OPT, exist);
+	if(!exist){
+		return false;
+	}
+	Path ffFilePath(path);
+	std::string prefix = optionsToValue.get(VIDEO_FFPRESET_PREFIX_OPT, exist);
+	if(!exist){
+		return false;
+	}
+	ffpreset = ConverterOptions::FFpreset(ffFilePath, prefix);
+	return true;
+}
 bool Profile::getVideoFramerate(ConverterOptions::Framerate& framerate, bool& original) const{
 	bool exist;
 	original = false;
@@ -89,7 +102,52 @@ bool Profile::getVideoFramerate(ConverterOptions::Framerate& framerate, bool& or
 }
 //
 bool Profile::getAudioMode(int& row) const{
-	row = 0;
+	bool exist = false;
+	row = toN(optionsToValue.get(AUDIO_MODE_OPT, exist), int());
+	return exist;
+}
+bool Profile::getAudioFormatName(std::string& audioFormatName) const{
+	bool exist = false;
+	audioFormatName = optionsToValue.get(AUDIO_FORMAT_OPT, exist);
+	return exist;
+}
+bool Profile::getAudioEncoderName(std::string& audioEncoderName) const{
+	bool exist = false;
+	audioEncoderName = optionsToValue.get(AUDIO_ENCODER_OPT, exist);
+	return exist;
+}
+bool Profile::getAudioBitrate(ConverterOptions::Bitrate& audioBitrate) const{
+	bool exist = false;
+	int bitrate = toN(optionsToValue.get(AUDIO_BITRATE_OPT, exist), int());
+	audioBitrate = ConverterOptions::Bitrate(bitrate);
+	return exist;
+}
+bool Profile::getAudioSamplerate(ConverterOptions::Samplerate& audioSamplerate, bool& isOriginal) const{
+	isOriginal = false;
+	bool exist = false;
+	int samplerate = toN(optionsToValue.get(AUDIO_SAMPLERATE_OPT, exist), int());
+	if(samplerate < 0){
+		isOriginal = true;
+	}
+	audioSamplerate = ConverterOptions::Samplerate(samplerate);
+	return exist;
+}
+bool Profile::getAudioChannel(ConverterOptions::Channel& audioChannel, bool& isOriginal) const{
+	isOriginal = false;
+	bool exist = false;
+	int numOfChannel = toN(optionsToValue.get(AUDIO_CHANNEL_VALUE_OPT, exist), int());
+	if(!exist){
+		return false;
+	}
+	if(numOfChannel < 0){
+		isOriginal = true;
+		return true;
+	}
+	std::string name = optionsToValue.get(AUDIO_CHANNEL_NAME_OPT, exist);
+	if(!exist){
+		return false;
+	}
+	audioChannel = ConverterOptions::Channel(name, numOfChannel);
 	return true;
 }
 } /* namespace Profile */

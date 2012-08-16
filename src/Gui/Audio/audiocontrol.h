@@ -13,6 +13,7 @@
 #include "../WidgetAdapter/comboboxext.h"
 #include "../../ConverterOptions/optionsdatabase.h"
 #include "encodercontrola.h"
+#include "../../Profile/profile.h"
 
 namespace Gui {
 
@@ -27,6 +28,7 @@ public:
 	void restoreSettingsState();
 	bool checkSettingsComplete(std::string& message);
 	void disableSettings();
+	void setActiveProfile(const Profile::Profile& activeProfile);
 	sigc::signal<void>& signalUserInput();
 private:
 	void initAudioMode(ComboBoxExt<int>& audioMode);

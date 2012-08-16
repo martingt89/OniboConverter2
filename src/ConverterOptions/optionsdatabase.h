@@ -30,7 +30,7 @@ public:
 	void addUserResolution(const Resolution& resolution);
 	void addUserVideoBitrate(const Bitrate& bitrate);
 	void addUserAudioBitrate(const Bitrate& bitrate);
-	void addUserFFpreset(const FFpreset& ffpreset);
+	void addUserVideoFFpreset(const FFpreset& ffpreset);
 	//
 	std::list<Resolution> getUserResolutions() const;
 	std::list<Bitrate> getUserVideoBitrate() const;

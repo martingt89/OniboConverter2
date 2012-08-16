@@ -118,7 +118,18 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 			}else{
 				videoBitrate.unset_active();
 			}
-			//ffpreset
+			if(videoEncoder.get_active_row_item().hasFFpreset()){
+				ConverterOptions::FFpreset ffpreset;
+				if(activeProfile.getVideoFFpreset(ffpreset)){
+					if(!videoFFpreset.containes(ffpreset.toStr())){
+						videoFFpreset.insertAfterLast(ffpreset.toStr(), ffpreset);
+						database.addUserVideoFFpreset(ffpreset);
+					}
+					videoFFpreset.set_active_text(ffpreset.toStr());
+				}else{
+					videoFFpreset.unset_active();
+				}
+			}
 		}else{
 			videoEncoder.unset_active();
 		}
@@ -174,7 +185,7 @@ void EncoderControl::videoFFpresetChanged(){
 				Glib::RefPtr< Gio::File > file = ffpresetChooser.get_file ();
 				Path ffFile(file->get_path());
 				ConverterOptions::FFpreset ff(ffFile, videoEncoder.get_active_row_item().getFFPrefix());
-				database.addUserFFpreset(ff);
+				database.addUserVideoFFpreset(ff);
 				aktualizeFFpreset(ff.toStr());
 			}else{
 				videoFFpreset.unset_active();

@@ -55,8 +55,13 @@ void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
 	int row;
 	if(activeProfile.getVideoMode(row)){
 		videoMode.set_active_row_number(row);
-		encoder.setActiveProfile(activeProfile);
+		if(videoMode.get_active_row_item() == CUSTOM_MODE_ID){
+			encoder.setActiveProfile(activeProfile);
+		}else{
+			disableSettings();
+		}
 	}else{
+		videoMode.unset_active();
 		disableSettings();
 	}
 	//set framerate

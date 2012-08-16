@@ -72,7 +72,26 @@ bool EncoderControlA::checkSettingsComplete(std::string& message){
 	}
 	return true;
 }
-
+void EncoderControlA::setActiveProfile(const Profile::Profile& activeProfile){
+	std::string formatName;
+	if(activeProfile.getAudioFormatName(formatName)){
+		audioFormat.set_active_text(formatName);
+		std::string encoderName;
+		if(activeProfile.getAudioEncoderName(encoderName)){
+			audioEncoder.set_active_text(encoderName);
+			ConverterOptions::Bitrate bitrate;
+			if(activeProfile.getAudioBitrate(bitrate)){
+				audioBitrate.set_active_text(bitrate.toStr());
+			}else{
+				audioBitrate.unset_active();
+			}
+		}else{
+			audioEncoder.unset_active();
+		}
+	}else{
+		audioFormat.unset_active();
+	}
+}
 void EncoderControlA::audioFormatChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;

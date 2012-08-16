@@ -20,7 +20,14 @@
 		</resolution>
 	</video>
 	<audio>
-		<mode>0</mode>
+		<mode>1</mode>
+		<format>VORBIS</format>
+		<encoder>vorbis</encoder>
+		<bitrate>128</bitrate>
+		<samplerate>48000</samplerate>
+		<channel>
+			<value>1</value>
+			<name>mono</name>
+		</channel>
 	</audio>
-
 </profile>

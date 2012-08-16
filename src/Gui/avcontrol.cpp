@@ -91,6 +91,7 @@ void AVControl::profileChanged(){
 	if(profilesComboBox.get_active_row_item().getContainerName(containerName)){
 		containers.set_active_text(containerName);
 		videoControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
+		audioControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
 	}else{
 		containers.unset_active();
 	}

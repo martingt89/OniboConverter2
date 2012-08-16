@@ -27,8 +27,16 @@ XmlProfileParser::XmlProfileParser() {
 	pathToOptions.set(toPath({"profile", "video", "resolution", "y"}), Profile::VIDEO_RESOLUTION_Y_OPT);
 	pathToOptions.set(toPath({"profile", "video", "resolution", "aspect"}),Profile::VIDEO_RESOLUTION_ASP_OPT);
 	pathToOptions.set(toPath({"profile", "video", "resolution", "name"}),Profile::VIDEO_RESOLUTION_NAME_OPT);
+	pathToOptions.set(toPath({"profile", "video", "ffpreset", "prefix"}),Profile::VIDEO_FFPRESET_PREFIX_OPT);
+	pathToOptions.set(toPath({"profile", "video", "ffpreset", "path"}),Profile::VIDEO_FFPRESET_PATH_OPT);
 
-//	pathToOptions.set(toPath({"profile", "container"}), Profile::VIDEO_FFPRESET_OPT);
+	pathToOptions.set(toPath({"profile", "audio", "mode"}),Profile::AUDIO_MODE_OPT);
+	pathToOptions.set(toPath({"profile", "audio", "format"}),Profile::AUDIO_FORMAT_OPT);
+	pathToOptions.set(toPath({"profile", "audio", "encoder"}),Profile::AUDIO_ENCODER_OPT);
+	pathToOptions.set(toPath({"profile", "audio", "bitrate"}),Profile::AUDIO_BITRATE_OPT);
+	pathToOptions.set(toPath({"profile", "audio", "samplerate"}),Profile::AUDIO_SAMPLERATE_OPT);
+	pathToOptions.set(toPath({"profile", "audio", "channel", "value"}),Profile::AUDIO_CHANNEL_VALUE_OPT);
+	pathToOptions.set(toPath({"profile", "audio", "channel", "name"}),Profile::AUDIO_CHANNEL_NAME_OPT);
 }
 
 XmlProfileParser::~XmlProfileParser() {
@@ -41,7 +49,7 @@ bool XmlProfileParser::parseFile(const Path& filePath, Profile& profile){
 	try{
 		this->parse_file(filePath.getPath());
 	}catch(std::exception& ex){
-		std::cout<<"Parsovanie sa pathdojebalo: "<<ex.what()<<std::endl; //todo remove
+		std::cout<<"Parsovanie sa dojebalo: "<<ex.what()<<std::endl; //todo remove
 		actualProfile = NULL;
 		return false;
 	}

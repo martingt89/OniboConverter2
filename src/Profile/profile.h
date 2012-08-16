@@ -32,9 +32,18 @@ public:
 		VIDEO_RESOLUTION_Y_OPT = 10,
 		VIDEO_RESOLUTION_ASP_OPT = 11,
 		VIDEO_RESOLUTION_NAME_OPT = 12,
-		VIDEO_FFPRESET_OPT = 13,
-
-		END_OPT = 14
+		VIDEO_FFPRESET_PREFIX_OPT = 13,
+		VIDEO_FFPRESET_PATH_OPT = 14,
+		//
+		AUDIO_MODE_OPT = 15,
+		AUDIO_FORMAT_OPT = 16,
+		AUDIO_ENCODER_OPT = 17,
+		AUDIO_BITRATE_OPT = 18,
+		AUDIO_SAMPLERATE_OPT = 19,
+		AUDIO_CHANNEL_VALUE_OPT = 20,
+		AUDIO_CHANNEL_NAME_OPT = 21,
+		//
+		END_OPT = 22
 	};
 public:
 	Profile();
@@ -50,11 +59,15 @@ public:
 	bool getVideoEncoderName(std::string& videoEncoderName) const;
 	bool getVideoBitrate(ConverterOptions::Bitrate& videoBitrate) const;
 	bool getVideoResolution(ConverterOptions::Resolution& resolution, bool& original) const;
-	//bool getFFpreset(ConverterOptions::FFpreset&)
+	bool getVideoFFpreset(ConverterOptions::FFpreset& ffpreset) const;
 	bool getVideoFramerate(ConverterOptions::Framerate& framerate, bool& original) const;
 	//
 	bool getAudioMode(int& row) const;
-
+	bool getAudioFormatName(std::string& audioFormatName) const;
+	bool getAudioEncoderName(std::string& audioEncoderName) const;
+	bool getAudioBitrate(ConverterOptions::Bitrate& audioBitrate) const;
+	bool getAudioSamplerate(ConverterOptions::Samplerate& audioSamplerate, bool& isOriginal) const;
+	bool getAudioChannel(ConverterOptions::Channel& audioChannel, bool& isOriginal) const;
 
 
 private:

@@ -17,6 +17,7 @@ static const std::string CUSTOM_MODE = "custom";
 static const int CUSTOM_MODE_ID = 1;
 static const std::string DISABLE_MODE = "disable";
 static const int DISABLE_MODE_ID = 2;
+static const std::string ORIGINAL = "--- original ---";
 
 AudioControl::AudioControl(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database), encoderControl(database, refGlade),
@@ -94,6 +95,45 @@ void AudioControl::disableSettings(){
 	audioChannels.set_sensitive(false);
 	encoderControl.disableSettings();
 }
+void AudioControl::setActiveProfile(const Profile::Profile& activeProfile){
+	//
+	int row;
+	if(activeProfile.getAudioMode(row)){
+		audioMode.set_active_row_number(row);
+		if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
+			encoderControl.setActiveProfile(activeProfile);
+		}else{
+			disableSettings();
+		}
+	}else{
+		audioMode.unset_active();
+		disableSettings();
+	}
+	//
+	ConverterOptions::Samplerate samplerate;
+	bool isOriginal;
+	if(activeProfile.getAudioSamplerate(samplerate, isOriginal)){
+		if(isOriginal){
+			audioSamplerate.set_active_row_number(0);
+		}else{
+			audioSamplerate.set_active_text(samplerate.toStr());
+		}
+	}else{
+		audioSamplerate.unset_active();
+	}
+	//
+	ConverterOptions::Channel channel;
+	bool isOriginalChannel;
+	if(activeProfile.getAudioChannel(channel, isOriginalChannel)){
+		if(isOriginalChannel){
+			audioChannels.set_active_row_number(0);
+		}else{
+			audioChannels.set_active_text(channel.toStr());
+		}
+	}else{
+		audioChannels.unset_active();
+	}
+}
 sigc::signal<void>& AudioControl::signalUserInput(){
 	return userEvent;
 }
@@ -136,18 +176,20 @@ void AudioControl::initAudioMode(ComboBoxExt<int>& audioMode){
 	audioMode.set_active_text(CUSTOM_MODE);
 }
 void AudioControl::initSamplerate(ComboBoxExt<ConverterOptions::Samplerate>& audioSamplerate){
+	audioSamplerate.append(ORIGINAL);
 	auto samplerates = database.getSamplerates().getSamplerates();
 	std::for_each(samplerates.begin(), samplerates.end(),
 			[&audioSamplerate](const ConverterOptions::Samplerate& sample){
 		audioSamplerate.append(sample.toStr(), sample);
 	});
 	if(samplerates.size() > 2){
-		audioSamplerate.set_active_row_number(samplerates.size()-2);
+		audioSamplerate.set_active_row_number(samplerates.size() - 1);
 	}else{
 		audioSamplerate.set_active_row_number(samplerates.size() / 2);
 	}
 }
 void AudioControl::initChannels(ComboBoxExt<ConverterOptions::Channel>& audioChannels){
+	audioChannels.append(ORIGINAL);
 	auto channels = database.getChannels();
 	std::for_each(channels.begin(), channels.end(),
 			[&audioChannels](const ConverterOptions::Channel& channel){

@@ -49,7 +49,7 @@ void OptionsDatabase::addUserVideoBitrate(const Bitrate& bitrate){
 void OptionsDatabase::addUserAudioBitrate(const Bitrate& bitrate){
 	userAudioBitrate.push_back(bitrate);
 }
-void OptionsDatabase::addUserFFpreset(const FFpreset& ffpreset){
+void OptionsDatabase::addUserVideoFFpreset(const FFpreset& ffpreset){
 	prefixToFFpreset.set(ffpreset.getPrefix(), ffpreset);
 }
 //

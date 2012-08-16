@@ -12,6 +12,7 @@
 #include "../../ConverterOptions/optionsdatabase.h"
 #include <sigc++/signal.h>
 #include <gtkmm/builder.h>
+#include "../../Profile/profile.h"
 
 namespace Gui {
 namespace Audio {
@@ -26,6 +27,7 @@ public:
 	void restoreSettingsState();
 	sigc::signal<void>& signalUserInput();
 	bool checkSettingsComplete(std::string& message);
+	void setActiveProfile(const Profile::Profile& activeProfile);
 private:
 	void audioFormatChanged();
 	void audioEncoderChanged();
