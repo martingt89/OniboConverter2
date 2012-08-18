@@ -35,9 +35,7 @@ AudioControl::AudioControl(ConverterOptions::OptionsDatabase &database,
 	encoderControl.signalUserInput().connect(sigc::mem_fun(*this, &AudioControl::sendUserInputSignal));
 }
 
-AudioControl::~AudioControl() {
-	// TODO Auto-generated destructor stub
-}
+AudioControl::~AudioControl() {}
 
 void AudioControl::containerChanged(const ConverterOptions::Container& container){
 	audioMode.set_sensitive(true);

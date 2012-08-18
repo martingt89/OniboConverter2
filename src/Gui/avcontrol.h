@@ -14,6 +14,7 @@
 #include "Video/videocontrol.h"
 #include "Audio/audiocontrol.h"
 #include "../Profile/profile.h"
+#include "manualsettingscontrol.h"
 
 namespace Gui {
 
@@ -30,6 +31,7 @@ private:
 	void userInput();
 	void containerChanged();
 	void profileChanged();
+	void manualSettingsClicked();
 	void initContainers(ConverterOptions::OptionsDatabase &database,
 			ComboBoxExt<ConverterOptions::Container> &containers);
 	void initProfiles(const Profile::Profiles& profiles,
@@ -40,6 +42,8 @@ private:
 	Audio::AudioControl audioControlGui;
 	ComboBoxExt<ConverterOptions::Container> containers;
 	ComboBoxExt<Profile::Profile> profilesComboBox;
+	ManualSettingsControl settingsDialog;
+	Gtk::Button* manualSettingsButton;
 	bool multiPassState;
 	bool isEnabledSignal;
 	bool isUserInput;

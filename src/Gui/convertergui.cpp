@@ -16,6 +16,7 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
 		const Profile::Profiles& profiles) :
 		database(database), mainSettings(database, refGlade, profiles),
+		destinationControl(refGlade), fileControl(refGlade),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
 
 	refGlade->get_widget("converterMainWindow", mainWindow);

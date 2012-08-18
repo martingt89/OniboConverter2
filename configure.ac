@@ -8,8 +8,9 @@ AC_CONFIG_HEADER([config.h])
 
 IT_PROG_INTLTOOL([0.35.0])
 
-AC_PROG_CXX
+CXXFLAGS=""
 
+AC_PROG_CXX
 
 PKG_CHECK_MODULES([DEPS], [libxml++-2.6, gtkmm-3.0 >= 3.0.0])
 

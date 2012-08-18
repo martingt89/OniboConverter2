@@ -216,10 +216,10 @@ void OptionsLoaderXml::extractEncoders(
 			if(ffpresetPrefix.size() > 0){
 				if(!prefixToFFpresets.isExistKey(ffpresetPrefix)){
 					prefixToFFpresets.set(ffpresetPrefix, FFpresets(ffpresetPrefix, ffpresetPath));
-					std::cout<<"prefix doesnt exist"<<std::endl;
+		//			std::cout<<"prefix doesnt exist"<<std::endl;
 				}
 				encoder.setFFpresets(prefixToFFpresets.get(ffpresetPrefix), ffpresetPrefix);
-				std::cout<<"add ffpresets"<<std::endl;
+		//		std::cout<<"add ffpresets"<<std::endl;
 			}
 			nameToEncoder[encoderName] = encoder;
 		}

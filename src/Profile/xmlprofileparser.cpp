@@ -37,11 +37,13 @@ XmlProfileParser::XmlProfileParser() {
 	pathToOptions.set(toPath({"profile", "audio", "samplerate"}),Profile::AUDIO_SAMPLERATE_OPT);
 	pathToOptions.set(toPath({"profile", "audio", "channel", "value"}),Profile::AUDIO_CHANNEL_VALUE_OPT);
 	pathToOptions.set(toPath({"profile", "audio", "channel", "name"}),Profile::AUDIO_CHANNEL_NAME_OPT);
+
+	pathToOptions.set(
+			toPath({"profile", "manualsettings", "setting", "command"}), Profile::MANUAL_COMMAND_OPT);
+	pathToOptions.set(toPath({"profile", "manualsettings", "setting", "arg"}), Profile::MANUAL_ARG_OPT);
 }
 
-XmlProfileParser::~XmlProfileParser() {
-	// TODO Auto-generated destructor stub
-}
+XmlProfileParser::~XmlProfileParser() {}
 
 bool XmlProfileParser::parseFile(const Path& filePath, Profile& profile){
 	path.clear();
@@ -77,7 +79,7 @@ bool XmlProfileParser::toOptions(const std::list<std::string>& path, Profile::Op
 	std::string hash = toPath(path);
 	bool exist = false;
 	options = pathToOptions.get(hash, exist);
-	std::cout<<hash<<" "<<options<<" "<<exist<<std::endl;
+//	std::cout<<hash<<" "<<options<<" "<<exist<<std::endl;
 	return exist;
 }
 std::string XmlProfileParser::toPath(const std::initializer_list<std::string>& path){

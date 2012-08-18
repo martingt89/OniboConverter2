@@ -30,4 +30,10 @@
 			<name>mono</name>
 		</channel>
 	</audio>
+	<manualsettings>
+		<setting>
+			<command>-map</command>
+			<arg>0</arg>
+		</setting>
+	</manualsettings>
 </profile>

@@ -4385,6 +4385,8 @@ fi
 
 
 
+CXXFLAGS=""
+
 ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -4767,7 +4769,6 @@ else
   am__fastdepCXX_TRUE='#'
   am__fastdepCXX_FALSE=
 fi
-
 
 
 

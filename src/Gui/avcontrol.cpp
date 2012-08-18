@@ -6,7 +6,6 @@
  */
 
 #include "avcontrol.h"
-#include <iostream> //todo remove
 
 namespace Gui {
 
@@ -16,11 +15,14 @@ AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
 		const Profile::Profiles& profiles) : database(database), profiles(profiles),
 				videoControlGui(database, refGlade), audioControlGui(database, refGlade),
-				containers(refGlade, "containres"), profilesComboBox(refGlade, "profilesComboBox"){
+				containers(refGlade, "containres"), profilesComboBox(refGlade, "profilesComboBox"),
+				settingsDialog(refGlade){
 
 	multiPassState = false;
 	isEnabledSignal = true;
 	isUserInput = true;
+
+	refGlade->get_widget("manualSettingsButton", manualSettingsButton);
 
 	initContainers(database, containers);
 	initProfiles(profiles, profilesComboBox);
@@ -31,13 +33,15 @@ AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 	videoControlGui.signalUserInput().connect(sigc::mem_fun(*this, &AVControl::userInput));
 	audioControlGui.signalUserInput().connect(sigc::mem_fun(*this, &AVControl::userInput));
 	profilesComboBox.signal_changed().connect(sigc::mem_fun(*this, &AVControl::profileChanged));
-
+	manualSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &AVControl::manualSettingsClicked));
 	isUserInput = false;
 	containers.set_active_row_number(0);
 	isUserInput = true;
 }
 
-AVControl::~AVControl() {}
+AVControl::~AVControl() {
+	delete manualSettingsButton;
+}
 
 bool AVControl::checkSettingsComplete(std::string& message){
 	message = "";
@@ -55,6 +59,7 @@ void AVControl::saveSettingsState(){
 	containers.save_actual_state();
 	videoControlGui.saveSettingsState();
 	audioControlGui.saveSettingsState();
+	settingsDialog.saveSettingsState();
 	profilesComboBox.save_actual_state();
 }
 void AVControl::restoreSettingsState(){
@@ -62,12 +67,13 @@ void AVControl::restoreSettingsState(){
 	containers.restor_saved_state();
 	videoControlGui.restoreSettingsState();
 	audioControlGui.restoreSettingsState();
+	settingsDialog.restoreSettingsState();
 	profilesComboBox.restor_saved_state();
 	isEnabledSignal = true;
 }
 void AVControl::userInput(){
 	if(isUserInput){
-		std::cout<<"user input"<<std::endl;
+//		std::cout<<"user input"<<std::endl;
 		profilesComboBox.set_active_row_number(0);	//set custom
 	}
 }
@@ -83,19 +89,28 @@ void AVControl::containerChanged(){
 	}
 }
 void AVControl::profileChanged(){
-	isUserInput = false;
-	if(profilesComboBox.is_set_first()){
-		return;
+	if(isEnabledSignal){
+		if(profilesComboBox.is_set_first()){
+			return;
+		}
+		isUserInput = false;
+		std::string containerName;
+		if(profilesComboBox.get_active_row_item().getContainerName(containerName)){
+			containers.set_active_text(containerName);
+			videoControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
+			audioControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
+			settingsDialog.setActiveProfile(profilesComboBox.get_active_row_item());
+		}else{
+			containers.unset_active();
+		}
+		isUserInput = true;
 	}
-	std::string containerName;
-	if(profilesComboBox.get_active_row_item().getContainerName(containerName)){
-		containers.set_active_text(containerName);
-		videoControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
-		audioControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
-	}else{
-		containers.unset_active();
+}
+void AVControl::manualSettingsClicked(){
+	bool change = settingsDialog.start();
+	if(change){
+		userInput();
 	}
-	isUserInput = true;
 }
 void AVControl::initContainers(ConverterOptions::OptionsDatabase &database,
 		ComboBoxExt<ConverterOptions::Container> &containers){

@@ -15,7 +15,19 @@ Profile::Profile() {}
 Profile::~Profile() {}
 
 void Profile::addProperty(const Options& options, const std::string& propertie){
-	optionsToValue.set(options, propertie);
+	if(options == MANUAL_COMMAND_OPT || options == MANUAL_ARG_OPT){
+		if(options == MANUAL_COMMAND_OPT){
+			ManualSettings set;
+			set.command = propertie;
+			settings.push_front(set);
+		}else{
+			if(settings.begin() != settings.end()){
+				settings.begin()->args.push_back(propertie);
+			}
+		}
+	}else{
+		optionsToValue.set(options, propertie);
+	}
 }
 //
 std::string Profile::getName() const{
@@ -149,5 +161,8 @@ bool Profile::getAudioChannel(ConverterOptions::Channel& audioChannel, bool& isO
 	}
 	audioChannel = ConverterOptions::Channel(name, numOfChannel);
 	return true;
+}
+void Profile::getManualSettings(std::list<ManualSettings>& manualSettings) const{
+	manualSettings = this->settings;
 }
 } /* namespace Profile */

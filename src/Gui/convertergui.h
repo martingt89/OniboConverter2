@@ -18,6 +18,8 @@
 #include "../Profile/profile.h"
 #include "../ConverterOptions/optionsdatabase.h"
 #include "avcontrol.h"
+#include "destinationcontrol.h"
+#include "filecontrol.h"
 
 namespace Gui {
 
@@ -36,6 +38,8 @@ private:
 
 	ConverterOptions::OptionsDatabase &database;
 	AVControl mainSettings;
+	DestinationControl destinationControl;
+	FileControl fileControl;
 	Gtk::Window* mainWindow;
 	Gtk::Button* settingsButton;
 	Gtk::Button* okSettingsButton;

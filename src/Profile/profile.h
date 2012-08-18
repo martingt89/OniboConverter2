@@ -43,7 +43,14 @@ public:
 		AUDIO_CHANNEL_VALUE_OPT = 20,
 		AUDIO_CHANNEL_NAME_OPT = 21,
 		//
-		END_OPT = 22
+		MANUAL_COMMAND_OPT = 22,
+		MANUAL_ARG_OPT = 23,
+		//
+		END_OPT = 24
+	};
+	struct ManualSettings{
+		std::string command;
+		std::list<std::string> args;
 	};
 public:
 	Profile();
@@ -68,10 +75,11 @@ public:
 	bool getAudioBitrate(ConverterOptions::Bitrate& audioBitrate) const;
 	bool getAudioSamplerate(ConverterOptions::Samplerate& audioSamplerate, bool& isOriginal) const;
 	bool getAudioChannel(ConverterOptions::Channel& audioChannel, bool& isOriginal) const;
-
-
+	//
+	void getManualSettings(std::list<ManualSettings>& manualSettings) const;
 private:
 	CppExtension::HashMap<Options, std::string> optionsToValue;
+	std::list<ManualSettings> settings;
 };
 
 typedef std::list<Profile> Profiles;

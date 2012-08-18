@@ -22,6 +22,9 @@ $(SRCPATH)/Profile/profileloader.cpp \
 $(SRCPATH)/Profile/xmlprofileparser.cpp \
 $(SRCPATH)/Gui/convertergui.cpp \
 $(SRCPATH)/Gui/avcontrol.cpp \
+$(SRCPATH)/Gui/filecontrol.cpp \
+$(SRCPATH)/Gui/manualsettingscontrol.cpp \
+$(SRCPATH)/Gui/destinationcontrol.cpp \
 $(SRCPATH)/Gui/Video/videocontrol.cpp \
 $(SRCPATH)/Gui/Video/encodercontrol.cpp \
 $(SRCPATH)/Gui/Video/resolutiondialog.cpp \
@@ -36,6 +39,6 @@ $(SRCPATH)/ProcessExecutor/safeoutputstream.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 
-AM_CXXFLAGS = -lpthread -std=c++0x -g -O0 $(DEPS_CFLAGS) -Wall -pedantic
+AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -pedantic $(DEPS_CFLAGS)
 
 OniboConverter2_LDADD = $(DEPS_LIBS)
