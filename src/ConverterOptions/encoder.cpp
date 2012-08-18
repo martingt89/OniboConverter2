@@ -15,12 +15,19 @@ Encoder::Encoder(){
 	this->description = "";
 	this->bitrate = Bitrates();
 	isSetFFpresets = false;
+	encoderType = UNSET;
 }
-Encoder::Encoder(std::string name, std::string description, Bitrates bitrate) {
+Encoder::Encoder(std::string name, std::string type, std::string description, Bitrates bitrate) {
 	this->name = name;
 	this->description = description;
 	this->bitrate = bitrate;
 	isSetFFpresets = false;
+	encoderType = UNSET;
+	if(type == "v"){
+		encoderType = VIDEO;
+	}else if(type == "a"){
+		encoderType = AUDIO;
+	}
 }
 void Encoder::setFFpresets(const FFpresets& ffpresets, const std::string& prefix){
 	this->ffpresets = ffpresets;
@@ -47,13 +54,20 @@ bool Encoder::getFFPresets(FFpresets& ffpresets){
 	ffpresets = this->ffpresets;
 	return isSetFFpresets;
 }
-//std::string Encoder::addUserFileWithFFPreset(const std::string &path){
-//	if(ffpreset == NULL){
-//		//todo assert
-//	}
-//	return ffpreset->addUserDefineFile(ffpresetPrefix, path);
-//}
-
+Converter::Arguments Encoder::getConvertArguments() const{
+	Converter::Arguments args;
+	if(encoderType == VIDEO){
+		Converter::Argument arg("-vcodec");
+		arg.addValue(name);
+		args.push_back(arg);
+	}
+	if(encoderType == AUDIO){
+		Converter::Argument arg("-acodec");
+		arg.addValue(name);
+		args.push_back(arg);
+	}
+	return args;
+}
 void Encoders::addEncoder(const Encoder& encoder){
 	encoders[encoder.getName()] = encoder;
 }

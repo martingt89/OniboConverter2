@@ -84,6 +84,11 @@ void ManualSettingsControl::setActiveProfile(const Profile::Profile& activeProfi
 	}
 
 }
+Converter::Arguments ManualSettingsControl::getConvertArguments() const{
+	Converter::Arguments args;
+	//todo implement
+	return args;
+}
 //=============================================================
 void ManualSettingsControl::addCommandClicked(){
 	Gtk::TreeModel::Row row = *(commandTreeModel->append());

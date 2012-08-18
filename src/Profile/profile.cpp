@@ -68,7 +68,8 @@ bool Profile::getVideoBitrate(ConverterOptions::Bitrate& videoBitrate) const{
 	if(!exist){
 		bitrateMax = -1;
 	}
-	videoBitrate = ConverterOptions::Bitrate(bitrate, bitrateMin, bitrateMax);
+	videoBitrate = ConverterOptions::Bitrate(
+			bitrate, ConverterOptions::Bitrate::VIDEO, bitrateMin, bitrateMax);
 	return true;
 }
 bool Profile::getVideoResolution(ConverterOptions::Resolution& resolution, bool& original) const{
@@ -131,7 +132,7 @@ bool Profile::getAudioEncoderName(std::string& audioEncoderName) const{
 bool Profile::getAudioBitrate(ConverterOptions::Bitrate& audioBitrate) const{
 	bool exist = false;
 	int bitrate = toN(optionsToValue.get(AUDIO_BITRATE_OPT, exist), int());
-	audioBitrate = ConverterOptions::Bitrate(bitrate);
+	audioBitrate = ConverterOptions::Bitrate(bitrate, ConverterOptions::Bitrate::AUDIO);
 	return exist;
 }
 bool Profile::getAudioSamplerate(ConverterOptions::Samplerate& audioSamplerate, bool& isOriginal) const{

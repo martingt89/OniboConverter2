@@ -28,6 +28,7 @@ public:
 	sigc::signal<void>& signalUserInput();
 	bool checkSettingsComplete(std::string& message);
 	void setActiveProfile(const Profile::Profile& activeProfile);
+	Converter::Arguments getConvertArguments() const;
 private:
 	void audioFormatChanged();
 	void audioEncoderChanged();

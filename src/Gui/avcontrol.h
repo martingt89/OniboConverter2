@@ -15,6 +15,7 @@
 #include "Audio/audiocontrol.h"
 #include "../Profile/profile.h"
 #include "manualsettingscontrol.h"
+#include "../Converter/argument.h"
 
 namespace Gui {
 
@@ -27,6 +28,7 @@ public:
 	bool checkSettingsComplete(std::string& message);
 	void saveSettingsState();
 	void restoreSettingsState();
+	Converter::Arguments getConvertArguments() const;
 private:
 	void userInput();
 	void containerChanged();

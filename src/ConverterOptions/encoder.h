@@ -17,8 +17,12 @@ namespace ConverterOptions {
 
 class Encoder {
 public:
+	enum Type{
+		AUDIO, VIDEO, UNSET
+	};
+public:
 	Encoder();
-	Encoder(std::string name, std::string description, Bitrates bitrate);
+	Encoder(std::string name, std::string type, std::string description, Bitrates bitrate);
 	void setFFpresets(const FFpresets& ffpresets, const std::string& prefix);
 	bool hasFFpreset();
 	std::string getName() const;
@@ -26,7 +30,7 @@ public:
 	Bitrates getBitrates() const;
 	bool getFFPresets(FFpresets& ffpresets);
 	std::string getFFPrefix();
-	//std::string addUserFileWithFFPreset(const std::string &path);
+	Converter::Arguments getConvertArguments() const;
 private:
 	std::string name;
 	std::string description;
@@ -34,6 +38,7 @@ private:
 	FFpresets ffpresets;
 	bool isSetFFpresets;
 	std::string prefix;
+	Type encoderType;
 };
 
 class Encoders{

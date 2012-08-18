@@ -100,7 +100,7 @@ public:
 		}
 		return selectedItem;
 	}
-	T get_active_row_item(){
+	T get_active_row_item() const{
 		T selectedItem;
 		if(comboBoxText->get_active_row_number() >= 0){
 			selectedItem = items[comboBoxText->get_active_row_number()].second;

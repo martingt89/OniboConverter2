@@ -11,6 +11,8 @@
 
 namespace ConverterOptions {
 
+static const std::string ORIGINAL="--- original ---";
+
 Resolution::Resolution(std::string name, std::string aspectRatio, int x, int y, bool isBasic):
 		resolution(x,y), aspectRatio(aspectRatio) {
 	this->name = name;
@@ -36,8 +38,22 @@ bool Resolution::operator<(const Resolution& res2){
 	return this->resolution.first < res2.getValue().first;
 }
 std::string Resolution::toStr() const{
-	std::string resol = toS(resolution.first)+" x "+toS(resolution.second);
-	return resol + "\t" + (std::string)this->getAspectRatio();
+	if(resolution.first > 0 && resolution.second > 0){
+		std::string resol = toS(resolution.first)+" x "+toS(resolution.second);
+		return resol + "\t" + (std::string)this->getAspectRatio();
+	}else{
+		return ORIGINAL;
+	}
+}
+Converter::Arguments Resolution::getConvertArguments() const{
+	Converter::Arguments args;
+	if(resolution.first > 0 && resolution.second > 0){
+		Converter::Argument arg("-s");
+		arg.addValue(toS(resolution.first)+"x"+toS(resolution.second));
+		args.push_back(arg);
+	}
+
+	return args;
 }
 void Resolutions::addResolution(const Resolution& resolution){
 	resolutions[resolution.getAspectRatio()].push_back(resolution);

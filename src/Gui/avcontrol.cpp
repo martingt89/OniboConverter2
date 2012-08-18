@@ -71,6 +71,14 @@ void AVControl::restoreSettingsState(){
 	profilesComboBox.restor_saved_state();
 	isEnabledSignal = true;
 }
+Converter::Arguments AVControl::getConvertArguments() const{
+	Converter::Arguments args;
+	args.push_back(containers.get_active_row_item().getConvertArguments());
+	args.push_back(videoControlGui.getConvertArguments());
+	args.push_back(audioControlGui.getConvertArguments());
+	args.push_back(settingsDialog.getConvertArguments());
+	return args;
+}
 void AVControl::userInput(){
 	if(isUserInput){
 //		std::cout<<"user input"<<std::endl;

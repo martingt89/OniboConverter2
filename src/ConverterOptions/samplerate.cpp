@@ -10,6 +10,8 @@
 
 namespace ConverterOptions {
 
+static const std::string ORIGINAL="--- original ---";
+
 Samplerate::Samplerate(){
 	samplerate = 0;
 }
@@ -22,8 +24,21 @@ int Samplerate::getValue() const{
 	return samplerate;
 }
 std::string Samplerate::toStr() const{
-	return toS(samplerate);
+	if(samplerate > 0){
+		return toS(samplerate);
+	}
+	return ORIGINAL;
 }
+Converter::Arguments Samplerate::getConvertArguments() const{
+	Converter::Arguments args;
+	if(samplerate > 0){
+		Converter::Argument arg("-ar");
+		arg.addValue(toS(samplerate));
+		args.push_back(arg);
+	}
+	return args;
+}
+
 void Samplerates::addSamplerate(const Samplerate& samplerate){
 	samplerates.push_back(samplerate);
 }

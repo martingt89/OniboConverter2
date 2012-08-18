@@ -2,7 +2,7 @@
 
 <audio_video_parameters>
 	<bitrates>
-		<bitrate name="video_standard">
+		<bitrate name="video_standard" type="v">
 			<item>200</item>
 			<item>500</item>
 			<item>700</item>
@@ -13,7 +13,7 @@
 			<item>2048</item>
 		</bitrate>
 		
-		<bitrate name="audio_standard">
+		<bitrate name="audio_standard" type="a">
 			<item>64</item>
 			<item>80</item>
 			<item>96</item>
@@ -29,22 +29,22 @@
 	</bitrates>
 	
 	<encoders>
-		<encoder bitrate="video_standard" ffpreset="libx264">libx264</encoder>
-		<encoder bitrate="video_standard">h264</encoder>
-		<encoder bitrate="video_standard">h264_vdpau</encoder>
-		<encoder bitrate="video_standard">mpeg4</encoder>
-		<encoder bitrate="video_standard">mpeg4_vdpau</encoder>
-		<encoder bitrate="video_standard">msmpeg4</encoder>
-		<encoder bitrate="video_standard">msmpeg4v1</encoder>
-		<encoder bitrate="video_standard">msmpeg4v2</encoder>
-		<encoder bitrate="video_standard">mpeg2video</encoder>
-		<encoder bitrate="video_standard">mpeg1video</encoder>
-		<encoder bitrate="video_standard">mpeg1video_vdpau</encoder>
-		<encoder bitrate="video_standard" ffpreset="libvpx">libvpx</encoder>
-		<encoder bitrate="video_standard">vp8</encoder>
+		<encoder bitrate="video_standard" type="v" ffpreset="libx264">libx264</encoder>
+		<encoder bitrate="video_standard" type="v">h264</encoder>
+		<encoder bitrate="video_standard" type="v">h264_vdpau</encoder>
+		<encoder bitrate="video_standard" type="v">mpeg4</encoder>
+		<encoder bitrate="video_standard" type="v">mpeg4_vdpau</encoder>
+		<encoder bitrate="video_standard" type="v">msmpeg4</encoder>
+		<encoder bitrate="video_standard" type="v">msmpeg4v1</encoder>
+		<encoder bitrate="video_standard" type="v">msmpeg4v2</encoder>
+		<encoder bitrate="video_standard" type="v">mpeg2video</encoder>
+		<encoder bitrate="video_standard" type="v">mpeg1video</encoder>
+		<encoder bitrate="video_standard" type="v">mpeg1video_vdpau</encoder>
+		<encoder bitrate="video_standard" type="v" ffpreset="libvpx">libvpx</encoder>
+		<encoder bitrate="video_standard" type="v">vp8</encoder>
 		<!-- Audio encoders -->
-		<encoder bitrate="audio_standard">libvorbis</encoder>
-		<encoder bitrate="audio_standard">vorbis</encoder>
+		<encoder bitrate="audio_standard" type="a">libvorbis</encoder>
+		<encoder bitrate="audio_standard" type="a">vorbis</encoder>
 	</encoders>
 	
 	<formats>
@@ -152,6 +152,9 @@
 	</containers>
 	
 	<video_resolutions>
+		<resolutions ratio="0:0">
+			<resolution name="" basic="y">0x0</resolution> <!--"Original"-->
+		</resolutions>
 		<resolutions ratio="4:3">
 			<resolution name="QVGA" basic="y">320x240</resolution>
 			<resolution name="VGA" basic="y">640x480</resolution>
@@ -202,6 +205,7 @@
 	</video_resolutions>
 	
 	<samplerates>
+		<item>0</item> <!--"Original"-->
 		<item>8000</item>
 		<item>11025</item>
 		<item>16000</item>
@@ -212,6 +216,7 @@
 	</samplerates>
 	
 	<framerates>
+		<item>0</item> <!--"Original"-->
 		<item>10</item>
 		<item>15</item>
 		<item>20</item>
@@ -223,6 +228,7 @@
 	</framerates>
 	
 	<channels>
+		<item name="org">0</item> <!--"Original"-->
 		<item name="mono">1</item>
 		<item name="stereo">2</item>
 		<item name="5.1">6</item>

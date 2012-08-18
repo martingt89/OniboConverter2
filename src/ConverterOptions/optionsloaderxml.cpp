@@ -181,12 +181,13 @@ void OptionsLoaderXml::extractBitrates(
 	for (auto iter = bitrateSet.begin(); iter != bitrateSet.end(); ++iter) {
 		xmlpp::Node *bitratesNode = *iter;
 		std::string bitratesName = getAttributValueFromNode(bitratesNode, "name");
+		std::string bitratesType = getAttributValueFromNode(bitratesNode, "type");
 		Bitrates bitrates;
 		xmlpp::NodeSet textSet = bitratesNode->find("./item/child::text()");
 		for (auto textSetIter = textSet.begin(); textSetIter != textSet.end(); ++textSetIter) {
 			const xmlpp::TextNode* textNode = dynamic_cast<const xmlpp::TextNode*>(*textSetIter);
 			if (textNode != NULL) {
-				bitrates.push_back( Bitrate(toN(textNode->get_content(), int())));
+				bitrates.push_back( Bitrate(toN(textNode->get_content(), int()), bitratesType));
 			}
 		}
 		nameToBitrates[bitratesName] = bitrates;
@@ -200,6 +201,7 @@ void OptionsLoaderXml::extractEncoders(
 		xmlpp::Node *encoderNode = *encoderIter;
 		std::string bitrateName = getAttributValueFromNode(encoderNode, "bitrate");
 		std::string ffpresetPrefix = getAttributValueFromNode(encoderNode, "ffpreset");
+		std::string encoderType = getAttributValueFromNode(encoderNode, "type");
 		const xmlpp::Element* nodeElement = dynamic_cast<const xmlpp::Element*>(encoderNode);
 		if (nodeElement == NULL) {
 			continue;
@@ -212,7 +214,7 @@ void OptionsLoaderXml::extractEncoders(
 		if(supprotedEncoders.isSupported(encoderName)){
 			std::string encoderDescription = supprotedEncoders.getEncoderDescription(encoderName);
 			Bitrates bitrates = nameToBitrates[bitrateName];
-			Encoder encoder(encoderName, encoderDescription, bitrates);
+			Encoder encoder(encoderName, encoderType, encoderDescription, bitrates);
 			if(ffpresetPrefix.size() > 0){
 				if(!prefixToFFpresets.isExistKey(ffpresetPrefix)){
 					prefixToFFpresets.set(ffpresetPrefix, FFpresets(ffpresetPrefix, ffpresetPath));

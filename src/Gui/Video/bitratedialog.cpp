@@ -166,7 +166,7 @@ ConverterOptions::Bitrate BitrateDialog::createBitrate(){
 			min = vbdMinBitrate->get_value();
 		}
 	}
-	return ConverterOptions::Bitrate(bitrate, min, max);
+	return ConverterOptions::Bitrate(bitrate, ConverterOptions::Bitrate::VIDEO, min, max);
 }
 }
 } /* namespace Gui */

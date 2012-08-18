@@ -12,7 +12,6 @@
 namespace Gui {
 namespace Video {
 
-static const std::string ORIGINAL = "--- original ---";
 static const std::string MORE_SETTINGS = "--- more ---";
 
 static const std::string COPY_MODE = "copy";
@@ -49,6 +48,22 @@ void VideoControl::disableSettings(){
 }
 sigc::signal<void>& VideoControl::signalUserInput(){
 	return userEvent;
+}
+Converter::Arguments VideoControl::getConvertArguments() const{
+	Converter::Arguments args;
+	if(videoMode.get_active_row_item() == CUSTOM_MODE_ID){
+		args.push_back(videoFramerate.get_active_row_item().getConvertArguments());
+		args.push_back(videoResolution.get_active_row_item().getConvertArguments());
+		args.push_back(encoder.getConvertArguments());
+	}else if(videoMode.get_active_row_item() == COPY_MODE_ID){
+		Converter::Argument arg("-vcodec");
+		arg.addValue("copy");
+		args.push_back(arg);
+	}else if(videoMode.get_active_row_item() == DISABLE_MODE_ID){
+		Converter::Argument arg("-vn");
+		args.push_back(arg);
+	}
+	return args;
 }
 void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
 	//set mode
@@ -203,23 +218,19 @@ void VideoControl::initVideoMode(ComboBoxExt<int> &videoMode){
 }
 void VideoControl::initVideoFramerate(ComboBoxExt<ConverterOptions::Framerate> &videoFramerate){
 	const std::list<ConverterOptions::Framerate> framerates = database.getFramerates().getFramerats();
-	videoFramerate.append(ORIGINAL);
-	videoFramerate.set_active_row_number(0);
-
 	for(auto framerateIter = framerates.begin(); framerateIter != framerates.end(); ++framerateIter){
-		videoFramerate.append(toS(framerateIter->getValue()), *framerateIter);
+		videoFramerate.append(framerateIter->toStr(), *framerateIter);
 	}
+	videoFramerate.set_active_row_number(0);
 }
 void VideoControl::initVideoResolution(ComboBoxExt<ConverterOptions::Resolution> &videoResolution){
 	const std::list<ConverterOptions::Resolution> resolutions = database.getResolutions().getResolutions();
-	videoResolution.append(ORIGINAL);
-	videoResolution.set_active_row_number(0);
-
 	for(auto resolIter = resolutions.begin(); resolIter != resolutions.end(); ++resolIter){
 		if(resolIter->isBasic()){
 			videoResolution.append(resolIter->toStr(), *resolIter);
 		}
 	}
+	videoResolution.set_active_row_number(0);
 	videoResolution.append(MORE_SETTINGS);
 }
 void VideoControl::sendUserInputSignal(){

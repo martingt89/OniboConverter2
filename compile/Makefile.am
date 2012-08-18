@@ -36,6 +36,7 @@ $(SRCPATH)/ProcessExecutor/process.cpp \
 $(SRCPATH)/ProcessExecutor/safestream.cpp \
 $(SRCPATH)/ProcessExecutor/safeinputstream.cpp \
 $(SRCPATH)/ProcessExecutor/safeoutputstream.cpp \
+$(SRCPATH)/Converter/argument.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 

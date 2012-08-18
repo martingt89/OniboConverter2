@@ -29,7 +29,9 @@ Formats Container::getFormats() const{
 Container::ContainerType Container::getContainerType() const{
 	return containerType;
 }
-
+Converter::Arguments Container::getConvertArguments() const{
+	return Converter::Arguments();
+}
 void Containers::addContainer(const Container& container){
 	containers.set(container.getName(), container);
 }
@@ -39,5 +41,4 @@ std::list<Container> Containers::getContainers() const{
 Container Containers::getContainerByName(std::string containerName) const{	//todo container not found
 	return containers.get(containerName);
 }
-
 } /* namespace ConverterOptions */

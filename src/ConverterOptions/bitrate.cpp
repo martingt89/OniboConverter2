@@ -14,13 +14,26 @@ Bitrate::Bitrate(){
 	this->bitrate = 0;
 	minBitrate = -1;
 	maxBitrate = -1;
+	bitrateType = UNSET;
 }
-Bitrate::Bitrate(int bitrate, int minBitrate, int maxBitrate) {
+Bitrate::Bitrate(int bitrate, std::string type, int minBitrate, int maxBitrate) {
 	this->bitrate = bitrate;
 	this->minBitrate = minBitrate;
 	this->maxBitrate = maxBitrate;
+	if(type == "v"){
+		bitrateType = VIDEO;
+	}else if(type == "a"){
+		bitrateType = AUDIO;
+	}else{
+		bitrateType = UNSET;
+	}
 }
-
+Bitrate::Bitrate(int bitrate, Type type, int minBitrate, int maxBitrate) {
+	this->bitrate = bitrate;
+	this->minBitrate = minBitrate;
+	this->maxBitrate = maxBitrate;
+	bitrateType = type;
+}
 int Bitrate::getMinBitrate() const{
 	return minBitrate;
 }
@@ -46,5 +59,19 @@ bool Bitrate::operator== (const Bitrate& second) const{
 	return (bitrate == second.bitrate) &&
 			(minBitrate == second.minBitrate) &&
 			(maxBitrate == second.maxBitrate);
+}
+Converter::Arguments Bitrate::getConvertArguments() const{
+	Converter::Arguments args;
+	if(bitrateType == VIDEO){
+		Converter::Argument arg("-b");
+		arg.addValue(toS(bitrate)+"k");
+		args.push_back(arg);
+	}
+	if(bitrateType == AUDIO){
+		Converter::Argument arg("-ab");
+		arg.addValue(toS(bitrate)+"k");
+		args.push_back(arg);
+	}
+	return args;
 }
 } /* namespace ConverterOptions */

@@ -10,6 +10,7 @@
 
 #include <list>
 #include <string>
+#include "../Converter/argument.h"
 
 namespace ConverterOptions {
 
@@ -19,6 +20,7 @@ public:
 	Samplerate(int samplerate);
 	int getValue() const;
 	std::string toStr() const;
+	Converter::Arguments getConvertArguments() const;
 private:
 	int samplerate;
 };

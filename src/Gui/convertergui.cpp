@@ -24,11 +24,13 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 	refGlade->get_widget("settingsButton", settingsButton);
 	refGlade->get_widget("okSettingsButton", okSettingsButton);
 	refGlade->get_widget("cancelSettingsButton", cancelSettingsButton);
+	refGlade->get_widget("convertButton", convertButton);
 
 	settingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::settingsButtonClicked));
 	okSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::okSettingsButtonClicked));
 	cancelSettingsButton->signal_clicked().connect(
 			sigc::mem_fun(*this, &ConverterGui::cancelSettingsButtonClicked));
+	convertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::convertButtonClicked));
 }
 
 ConverterGui::~ConverterGui() {
@@ -51,21 +53,38 @@ void ConverterGui::settingsButtonClicked() {
 	mainSettings.saveSettingsState();
 	mainNotebook->set_current_page(CONFIG_SCREEN_PAGE);
 }
-void ConverterGui::okSettingsButtonClicked(){
+
+void ConverterGui::showWarningDialog(const std::string& message) {
+	warningDialog.set_title("Settings are not complete");
+	warningDialog.set_message("Settings are not complete");
+	warningDialog.set_secondary_text(message, false);
+	warningDialog.run();
+	warningDialog.hide();
+}
+
+void ConverterGui::okSettingsButtonClicked() {
 	std::string message = "";
 	bool isComplete = mainSettings.checkSettingsComplete(message);
-	if(!isComplete){
-		warningDialog.set_title("Settings are not complete");
-		warningDialog.set_message("Settings are not complete");
-		warningDialog.set_secondary_text(message, false);
-		warningDialog.run();
-		warningDialog.hide();
-	}else{
+	if(isComplete){
 		mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
+	}else{
+		showWarningDialog(message);
 	}
 }
 void ConverterGui::cancelSettingsButtonClicked(){
 	mainSettings.restoreSettingsState();
 	mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
+}
+void ConverterGui::convertButtonClicked(){
+	//todo test if set files
+	std::string message = "";
+	bool isComplete = mainSettings.checkSettingsComplete(message);
+	if(!isComplete){
+		settingsButtonClicked();
+		showWarningDialog(message);
+		return;
+	}
+	Converter::Arguments args = mainSettings.getConvertArguments();
+	args.print();
 }
 } /* namespace Gui */

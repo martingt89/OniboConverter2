@@ -92,6 +92,12 @@ void EncoderControlA::setActiveProfile(const Profile::Profile& activeProfile){
 		audioFormat.unset_active();
 	}
 }
+Converter::Arguments EncoderControlA::getConvertArguments() const{
+	Converter::Arguments args;
+	args.push_back(audioEncoder.get_active_row_item().getConvertArguments());
+	args.push_back(audioBitrate.get_active_row_item().getConvertArguments());
+	return args;
+}
 void EncoderControlA::audioFormatChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;

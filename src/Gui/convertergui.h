@@ -35,6 +35,8 @@ private:
 	void settingsButtonClicked();
 	void okSettingsButtonClicked();
 	void cancelSettingsButtonClicked();
+	void convertButtonClicked();
+	void showWarningDialog(const std::string& message);
 
 	ConverterOptions::OptionsDatabase &database;
 	AVControl mainSettings;
@@ -44,6 +46,7 @@ private:
 	Gtk::Button* settingsButton;
 	Gtk::Button* okSettingsButton;
 	Gtk::Button* cancelSettingsButton;
+	Gtk::Button* convertButton;
 	Gtk::Notebook* mainNotebook;
 	Gtk::MessageDialog warningDialog;
 

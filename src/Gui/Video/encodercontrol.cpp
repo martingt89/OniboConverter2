@@ -137,6 +137,13 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 		videoFormat.unset_active();
 	}
 }
+Converter::Arguments EncoderControl::getConvertArguments() const{
+	Converter::Arguments args;
+	args.push_back(videoEncoder.get_active_row_item().getConvertArguments());
+	args.push_back(videoBitrate.get_active_row_item().getConvertArguments());
+	//todo implement ffpreset
+	return args;
+}
 void EncoderControl::videoEncoderChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;
