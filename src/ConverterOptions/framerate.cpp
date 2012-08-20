@@ -27,12 +27,12 @@ std::string Framerate::toStr() const{
 		return ORIGINAL;
 	}
 }
-Converter::Arguments Framerate::getConvertArguments() const{
-	Converter::Arguments args;
+Converter::ConvertSettingsList Framerate::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
 	if(framerate > 0){
-		Converter::Argument arg("-r");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::FRAMERATE);	//-r
 		arg.addValue(toS(framerate));
-		args.push_back(arg);
+		args.add(arg);
 	}
 	return args;
 }

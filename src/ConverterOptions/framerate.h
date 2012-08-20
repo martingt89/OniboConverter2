@@ -9,7 +9,7 @@
 #define FRAMERATE_H_
 
 #include <list>
-#include "../Converter/argument.h"
+#include "../Converter/convertsettings.h"
 
 namespace ConverterOptions {
 
@@ -19,7 +19,7 @@ public:
 	Framerate(double framerate);
 	double getValue() const;
 	std::string toStr() const;
-	Converter::Arguments getConvertArguments() const;
+	Converter::ConvertSettingsList getConvertArguments() const;
 private:
 	double framerate;
 };

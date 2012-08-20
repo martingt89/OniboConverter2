@@ -7,6 +7,8 @@
 
 #include "convertergui.h"
 
+#include "../MediaFile/mediafile.h"
+#include <iostream> //todo remove
 namespace Gui {
 
 static const int MAIN_SCREEN_PAGE = 0;
@@ -48,15 +50,17 @@ void ConverterGui::setAvailableProfiles(const std::list<Profile::Profile>& avail
 Gtk::Window& ConverterGui::getWindow() {
 	return *mainWindow;
 }
-
+sigc::signal<void, std::list<MediaFile::MediaFile> >& ConverterGui::signalConvert(){
+	return convertEvent;
+}
 void ConverterGui::settingsButtonClicked() {
 	mainSettings.saveSettingsState();
 	mainNotebook->set_current_page(CONFIG_SCREEN_PAGE);
 }
 
-void ConverterGui::showWarningDialog(const std::string& message) {
-	warningDialog.set_title("Settings are not complete");
-	warningDialog.set_message("Settings are not complete");
+void ConverterGui::showWarningDialog(const std::string& title, const std::string& message) {
+	warningDialog.set_title(title);
+	warningDialog.set_message(title);
 	warningDialog.set_secondary_text(message, false);
 	warningDialog.run();
 	warningDialog.hide();
@@ -68,7 +72,7 @@ void ConverterGui::okSettingsButtonClicked() {
 	if(isComplete){
 		mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
 	}else{
-		showWarningDialog(message);
+		showWarningDialog("Settings are not complete", message);
 	}
 }
 void ConverterGui::cancelSettingsButtonClicked(){
@@ -76,15 +80,34 @@ void ConverterGui::cancelSettingsButtonClicked(){
 	mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
 }
 void ConverterGui::convertButtonClicked(){
-	//todo test if set files
+	auto files = fileControl.getAllFiles();
+	if(files.size() == 0){
+		showWarningDialog("No file to processing", "Please add files");
+		return;
+	}
 	std::string message = "";
 	bool isComplete = mainSettings.checkSettingsComplete(message);
 	if(!isComplete){
 		settingsButtonClicked();
-		showWarningDialog(message);
+		showWarningDialog("Settings are not complete", message);
 		return;
 	}
-	Converter::Arguments args = mainSettings.getConvertArguments();
-	args.print();
+	std::list<MediaFile::MediaFile> mediaFiles;
+	for(FileControl::PathWithFileId path : files){	//todo add filters support
+		MediaFile::MediaFile mediaFile(path.path);
+		mediaFiles.push_back(mediaFile);
+	}
+	convertEvent(mediaFiles);
+//	Converter::ConvertSettingsList args = mainSettings.getConvertArguments();
+//	args.print();
+//	Path file = files.begin()->path;
+//	MediaFile::MediaFile mediaFile(file);
+//	mediaFile.scanMediaFile();
+//	{
+//		std::cout<<mediaFile.getDuration()<<std::endl;
+//		std::cout<<mediaFile.getBitrate()<<std::endl;
+//		std::cout<<mediaFile.getStartTime()<<std::endl;
+//		std::cout<<mediaFile.getNumberOfVideoStreams()<<std::endl;
+//	}
 }
 } /* namespace Gui */

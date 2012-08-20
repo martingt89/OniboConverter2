@@ -36,7 +36,12 @@ $(SRCPATH)/ProcessExecutor/process.cpp \
 $(SRCPATH)/ProcessExecutor/safestream.cpp \
 $(SRCPATH)/ProcessExecutor/safeinputstream.cpp \
 $(SRCPATH)/ProcessExecutor/safeoutputstream.cpp \
-$(SRCPATH)/Converter/argument.cpp \
+$(SRCPATH)/Converter/convertsettings.cpp \
+$(SRCPATH)/MediaFile/mediafile.cpp \
+$(SRCPATH)/MediaFile/mediafilescanner.cpp \
+$(SRCPATH)/MediaFile/audiostream.cpp \
+$(SRCPATH)/MediaFile/stream.cpp \
+$(SRCPATH)/MediaFile/videostream.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 

@@ -29,8 +29,8 @@ Formats Container::getFormats() const{
 Container::ContainerType Container::getContainerType() const{
 	return containerType;
 }
-Converter::Arguments Container::getConvertArguments() const{
-	return Converter::Arguments();
+Converter::ConvertSettingsList Container::getConvertArguments() const{
+	return Converter::ConvertSettingsList();
 }
 void Containers::addContainer(const Container& container){
 	containers.set(container.getName(), container);

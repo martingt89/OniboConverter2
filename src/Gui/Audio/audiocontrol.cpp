@@ -134,19 +134,19 @@ void AudioControl::setActiveProfile(const Profile::Profile& activeProfile){
 sigc::signal<void>& AudioControl::signalUserInput(){
 	return userEvent;
 }
-Converter::Arguments AudioControl::getConvertArguments() const{
-	Converter::Arguments args;
+Converter::ConvertSettingsList AudioControl::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
 	if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
-		args.push_back(audioChannels.get_active_row_item().getConvertArguments());
-		args.push_back(audioSamplerate.get_active_row_item().getConvertArguments());
-		args.push_back(encoderControl.getConvertArguments());
+		args.add(audioChannels.get_active_row_item().getConvertArguments());
+		args.add(audioSamplerate.get_active_row_item().getConvertArguments());
+		args.add(encoderControl.getConvertArguments());
 	}else if(audioMode.get_active_row_item() == COPY_MODE_ID){
-		Converter::Argument arg("-acodec");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::ACODEC);	//-acodec
 		arg.addValue("copy");
-		args.push_back(arg);
+		args.add(arg);
 	}else if(audioMode.get_active_row_item() == DISABLE_MODE_ID){
-		Converter::Argument arg("-an");
-		args.push_back(arg);
+		Converter::ConvertSettings arg(Converter::ConvertSettings::NOAUDIO);		//-an
+		args.add(arg);
 	}
 	return args;
 }

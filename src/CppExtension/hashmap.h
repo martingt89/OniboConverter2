@@ -49,6 +49,9 @@ public:
 		}
 		return values;
 	}
+	bool isEmpty() const{
+		return map.size() == 0;
+	}
 private:
 	std::map<Key, Value> map;
 };

@@ -45,12 +45,12 @@ std::string Resolution::toStr() const{
 		return ORIGINAL;
 	}
 }
-Converter::Arguments Resolution::getConvertArguments() const{
-	Converter::Arguments args;
+Converter::ConvertSettingsList Resolution::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
 	if(resolution.first > 0 && resolution.second > 0){
-		Converter::Argument arg("-s");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::SIZE); //-s
 		arg.addValue(toS(resolution.first)+"x"+toS(resolution.second));
-		args.push_back(arg);
+		args.add(arg);
 	}
 
 	return args;

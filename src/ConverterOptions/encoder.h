@@ -22,7 +22,8 @@ public:
 	};
 public:
 	Encoder();
-	Encoder(std::string name, std::string type, std::string description, Bitrates bitrate);
+	Encoder(std::string name, std::string type, std::string description, Bitrates bitrate,
+			bool isEnableMultithread = false);
 	void setFFpresets(const FFpresets& ffpresets, const std::string& prefix);
 	bool hasFFpreset();
 	std::string getName() const;
@@ -30,7 +31,7 @@ public:
 	Bitrates getBitrates() const;
 	bool getFFPresets(FFpresets& ffpresets);
 	std::string getFFPrefix();
-	Converter::Arguments getConvertArguments() const;
+	Converter::ConvertSettingsList getConvertArguments() const;
 private:
 	std::string name;
 	std::string description;
@@ -39,6 +40,7 @@ private:
 	bool isSetFFpresets;
 	std::string prefix;
 	Type encoderType;
+	bool enableMultithread;
 };
 
 class Encoders{

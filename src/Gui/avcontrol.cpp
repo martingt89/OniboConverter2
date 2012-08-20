@@ -71,12 +71,12 @@ void AVControl::restoreSettingsState(){
 	profilesComboBox.restor_saved_state();
 	isEnabledSignal = true;
 }
-Converter::Arguments AVControl::getConvertArguments() const{
-	Converter::Arguments args;
-	args.push_back(containers.get_active_row_item().getConvertArguments());
-	args.push_back(videoControlGui.getConvertArguments());
-	args.push_back(audioControlGui.getConvertArguments());
-	args.push_back(settingsDialog.getConvertArguments());
+Converter::ConvertSettingsList AVControl::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
+	args.add(containers.get_active_row_item().getConvertArguments());
+	args.add(videoControlGui.getConvertArguments());
+	args.add(audioControlGui.getConvertArguments());
+	args.add(settingsDialog.getConvertArguments());
 	return args;
 }
 void AVControl::userInput(){

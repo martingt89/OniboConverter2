@@ -29,12 +29,12 @@ std::string Samplerate::toStr() const{
 	}
 	return ORIGINAL;
 }
-Converter::Arguments Samplerate::getConvertArguments() const{
-	Converter::Arguments args;
+Converter::ConvertSettingsList Samplerate::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
 	if(samplerate > 0){
-		Converter::Argument arg("-ar");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::SAMPLERATE);		//-ar
 		arg.addValue(toS(samplerate));
-		args.push_back(arg);
+		args.add(arg);
 	}
 	return args;
 }

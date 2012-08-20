@@ -49,19 +49,19 @@ void VideoControl::disableSettings(){
 sigc::signal<void>& VideoControl::signalUserInput(){
 	return userEvent;
 }
-Converter::Arguments VideoControl::getConvertArguments() const{
-	Converter::Arguments args;
+Converter::ConvertSettingsList VideoControl::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
 	if(videoMode.get_active_row_item() == CUSTOM_MODE_ID){
-		args.push_back(videoFramerate.get_active_row_item().getConvertArguments());
-		args.push_back(videoResolution.get_active_row_item().getConvertArguments());
-		args.push_back(encoder.getConvertArguments());
+		args.add(videoFramerate.get_active_row_item().getConvertArguments());
+		args.add(videoResolution.get_active_row_item().getConvertArguments());
+		args.add(encoder.getConvertArguments());
 	}else if(videoMode.get_active_row_item() == COPY_MODE_ID){
-		Converter::Argument arg("-vcodec");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::VCODEC);	//-vcodec
 		arg.addValue("copy");
-		args.push_back(arg);
+		args.add(arg);
 	}else if(videoMode.get_active_row_item() == DISABLE_MODE_ID){
-		Converter::Argument arg("-vn");
-		args.push_back(arg);
+		Converter::ConvertSettings arg(Converter::ConvertSettings::NOVIDEO);	//-vn
+		args.add(arg);
 	}
 	return args;
 }
@@ -98,7 +98,7 @@ void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
 			videoResolution.set_active_row_number(0);
 		}else{
 			if(!videoResolution.containes(resolution.toStr())){
-				videoResolution.insertAfterLast(resolution.toStr(), resolution);
+				videoResolution.insertBeforeLast(resolution.toStr(), resolution);
 			}
 			videoResolution.set_active_text(resolution.toStr());
 		}
@@ -195,7 +195,7 @@ void VideoControl::videoResolutinChanged(){
 				if(videoResolution.containes(resolutionDescription)){
 					videoResolution.set_active_text(resolutionDescription);
 				}else{
-					videoResolution.insertAfterLast(resolutionDescription, newResolution);
+					videoResolution.insertBeforeLast(resolutionDescription, newResolution);
 					videoResolution.set_active_text(resolutionDescription);
 				}
 			}else{

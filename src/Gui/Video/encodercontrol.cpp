@@ -111,7 +111,7 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 			ConverterOptions::Bitrate bitrate;
 			if(activeProfile.getVideoBitrate(bitrate)){
 				if(!videoBitrate.containes(bitrate.toStr())){
-					videoBitrate.insertAfterLast(bitrate.toStr(), bitrate);
+					videoBitrate.insertBeforeLast(bitrate.toStr(), bitrate);
 					database.addUserVideoBitrate(bitrate);
 				}
 				videoBitrate.set_active_text(bitrate.toStr());
@@ -122,7 +122,7 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 				ConverterOptions::FFpreset ffpreset;
 				if(activeProfile.getVideoFFpreset(ffpreset)){
 					if(!videoFFpreset.containes(ffpreset.toStr())){
-						videoFFpreset.insertAfterLast(ffpreset.toStr(), ffpreset);
+						videoFFpreset.insertBeforeLast(ffpreset.toStr(), ffpreset);
 						database.addUserVideoFFpreset(ffpreset);
 					}
 					videoFFpreset.set_active_text(ffpreset.toStr());
@@ -137,10 +137,10 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 		videoFormat.unset_active();
 	}
 }
-Converter::Arguments EncoderControl::getConvertArguments() const{
-	Converter::Arguments args;
-	args.push_back(videoEncoder.get_active_row_item().getConvertArguments());
-	args.push_back(videoBitrate.get_active_row_item().getConvertArguments());
+Converter::ConvertSettingsList EncoderControl::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
+	args.add(videoEncoder.get_active_row_item().getConvertArguments());
+	args.add(videoBitrate.get_active_row_item().getConvertArguments());
 	//todo implement ffpreset
 	return args;
 }
@@ -163,7 +163,7 @@ void EncoderControl::videoBitrateChanged(){
 			bool set = bitrateDialog.start(videoEncoder.get_active_row_item(), userBitrate);
 			if(set){
 				if(!videoBitrate.containes(userBitrate.toStr())){
-					videoBitrate.insertAfterLast(userBitrate.toStr(), userBitrate);
+					videoBitrate.insertBeforeLast(userBitrate.toStr(), userBitrate);
 					database.addUserVideoBitrate(userBitrate);
 				}
 				videoBitrate.set_active_text(userBitrate.toStr());

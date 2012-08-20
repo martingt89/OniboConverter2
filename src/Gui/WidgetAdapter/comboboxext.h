@@ -40,7 +40,7 @@ public:
 			this->append(text, item);
 		}
 	}
-	void insertAfterLast(const std::string& text, const T &item = T()){
+	void insertBeforeLast(const std::string& text, const T &item = T()){
 		const int lastIndex = items.size()-1;
 		if(lastIndex >= 0){
 

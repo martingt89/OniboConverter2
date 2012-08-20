@@ -33,12 +33,12 @@ std::string Channel::toStr() const{
 	}
 	return toS(value);
 }
-Converter::Arguments Channel::getConvertArguments() const{
-	Converter::Arguments args;
+Converter::ConvertSettingsList Channel::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
 	if(value > 0){
-		Converter::Argument arg("-ac");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::CHANNELS);		//-ac
 		arg.addValue(toS(value));
-		args.push_back(arg);
+		args.add(arg);
 	}
 	return args;
 }

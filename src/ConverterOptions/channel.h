@@ -10,7 +10,7 @@
 
 #include <list>
 #include <string>
-#include "../Converter/argument.h"
+#include "../Converter/convertsettings.h"
 
 namespace ConverterOptions {
 
@@ -21,7 +21,7 @@ public:
 	virtual ~Channel();
 	int getValue() const;
 	std::string toStr() const;
-	Converter::Arguments getConvertArguments() const;
+	Converter::ConvertSettingsList getConvertArguments() const;
 private:
 	std::string name;
 	int value;

@@ -14,8 +14,8 @@
 #include <gtkmm/treemodel.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
-
-
+#include "../CppExtension/path.h"
+#include <list>
 namespace Gui {
 
 class FileControl {
@@ -32,8 +32,14 @@ private:
 	};
 	ModelColumns modelColumns;
 public:
+	struct PathWithFileId{
+		Path path;
+		int id;
+	};
+public:
 	FileControl(const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~FileControl();
+	std::list<PathWithFileId> getAllFiles() const;
 private:
 	void addFileClicked();
 	void removeFileClicked();

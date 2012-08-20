@@ -11,7 +11,7 @@
 #include <string>
 #include <list>
 #include <map>
-#include "../Converter/argument.h"
+#include "../Converter/convertsettings.h"
 
 namespace ConverterOptions {
 
@@ -39,7 +39,7 @@ public:
 	bool isBasic() const;
 	bool operator<(const Resolution& res2);
 	std::string toStr() const;
-	Converter::Arguments getConvertArguments() const;
+	Converter::ConvertSettingsList getConvertArguments() const;
 private:
 	std::pair<int, int> resolution;
 	AspectRatio aspectRatio;

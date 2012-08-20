@@ -202,6 +202,7 @@ void OptionsLoaderXml::extractEncoders(
 		std::string bitrateName = getAttributValueFromNode(encoderNode, "bitrate");
 		std::string ffpresetPrefix = getAttributValueFromNode(encoderNode, "ffpreset");
 		std::string encoderType = getAttributValueFromNode(encoderNode, "type");
+		std::string multithread = getAttributValueFromNode(encoderNode, "multithread");
 		const xmlpp::Element* nodeElement = dynamic_cast<const xmlpp::Element*>(encoderNode);
 		if (nodeElement == NULL) {
 			continue;
@@ -214,7 +215,7 @@ void OptionsLoaderXml::extractEncoders(
 		if(supprotedEncoders.isSupported(encoderName)){
 			std::string encoderDescription = supprotedEncoders.getEncoderDescription(encoderName);
 			Bitrates bitrates = nameToBitrates[bitrateName];
-			Encoder encoder(encoderName, encoderType, encoderDescription, bitrates);
+			Encoder encoder(encoderName, encoderType, encoderDescription, bitrates, multithread == "y");
 			if(ffpresetPrefix.size() > 0){
 				if(!prefixToFFpresets.isExistKey(ffpresetPrefix)){
 					prefixToFFpresets.set(ffpresetPrefix, FFpresets(ffpresetPrefix, ffpresetPath));

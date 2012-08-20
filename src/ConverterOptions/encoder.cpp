@@ -16,12 +16,15 @@ Encoder::Encoder(){
 	this->bitrate = Bitrates();
 	isSetFFpresets = false;
 	encoderType = UNSET;
+	enableMultithread = false;
 }
-Encoder::Encoder(std::string name, std::string type, std::string description, Bitrates bitrate) {
+Encoder::Encoder(std::string name, std::string type, std::string description, Bitrates bitrate,
+		bool isEnableMultithread) {
 	this->name = name;
 	this->description = description;
 	this->bitrate = bitrate;
 	isSetFFpresets = false;
+	enableMultithread = isEnableMultithread;
 	encoderType = UNSET;
 	if(type == "v"){
 		encoderType = VIDEO;
@@ -54,17 +57,21 @@ bool Encoder::getFFPresets(FFpresets& ffpresets){
 	ffpresets = this->ffpresets;
 	return isSetFFpresets;
 }
-Converter::Arguments Encoder::getConvertArguments() const{
-	Converter::Arguments args;
+Converter::ConvertSettingsList Encoder::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
 	if(encoderType == VIDEO){
-		Converter::Argument arg("-vcodec");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::VCODEC);	//-vcodec
 		arg.addValue(name);
-		args.push_back(arg);
+		args.add(arg);
+	}
+	if(enableMultithread){
+		Converter::ConvertSettings arg(Converter::ConvertSettings::MULTITHREAD);
+		args.add(arg);
 	}
 	if(encoderType == AUDIO){
-		Converter::Argument arg("-acodec");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::ACODEC);	//-acodec
 		arg.addValue(name);
-		args.push_back(arg);
+		args.add(arg);
 	}
 	return args;
 }

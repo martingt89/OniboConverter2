@@ -40,6 +40,21 @@ FileControl::~FileControl() {
 	delete removeFile;
 	delete clearFiles;
 }
+
+std::list<FileControl::PathWithFileId> FileControl::getAllFiles() const{
+	std::list<FileControl::PathWithFileId> files;
+	typedef Gtk::TreeModel::Children type_children;
+	type_children children = fileTreeModel->children();
+	for (type_children::iterator iter = children.begin(); iter != children.end(); ++iter) {
+		Gtk::TreeModel::Row row = *iter;
+		FileControl::PathWithFileId file;
+		file.path = Path((Glib::ustring)row[modelColumns.path]);
+		file.id = row[modelColumns.id];
+		files.push_back(file);
+	}
+	return files;
+}
+
 void FileControl::addFileClicked(){
 	int res = fileChooser.run();
 	fileChooser.hide();

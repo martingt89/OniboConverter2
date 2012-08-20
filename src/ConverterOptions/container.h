@@ -27,7 +27,7 @@ public:
 	std::string getName() const;
 	Formats getFormats() const;
 	ContainerType getContainerType() const;
-	Converter::Arguments getConvertArguments() const;
+	Converter::ConvertSettingsList getConvertArguments() const;
 private:
 	std::string name;
 	ContainerType containerType;

@@ -60,17 +60,17 @@ bool Bitrate::operator== (const Bitrate& second) const{
 			(minBitrate == second.minBitrate) &&
 			(maxBitrate == second.maxBitrate);
 }
-Converter::Arguments Bitrate::getConvertArguments() const{
-	Converter::Arguments args;
+Converter::ConvertSettingsList Bitrate::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
 	if(bitrateType == VIDEO){
-		Converter::Argument arg("-b");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::VBITRATE); //-b
 		arg.addValue(toS(bitrate)+"k");
-		args.push_back(arg);
+		args.add(arg);
 	}
 	if(bitrateType == AUDIO){
-		Converter::Argument arg("-ab");
+		Converter::ConvertSettings arg(Converter::ConvertSettings::ABITRATE); //-ab
 		arg.addValue(toS(bitrate)+"k");
-		args.push_back(arg);
+		args.add(arg);
 	}
 	return args;
 }

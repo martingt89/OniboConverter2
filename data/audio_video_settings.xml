@@ -29,7 +29,7 @@
 	</bitrates>
 	
 	<encoders>
-		<encoder bitrate="video_standard" type="v" ffpreset="libx264">libx264</encoder>
+		<encoder bitrate="video_standard" type="v" ffpreset="libx264" multithread="y">libx264</encoder>
 		<encoder bitrate="video_standard" type="v">h264</encoder>
 		<encoder bitrate="video_standard" type="v">h264_vdpau</encoder>
 		<encoder bitrate="video_standard" type="v">mpeg4</encoder>
@@ -45,6 +45,11 @@
 		<!-- Audio encoders -->
 		<encoder bitrate="audio_standard" type="a">libvorbis</encoder>
 		<encoder bitrate="audio_standard" type="a">vorbis</encoder>
+		<encoder bitrate="audio_standard" type="a">libmp3lame</encoder>
+		<encoder bitrate="audio_standard" type="a">mp3</encoder>
+		<encoder bitrate="audio_standard" type="a">mp3adu</encoder>
+		<encoder bitrate="audio_standard" type="a">mp3adufloat</encoder>
+		<encoder bitrate="audio_standard" type="a">mp3float</encoder>
 	</encoders>
 	
 	<formats>
@@ -79,6 +84,13 @@
 		<format id="VORBIS" type="audio">
 			<encoder>libvorbis</encoder>
 			<encoder>vorbis</encoder>
+		</format>
+		<format id="MP3" type="audio">
+			<encoder>libmp3lame</encoder>
+			<encoder>mp3</encoder>
+			<encoder>mp3adu</encoder>
+			<encoder>mp3adufloat</encoder>
+			<encoder>mp3float</encoder>
 		</format>
 	</formats>
 	

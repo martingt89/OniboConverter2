@@ -20,6 +20,7 @@
 #include "avcontrol.h"
 #include "destinationcontrol.h"
 #include "filecontrol.h"
+#include "../MediaFile/mediafile.h"
 
 namespace Gui {
 
@@ -30,13 +31,14 @@ public:
 			const Profile::Profiles& profiles);
 	void setAvailableProfiles(const std::list<Profile::Profile>& availableProfiles);
 	Gtk::Window& getWindow();
+	sigc::signal<void, std::list<MediaFile::MediaFile> >& signalConvert();
 	virtual ~ConverterGui();
 private:
 	void settingsButtonClicked();
 	void okSettingsButtonClicked();
 	void cancelSettingsButtonClicked();
 	void convertButtonClicked();
-	void showWarningDialog(const std::string& message);
+	void showWarningDialog(const std::string& title, const std::string& message);
 
 	ConverterOptions::OptionsDatabase &database;
 	AVControl mainSettings;
@@ -51,6 +53,8 @@ private:
 	Gtk::MessageDialog warningDialog;
 
 	Gtk::Entry* entry;
+	sigc::signal<void, std::list<MediaFile::MediaFile> > convertEvent;
+	CppExtension::HashMap<int, MediaFile::MediaFile> idToMediaFile;
 };
 
 } /* namespace Gui */

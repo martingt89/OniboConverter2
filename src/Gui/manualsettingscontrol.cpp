@@ -84,8 +84,8 @@ void ManualSettingsControl::setActiveProfile(const Profile::Profile& activeProfi
 	}
 
 }
-Converter::Arguments ManualSettingsControl::getConvertArguments() const{
-	Converter::Arguments args;
+Converter::ConvertSettingsList ManualSettingsControl::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
 	//todo implement
 	return args;
 }

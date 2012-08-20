@@ -10,7 +10,7 @@
 
 #include <list>
 #include <string>
-#include "../Converter/argument.h"
+#include "../Converter/convertsettings.h"
 
 namespace ConverterOptions {
 
@@ -28,7 +28,7 @@ public:
 	int getMaxBitrate() const;
 	bool operator== (const Bitrate& second) const;
 	std::string toStr() const;
-	Converter::Arguments getConvertArguments() const;
+	Converter::ConvertSettingsList getConvertArguments() const;
 private:
 	int bitrate;
 	int minBitrate;
