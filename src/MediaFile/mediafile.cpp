@@ -9,39 +9,43 @@
 
 #include "mediafilescanner.h"
 #include <iostream> //todo remove
+#include <unistd.h> //todo remove
+#include "../helper.h"
+
 namespace MediaFile {
 
-MediaFile::MediaFile(Path filePath) : filePath(filePath) {
-	duration = -1;
-	fileState = NOT_SET;
-	startTime = -1;
-	bitrate = "";
+MediaFile::MediaFile(Path filePath,  int fileId) : filePath(filePath) ,fileId(fileId) {
+	fileInfo.duration = -1;
+	fileInfo.fileState = NOT_SET;
+	fileInfo.startTime = -1;
+	fileInfo.bitrate = "";
 	set = false;
 	valid = false;
+	clearConvertStatus();
 }
 MediaFile::~MediaFile() {}
 
 bool MediaFile::scanMediaFile(){
 	if(!set){
 		set = true;
-		videos.clear();
-		audios.clear();
+		fileInfo.videos.clear();
+		fileInfo.audios.clear();
 
 		MediaFileScanner scanner(filePath);
 		//todo error state
 		if(scanner.getFinalStatus() == MediaFileScanner::OK_RESULT){
 			valid = true;
-			startTime = scanner.getStartTime();
-			duration = scanner.getDuration();
-			bitrate = scanner.getBitrate();
+			fileInfo.startTime = scanner.getStartTime();
+			fileInfo.duration = scanner.getDuration();
+			fileInfo.bitrate = scanner.getBitrate();
 			//todo getmetadata
 			auto videoStreams = scanner.getVideoStreams();
 			for(auto stream : videoStreams){
-				videos.push_back(stream);
+				fileInfo.videos.push_back(stream);
 			}
 			auto audioStreams = scanner.getAudioStreams();
 			for(auto stream : audioStreams){
-				audios.push_back(stream);
+				fileInfo.audios.push_back(stream);
 			}
 		}else{
 			std::cout<<"Invaid file"<<std::endl;
@@ -57,35 +61,29 @@ bool MediaFile::isSet(){
 bool MediaFile::isValid(){
 	return valid;
 }
-//std::string MediaFile::getFilePath(){
-//	return filePath;
-//}
-
-double MediaFile::getDuration(){
-	return duration;
+MediaFile::FileInfo MediaFile::getFileInfo(){
+	return fileInfo;
 }
-double MediaFile::getStartTime(){
-	return startTime;
+void MediaFile::setSettingsList(const Converter::ConvertSettingsList& settingsList){
+	this->settingsList = settingsList;
 }
-std::string MediaFile::getBitrate(){
-	return bitrate;
+void MediaFile::clearConvertStatus(){
+	status = WAITING;
+	fraction = 0;
+	remainingTime = -1;
 }
-MediaFile::State MediaFile::getState(){
-	return fileState;
-}
-VideoStream MediaFile::getVideoStream(unsigned int index) throw(std::out_of_range){
-//	if(index >= videos.size())	TODO fix
-//		throw std::out_of_range (std::string("element count: ")<<videos.size()<<" requested index: "<<index);
-	return videos[index];
-}
-int MediaFile::getNumberOfVideoStreams(){
-	return videos.size();
-}
-AudioStream MediaFile::getAudioStream(int index){
-	return audios[index];
-}
-int MediaFile::getNumberOfAudioStreams(){
-	return audios.size();
+void MediaFile::convert(){
+	if(valid){
+		status = PROCESSING;
+		for(int i = 0; i < 10; i++){
+			usleep(200000);
+			fraction += 0.1;
+			std::cerr<<"File: "<<filePath.getPath()<<" fraction: "<<fraction<<std::endl;
+		}
+		status = FINISH;
+	}else{
+		status = INVALID_FILE;
+	}
 }
 //void MediaFile::setMetadata(std::string key, std::string value){
 //	metadata[key] = value;

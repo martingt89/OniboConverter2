@@ -17,8 +17,11 @@
 #include "MediaFile/mediafile.h"
 #include "Profile/profile.h"
 #include "Profile/profileloader.h"
-
+#include "Converter/dispenser.h"
 #include <iostream>
+
+static const int numberOfThreads = 2;	//todo spravit inak
+
 class OniboConverter{
 private:
 	Path ffpresetPath;
@@ -26,23 +29,19 @@ private:
 	Path ffmpeg;
 	Path profilesFolder;
 	Gui::ConverterGui* converterGui;
+	Converter::Dispenser dispenser;
 public:
 	OniboConverter(): ffpresetPath("ffpresets"),
 	xmlFilePath("data/audio_video_settings.xml"), ffmpeg("ffmpeg"), profilesFolder("data/profiles"),
-	converterGui(NULL){}
+	converterGui(NULL), dispenser(numberOfThreads, false){}
 
-	void convert(std::list<MediaFile::MediaFile> mediaFiles){
-		for(MediaFile::MediaFile file : mediaFiles){
-			if(!file.isSet()){
-				file.scanMediaFile();
-			}
-			if(file.isValid()){
-				std::cout<<file.getDuration()<<std::endl;
-				std::cout<<file.getBitrate()<<std::endl;
-				std::cout<<file.getStartTime()<<std::endl;
-				std::cout<<file.getNumberOfVideoStreams()<<std::endl;
+	void convert(std::list<MediaFile::MediaFile*> mediaFiles){
+		for(MediaFile::MediaFile* file : mediaFiles){
+			if(!file->isSet()){
+				file->scanMediaFile();
 			}
 		}
+		dispenser.processMediaFiles(mediaFiles);
 	}
 
 	void run(int argc, char *argv[]){

@@ -12,9 +12,9 @@
 #include <vector>
 #include <stdexcept>
 #include "../CppExtension/path.h"
-//#include "../CppExtension/hashmap.h"
 #include "videostream.h"
 #include "audiostream.h"
+#include "../Converter/convertsettings.h"
 
 namespace MediaFile {
 
@@ -23,47 +23,39 @@ public:
 	enum State{
 		NOT_SET, OK, NOT_FOUND, INVALID_FORMAT
 	};
+	struct FileInfo{
+		State fileState;
+		double duration;
+		double startTime;
+		std::string bitrate;
+		std::vector<VideoStream> videos;
+		std::vector<AudioStream> audios;
+	};
+	enum ConvertFileState{
+		WAITING, PROCESSING, FINISH, INVALID_FILE
+	};
 public:
-	MediaFile(Path filePath);
+	MediaFile(Path filePath, int fileId);
 	virtual ~MediaFile();
-
+	void setSettingsList(const Converter::ConvertSettingsList& settingsList);
 	bool scanMediaFile();
 	bool isSet();
 	bool isValid();
-
-//	std::string getFilePath();
-
-//	void setDuration(double duration);
-//	void setStartTime(double time);
-//	void setBitrate(const std::string &bitrate);
-
-//	void setState(State state);
-	State getState();
-
-	double getDuration();
-	double getStartTime();
-	std::string getBitrate();
-
-//	void addVideoStream(VideoStream stream);
-//	void addAudioStream(AudioStream stream);
-
-	VideoStream getVideoStream(unsigned int index) throw(std::out_of_range);
-	int getNumberOfVideoStreams();
-	AudioStream getAudioStream(int index);
-	int getNumberOfAudioStreams();
-
+	FileInfo getFileInfo();
 //	void setMetadata(std::string key, std::string value);
+	void clearConvertStatus();
+	void convert();
 private:
 	Path filePath;
-	double duration;
-	double startTime;
-	State fileState;
-	std::string bitrate;
-	std::vector<VideoStream> videos;
-	std::vector<AudioStream> audios;
+	int fileId;
+	FileInfo fileInfo;
 	bool set;
 	bool valid;
-//	CppExtension::HashMap<std::string, std::string> metadata;
+	Converter::ConvertSettingsList settingsList;
+	//
+	ConvertFileState status;
+	double fraction;
+	int remainingTime;
 };
 
 } /* namespace MediaFile */

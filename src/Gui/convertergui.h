@@ -31,7 +31,7 @@ public:
 			const Profile::Profiles& profiles);
 	void setAvailableProfiles(const std::list<Profile::Profile>& availableProfiles);
 	Gtk::Window& getWindow();
-	sigc::signal<void, std::list<MediaFile::MediaFile> >& signalConvert();
+	sigc::signal<void, std::list<MediaFile::MediaFile*> >& signalConvert();
 	virtual ~ConverterGui();
 private:
 	void settingsButtonClicked();
@@ -53,8 +53,9 @@ private:
 	Gtk::MessageDialog warningDialog;
 
 	Gtk::Entry* entry;
-	sigc::signal<void, std::list<MediaFile::MediaFile> > convertEvent;
+	sigc::signal<void, std::list<MediaFile::MediaFile*> > convertEvent;
 	CppExtension::HashMap<int, MediaFile::MediaFile> idToMediaFile;
+	std::list<MediaFile::MediaFile*> convertFilesList;
 };
 
 } /* namespace Gui */

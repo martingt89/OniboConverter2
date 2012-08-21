@@ -8,7 +8,7 @@
 #include "convertergui.h"
 
 #include "../MediaFile/mediafile.h"
-#include <iostream> //todo remove
+
 namespace Gui {
 
 static const int MAIN_SCREEN_PAGE = 0;
@@ -50,7 +50,7 @@ void ConverterGui::setAvailableProfiles(const std::list<Profile::Profile>& avail
 Gtk::Window& ConverterGui::getWindow() {
 	return *mainWindow;
 }
-sigc::signal<void, std::list<MediaFile::MediaFile> >& ConverterGui::signalConvert(){
+sigc::signal<void, std::list<MediaFile::MediaFile*> >& ConverterGui::signalConvert(){
 	return convertEvent;
 }
 void ConverterGui::settingsButtonClicked() {
@@ -92,22 +92,15 @@ void ConverterGui::convertButtonClicked(){
 		showWarningDialog("Settings are not complete", message);
 		return;
 	}
-	std::list<MediaFile::MediaFile> mediaFiles;
+	convertFilesList.clear();
+
 	for(FileControl::PathWithFileId path : files){	//todo add filters support
-		MediaFile::MediaFile mediaFile(path.path);
-		mediaFiles.push_back(mediaFile);
+		MediaFile::MediaFile* mediaFile = new MediaFile::MediaFile(path.path, path.id);
+		mediaFile->setSettingsList(mainSettings.getConvertArguments());
+		mediaFile->clearConvertStatus();
+		convertFilesList.push_back(mediaFile);
 	}
-	convertEvent(mediaFiles);
-//	Converter::ConvertSettingsList args = mainSettings.getConvertArguments();
-//	args.print();
-//	Path file = files.begin()->path;
-//	MediaFile::MediaFile mediaFile(file);
-//	mediaFile.scanMediaFile();
-//	{
-//		std::cout<<mediaFile.getDuration()<<std::endl;
-//		std::cout<<mediaFile.getBitrate()<<std::endl;
-//		std::cout<<mediaFile.getStartTime()<<std::endl;
-//		std::cout<<mediaFile.getNumberOfVideoStreams()<<std::endl;
-//	}
+	convertEvent(convertFilesList);
+	//run timer
 }
 } /* namespace Gui */
