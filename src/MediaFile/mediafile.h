@@ -45,6 +45,11 @@ public:
 //	void setMetadata(std::string key, std::string value);
 	void clearConvertStatus();
 	void convert();
+	std::string getShortName();
+	std::string getRemainingTime();
+	int getPercentage();
+	std::string getConvertState();
+	int getFileId();
 private:
 	Path filePath;
 	int fileId;

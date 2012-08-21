@@ -43,9 +43,12 @@
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
             <child>
-              <object class="GtkTreeView" id="convertView">
+              <object class="GtkTreeView" id="convertTreeView">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                </child>
               </object>
             </child>
           </object>
@@ -60,7 +63,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkSpinner" id="spinner1">
+              <object class="GtkSpinner" id="workingIndicator">
                 <property name="width_request">50</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>

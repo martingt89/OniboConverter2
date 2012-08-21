@@ -76,7 +76,7 @@ void MediaFile::convert(){
 	if(valid){
 		status = PROCESSING;
 		for(int i = 0; i < 10; i++){
-			usleep(200000);
+			usleep(1000000);
 			fraction += 0.1;
 			std::cerr<<"File: "<<filePath.getPath()<<" fraction: "<<fraction<<std::endl;
 		}
@@ -84,6 +84,21 @@ void MediaFile::convert(){
 	}else{
 		status = INVALID_FILE;
 	}
+}
+std::string MediaFile::getShortName(){
+	return "file";
+}
+std::string MediaFile::getRemainingTime(){
+	return toS(remainingTime);				//todo rewrite to hh:mm:ss
+}
+int MediaFile::getPercentage(){
+	return (fraction)*100+0.5;
+}
+std::string MediaFile::getConvertState(){
+	return "OK";
+}
+int MediaFile::getFileId(){
+	return fileId;
 }
 //void MediaFile::setMetadata(std::string key, std::string value){
 //	metadata[key] = value;

@@ -20,6 +20,7 @@
 #include "avcontrol.h"
 #include "destinationcontrol.h"
 #include "filecontrol.h"
+#include "convertwindow.h"
 #include "../MediaFile/mediafile.h"
 
 namespace Gui {
@@ -39,18 +40,20 @@ private:
 	void cancelSettingsButtonClicked();
 	void convertButtonClicked();
 	void showWarningDialog(const std::string& title, const std::string& message);
+	bool convertTimer();
 
 	ConverterOptions::OptionsDatabase &database;
 	AVControl mainSettings;
 	DestinationControl destinationControl;
 	FileControl fileControl;
+	ConvertWindow convertWindow;
+	Gtk::MessageDialog warningDialog;
 	Gtk::Window* mainWindow;
 	Gtk::Button* settingsButton;
 	Gtk::Button* okSettingsButton;
 	Gtk::Button* cancelSettingsButton;
 	Gtk::Button* convertButton;
 	Gtk::Notebook* mainNotebook;
-	Gtk::MessageDialog warningDialog;
 
 	Gtk::Entry* entry;
 	sigc::signal<void, std::list<MediaFile::MediaFile*> > convertEvent;
