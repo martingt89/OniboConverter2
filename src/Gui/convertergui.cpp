@@ -18,9 +18,10 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
 		const Profile::Profiles& profiles) :
 		database(database), mainSettings(database, refGlade, profiles),
-		destinationControl(refGlade), fileControl(refGlade), convertWindow(refGlade),
+		destinationControl(refGlade), fileControl(refGlade),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
 
+	refGlade->get_widget_derived("convertWindow", convertWindow);
 	refGlade->get_widget("converterMainWindow", mainWindow);
 	refGlade->get_widget("mainNotebook", mainNotebook);
 	refGlade->get_widget("settingsButton", settingsButton);
@@ -101,15 +102,21 @@ void ConverterGui::convertButtonClicked(){
 		convertFilesList.push_back(mediaFile);
 	}
 	convertEvent(convertFilesList);
+	convertTimer();
 	sigc::connection conn = Glib::signal_timeout().connect(sigc::mem_fun(*this,
             &ConverterGui::convertTimer), 1000);
+
 }
 bool ConverterGui::convertTimer(){
 	CppExtension::HashMap<int, MediaFile::MediaFile*> files;
+	bool running = false;
 	for(auto file : convertFilesList){
+		if(!file->isEnded()){
+			running = true;
+		}
 		files.set(file->getFileId(), file);
 	}
-	convertWindow.display(files);
-	return true;
+	convertWindow->display(files, !running);
+	return running;
 }
 } /* namespace Gui */

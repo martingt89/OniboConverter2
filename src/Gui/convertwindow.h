@@ -18,7 +18,7 @@
 #include "../MediaFile/mediafile.h"
 namespace Gui {
 
-class ConvertWindow {
+class ConvertWindow : public Gtk::Window {
 private:
 	class ModelColumns: public Gtk::TreeModel::ColumnRecord {
 	public:
@@ -38,16 +38,21 @@ private:
 	};
 	ModelColumns modelColumns;
 public:
-	ConvertWindow(const Glib::RefPtr<Gtk::Builder>& refGlade);
+	ConvertWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 	virtual ~ConvertWindow();
-	void display(CppExtension::HashMap<int, MediaFile::MediaFile*> files);
+	void display(CppExtension::HashMap<int, MediaFile::MediaFile*> files, bool isEnd);
+protected:
+	virtual void on_hide ();
 private:
 	Gtk::Window* convertWindow;
-	Gtk::Button* closeOkConvertButton;
+	Gtk::Button* closeConvertButton;
+	Gtk::Button* okConvertButton;
 	Gtk::Spinner* workingIndicator;
 	Gtk::TreeView* convertTreeView;
+	Gtk::Label* convertWindowMessage;
 	Glib::RefPtr<Gtk::ListStore> convertTreeModel;
 	Glib::RefPtr<Gtk::TreeView::Selection> convertSelection;
+	bool converting;
 };
 
 } /* namespace Gui */

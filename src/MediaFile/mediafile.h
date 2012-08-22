@@ -50,6 +50,7 @@ public:
 	int getPercentage();
 	std::string getConvertState();
 	int getFileId();
+	bool isEnded();
 private:
 	Path filePath;
 	int fileId;

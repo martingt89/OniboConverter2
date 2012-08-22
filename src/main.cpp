@@ -74,5 +74,6 @@ public:
 int main(int argc, char *argv[]) {
 	OniboConverter oniboConverter;
 	oniboConverter.run(argc, argv);
+
 	return 0;
 }

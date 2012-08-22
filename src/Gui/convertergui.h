@@ -46,7 +46,7 @@ private:
 	AVControl mainSettings;
 	DestinationControl destinationControl;
 	FileControl fileControl;
-	ConvertWindow convertWindow;
+	ConvertWindow* convertWindow;
 	Gtk::MessageDialog warningDialog;
 	Gtk::Window* mainWindow;
 	Gtk::Button* settingsButton;

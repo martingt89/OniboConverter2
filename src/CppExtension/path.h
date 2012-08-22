@@ -16,6 +16,7 @@ public:
 	Path(std::string path);
 	virtual ~Path();
 	std::string getPath() const;
+	std::string getLastPathPart() const;
 private:
 	std::string path;
 };

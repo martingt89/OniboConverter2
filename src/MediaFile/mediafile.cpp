@@ -14,6 +14,11 @@
 
 namespace MediaFile {
 
+const static std::string STATE_OK="OK";
+const static std::string STATE_WAITING="waiting";
+const static std::string STATE_PROCESSING="processing";
+const static std::string STATE_INVALID="invalid file";
+
 MediaFile::MediaFile(Path filePath,  int fileId) : filePath(filePath) ,fileId(fileId) {
 	fileInfo.duration = -1;
 	fileInfo.fileState = NOT_SET;
@@ -86,7 +91,7 @@ void MediaFile::convert(){
 	}
 }
 std::string MediaFile::getShortName(){
-	return "file";
+	return filePath.getLastPathPart().substr(0, 30);
 }
 std::string MediaFile::getRemainingTime(){
 	return toS(remainingTime);				//todo rewrite to hh:mm:ss
@@ -95,10 +100,19 @@ int MediaFile::getPercentage(){
 	return (fraction)*100+0.5;
 }
 std::string MediaFile::getConvertState(){
-	return "OK";
+	switch(status){
+	case WAITING: return STATE_WAITING;
+	case PROCESSING: return STATE_PROCESSING;
+	case FINISH: return STATE_OK;
+	default: return STATE_INVALID;
+	}
+	return STATE_INVALID;
 }
 int MediaFile::getFileId(){
 	return fileId;
+}
+bool MediaFile::isEnded(){
+	return (status == FINISH) || (status == INVALID_FILE);
 }
 //void MediaFile::setMetadata(std::string key, std::string value){
 //	metadata[key] = value;
