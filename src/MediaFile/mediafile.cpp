@@ -18,6 +18,8 @@ const static std::string STATE_OK="OK";
 const static std::string STATE_WAITING="waiting";
 const static std::string STATE_PROCESSING="processing";
 const static std::string STATE_INVALID="invalid file";
+const static int ONE_HOUR = 3600;
+const static int ONE_MINIT = 60;
 
 MediaFile::MediaFile(Path filePath,  int fileId) : filePath(filePath) ,fileId(fileId) {
 	fileInfo.duration = -1;
@@ -75,7 +77,7 @@ void MediaFile::setSettingsList(const Converter::ConvertSettingsList& settingsLi
 void MediaFile::clearConvertStatus(){
 	status = WAITING;
 	fraction = 0;
-	remainingTime = -1;
+	remainingTime = 34032;
 }
 void MediaFile::convert(){
 	if(valid){
@@ -93,8 +95,9 @@ void MediaFile::convert(){
 std::string MediaFile::getShortName(){
 	return filePath.getLastPathPart().substr(0, 30);
 }
-std::string MediaFile::getRemainingTime(){
-	return toS(remainingTime);				//todo rewrite to hh:mm:ss
+
+std::string MediaFile::getRemainingTime() {
+	return timeToHHMMSS(remainingTime);
 }
 int MediaFile::getPercentage(){
 	return (fraction)*100+0.5;
@@ -113,6 +116,26 @@ int MediaFile::getFileId(){
 }
 bool MediaFile::isEnded(){
 	return (status == FINISH) || (status == INVALID_FILE);
+}
+std::string MediaFile::timeToHHMMSS(int localTime) {
+	int hours = localTime / ONE_HOUR;
+	localTime -= hours * ONE_HOUR;
+	int minits = localTime / ONE_MINIT;
+	localTime -= minits * ONE_MINIT;
+	std::string time = "";
+	if (hours < 10) {
+		time += "0";
+	}
+	time += toS(hours) + ":";
+	if (minits < 10) {
+		time += "0";
+	}
+	time += toS(minits) + ":";
+	if (localTime < 10) {
+		time += "0";
+	}
+	time += toS(localTime);
+	return time;
 }
 //void MediaFile::setMetadata(std::string key, std::string value){
 //	metadata[key] = value;

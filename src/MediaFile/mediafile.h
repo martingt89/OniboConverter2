@@ -62,6 +62,8 @@ private:
 	ConvertFileState status;
 	double fraction;
 	int remainingTime;
+
+	std::string timeToHHMMSS(int localTime);
 };
 
 } /* namespace MediaFile */

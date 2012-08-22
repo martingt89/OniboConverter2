@@ -19,8 +19,17 @@
 #include "Profile/profileloader.h"
 #include "Converter/dispenser.h"
 #include <iostream>
+#include <unistd.h>
 
-static const int numberOfThreads = 2;	//todo spravit inak
+int getNumberOfCPU(){
+	int cpus = sysconf(_SC_NPROCESSORS_ONLN);
+	if(cpus <= 0){
+		cpus = 1;
+	}
+	return cpus;
+}
+
+static const int numberOfThreads = getNumberOfCPU();
 
 class OniboConverter{
 private:
@@ -48,7 +57,7 @@ public:
 		Gtk::Main kit(argc, argv);
 		ExternalTools::SupportedEncodersLoader encodersLoader;
 		ConverterOptions::SupportedEncoders encoders;
-															//todo test if ffmpeg exist
+												//todo test if ffmpeg exist
 		//bool res =
 		encodersLoader.scan(encoders, ffmpeg);	//todo error message
 
@@ -67,7 +76,7 @@ public:
 
 		converterGui = new Gui::ConverterGui(optionsDatabase, builder, profiles);
 		converterGui->signalConvert().connect(sigc::mem_fun(*this, &OniboConverter::convert));
-		Gtk::Main::run(converterGui->getWindow());
+		kit.run(converterGui->getWindow());
 	}
 };
 
