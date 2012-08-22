@@ -44,6 +44,10 @@ private:
 	void addFileClicked();
 	void removeFileClicked();
 	void clearFileClicked();
+	void onFileDrop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
+	          const Gtk::SelectionData& selection_data, guint info, guint time);
+	void addFileEntry(const std::string& file);
+	bool onKeyRelease(GdkEventKey* event);
 	Gtk::TreeView* fileTreeView;
 	Glib::RefPtr<Gtk::ListStore> fileTreeModel;
 	Glib::RefPtr<Gtk::TreeView::Selection> fileSelection;
