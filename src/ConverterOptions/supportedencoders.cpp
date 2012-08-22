@@ -7,6 +7,7 @@
 
 #include "supportedencoders.h"
 
+
 namespace ConverterOptions {
 
 void SupportedEncoders::addEncoder(const std::string& encoderName, const std::string& description){

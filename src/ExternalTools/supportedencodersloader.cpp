@@ -28,16 +28,19 @@ bool SupportedEncodersLoader::scan(ConverterOptions::SupportedEncoders& encoders
 	}
 
 	std::string line;
+	bool findMatch = false;
 	while(ffmpeg.getStdOut() >> line){
-		parseLine(line, encoders);
+		parseLine(line, encoders, findMatch);
 	}
-	return true;
+	return findMatch & (ffmpeg.waitForProcessEnd() == 0);
 }
 
 
-void SupportedEncodersLoader::parseLine(const std::string& line, ConverterOptions::SupportedEncoders& encoders){
+void SupportedEncodersLoader::parseLine(const std::string& line,
+		ConverterOptions::SupportedEncoders& encoders, bool& findMatch){
 	RegexTools::Matcher mat = encoderDetector.getMatcher(line);
 	if(mat.find()){
+		findMatch = true;
 //		ConverterOptions::Encoder::Type type;
 //		std::string codecType = getCodecType(mat);
 //		if (codecType == "V") {

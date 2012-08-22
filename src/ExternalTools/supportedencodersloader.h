@@ -21,7 +21,7 @@ public:
 	virtual ~SupportedEncodersLoader();
 	bool scan(ConverterOptions::SupportedEncoders& encoders, const Path& ffmpegPath);
 private:
-	void parseLine(const std::string& line, ConverterOptions::SupportedEncoders& encoders);
+	void parseLine(const std::string& line, ConverterOptions::SupportedEncoders& encoders, bool& findMatch);
 	std::string getCodecType(const RegexTools::Matcher& mat);
 	std::string getEncoderName(const RegexTools::Matcher& mat);
 	std::string getCodecDescription(const RegexTools::Matcher& mat);

@@ -24,6 +24,7 @@ $(SRCPATH)/Gui/convertergui.cpp \
 $(SRCPATH)/Gui/avcontrol.cpp \
 $(SRCPATH)/Gui/filecontrol.cpp \
 $(SRCPATH)/Gui/convertwindow.cpp \
+$(SRCPATH)/Gui/findfmpegdialog.cpp \
 $(SRCPATH)/Gui/manualsettingscontrol.cpp \
 $(SRCPATH)/Gui/destinationcontrol.cpp \
 $(SRCPATH)/Gui/Video/videocontrol.cpp \

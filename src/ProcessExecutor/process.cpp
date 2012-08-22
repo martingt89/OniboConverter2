@@ -149,7 +149,7 @@ void Process::run() {
 	}
 	comm[cc] = NULL;
 
-	static int vforkErr = 0;
+	int vforkErr = 0;
 
 	int pid = vfork();
 	if (pid == -1) {
