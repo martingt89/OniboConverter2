@@ -14,6 +14,10 @@ CppExtension::HashMap<ConvertSettings::Command, std::string> ConvertSettingsList
 ConvertSettings::ConvertSettings(Command command){
 	settingsType = command;
 }
+ConvertSettings::ConvertSettings(std::string command){
+	userDefind = command;
+	settingsType = USER_DEFINED;
+}
 ConvertSettings::~ConvertSettings() {}
 
 void ConvertSettings::addValue(std::string value){
@@ -21,6 +25,9 @@ void ConvertSettings::addValue(std::string value){
 }
 ConvertSettings::Command ConvertSettings::getCommand(){
 	return settingsType;
+}
+std::string ConvertSettings::getUserCommand(){
+	return userDefind;
 }
 std::list<std::string> ConvertSettings::getValueList(){
 	return valuesList;
@@ -51,9 +58,13 @@ void ConvertSettingsList::add(const ConvertSettings& argument){
 void ConvertSettingsList::add(const ConvertSettingsList& arguments){
 	std::copy(arguments.arguments.begin(), arguments.arguments.end(), std::back_inserter(this->arguments));
 }
-void ConvertSettingsList::print(){
+void ConvertSettingsList::print() const{
 	for(auto x : arguments){
-		std::cout<<" "<<commandToStr.get(x.getCommand());
+		if(x.getCommand() == ConvertSettings::USER_DEFINED){
+			std::cout<<" "<<x.getUserCommand();
+		}else{
+			std::cout<<" "<<commandToStr.get(x.getCommand());
+		}
 		for(auto v : x.getValueList()){
 			std::cout<<" "<<v;
 		}

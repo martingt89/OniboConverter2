@@ -6,6 +6,7 @@
  */
 
 #include "container.h"
+#include "../helper.h"
 
 namespace ConverterOptions {
 
@@ -38,7 +39,10 @@ void Containers::addContainer(const Container& container){
 std::list<Container> Containers::getContainers() const{
 	return containers.getListOfValues();
 }
-Container Containers::getContainerByName(std::string containerName) const{	//todo container not found
-	return containers.get(containerName);
+Container Containers::getContainerByName(std::string containerName) const{
+	bool isExist = false;
+	Container container = containers.get(containerName, isExist);
+	assert(isExist == false, "Container name doesn't exist: "+containerName);
+	return container;
 }
 } /* namespace ConverterOptions */

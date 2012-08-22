@@ -56,7 +56,7 @@ public:
 	std::list<Resolution> getResolutions() const;
 	Resolution getResolutionBySize(const int& x, const int& y, bool& found) const;
 private:
-	std::map<std::string, std::list<Resolution> > resolutions; //todo
+	std::map<std::string, std::list<Resolution> > resolutions;
 };
 
 } /* namespace ConverterOptions */

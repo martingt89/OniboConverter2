@@ -6,6 +6,14 @@
  */
 
 #include "helper.h"
+#include <iostream>
+
+void assert(bool expr, std::string message){
+	if(!expr){
+		std::cerr<<message<<std::endl;
+		_exit(-1);
+	}
+}
 
 int NSD(const int& x, const int& y){
 	int nsd = 0;

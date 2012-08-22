@@ -20,6 +20,7 @@ const static std::string STATE_PROCESSING="processing";
 const static std::string STATE_INVALID="invalid file";
 const static int ONE_HOUR = 3600;
 const static int ONE_MINIT = 60;
+const static std::string UNKNOWN_REMAINING_TIME = "Unknown";
 
 MediaFile::MediaFile(Path filePath,  int fileId) : filePath(filePath) ,fileId(fileId) {
 	fileInfo.duration = -1;
@@ -73,13 +74,14 @@ MediaFile::FileInfo MediaFile::getFileInfo(){
 }
 void MediaFile::setSettingsList(const Converter::ConvertSettingsList& settingsList){
 	this->settingsList = settingsList;
+	settingsList.print();
 }
 void MediaFile::clearConvertStatus(){
 	status = WAITING;
 	fraction = 0;
-	remainingTime = 34032;
+	remainingTime = -1;
 }
-void MediaFile::convert(){
+void MediaFile::convert(){		//todo replace with real converter
 	if(valid){
 		status = PROCESSING;
 		for(int i = 0; i < 10; i++){
@@ -97,6 +99,9 @@ std::string MediaFile::getShortName(){
 }
 
 std::string MediaFile::getRemainingTime() {
+	if(remainingTime < 0){
+		return UNKNOWN_REMAINING_TIME;
+	}
 	return timeToHHMMSS(remainingTime);
 }
 int MediaFile::getPercentage(){

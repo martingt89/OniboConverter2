@@ -44,7 +44,7 @@ void AudioControl::containerChanged(const ConverterOptions::Container& container
 	bool isEnableAudio = isSelected && (audioMode.get_active_row_item() == CUSTOM_MODE_ID);
 	encoderControl.aktualizeSettings(isEnableAudio, container);
 
-	if(isEnableAudio){	//TODO add encoderControl.isFormat
+	if(isEnableAudio){	//add encoderControl.isFormat - callback
 		audioSamplerate.set_sensitive(true);
 		audioChannels.set_sensitive(true);
 	}else{

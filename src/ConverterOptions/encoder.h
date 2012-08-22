@@ -12,6 +12,7 @@
 #include <map>
 #include "bitrate.h"
 #include "ffpreset.h"
+#include "../CppExtension/hashmap.h"
 
 namespace ConverterOptions {
 
@@ -49,7 +50,7 @@ public:
 	std::list<Encoder> getEncoders() const;
 	Encoder getEncoderByName(const std::string& encoderName) const;
 private:
-	std::map<std::string, Encoder> encoders;	//todo CppExtension
+	CppExtension::HashMap<std::string, Encoder> encoders;
 };
 
 } /* namespace ConverterOptions */

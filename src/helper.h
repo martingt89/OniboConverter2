@@ -15,6 +15,8 @@ int NSD(const int& x, const int& y);
 
 std::string clearString(const std::string& str);
 
+void assert(bool expr, std::string message);
+
 template<class T>
 std::string operator << (const std::string &s,  T i){
 	std::stringstream ss;

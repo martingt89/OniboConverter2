@@ -7,7 +7,6 @@
 
 #include "videocontrol.h"
 #include "../../helper.h"
-#include <iostream> //todo remove
 
 namespace Gui {
 namespace Video {

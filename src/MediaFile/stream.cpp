@@ -12,9 +12,7 @@ namespace MediaFile {
 Stream::Stream(int firstNumber, int secondNumebr): streamNumber(firstNumber, secondNumebr) {
 }
 
-Stream::~Stream() {
-	// TODO Auto-generated destructor stub
-}
+Stream::~Stream() {}
 
 std::pair<int, int> Stream::getStreamNumber() const{
 	return streamNumber;

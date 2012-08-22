@@ -7,6 +7,7 @@
 
 #include "encoder.h"
 #include "ffpreset.h"
+#include "../helper.h"
 
 namespace ConverterOptions {
 
@@ -76,21 +77,16 @@ Converter::ConvertSettingsList Encoder::getConvertArguments() const{
 	return args;
 }
 void Encoders::addEncoder(const Encoder& encoder){
-	encoders[encoder.getName()] = encoder;
+	encoders.set(encoder.getName(), encoder);
 }
 std::list<Encoder> Encoders::getEncoders() const{
-	std::list<Encoder> encodersList;
-	for(auto iterator = encoders.begin(); iterator != encoders.end(); ++iterator){
-		encodersList.push_back(iterator->second);
-	}
-	return encodersList;
+	return encoders.getListOfValues();
 }
-Encoder Encoders::getEncoderByName(const std::string& encoderName) const{ //todo encoderName doesn't exist
-	auto iterator = encoders.find(encoderName);
-	if(iterator != encoders.end()){
-		return iterator->second;
-	}
-	return Encoder();
+Encoder Encoders::getEncoderByName(const std::string& encoderName) const{
+	bool isExist = false;
+	Encoder enc = encoders.get(encoderName, isExist);
+	assert(isExist == false, "Encoder name doesn't exist: "+encoderName);
+	return enc;
 }
 
 } /* namespace ConverterOptions */
