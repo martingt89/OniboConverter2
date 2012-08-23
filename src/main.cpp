@@ -49,11 +49,11 @@ public:
 	converterGui(NULL), dispenser(numberOfThreads, false){}
 
 	void convert(std::list<MediaFile::MediaFile*> mediaFiles){
-		for(MediaFile::MediaFile* file : mediaFiles){
-			if(!file->isSet()){
-				file->scanMediaFile();
-			}
-		}
+//		for(MediaFile::MediaFile* file : mediaFiles){
+//			if(!file->isSet()){
+//				file->scanMediaFile();
+//			}
+//		}
 		dispenser.processMediaFiles(mediaFiles);
 	}
 

@@ -29,6 +29,9 @@ void Dispenser::processMediaFiles(const std::list<MediaFile::MediaFile*>& files)
 void Dispenser::run(){
 	MediaFile::MediaFile* file;
 	while(getNextMediaFile(file)){
+		if(!file->isSet()){
+			file->scanMediaFile();
+		}
 		file->convert();
 	}
 }
