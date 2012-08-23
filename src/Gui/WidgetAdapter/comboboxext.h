@@ -121,11 +121,11 @@ public:
 		comboBoxText->set_active_text(text);
 	}
 
-	bool is_sensitive(){
+	bool is_sensitive() const{
 		return comboBoxText->get_sensitive();
 	}
 
-	bool is_selected(){
+	bool is_selected() const{
 		return comboBoxText->get_active_row_number() >= 0;
 	}
 	Glib::SignalProxy0< void > signal_changed(){
@@ -134,7 +134,7 @@ public:
 	void unset_active(){
 		comboBoxText->unset_active();
 	}
-	int count_of_rows(){
+	int count_of_rows() const{
 		return items.size();
 	}
 //	void set_activable(bool activable){
@@ -160,10 +160,10 @@ public:
 			this->set_active_row_number(saveSelectedRow);
 		}
 	}
-	bool is_set_last(){
+	bool is_set_last() const{
 		return comboBoxText->get_active_row_number() == (int)(items.size()-1);
 	}
-	bool is_set_first(){
+	bool is_set_first() const{
 		return comboBoxText->get_active_row_number() == 0;
 	}
 private:

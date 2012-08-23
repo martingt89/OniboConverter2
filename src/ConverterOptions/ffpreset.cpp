@@ -14,11 +14,13 @@ namespace ConverterOptions {
 
 FFpreset::FFpreset(){
 	name = "";
+	buildin = false;
 }
-FFpreset::FFpreset(const Path& path, const std::string& prefix){
+FFpreset::FFpreset(const Path& path, const std::string& prefix, const bool& buildin){
 	ffpresetFilePath = path;
 	name = cropName(path.getPath(), prefix);
 	this->prefix = prefix;
+	this->buildin = buildin;
 }
 FFpreset::~FFpreset(){
 
@@ -28,6 +30,16 @@ std::string FFpreset::toStr() const{
 }
 std::string FFpreset::getPrefix() const{
 	return prefix;
+}
+std::string FFpreset::getName() const{
+	return ffpresetFilePath.getLastPathPart();
+}
+Converter::ConvertSettingsList  FFpreset::getConvertArguments() const{
+	Converter::ConvertSettingsList args;
+	Converter::ConvertSettings arg(Converter::ConvertSettings::FFPRESET);
+	arg.addValue(ffpresetFilePath.getPath());
+	args.add(arg);
+	return args;
 }
 //
 std::string FFpreset::cropName(const std::string& name, const std::string& prefix){
@@ -52,15 +64,15 @@ FFpresets::FFpresets(){
 FFpresets::FFpresets(const std::string& prefix){
 	this->prefix = prefix;
 }
-FFpresets::FFpresets(const std::string& prefix, const Path& ffpresetsDirectory){
+FFpresets::FFpresets(const std::string& prefix, const Path& ffpresetsDirectory, const bool& buildin){
 	this->prefix = prefix;
-	loadFromFolder(ffpresetsDirectory);
+	loadFromFolder(ffpresetsDirectory, buildin);
 }
 void FFpresets::addFFpreset(const FFpreset& ffpreset){
 	ffpresets.push_back(ffpreset);
 }
 
-bool FFpresets::loadFromFolder(const Path& path){
+bool FFpresets::loadFromFolder(const Path& path, const bool& buildin){
 	try{
 		Glib::RefPtr< Gio::File > directory = Gio::File::create_for_path(path.getPath());
 
@@ -84,7 +96,7 @@ bool FFpresets::loadFromFolder(const Path& path){
 					Path FFfile(Glib::build_filename(directory->get_path (), file_info->get_name()));
 					std::string filePrefix = match.getGroup(1);
 					if(filePrefix == prefix){
-						FFpreset ff(FFfile, filePrefix);
+						FFpreset ff(FFfile, filePrefix, buildin);
 						this->addFFpreset(ff);
 					}
 				}

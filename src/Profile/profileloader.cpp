@@ -16,14 +16,16 @@ ProfileLoader::ProfileLoader() {}
 
 ProfileLoader::~ProfileLoader() {}
 
-bool ProfileLoader::load(const Path& profilesFolder, Profiles& profiles){
+bool ProfileLoader::load(const Path& profilesFolder,
+		const CppExtension::HashMap<std::string, ConverterOptions::FFpresets>& buildInFFpresets,
+		Profiles& profiles){
 	std::list<Path> profileFiles;
 	bool res = getRegularFilesFromFolder(profilesFolder, profileFiles);
 	if(!res){
 		return false;
 	}
 	std::for_each(profileFiles.begin(), profileFiles.end(), [&](const Path& filePath){
-		Profile profile;
+		Profile profile(buildInFFpresets);
 		bool res = parseProfileFromFile(filePath, profile);
 		if(res){
 			profiles.push_back(profile);

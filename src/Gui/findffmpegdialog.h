@@ -13,6 +13,7 @@
 #include <gtkmm/button.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
+#include <gtkmm/filechooserdialog.h>
 #include "../CppExtension/path.h"
 namespace Gui {
 
@@ -27,6 +28,7 @@ private:
 	void findQuitClicked();
 	void findChooseFileClicked();
 	Path& ffmpegPath;
+	Gtk::FileChooserDialog fileChooser;
 	Gtk::Window* findFFmpegWindow;
 	Gtk::Button* findChooseFile;
 	Gtk::Button* findOk;

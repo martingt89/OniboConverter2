@@ -44,7 +44,7 @@ public:
 	OniboConverter():
 		ffpresetPath("ffpresets"),
 		xmlFilePath("data/audio_video_settings.xml"),
-		ffmpeg("ls"),
+		ffmpeg("ffmpeg"),
 		profilesFolder("data/profiles"),
 	converterGui(NULL), dispenser(numberOfThreads, false){}
 
@@ -77,7 +77,7 @@ public:
 			Profile::Profiles profiles;
 
 			Profile::ProfileLoader loader;
-			loader.load(profilesFolder, profiles);
+			loader.load(profilesFolder, optionsLoaderFromXml.getFFPresets(), profiles);
 
 			converterGui = new Gui::ConverterGui(optionsDatabase, builder, profiles);
 			converterGui->signalConvert().connect(sigc::mem_fun(*this, &OniboConverter::convert));

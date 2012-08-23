@@ -1,16 +1,20 @@
 /*
- * findfmpegdialog.cpp
+ * findffmpegdialog.cpp
  *
  *  Created on: 22.8.2012
  *      Author: martint
  */
 
 #include "findffmpegdialog.h"
+#include <gtkmm/stock.h>
 
 namespace Gui {
 
 FindFFmpegDialog::FindFFmpegDialog(const Glib::RefPtr<Gtk::Builder>& refGlade, Path& ffmpegPath) :
-	ffmpegPath(ffmpegPath){
+	ffmpegPath(ffmpegPath), fileChooser("Please choose a executable file", Gtk::FILE_CHOOSER_ACTION_OPEN){
+	fileChooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+	fileChooser.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
 	refGlade->get_widget("findFFmpegWindow",findFFmpegWindow);
 	refGlade->get_widget("findChooseFile",findChooseFile);
 	refGlade->get_widget("findOk",findOk);
@@ -46,6 +50,11 @@ void FindFFmpegDialog::findQuitClicked(){
 	findFFmpegWindow->hide();
 }
 void FindFFmpegDialog::findChooseFileClicked(){
-	//todo add file chooser dialog
+	int res = fileChooser.run();
+	fileChooser.hide();
+	if(res == Gtk::RESPONSE_OK){
+		Glib::RefPtr< Gio::File > file = fileChooser.get_file ();
+		findFFmpegPath->set_text(file->get_path());
+	}
 }
 } /* namespace Gui */

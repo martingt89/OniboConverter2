@@ -11,14 +11,16 @@
 #include "../CppExtension/path.h"
 #include "profile.h"
 #include "xmlprofileparser.h"
-
+#include "../ConverterOptions/ffpreset.h"
 namespace Profile {
 
 class ProfileLoader {
 public:
 	ProfileLoader();
 	virtual ~ProfileLoader();
-	bool load(const Path& profilesFolder, Profiles& profiles);
+	bool load(const Path& profilesFolder,
+			const CppExtension::HashMap<std::string, ConverterOptions::FFpresets>& buildInFFpresets,
+			Profiles& profiles);
 private:
 	bool parseProfileFromFile(const Path& file, Profile& profile);
 	bool getRegularFilesFromFolder(const Path& profilesFolder, std::list<Path>& profileFiles);

@@ -18,7 +18,7 @@ class ConvertSettings {
 public:
 	enum Command{
 		VBITRATE, ABITRATE, FRAMERATE, SAMPLERATE, VCODEC, ACODEC, NOVIDEO, NOAUDIO, SIZE, CHANNELS,
-		MULTITHREAD, USER_DEFINED
+		MULTITHREAD, FFPRESET, USER_DEFINED
 	};
 public:
 	ConvertSettings(Command command);

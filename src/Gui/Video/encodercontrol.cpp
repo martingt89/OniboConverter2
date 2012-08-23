@@ -141,7 +141,9 @@ Converter::ConvertSettingsList EncoderControl::getConvertArguments() const{
 	Converter::ConvertSettingsList args;
 	args.add(videoEncoder.get_active_row_item().getConvertArguments());
 	args.add(videoBitrate.get_active_row_item().getConvertArguments());
-	//todo implement ffpreset
+	if(videoFFpreset.is_selected() && videoFFpreset.is_sensitive()){
+		args.add(videoFFpreset.get_active_row_item().getConvertArguments());
+	}
 	return args;
 }
 void EncoderControl::videoEncoderChanged(){
@@ -191,7 +193,7 @@ void EncoderControl::videoFFpresetChanged(){
 			if(res == Gtk::RESPONSE_OK){
 				Glib::RefPtr< Gio::File > file = ffpresetChooser.get_file ();
 				Path ffFile(file->get_path());
-				ConverterOptions::FFpreset ff(ffFile, videoEncoder.get_active_row_item().getFFPrefix());
+				ConverterOptions::FFpreset ff(ffFile, videoEncoder.get_active_row_item().getFFPrefix(), false);
 				database.addUserVideoFFpreset(ff);
 				aktualizeFFpreset(ff.toStr());
 			}else{

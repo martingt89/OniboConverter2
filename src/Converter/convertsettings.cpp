@@ -47,6 +47,7 @@ ConvertSettingsList::ConvertSettingsList(){
 		commandToStr.set(ConvertSettings::SIZE, "-s");
 		commandToStr.set(ConvertSettings::CHANNELS, "-ac");
 		commandToStr.set(ConvertSettings::MULTITHREAD, "-thread");
+		commandToStr.set(ConvertSettings::FFPRESET, "-fpre");
 	}
 }
 ConvertSettingsList::ConvertSettingsList(const ConvertSettingsList& arguments){

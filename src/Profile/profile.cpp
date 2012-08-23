@@ -7,10 +7,17 @@
 
 #include "profile.h"
 #include "../helper.h"
+#include <algorithm>
 
 namespace Profile {
 
-Profile::Profile() {}
+Profile::Profile(){
+
+}
+
+Profile::Profile(const CppExtension::HashMap<std::string, ConverterOptions::FFpresets>& buildInFFpresets) {
+	this->buildInFFpresets = buildInFFpresets;
+}
 
 Profile::~Profile() {}
 
@@ -100,7 +107,23 @@ bool Profile::getVideoFFpreset(ConverterOptions::FFpreset& ffpreset) const{
 	if(!exist){
 		return false;
 	}
-	ffpreset = ConverterOptions::FFpreset(ffFilePath, prefix);
+	std::string buildin = optionsToValue.get(VIDEO_FFPRESET_BUILDIN_OPT, exist);
+
+	bool isBuildIn = (buildin=="y");
+	if(isBuildIn){
+		auto ffpresets = buildInFFpresets.get(prefix).getFFpresetList();
+		auto ffiter = std::find_if(ffpresets.begin(), ffpresets.end(),
+				[path](const ConverterOptions::FFpreset& ff)-> bool{
+			return ff.getName() == path;
+		});
+		if(ffiter != ffpresets.end()){
+			ffpreset = *ffiter;
+		}else{
+			return false;
+		}
+	}else{
+		ffpreset = ConverterOptions::FFpreset(ffFilePath, prefix, false);
+	}
 	return true;
 }
 bool Profile::getVideoFramerate(ConverterOptions::Framerate& framerate, bool& original) const{

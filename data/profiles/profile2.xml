@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile>
+	<name>h264</name>
+	<container>mkv</container>
+	<video>
+		<mode>1</mode>
+		<format>H264</format>
+		<encoder>libx264</encoder>
+		<framerate>25</framerate>
+		<bitrate>
+			<value>1500</value>
+			<min>100</min>
+			<max>2000</max>
+		</bitrate>
+		<resolution>
+			<x>1280</x>
+			<y>1000</y>
+			<aspect>6:5</aspect>
+			<name></name>
+		</resolution>
+		<ffpreset>
+			<prefix>libx264</prefix>
+			<path>libx264-superfast.ffpreset</path>
+			<buildin>y</buildin>
+		</ffpreset>
+	</video>
+	<audio>
+		<mode>1</mode>
+		<format>VORBIS</format>
+		<encoder>vorbis</encoder>
+		<bitrate>128</bitrate>
+		<samplerate>48000</samplerate>
+		<channel>
+			<value>1</value>
+			<name>mono</name>
+		</channel>
+	</audio>
+	<manualsettings>
+		<setting>
+			<command>-map</command>
+			<arg>0</arg>
+		</setting>
+	</manualsettings>
+</profile>

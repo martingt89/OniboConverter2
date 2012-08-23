@@ -34,32 +34,33 @@ public:
 		VIDEO_RESOLUTION_NAME_OPT = 12,
 		VIDEO_FFPRESET_PREFIX_OPT = 13,
 		VIDEO_FFPRESET_PATH_OPT = 14,
+		VIDEO_FFPRESET_BUILDIN_OPT = 15,
 		//
-		AUDIO_MODE_OPT = 15,
-		AUDIO_FORMAT_OPT = 16,
-		AUDIO_ENCODER_OPT = 17,
-		AUDIO_BITRATE_OPT = 18,
-		AUDIO_SAMPLERATE_OPT = 19,
-		AUDIO_CHANNEL_VALUE_OPT = 20,
-		AUDIO_CHANNEL_NAME_OPT = 21,
+		AUDIO_MODE_OPT = 16,
+		AUDIO_FORMAT_OPT = 17,
+		AUDIO_ENCODER_OPT = 18,
+		AUDIO_BITRATE_OPT = 19,
+		AUDIO_SAMPLERATE_OPT = 20,
+		AUDIO_CHANNEL_VALUE_OPT = 21,
+		AUDIO_CHANNEL_NAME_OPT = 22,
 		//
-		MANUAL_COMMAND_OPT = 22,
-		MANUAL_ARG_OPT = 23,
+		MANUAL_COMMAND_OPT = 23,
+		MANUAL_ARG_OPT = 24,
 		//
-		END_OPT = 24
+		END_OPT = 25
 	};
 	struct ManualSettings{
 		std::string command;
 		std::list<std::string> args;
 	};
 public:
+
 	Profile();
+	Profile(const CppExtension::HashMap<std::string, ConverterOptions::FFpresets>& buildInFFpresets);
 	virtual ~Profile();
 	void addProperty(const Options& options, const std::string& propertie);
 	//
 	std::string getName() const;
-//	std::string getProperty(const Options& options) const;
-//	std::string getProperty(const Options& options, bool& exist) const;
 	bool getContainerName(std::string& containerName) const;
 	bool getVideoMode(int& row) const;
 	bool getVideoFormatName(std::string& videoFormatName) const;
@@ -79,6 +80,7 @@ public:
 	void getManualSettings(std::list<ManualSettings>& manualSettings) const;
 private:
 	CppExtension::HashMap<Options, std::string> optionsToValue;
+	CppExtension::HashMap<std::string, ConverterOptions::FFpresets> buildInFFpresets;
 	std::list<ManualSettings> settings;
 };
 

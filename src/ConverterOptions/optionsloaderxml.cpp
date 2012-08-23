@@ -94,6 +94,9 @@ Channels OptionsLoaderXml::loadChannels(){
 	}
 	return channels;
 }
+CppExtension::HashMap<std::string, FFpresets> OptionsLoaderXml::getFFPresets(){
+	return prefixToFFpresets;
+}
 void OptionsLoaderXml::extractChannelsFromNode(xmlpp::Node *xmlNode, Channels& channels){
 	xmlpp::NodeSet nodeSet = xmlNode->find("./item/child::text()");
 	for(auto iter = nodeSet.begin(); iter != nodeSet.end(); ++iter){
@@ -218,7 +221,7 @@ void OptionsLoaderXml::extractEncoders(
 			Encoder encoder(encoderName, encoderType, encoderDescription, bitrates, multithread == "y");
 			if(ffpresetPrefix.size() > 0){
 				if(!prefixToFFpresets.isExistKey(ffpresetPrefix)){
-					prefixToFFpresets.set(ffpresetPrefix, FFpresets(ffpresetPrefix, ffpresetPath));
+					prefixToFFpresets.set(ffpresetPrefix, FFpresets(ffpresetPrefix, ffpresetPath, true));
 		//			std::cout<<"prefix doesnt exist"<<std::endl;
 				}
 				encoder.setFFpresets(prefixToFFpresets.get(ffpresetPrefix), ffpresetPrefix);

@@ -29,6 +29,7 @@ XmlProfileParser::XmlProfileParser() {
 	pathToOptions.set(toPath({"profile", "video", "resolution", "name"}),Profile::VIDEO_RESOLUTION_NAME_OPT);
 	pathToOptions.set(toPath({"profile", "video", "ffpreset", "prefix"}),Profile::VIDEO_FFPRESET_PREFIX_OPT);
 	pathToOptions.set(toPath({"profile", "video", "ffpreset", "path"}),Profile::VIDEO_FFPRESET_PATH_OPT);
+	pathToOptions.set(toPath({"profile", "video", "ffpreset", "buildin"}),Profile::VIDEO_FFPRESET_BUILDIN_OPT);
 
 	pathToOptions.set(toPath({"profile", "audio", "mode"}),Profile::AUDIO_MODE_OPT);
 	pathToOptions.set(toPath({"profile", "audio", "format"}),Profile::AUDIO_FORMAT_OPT);
