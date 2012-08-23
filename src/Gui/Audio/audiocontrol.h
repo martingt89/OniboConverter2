@@ -23,6 +23,7 @@ class AudioControl {
 public:
 	AudioControl(ConverterOptions::OptionsDatabase &database, const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~AudioControl();
+	Converter::ConvertSettingsList getConvertArguments() const;
 	void containerChanged(const ConverterOptions::Container& container);
 	void saveSettingsState();
 	void restoreSettingsState();
@@ -30,7 +31,7 @@ public:
 	void disableSettings();
 	void setActiveProfile(const Profile::Profile& activeProfile);
 	sigc::signal<void>& signalUserInput();
-	Converter::ConvertSettingsList getConvertArguments() const;
+
 private:
 	void initAudioMode(ComboBoxExt<int>& audioMode);
 	void initSamplerate(ComboBoxExt<ConverterOptions::Samplerate>& audioSamplerate);

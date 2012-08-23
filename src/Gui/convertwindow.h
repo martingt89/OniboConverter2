@@ -15,6 +15,7 @@
 #include <gtkmm/treemodel.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/messagedialog.h>
 #include "../MediaFile/mediafile.h"
 namespace Gui {
 
@@ -41,18 +42,25 @@ public:
 	ConvertWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 	virtual ~ConvertWindow();
 	void display(CppExtension::HashMap<int, MediaFile::MediaFile*> files, bool isEnd);
+	bool isAbort();
 protected:
 	virtual void on_hide ();
 private:
+	void loadWidgets(const Glib::RefPtr<Gtk::Builder>& refGlade);
+	void initConvertTreeView();
+	void initStopDialog();
+
+	bool abort;
+	bool converting;
 	Gtk::Window* convertWindow;
 	Gtk::Button* closeConvertButton;
 	Gtk::Button* okConvertButton;
 	Gtk::Spinner* workingIndicator;
 	Gtk::TreeView* convertTreeView;
 	Gtk::Label* convertWindowMessage;
+	Gtk::MessageDialog* stopConvertingDialog;
 	Glib::RefPtr<Gtk::ListStore> convertTreeModel;
 	Glib::RefPtr<Gtk::TreeView::Selection> convertSelection;
-	bool converting;
 };
 
 } /* namespace Gui */

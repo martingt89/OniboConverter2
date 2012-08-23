@@ -2,15 +2,9 @@ Main
  - 2 pass encoding		//low priority
  
  - vytvorenie centralneho uschovneho systemu pre user defined settings
- 
-Video mode:
- - rozsirene enkodery	//low priority
- - ulozenie bitrate
- 
-Audio mode:
- - pridat kanaly do xml
- - implementovat rozhranie
- 
- - implementovat special settings	//low priority
- 
- - implementovat profily!!!
+ - ulozenie profilu
+ - import a export profilov
+ - informacie o subore
+ - pridanie filtrov
+ - realna konverzia
+ - test existencie vystupneho subora

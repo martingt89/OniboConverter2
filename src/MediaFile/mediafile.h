@@ -15,6 +15,7 @@
 #include "videostream.h"
 #include "audiostream.h"
 #include "../Converter/convertsettings.h"
+#include <thread>
 
 namespace MediaFile {
 
@@ -32,7 +33,7 @@ public:
 		std::vector<AudioStream> audios;
 	};
 	enum ConvertFileState{
-		WAITING, PROCESSING, FINISH, INVALID_FILE
+		WAITING, PROCESSING, FINISH, INVALID_FILE, ABORT
 	};
 public:
 	MediaFile(Path filePath, int fileId);
@@ -51,7 +52,9 @@ public:
 	std::string getConvertState();
 	int getFileId();
 	bool isEnded();
+	void abort();
 private:
+	std::mutex mutex;
 	Path filePath;
 	int fileId;
 	FileInfo fileInfo;

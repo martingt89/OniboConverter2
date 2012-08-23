@@ -18,6 +18,8 @@ const static std::string STATE_OK="OK";
 const static std::string STATE_WAITING="waiting";
 const static std::string STATE_PROCESSING="processing";
 const static std::string STATE_INVALID="invalid file";
+const static std::string STATE_ABORT="abort";
+
 const static int ONE_HOUR = 3600;
 const static int ONE_MINIT = 60;
 const static std::string UNKNOWN_REMAINING_TIME = "Unknown";
@@ -83,9 +85,17 @@ void MediaFile::clearConvertStatus(){
 }
 void MediaFile::convert(){		//todo replace with real converter
 	if(valid){
+		mutex.lock();
+		if(status == ABORT){
+			mutex.unlock();
+			return;
+		}
 		status = PROCESSING;
-		for(int i = 0; i < 10; i++){
-			usleep(1000000);
+		//wait for process begin
+		mutex.unlock();
+		//wait for process end
+		for(int i = 0; i < 10 && status != ABORT; i++){
+			usleep(500000);
 			fraction += 0.1;
 			std::cerr<<"File: "<<filePath.getPath()<<" fraction: "<<fraction<<std::endl;
 		}
@@ -112,6 +122,7 @@ std::string MediaFile::getConvertState(){
 	case WAITING: return STATE_WAITING;
 	case PROCESSING: return STATE_PROCESSING;
 	case FINISH: return STATE_OK;
+	case ABORT: return STATE_ABORT;
 	default: return STATE_INVALID;
 	}
 	return STATE_INVALID;
@@ -120,7 +131,16 @@ int MediaFile::getFileId(){
 	return fileId;
 }
 bool MediaFile::isEnded(){
-	return (status == FINISH) || (status == INVALID_FILE);
+	return (status == FINISH) || (status == INVALID_FILE) || (status == ABORT);
+}
+void MediaFile::abort(){
+	mutex.lock();
+	if(!isEnded()){
+		status = ABORT;
+		//subprocess kill
+		//std::cout<<"kill "<<filePath.getPath()<<std::endl;
+	}
+	mutex.unlock();
 }
 std::string MediaFile::timeToHHMMSS(int localTime) {
 	int hours = localTime / ONE_HOUR;

@@ -110,6 +110,11 @@ void ConverterGui::convertButtonClicked(){
 bool ConverterGui::convertTimer(){
 	CppExtension::HashMap<int, MediaFile::MediaFile*> files;
 	bool running = false;
+	if(convertWindow->isAbort()){
+		for(auto file : convertFilesList){
+			file->abort();
+		}
+	}
 	for(auto file : convertFilesList){
 		if(!file->isEnded()){
 			running = true;
