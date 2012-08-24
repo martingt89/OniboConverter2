@@ -124,6 +124,7 @@ void AVControl::getNewProfile(const std::string& name){
 	settingsDialog.getNewProfile(newProfile);
 	newProfile.addProperty(Profile::Profile::NAME_OPT, name);
 	profilesComboBox.append(name, newProfile);
+	profilesComboBox.save_actual_state();
 	Xml::ProfileToXmlConverter converter;
 	converter.convertToFile(newProfile);
 }
