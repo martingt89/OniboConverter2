@@ -31,8 +31,14 @@ std::string FFpreset::toStr() const{
 std::string FFpreset::getPrefix() const{
 	return prefix;
 }
+Path FFpreset::getPath() const{
+	return ffpresetFilePath;
+}
 std::string FFpreset::getName() const{
 	return ffpresetFilePath.getLastPathPart();
+}
+bool FFpreset::isBuildIn() const{
+	return buildin;
 }
 Converter::ConvertSettingsList  FFpreset::getConvertArguments() const{
 	Converter::ConvertSettingsList args;

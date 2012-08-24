@@ -32,6 +32,7 @@ public:
 	bool checkSettingsComplete(std::string& message);
 	void setActiveProfile(const Profile::Profile& activeProfile);
 	Converter::ConvertSettingsList getConvertArguments() const;
+	void getNewProfile(Profile::Profile& newProfile);
 private:
 	void videoFormatChanged();
 	void videoEncoderChanged();

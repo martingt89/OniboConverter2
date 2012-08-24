@@ -101,6 +101,7 @@ void AudioControl::setActiveProfile(const Profile::Profile& activeProfile){
 			encoderControl.setActiveProfile(activeProfile);
 		}else{
 			disableSettings();
+			audioMode.set_sensitive(true);
 		}
 	}else{
 		audioMode.unset_active();
@@ -133,6 +134,25 @@ void AudioControl::setActiveProfile(const Profile::Profile& activeProfile){
 }
 sigc::signal<void>& AudioControl::signalUserInput(){
 	return userEvent;
+}
+void AudioControl::getNewProfile(Profile::Profile& newProfile){
+	//audio mode
+	newProfile.addProperty(Profile::Profile::AUDIO_MODE_OPT, toS(audioMode.get_active_row_number()));
+	if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
+		encoderControl.getNewProfile(newProfile);
+	}
+	//audio samplerate
+	if(audioSamplerate.isSelectedActivableRow()){
+	newProfile.addProperty(Profile::Profile::AUDIO_SAMPLERATE_OPT,
+			toS(audioSamplerate.get_active_row_item().getValue()));
+	}
+	//audio channels
+	if(audioChannels.isSelectedActivableRow()){
+		newProfile.addProperty(Profile::Profile::AUDIO_CHANNEL_NAME_OPT,
+				audioChannels.get_active_row_item().getName());
+		newProfile.addProperty(Profile::Profile::AUDIO_CHANNEL_VALUE_OPT,
+				toS(audioChannels.get_active_row_item().getValue()));
+	}
 }
 Converter::ConvertSettingsList AudioControl::getConvertArguments() const{
 	Converter::ConvertSettingsList args;

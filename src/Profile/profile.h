@@ -56,7 +56,6 @@ public:
 public:
 
 	Profile();
-	Profile(const CppExtension::HashMap<std::string, ConverterOptions::FFpresets>& buildInFFpresets);
 	virtual ~Profile();
 	void addProperty(const Options& options, const std::string& propertie);
 	//
@@ -80,7 +79,6 @@ public:
 	void getManualSettings(std::list<ManualSettings>& manualSettings) const;
 private:
 	CppExtension::HashMap<Options, std::string> optionsToValue;
-	CppExtension::HashMap<std::string, ConverterOptions::FFpresets> buildInFFpresets;
 	std::list<ManualSettings> settings;
 };
 

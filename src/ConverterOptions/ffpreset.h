@@ -26,6 +26,8 @@ public:
 	std::string toStr() const;
 	Converter::ConvertSettingsList getConvertArguments() const;
 	std::string getName() const;
+	Path getPath() const;
+	bool isBuildIn() const;
 private:
 	std::string cropName(const std::string& name, const std::string& prefix);
 	std::string name;

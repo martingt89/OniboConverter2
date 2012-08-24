@@ -97,6 +97,17 @@ Converter::ConvertSettingsList ManualSettingsControl::getConvertArguments() cons
 	}
 	return args;
 }
+void ManualSettingsControl::getNewProfile(Profile::Profile& newProfile){
+	typedef Gtk::TreeModel::Children type_children;
+	type_children children = commandTreeModel->children();
+	for (type_children::iterator iter = children.begin(); iter != children.end(); ++iter) {
+		Gtk::TreeModel::Row row = *iter;
+		std::string name = (Glib::ustring)row[modelColumns.command];
+		std::string commands = (Glib::ustring)row[modelColumns.args];
+		newProfile.addProperty(Profile::Profile::MANUAL_COMMAND_OPT, name);
+		newProfile.addProperty(Profile::Profile::MANUAL_ARG_OPT, commands);
+	}
+}
 //=============================================================
 void ManualSettingsControl::addCommandClicked(){
 	Gtk::TreeModel::Row row = *(commandTreeModel->append());

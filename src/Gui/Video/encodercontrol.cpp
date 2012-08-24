@@ -8,6 +8,7 @@
 #include "encodercontrol.h"
 #include "../../helper.h"
 #include <gtkmm/stock.h>
+#include <iostream> //todo remove
 
 namespace Gui {
 namespace Video {
@@ -121,7 +122,7 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 			if(videoEncoder.get_active_row_item().hasFFpreset()){
 				ConverterOptions::FFpreset ffpreset;
 				if(activeProfile.getVideoFFpreset(ffpreset)){
-					if(!videoFFpreset.containes(ffpreset.toStr())){
+					if(!videoFFpreset.containes(ffpreset.toStr()) && !ffpreset.isBuildIn()){
 						videoFFpreset.insertBeforeLast(ffpreset.toStr(), ffpreset);
 						database.addUserVideoFFpreset(ffpreset);
 					}
@@ -145,6 +146,40 @@ Converter::ConvertSettingsList EncoderControl::getConvertArguments() const{
 		args.add(videoFFpreset.get_active_row_item().getConvertArguments());
 	}
 	return args;
+}
+void EncoderControl::getNewProfile(Profile::Profile& newProfile){
+	bool format = false;
+	if(videoFormat.is_sensitive() && videoFormat.is_selected()){
+		format = true;
+		newProfile.addProperty(Profile::Profile::VIDEO_FORMAT_OPT,
+				videoFormat.get_active_row_item().getName());
+	}
+	bool encoder = false;
+	if(format && videoEncoder.is_sensitive() && videoEncoder.is_selected()){
+		encoder = true;
+		newProfile.addProperty(Profile::Profile::VIDEO_ENCODER_OPT,
+				videoEncoder.get_active_row_item().getName());
+	}
+	if(encoder && videoBitrate.isSelectedActivableRow()){
+		newProfile.addProperty(Profile::Profile::VIDEO_BITRATE_OPT,
+				toS(videoBitrate.get_active_row_item().getValue()));
+		newProfile.addProperty(Profile::Profile::VIDEO_BITRATE_MAX_OPT,
+				toS(videoBitrate.get_active_row_item().getMaxBitrate()));
+		newProfile.addProperty(Profile::Profile::VIDEO_BITRATE_MIN_OPT,
+				toS(videoBitrate.get_active_row_item().getMinBitrate()));
+	}
+	if(encoder && videoFFpreset.isSelectedActivableRow()){
+		if(videoFFpreset.get_active_row_item().isBuildIn()){	//buildin
+			newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_PATH_OPT,
+					toS(videoFFpreset.get_active_row_item().getName()));
+			newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_BUILDIN_OPT, "y");
+		}else{
+			newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_PATH_OPT,
+					videoFFpreset.get_active_row_item().getPath().getPath());
+		}
+		newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_PREFIX_OPT,
+				toS(videoFFpreset.get_active_row_item().getPrefix()));
+	}
 }
 void EncoderControl::videoEncoderChanged(){
 	if(isEnableSignals){

@@ -217,7 +217,7 @@
 	</video_resolutions>
 	
 	<samplerates>
-		<item>0</item> <!--"Original"-->
+		<item>-1</item> <!--"Original"-->
 		<item>8000</item>
 		<item>11025</item>
 		<item>16000</item>
@@ -228,7 +228,7 @@
 	</samplerates>
 	
 	<framerates>
-		<item>0</item> <!--"Original"-->
+		<item>-1</item> <!--"Original"-->
 		<item>10</item>
 		<item>15</item>
 		<item>20</item>
@@ -240,7 +240,7 @@
 	</framerates>
 	
 	<channels>
-		<item name="org">0</item> <!--"Original"-->
+		<item name="org">-1</item> <!--"Original"-->
 		<item name="mono">1</item>
 		<item name="stereo">2</item>
 		<item name="5.1">6</item>

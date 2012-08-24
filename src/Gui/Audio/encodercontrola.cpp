@@ -98,6 +98,24 @@ Converter::ConvertSettingsList EncoderControlA::getConvertArguments() const{
 	args.add(audioBitrate.get_active_row_item().getConvertArguments());
 	return args;
 }
+void EncoderControlA::getNewProfile(Profile::Profile& newProfile){
+	bool format = false;
+	if(audioFormat.isSelectedActivableRow()){
+		format = true;
+		newProfile.addProperty(Profile::Profile::AUDIO_FORMAT_OPT,
+				audioFormat.get_active_row_item().getName());
+	}
+	bool encoder = false;
+	if(format && audioEncoder.isSelectedActivableRow()){
+		encoder = true;
+		newProfile.addProperty(Profile::Profile::AUDIO_ENCODER_OPT,
+				audioEncoder.get_active_row_item().getName());
+	}
+	if(encoder && audioBitrate.isSelectedActivableRow()){
+		newProfile.addProperty(Profile::Profile::AUDIO_BITRATE_OPT,
+				toS(audioBitrate.get_active_row_item().getValue()));
+	}
+}
 void EncoderControlA::audioFormatChanged(){
 	if(isEnableSignals){
 		isEnableSignals = false;

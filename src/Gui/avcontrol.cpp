@@ -23,6 +23,7 @@ AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 	isUserInput = true;
 
 	refGlade->get_widget("manualSettingsButton", manualSettingsButton);
+	refGlade->get_widget("saveProfileAsButton", saveProfileAsButton);
 
 	initContainers(database, containers);
 	initProfiles(profiles, profilesComboBox);
@@ -34,6 +35,7 @@ AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 	audioControlGui.signalUserInput().connect(sigc::mem_fun(*this, &AVControl::userInput));
 	profilesComboBox.signal_changed().connect(sigc::mem_fun(*this, &AVControl::profileChanged));
 	manualSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &AVControl::manualSettingsClicked));
+	saveProfileAsButton->signal_clicked().connect(sigc::mem_fun(*this, &AVControl::getNewProfile)); //todo window with name
 	isUserInput = false;
 	containers.set_active_row_number(0);
 	isUserInput = true;
@@ -113,6 +115,15 @@ void AVControl::profileChanged(){
 		}
 		isUserInput = true;
 	}
+}
+void AVControl::getNewProfile(){
+	Profile::Profile newProfile;
+	newProfile.addProperty(Profile::Profile::CONTAINER_OPT, containers.get_active_row_item().getName());
+	videoControlGui.getNewProfile(newProfile);
+	audioControlGui.getNewProfile(newProfile);
+	settingsDialog.getNewProfile(newProfile);
+	newProfile.addProperty(Profile::Profile::NAME_OPT, "tmp");
+	profilesComboBox.append("tmp", newProfile);
 }
 void AVControl::manualSettingsClicked(){
 	bool change = settingsDialog.start();

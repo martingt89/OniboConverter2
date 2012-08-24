@@ -25,7 +25,7 @@ int Channel::getValue() const{
 	return value;
 }
 std::string Channel::toStr() const{
-	if(value <= 0){
+	if(value < 0){
 		return ORIGINAL;
 	}
 	if(name.size() > 0){
@@ -35,11 +35,14 @@ std::string Channel::toStr() const{
 }
 Converter::ConvertSettingsList Channel::getConvertArguments() const{
 	Converter::ConvertSettingsList args;
-	if(value > 0){
+	if(value >= 0){
 		Converter::ConvertSettings arg(Converter::ConvertSettings::CHANNELS);		//-ac
 		arg.addValue(toS(value));
 		args.add(arg);
 	}
 	return args;
+}
+std::string Channel::getName() const{
+	return name;
 }
 } /* namespace ConverterOptions */

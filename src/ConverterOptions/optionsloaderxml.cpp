@@ -94,9 +94,6 @@ Channels OptionsLoaderXml::loadChannels(){
 	}
 	return channels;
 }
-CppExtension::HashMap<std::string, FFpresets> OptionsLoaderXml::getFFPresets(){
-	return prefixToFFpresets;
-}
 void OptionsLoaderXml::extractChannelsFromNode(xmlpp::Node *xmlNode, Channels& channels){
 	xmlpp::NodeSet nodeSet = xmlNode->find("./item/child::text()");
 	for(auto iter = nodeSet.begin(); iter != nodeSet.end(); ++iter){

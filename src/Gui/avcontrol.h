@@ -30,6 +30,7 @@ public:
 	void restoreSettingsState();
 	Converter::ConvertSettingsList getConvertArguments() const;
 private:
+	void getNewProfile();
 	void userInput();
 	void containerChanged();
 	void profileChanged();
@@ -46,6 +47,7 @@ private:
 	ComboBoxExt<Profile::Profile> profilesComboBox;
 	ManualSettingsControl settingsDialog;
 	Gtk::Button* manualSettingsButton;
+	Gtk::Button* saveProfileAsButton;
 	bool multiPassState;
 	bool isEnabledSignal;
 	bool isUserInput;

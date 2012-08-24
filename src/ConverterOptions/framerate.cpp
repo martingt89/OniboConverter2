@@ -21,7 +21,7 @@ double Framerate::getValue() const{
 }
 
 std::string Framerate::toStr() const{
-	if(framerate > 0){
+	if(framerate >= 0){
 		return toS(framerate);
 	}else{
 		return ORIGINAL;
@@ -29,7 +29,7 @@ std::string Framerate::toStr() const{
 }
 Converter::ConvertSettingsList Framerate::getConvertArguments() const{
 	Converter::ConvertSettingsList args;
-	if(framerate > 0){
+	if(framerate >= 0){
 		Converter::ConvertSettings arg(Converter::ConvertSettings::FRAMERATE);	//-r
 		arg.addValue(toS(framerate));
 		args.add(arg);

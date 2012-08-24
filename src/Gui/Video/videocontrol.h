@@ -31,6 +31,7 @@ public:
 	void setActiveProfile(const Profile::Profile& activeProfile);
 	sigc::signal<void>& signalUserInput();
 	Converter::ConvertSettingsList getConvertArguments() const;
+	void getNewProfile(Profile::Profile& newProfile);
 private:
 	void encoderUserInput();
 	void videoModeChanged();

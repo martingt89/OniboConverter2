@@ -31,7 +31,7 @@ public:
 	void disableSettings();
 	void setActiveProfile(const Profile::Profile& activeProfile);
 	sigc::signal<void>& signalUserInput();
-
+	void getNewProfile(Profile::Profile& newProfile);
 private:
 	void initAudioMode(ComboBoxExt<int>& audioMode);
 	void initSamplerate(ComboBoxExt<ConverterOptions::Samplerate>& audioSamplerate);

@@ -34,7 +34,6 @@ public:
 	virtual Samplerates loadSamplerates();
 	virtual Resolutions loadResolutions();
 	virtual Channels loadChannels();
-	CppExtension::HashMap<std::string, FFpresets> getFFPresets();
 private:
 	void extractResolutionsFromNode(xmlpp::Node *xmlNode, Resolutions& resolutions);
 	void extractFrameratesFromNode(xmlpp::Node *xmlNode, Framerates& framerates);

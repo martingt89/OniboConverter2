@@ -73,6 +73,7 @@ void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
 			encoder.setActiveProfile(activeProfile);
 		}else{
 			disableSettings();
+			videoMode.set_sensitive(true);
 		}
 	}else{
 		videoMode.unset_active();
@@ -103,6 +104,26 @@ void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
 		}
 	}else{
 		videoFramerate.unset_active();
+	}
+}
+void VideoControl::getNewProfile(Profile::Profile& newProfile){
+	//video mode
+	newProfile.addProperty(Profile::Profile::VIDEO_MODE_OPT, toS(videoMode.get_active_row_number()));
+	if(videoMode.get_active_row_item() == CUSTOM_MODE_ID){
+		encoder.getNewProfile(newProfile);
+	}
+	//video framerate
+	if(videoFramerate.is_sensitive() && videoFramerate.is_selected()){
+	newProfile.addProperty(Profile::Profile::VIDEO_FRAMERATE_OPT,
+			toS(videoFramerate.get_active_row_item().getValue()));
+	}
+	//video resolution
+	if(videoResolution.is_sensitive() && videoResolution.is_selected()){
+		auto resol = videoResolution.get_active_row_item();
+		newProfile.addProperty(Profile::Profile::VIDEO_RESOLUTION_X_OPT, toS(resol.getValue().first));
+		newProfile.addProperty(Profile::Profile::VIDEO_RESOLUTION_Y_OPT, toS(resol.getValue().second));
+		newProfile.addProperty(Profile::Profile::VIDEO_RESOLUTION_ASP_OPT, resol.getAspectRatio());
+		newProfile.addProperty(Profile::Profile::VIDEO_RESOLUTION_NAME_OPT, resol.getName());
 	}
 }
 void VideoControl::containerChanged(const ConverterOptions::Container& container){

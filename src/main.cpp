@@ -77,7 +77,7 @@ public:
 			Profile::Profiles profiles;
 
 			Profile::ProfileLoader loader;
-			loader.load(profilesFolder, optionsLoaderFromXml.getFFPresets(), profiles);
+			loader.load(profilesFolder, profiles);
 
 			converterGui = new Gui::ConverterGui(optionsDatabase, builder, profiles);
 			converterGui->signalConvert().connect(sigc::mem_fun(*this, &OniboConverter::convert));

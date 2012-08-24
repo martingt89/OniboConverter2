@@ -22,6 +22,7 @@ public:
 	int getValue() const;
 	std::string toStr() const;
 	Converter::ConvertSettingsList getConvertArguments() const;
+	std::string getName() const;
 private:
 	std::string name;
 	int value;
