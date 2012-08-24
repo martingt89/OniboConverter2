@@ -46,8 +46,9 @@ public:
 		//
 		MANUAL_COMMAND_OPT = 23,
 		MANUAL_ARG_OPT = 24,
+		UNKNOWN_OPT = 25,
 		//
-		END_OPT = 25
+		END_OPT = 26
 	};
 	struct ManualSettings{
 		std::string command;

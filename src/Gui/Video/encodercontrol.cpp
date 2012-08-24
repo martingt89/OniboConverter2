@@ -103,11 +103,11 @@ bool EncoderControl::checkSettingsComplete(std::string& message){
 	return true;
 }
 void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
-	std::string formatName;
+	std::string formatName;	//todo rewrite to bool variables!!!
 	if(activeProfile.getVideoFormatName(formatName)){
 		videoFormat.set_active_text(formatName);
 		std::string encoderName;
-		if(activeProfile.getVideoEncoderName(encoderName)){
+		if(activeProfile.getVideoEncoderName(encoderName) ){
 			videoEncoder.set_active_text(encoderName);
 			ConverterOptions::Bitrate bitrate;
 			if(activeProfile.getVideoBitrate(bitrate)){

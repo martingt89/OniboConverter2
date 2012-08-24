@@ -19,7 +19,10 @@ $(SRCPATH)/RegexTools/regextools.cpp \
 $(SRCPATH)/CppExtension/path.cpp \
 $(SRCPATH)/Profile/profile.cpp \
 $(SRCPATH)/Profile/profileloader.cpp \
-$(SRCPATH)/Profile/xmlprofileparser.cpp \
+$(SRCPATH)/Xml/xmlprofileparser.cpp \
+$(SRCPATH)/Xml/xmlgenerator.cpp \
+$(SRCPATH)/Xml/xmlprofiletable.cpp \
+$(SRCPATH)/Xml/profiletoxmlconverter.cpp \
 $(SRCPATH)/Gui/convertergui.cpp \
 $(SRCPATH)/Gui/avcontrol.cpp \
 $(SRCPATH)/Gui/filecontrol.cpp \
