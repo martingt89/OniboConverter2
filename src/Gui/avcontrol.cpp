@@ -16,7 +16,7 @@ AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 		const Profile::Profiles& profiles) : database(database), profiles(profiles),
 				videoControlGui(database, refGlade), audioControlGui(database, refGlade),
 				containers(refGlade, "containres"), profilesComboBox(refGlade, "profilesComboBox"),
-				settingsDialog(refGlade){
+				settingsDialog(refGlade), profileNameDialog(refGlade){
 
 	multiPassState = false;
 	isEnabledSignal = true;
@@ -35,7 +35,7 @@ AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 	audioControlGui.signalUserInput().connect(sigc::mem_fun(*this, &AVControl::userInput));
 	profilesComboBox.signal_changed().connect(sigc::mem_fun(*this, &AVControl::profileChanged));
 	manualSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &AVControl::manualSettingsClicked));
-	saveProfileAsButton->signal_clicked().connect(sigc::mem_fun(*this, &AVControl::getNewProfile)); //todo window with name
+	saveProfileAsButton->signal_clicked().connect(sigc::mem_fun(*this, &AVControl::saveProfileClicked));
 	isUserInput = false;
 	containers.set_active_row_number(0);
 	isUserInput = true;
@@ -116,21 +116,27 @@ void AVControl::profileChanged(){
 		isUserInput = true;
 	}
 }
-void AVControl::getNewProfile(){
+void AVControl::getNewProfile(const std::string& name){
 	Profile::Profile newProfile;
 	newProfile.addProperty(Profile::Profile::CONTAINER_OPT, containers.get_active_row_item().getName());
 	videoControlGui.getNewProfile(newProfile);
 	audioControlGui.getNewProfile(newProfile);
 	settingsDialog.getNewProfile(newProfile);
-	newProfile.addProperty(Profile::Profile::NAME_OPT, "tmp");
-	profilesComboBox.append("tmp", newProfile);
+	newProfile.addProperty(Profile::Profile::NAME_OPT, name);
+	profilesComboBox.append(name, newProfile);
 	Xml::ProfileToXmlConverter converter;
-	converter.convertToFile(newProfile, Path(""));
+	converter.convertToFile(newProfile);
 }
 void AVControl::manualSettingsClicked(){
 	bool change = settingsDialog.start();
 	if(change){
 		userInput();
+	}
+}
+void AVControl::saveProfileClicked(){
+	std::string profileName;
+	if(profileNameDialog.getName(profileName)){
+		getNewProfile(profileName);
 	}
 }
 void AVControl::initContainers(ConverterOptions::OptionsDatabase &database,

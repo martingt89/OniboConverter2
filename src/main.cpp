@@ -19,6 +19,7 @@
 #include "Profile/profile.h"
 #include "Profile/profileloader.h"
 #include "Converter/dispenser.h"
+#include "globalsettings.h"
 #include <iostream>					//todo remove
 #include <unistd.h>
 
@@ -37,27 +38,24 @@ private:
 	Path ffpresetPath;
 	Path xmlFilePath;
 	Path ffmpeg;
-	Path profilesFolder;
+	Path defaultProfilesFolder;
+	Path userprofilesFolder;
 	Gui::ConverterGui* converterGui;
 	Converter::Dispenser dispenser;
 public:
-	OniboConverter():
-		ffpresetPath("ffpresets"),
-		xmlFilePath("data/audio_video_settings.xml"),
-		ffmpeg("ffmpeg"),
-		profilesFolder("data/profiles"),
-	converterGui(NULL), dispenser(numberOfThreads, false){}
+	OniboConverter(): converterGui(NULL), dispenser(numberOfThreads, false){
+		ffpresetPath = GlobalSettings::getInstance()->getFFpresetFolder();
+		xmlFilePath = GlobalSettings::getInstance()->getXmlConfigFilePath();
+		defaultProfilesFolder = GlobalSettings::getInstance()->getDefaultProfilesPath();
+		userprofilesFolder = GlobalSettings::getInstance()->getUserProfilesPath();
+	}
 
 	void convert(std::list<MediaFile::MediaFile*> mediaFiles){
-//		for(MediaFile::MediaFile* file : mediaFiles){
-//			if(!file->isSet()){
-//				file->scanMediaFile();
-//			}
-//		}
 		dispenser.processMediaFiles(mediaFiles);
 	}
 
 	bool run(Gtk::Main& kit){
+		ffmpeg = GlobalSettings::getInstance()->getFFmpegPath();
 		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/model5.glade");
 
 		ExternalTools::SupportedEncodersLoader encodersLoader;
@@ -77,7 +75,8 @@ public:
 			Profile::Profiles profiles;
 
 			Profile::ProfileLoader loader;
-			loader.load(profilesFolder, profiles);
+			loader.load(defaultProfilesFolder, profiles);
+			loader.load(userprofilesFolder, profiles);
 
 			converterGui = new Gui::ConverterGui(optionsDatabase, builder, profiles);
 			converterGui->signalConvert().connect(sigc::mem_fun(*this, &OniboConverter::convert));

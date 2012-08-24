@@ -30,6 +30,7 @@ $(SRCPATH)/Gui/convertwindow.cpp \
 $(SRCPATH)/Gui/findffmpegdialog.cpp \
 $(SRCPATH)/Gui/manualsettingscontrol.cpp \
 $(SRCPATH)/Gui/destinationcontrol.cpp \
+$(SRCPATH)/Gui/profilenamedialog.cpp \
 $(SRCPATH)/Gui/Video/videocontrol.cpp \
 $(SRCPATH)/Gui/Video/encodercontrol.cpp \
 $(SRCPATH)/Gui/Video/resolutiondialog.cpp \
@@ -49,6 +50,7 @@ $(SRCPATH)/MediaFile/audiostream.cpp \
 $(SRCPATH)/MediaFile/stream.cpp \
 $(SRCPATH)/MediaFile/videostream.cpp \
 $(SRCPATH)/helper.cpp \
+$(SRCPATH)/globalsettings.cpp \
 $(SRCPATH)/main.cpp 
 
 AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -pedantic $(DEPS_CFLAGS)

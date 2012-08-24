@@ -12,7 +12,7 @@ namespace ConverterOptions {
 static const std::string ORIGINAL="--- original ---";
 Channel::Channel() {
 	name = "";
-	value = 0;
+	value = -1;
 }
 Channel::Channel(const std::string& name, const int& value){
 	this->name = name;
@@ -28,7 +28,7 @@ std::string Channel::toStr() const{
 	if(value < 0){
 		return ORIGINAL;
 	}
-	if(name.size() > 0){
+	if(name.size() >= 0){
 		return name;
 	}
 	return toS(value);

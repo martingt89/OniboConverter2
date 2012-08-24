@@ -17,12 +17,13 @@ class ProfileToXmlConverter {
 public:
 	ProfileToXmlConverter();
 	virtual ~ProfileToXmlConverter();
-	bool convertToFile(const Profile::Profile& profile, const Path& filePath);
+	bool convertToFile(const Profile::Profile& profile);
 
 private:
 	void getManualXml(const XmlGenerator& generator, const Profile::Profile& profile, XmlDocument* doc);
 	void getVideoXml(const XmlGenerator& generator, const Profile::Profile& profile, XmlDocument* doc);
 	void getAudioXml(const XmlGenerator& generator, const Profile::Profile& profile, XmlDocument* doc);
+	std::string generateProfileXml(const Profile::Profile& profile);
 };
 
 } /* namespace Xml */

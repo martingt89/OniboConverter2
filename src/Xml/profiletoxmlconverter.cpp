@@ -7,39 +7,48 @@
 
 #include "profiletoxmlconverter.h"
 #include "../helper.h"
-#include <iostream> //todo remove
+#include "../globalsettings.h"
+#include <fstream>
+#include <iostream>
+
 namespace Xml {
 
-ProfileToXmlConverter::ProfileToXmlConverter() {
-	// TODO Auto-generated constructor stub
+ProfileToXmlConverter::ProfileToXmlConverter() {}
 
+ProfileToXmlConverter::~ProfileToXmlConverter() {}
+
+bool ProfileToXmlConverter::convertToFile(const Profile::Profile& profile){
+	std::string xml = generateProfileXml(profile);
+	Path userProfilesPath = GlobalSettings::getInstance()->getUserProfilesPath();
+	std::string name = getActualTimeMiliSec()+".xml";
+	Path profilePath = GlobalSettings::buildPath(userProfilesPath, Path(name));
+	//std::cout<<"path: "<<profilePath.getPath()<<std::endl;
+	std::ofstream file(profilePath.getPath());
+	if(file.good()){
+		//todo log
+		file << xml;
+		file.close();
+		return true;
+	}
+	return false;
 }
-
-ProfileToXmlConverter::~ProfileToXmlConverter() {
-	// TODO Auto-generated destructor stub
-}
-
-bool ProfileToXmlConverter::convertToFile(const Profile::Profile& profile, const Path& filePath){
+//todo rewrite to automatic version
+std::string ProfileToXmlConverter::generateProfileXml(const Profile::Profile& profile) {
 	XmlGenerator generator;
 	XmlDocument* doc = generator.createDocument("profile");
-
 	std::string name = profile.getName();
 	doc->addSubNode(generator.createNode("name"))->addText(name);
 	std::string containerName;
-	if(!profile.getContainerName(containerName)){
-		//todo save
-		return true; //todo nahradit realnou hodnotou
+	if (!profile.getContainerName(containerName)) {
+		return std::string();
 	}
 	doc->addSubNode(generator.createNode("container"))->addText(containerName);
 	getVideoXml(generator, profile, doc);
 	getAudioXml(generator, profile, doc);
 	getManualXml(generator, profile, doc);
-
 	std::stringstream ss;
 	doc->write(ss);
-	std::cout<<ss.str()<<std::endl;
-
-	return true;	//todo nahradit realnou hodnotou
+	return ss.str();
 }
 void ProfileToXmlConverter::getManualXml(const XmlGenerator& generator, const Profile::Profile& profile,
 		XmlDocument* doc) {

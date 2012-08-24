@@ -9,13 +9,14 @@
 #define AVCONTROL_H_
 
 #include <gtkmm/builder.h>
+#include "../Profile/profile.h"
+#include "../Converter/convertsettings.h"
 #include "../ConverterOptions/optionsdatabase.h"
 #include "WidgetAdapter/comboboxext.h"
 #include "Video/videocontrol.h"
 #include "Audio/audiocontrol.h"
-#include "../Profile/profile.h"
 #include "manualsettingscontrol.h"
-#include "../Converter/convertsettings.h"
+#include "profilenamedialog.h"
 
 namespace Gui {
 
@@ -30,11 +31,12 @@ public:
 	void restoreSettingsState();
 	Converter::ConvertSettingsList getConvertArguments() const;
 private:
-	void getNewProfile();
+	void getNewProfile(const std::string& name);
 	void userInput();
 	void containerChanged();
 	void profileChanged();
 	void manualSettingsClicked();
+	void saveProfileClicked();
 	void initContainers(ConverterOptions::OptionsDatabase &database,
 			ComboBoxExt<ConverterOptions::Container> &containers);
 	void initProfiles(const Profile::Profiles& profiles,
@@ -46,6 +48,7 @@ private:
 	ComboBoxExt<ConverterOptions::Container> containers;
 	ComboBoxExt<Profile::Profile> profilesComboBox;
 	ManualSettingsControl settingsDialog;
+	ProfileNameDialog profileNameDialog;
 	Gtk::Button* manualSettingsButton;
 	Gtk::Button* saveProfileAsButton;
 	bool multiPassState;
