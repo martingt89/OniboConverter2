@@ -52,6 +52,9 @@ public:
 	bool isEmpty() const{
 		return map.size() == 0;
 	}
+	void remove(const Key& key) {
+		map.erase(key);
+	}
 private:
 	std::map<Key, Value> map;
 };
@@ -80,6 +83,9 @@ public:
 		}
 	bool isExist(const Key& key) const{
 		return (multiMap.find(key) != multiMap.end());
+	}
+	void remove(const Key& key) {
+		multiMap.erase(key);
 	}
 private:
 	std::map<Key, std::list<Value> > multiMap;
