@@ -2645,6 +2645,7 @@
                               <object class="GtkLabel" id="label57">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
                                 <property name="xpad">10</property>
                                 <property name="label" translatable="yes">File</property>
                               </object>
@@ -2658,6 +2659,7 @@
                               <object class="GtkLabel" id="label58">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
                                 <property name="xpad">10</property>
                                 <property name="label" translatable="yes">Duration</property>
                               </object>
@@ -2671,6 +2673,7 @@
                               <object class="GtkLabel" id="label59">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
                                 <property name="xpad">10</property>
                                 <property name="label" translatable="yes">Start time</property>
                               </object>
@@ -2684,6 +2687,7 @@
                               <object class="GtkLabel" id="label60">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
                                 <property name="xpad">10</property>
                                 <property name="label" translatable="yes">Bitrate</property>
                               </object>
@@ -2707,9 +2711,11 @@
                             <property name="orientation">vertical</property>
                             <property name="homogeneous">True</property>
                             <child>
-                              <object class="GtkLabel" id="filePathInfo">
+                              <object class="GtkEntry" id="filePathInfo">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="editable">False</property>
+                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2721,6 +2727,9 @@
                               <object class="GtkLabel" id="durationInfo">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="margin_left">40</property>
+                                <property name="xalign">0</property>
+                                <property name="xpad">10</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2732,6 +2741,9 @@
                               <object class="GtkLabel" id="startTimeInfo">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="margin_left">40</property>
+                                <property name="xalign">0</property>
+                                <property name="xpad">10</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2743,6 +2755,9 @@
                               <object class="GtkLabel" id="bitrateInfo">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="margin_left">40</property>
+                                <property name="xalign">0</property>
+                                <property name="xpad">10</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2932,6 +2947,7 @@
                           <object class="GtkLabel" id="label64">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Codec</property>
                           </object>
                           <packing>
@@ -2945,6 +2961,7 @@
                           <object class="GtkLabel" id="label65">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Color space</property>
                           </object>
                           <packing>
@@ -2958,6 +2975,7 @@
                           <object class="GtkLabel" id="label66">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Resolution</property>
                           </object>
                           <packing>
@@ -2971,6 +2989,8 @@
                           <object class="GtkLabel" id="label67">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                             <property name="label" translatable="yes">TBR</property>
                           </object>
                           <packing>
@@ -2984,6 +3004,8 @@
                           <object class="GtkLabel" id="label68">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                             <property name="label" translatable="yes">TBN</property>
                           </object>
                           <packing>
@@ -2997,6 +3019,8 @@
                           <object class="GtkLabel" id="label69">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                             <property name="label" translatable="yes">TBC</property>
                           </object>
                           <packing>
@@ -3010,6 +3034,7 @@
                           <object class="GtkLabel" id="label70">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">FPS</property>
                           </object>
                           <packing>
@@ -3023,6 +3048,8 @@
                           <object class="GtkLabel" id="videoCodecInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -3035,6 +3062,8 @@
                           <object class="GtkLabel" id="colorSpaceInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -3047,6 +3076,8 @@
                           <object class="GtkLabel" id="resolutionInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -3059,6 +3090,8 @@
                           <object class="GtkLabel" id="fpsInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -3083,6 +3116,8 @@
                           <object class="GtkLabel" id="tbrInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">3</property>
@@ -3095,6 +3130,8 @@
                           <object class="GtkLabel" id="tbnInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">3</property>
@@ -3107,6 +3144,8 @@
                           <object class="GtkLabel" id="tbcInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">3</property>
@@ -3241,6 +3280,8 @@
                           <object class="GtkLabel" id="label78">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                             <property name="label" translatable="yes">Codec</property>
                           </object>
                           <packing>
@@ -3254,6 +3295,8 @@
                           <object class="GtkLabel" id="label79">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                             <property name="label" translatable="yes">Bitrate</property>
                           </object>
                           <packing>
@@ -3267,6 +3310,8 @@
                           <object class="GtkLabel" id="label80">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                             <property name="label" translatable="yes">Samplerate</property>
                           </object>
                           <packing>
@@ -3280,6 +3325,8 @@
                           <object class="GtkLabel" id="label81">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                             <property name="label" translatable="yes">Channels</property>
                           </object>
                           <packing>
@@ -3293,6 +3340,8 @@
                           <object class="GtkLabel" id="audioCodecInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -3305,6 +3354,8 @@
                           <object class="GtkLabel" id="audioBitrateInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -3317,6 +3368,8 @@
                           <object class="GtkLabel" id="samplerateInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">3</property>
@@ -3329,6 +3382,8 @@
                           <object class="GtkLabel" id="channelsInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="left_attach">3</property>

@@ -10,6 +10,7 @@
 
 #include <gtkmm/builder.h>
 #include <gtkmm/label.h>
+#include <gtkmm/entry.h>
 #include "WidgetAdapter/comboboxext.h"
 #include "../MediaFile/mediafile.h"
 
@@ -23,7 +24,7 @@ public:
 private:
 	void videoStreamChanged();
 	void audioStreamChanged();
-	Gtk::Label* filePath; Gtk::Label* duration; Gtk::Label* startTime; Gtk::Label* bitrate;
+	Gtk::Entry* filePath; Gtk::Label* duration; Gtk::Label* startTime; Gtk::Label* bitrate;
 
 	Gtk::Label* videoCodec; Gtk::Label* colorSpace; Gtk::Label* resolution; Gtk::Label* fps;
 	Gtk::Label* tbr; Gtk::Label* tbn; Gtk::Label* tbc;

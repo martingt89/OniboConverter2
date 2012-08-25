@@ -1,8 +1,7 @@
-Main
- - 2 pass encoding		//low priority
- 
- - import a export profilov	//low
- - informacie o subore	//low
+ - ukladanie uzivatelskych nastaveni
  - pridanie filtrov
  - realna konverzia
  - test existencie vystupneho subora
+ -----------------------------------
+ - 2 pass encoding		//low priority
+ - import a export profilov	//low priority

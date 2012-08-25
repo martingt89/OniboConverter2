@@ -44,7 +44,7 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	auto info = mediaFile->getFileInfo();
 	videoStream.remove_all();
 	audioStream.remove_all();
-	filePath << actualMediaFile->getPath().getPath();
+	filePath->set_text(actualMediaFile->getPath().getPath());
 	duration << (toS(info.duration) + " sec");
 	startTime << (toS(info.startTime) + " sec");
 	bitrate << info.bitrate;
