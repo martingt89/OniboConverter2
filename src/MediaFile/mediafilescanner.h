@@ -41,7 +41,7 @@ private:
 			std::string& rest);
 	void parseLine(const std::string &line);
 	void parseDuration(const RegexTools::Matcher &matcher);
-	void parseVideoStream(const RegexTools::Matcher &m, const std::string& lineEnd);
+	void parseVideoStream(const RegexTools::Matcher &m);
 	void parseAudioStream(const RegexTools::Matcher &matcher);
 
 	RegexTools::Regex durationRegex;

@@ -8,17 +8,18 @@
 #include "convertergui.h"
 
 #include "../MediaFile/mediafile.h"
-
+#include <iostream> //todo remove
 namespace Gui {
 
 static const int MAIN_SCREEN_PAGE = 0;
 static const int CONFIG_SCREEN_PAGE = 1;
+static const int INFO_SCREEN_PAGE = 2;
 
 ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
 		const Profile::Profiles& profiles) :
 		database(database), mainSettings(database, refGlade, profiles),
-		destinationControl(refGlade), fileControl(refGlade),
+		destinationControl(refGlade), fileControl(refGlade), infoControl(refGlade),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
 
 	refGlade->get_widget_derived("convertWindow", convertWindow);
@@ -28,12 +29,14 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 	refGlade->get_widget("okSettingsButton", okSettingsButton);
 	refGlade->get_widget("cancelSettingsButton", cancelSettingsButton);
 	refGlade->get_widget("convertButton", convertButton);
+	refGlade->get_widget("fileInfoButton", fileInfoButton);
 
 	settingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::settingsButtonClicked));
 	okSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::okSettingsButtonClicked));
 	cancelSettingsButton->signal_clicked().connect(
 			sigc::mem_fun(*this, &ConverterGui::cancelSettingsButtonClicked));
 	convertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::convertButtonClicked));
+	fileInfoButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::fileInfoButtonClicked));
 }
 
 ConverterGui::~ConverterGui() {
@@ -106,6 +109,23 @@ void ConverterGui::convertButtonClicked(){
 	sigc::connection conn = Glib::signal_timeout().connect(sigc::mem_fun(*this,
             &ConverterGui::convertTimer), 1000);
 
+}
+void ConverterGui::fileInfoButtonClicked(){
+	Gui::FileControl::PathWithFileId file;
+	if(fileControl.getSelectedFile(file)){
+		if(!idToMediaFile.isExistKey(file.id)){
+			auto mediaFile = new MediaFile::MediaFile(file.path, file.id);
+			idToMediaFile.set(file.id, mediaFile);
+			mediaFile->scanMediaFile();
+		}
+		auto* mediaFile = idToMediaFile.get(file.id);
+		if(mediaFile->isValid()){
+			infoControl.show(mediaFile);
+			mainNotebook->set_current_page(INFO_SCREEN_PAGE);
+		}else{
+			//todo error message
+		}
+	}
 }
 bool ConverterGui::convertTimer(){
 	CppExtension::HashMap<int, MediaFile::MediaFile*> files;

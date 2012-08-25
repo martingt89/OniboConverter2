@@ -30,6 +30,7 @@ $(SRCPATH)/Gui/convertwindow.cpp \
 $(SRCPATH)/Gui/findffmpegdialog.cpp \
 $(SRCPATH)/Gui/manualsettingscontrol.cpp \
 $(SRCPATH)/Gui/destinationcontrol.cpp \
+$(SRCPATH)/Gui/infocontrol.cpp \
 $(SRCPATH)/Gui/profilenamedialog.cpp \
 $(SRCPATH)/Gui/Video/videocontrol.cpp \
 $(SRCPATH)/Gui/Video/encodercontrol.cpp \

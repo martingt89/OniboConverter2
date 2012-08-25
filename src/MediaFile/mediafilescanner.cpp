@@ -13,7 +13,7 @@ namespace MediaFile {
 
 MediaFileScanner::MediaFileScanner(Path filePath) :
 		durationRegex("Duration: ([\\.:[:digit:]]+), start: ([\\.[:digit:]]+), bitrate: (.*)"),
-		videoStreamRegex("Stream #(.+): Video: ([^,]+), ([^,]+), ([[:digit:]]+)x([[:digit:]]+)[^,]*,"),
+		videoStreamRegex("Stream #(.+): Video: ([^,]+), ([^,]+), ([[:digit:]]+)x([[:digit:]]+)[^,]*,(.*)$"),
 		audioStreamRegex("Stream #(.+): Audio: ([^,]+), ([[:digit:]]+) Hz, ([^,]+), ([^,]+), ([^,]+)"),
 		metadataRegex("^[[:space:]]{4}([^[:space:]]+)[^:]*:[[:space:]]*(.+)$"), filePath(filePath) {
 
@@ -98,10 +98,7 @@ void MediaFileScanner::parseLine(const std::string &line){
 		RegexTools::Matcher videoMatcher = videoStreamRegex.getMatcher(line);
 		RegexTools::Matcher audioMatcher = audioStreamRegex.getMatcher(line);
 		if(videoMatcher.find()){
-			size_t start;
-			size_t end;
-			videoStreamRegex.search(line, start, end);
-			parseVideoStream(videoMatcher, line.substr(end));
+			parseVideoStream(videoMatcher);
 		}else if(audioMatcher.find()){
 			parseAudioStream(audioMatcher);
 		}else if(line == "At least one output file must be specified"){
@@ -128,7 +125,7 @@ void MediaFileScanner::parseDuration(const RegexTools::Matcher &matcher){	//magi
 	}
 }
 
-void MediaFileScanner::parseVideoStream(const RegexTools::Matcher &matcher, const std::string& lineEnd){
+void MediaFileScanner::parseVideoStream(const RegexTools::Matcher &matcher){
 	std::string first, rest;
 	trimBy(".", matcher.getGroup(1), first, rest);
 	int firstNumber = toN(first, int());
@@ -140,21 +137,22 @@ void MediaFileScanner::parseVideoStream(const RegexTools::Matcher &matcher, cons
 	stream.setValue(VideoStream::RESX, matcher.getGroup(4));
 	stream.setValue(VideoStream::RESY, matcher.getGroup(5));
 
-	std::string tmp = lineEnd+",";
-	RegexTools::Regex reg("([^ ]+)[[:space:]]+([^, ])");
+	std::string tmp = matcher.getGroup(6)+",";
+	RegexTools::Regex reg("([^ ]+)[[:space:]]+([^, ]+)");
 	while(trimBy(",", tmp, first, rest)){
 		RegexTools::Matcher m = reg.getMatcher(first);
 		if(!m.find()){
+			tmp = rest;
 			continue;
 		}
 		if(m.getGroup(2) == "fps"){
-			stream.setValue(VideoStream::FPS, matcher.getGroup(1));
+			stream.setValue(VideoStream::FPS, m.getGroup(1));
 		}else if(m.getGroup(2) == "tbr"){
-			stream.setValue(VideoStream::TBR, matcher.getGroup(1));
+			stream.setValue(VideoStream::TBR, m.getGroup(1));
 		}else if(m.getGroup(2) == "tbn"){
-			stream.setValue(VideoStream::TBN, matcher.getGroup(1));
+			stream.setValue(VideoStream::TBN, m.getGroup(1));
 		}else if(m.getGroup(2) == "tbc"){
-			stream.setValue(VideoStream::TBC, matcher.getGroup(1));
+			stream.setValue(VideoStream::TBC, m.getGroup(1));
 		}
 		tmp = rest;
 	}

@@ -43,6 +43,7 @@ public:
 	bool isSet();
 	bool isValid();
 	FileInfo getFileInfo();
+	Path getPath() const;
 //	void setMetadata(std::string key, std::string value);
 	void clearConvertStatus();
 	void convert();

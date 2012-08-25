@@ -40,6 +40,7 @@ public:
 	FileControl(const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~FileControl();
 	std::list<PathWithFileId> getAllFiles() const;
+	bool getSelectedFile(PathWithFileId& file) const;
 private:
 	void addFileClicked();
 	void removeFileClicked();

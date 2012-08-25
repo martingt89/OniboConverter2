@@ -74,6 +74,9 @@ bool MediaFile::isValid(){
 MediaFile::FileInfo MediaFile::getFileInfo(){
 	return fileInfo;
 }
+Path MediaFile::getPath() const{
+	return filePath;
+}
 void MediaFile::setSettingsList(const Converter::ConvertSettingsList& settingsList){
 	this->settingsList = settingsList;
 	settingsList.print();

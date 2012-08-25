@@ -59,7 +59,16 @@ std::list<FileControl::PathWithFileId> FileControl::getAllFiles() const {
 	}
 	return files;
 }
-
+bool FileControl::getSelectedFile(PathWithFileId& file) const{
+	auto iter = fileSelection->get_selected();
+	if(iter){
+		Gtk::TreeModel::Row row = *iter;
+		file.id = (int)row[modelColumns.id];
+		file.path = Path((Glib::ustring)row[modelColumns.path]);
+		return true;
+	}
+	return false;
+}
 void FileControl::addFileClicked() {
 	int res = fileChooser.run();
 	fileChooser.hide();

@@ -6,6 +6,7 @@
  */
 
 #include "videostream.h"
+#include <iostream> //todo remove
 
 namespace MediaFile {
 
@@ -21,7 +22,7 @@ std::string VideoStream::getValue(Video name){
 	bool isExistParameter = false;
 	std::string value = content.get(name, isExistParameter);
 	if(!isExistParameter){
-		//todo log
+		//todo mozno sem nieco pojde
 	}
 	return value;
 }

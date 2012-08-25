@@ -1,10 +1,8 @@
 Main
  - 2 pass encoding		//low priority
  
- - vytvorenie centralneho uschovneho systemu pre user defined settings
- - ulozenie profilu		-- working
  - import a export profilov	//low
- - informacie o subore
+ - informacie o subore	//low
  - pridanie filtrov
  - realna konverzia
  - test existencie vystupneho subora
