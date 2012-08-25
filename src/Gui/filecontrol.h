@@ -41,10 +41,14 @@ public:
 	virtual ~FileControl();
 	std::list<PathWithFileId> getAllFiles() const;
 	bool getSelectedFile(PathWithFileId& file) const;
+	sigc::signal<void, PathWithFileId>& signalInfo();
+	sigc::signal<void, PathWithFileId>& signalDelete();
 private:
 	void addFileClicked();
 	void removeFileClicked();
 	void clearFileClicked();
+	void fileInfoButtonClicked();
+	void fileTreeViewActivated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
 	void onFileDrop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
 	          const Gtk::SelectionData& selection_data, guint info, guint time);
 	void addFileEntry(const std::string& file);
@@ -56,7 +60,10 @@ private:
 	Gtk::Button* addFile;
 	Gtk::Button* removeFile;
 	Gtk::Button* clearFiles;
+	Gtk::Button* fileInfoButton;
 	int fileCounter;
+	sigc::signal<void, PathWithFileId> infoEvent;
+	sigc::signal<void, PathWithFileId> deleteEvent;
 };
 
 } /* namespace Gui */

@@ -40,7 +40,9 @@ private:
 	void okSettingsButtonClicked();
 	void cancelSettingsButtonClicked();
 	void convertButtonClicked();
-	void fileInfoButtonClicked();
+	void returnInfoClicked();
+	void fileInfoEvent(const Gui::FileControl::PathWithFileId& file);
+	void fileDeleteEvent(const Gui::FileControl::PathWithFileId& file);
 	void showWarningDialog(const std::string& title, const std::string& message);
 	bool convertTimer();
 
@@ -57,6 +59,7 @@ private:
 	Gtk::Button* cancelSettingsButton;
 	Gtk::Button* convertButton;
 	Gtk::Button* fileInfoButton;
+	Gtk::Button* returnFromInfo;
 	Gtk::Notebook* mainNotebook;
 
 	Gtk::Entry* entry;

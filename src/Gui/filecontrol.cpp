@@ -21,6 +21,7 @@ FileControl::FileControl(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	refGlade->get_widget("addFile", addFile);
 	refGlade->get_widget("removeFile", removeFile);
 	refGlade->get_widget("clearFiles", clearFiles);
+	refGlade->get_widget("fileInfoButton", fileInfoButton);
 
 	fileTreeModel = Gtk::ListStore::create(modelColumns);
 	fileTreeView->set_model(fileTreeModel);
@@ -37,6 +38,8 @@ FileControl::FileControl(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	addFile->signal_clicked().connect(sigc::mem_fun(*this, &FileControl::addFileClicked));
 	removeFile->signal_clicked().connect(sigc::mem_fun(*this, &FileControl::removeFileClicked));
 	clearFiles->signal_clicked().connect(sigc::mem_fun(*this, &FileControl::clearFileClicked));
+	fileInfoButton->signal_clicked().connect(sigc::mem_fun(*this, &FileControl::fileInfoButtonClicked));
+	fileTreeView->signal_row_activated().connect(sigc::mem_fun(*this, &FileControl::fileTreeViewActivated));
 }
 
 FileControl::~FileControl() {
@@ -69,6 +72,12 @@ bool FileControl::getSelectedFile(PathWithFileId& file) const{
 	}
 	return false;
 }
+sigc::signal<void, FileControl::PathWithFileId>& FileControl::signalInfo(){
+	return infoEvent;
+}
+sigc::signal<void, FileControl::PathWithFileId> &FileControl::signalDelete(){
+	return deleteEvent;
+}
 void FileControl::addFileClicked() {
 	int res = fileChooser.run();
 	fileChooser.hide();
@@ -82,11 +91,36 @@ void FileControl::addFileClicked() {
 void FileControl::removeFileClicked() {
 	Gtk::TreeModel::iterator iter = fileSelection->get_selected();
 	if (iter) {
-		fileTreeModel->erase(iter);
+		Gui::FileControl::PathWithFileId file;
+		if(getSelectedFile(file)){
+			deleteEvent(file);
+			fileTreeModel->erase(iter);
+		}
 	}
 }
 void FileControl::clearFileClicked() {
+	typedef Gtk::TreeModel::Children type_children;
+	type_children children = fileTreeModel->children();
+	for (type_children::iterator iter = children.begin(); iter != children.end(); ++iter) {
+		Gtk::TreeModel::Row row = *iter;
+		FileControl::PathWithFileId file;
+		file.path = Path((Glib::ustring) row[modelColumns.path]);
+		file.id = row[modelColumns.id];
+		deleteEvent(file);
+	}
 	fileTreeModel->clear();
+}
+void FileControl::fileInfoButtonClicked(){
+	Gui::FileControl::PathWithFileId file;
+	if(getSelectedFile(file)){
+		infoEvent(file);
+	}
+}
+void FileControl::fileTreeViewActivated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column){
+	Gui::FileControl::PathWithFileId file;
+	if(getSelectedFile(file)){
+		infoEvent(file);
+	}
 }
 void FileControl::onFileDrop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
 		const Gtk::SelectionData& selection_data, guint info, guint time) {

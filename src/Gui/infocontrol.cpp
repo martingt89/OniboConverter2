@@ -6,7 +6,6 @@
  */
 
 #include "infocontrol.h"
-
 namespace Gui {
 
 void operator<<(Gtk::Label*& label, const std::string& text){
@@ -38,9 +37,7 @@ InfoControl::InfoControl(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	audioStream.signal_changed().connect(sigc::mem_fun(*this, &InfoControl::audioStreamChanged));
 }
 
-InfoControl::~InfoControl() {
-	// TODO Auto-generated destructor stub
-}
+InfoControl::~InfoControl() {}
 
 void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	actualMediaFile = mediaFile;
@@ -55,13 +52,18 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	auto videos = info.videos;
 	for(auto stream : videos){
 		auto pair = stream.getStreamNumber();
-		videoStream.append(toS(pair.first) + toS(pair.second));
+		videoStream.append(toS(pair.first) +"."+ toS(pair.second));
 	}
-
+	if(videoStream.count_of_rows() > 0){
+		videoStream.set_sensitive(true);
+	}
 	auto audios = info.audios;
 	for(auto stream : audios){
 		auto pair = stream.getStreamNumber();
-		audioStream.append(toS(pair.first) + toS(pair.second));
+		audioStream.append(toS(pair.first) +"."+ toS(pair.second));
+	}
+	if(audioStream.count_of_rows() > 0){
+		audioStream.set_sensitive(true);
 	}
 
 	videoCodec << std::string();
@@ -76,6 +78,7 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	audioBitrate << std::string();
 	samplerate << std::string();
 	channels << std::string();
+
 	if(audioStream.count_of_rows() == 0){
 		audioStream.set_sensitive(false);
 	}else{
@@ -88,23 +91,29 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	}
 }
 void InfoControl::videoStreamChanged(){
-	int row = videoStream.get_active_row_item();
-	auto stream = actualMediaFile->getFileInfo().videos[row];
-	videoCodec << stream.getValue(MediaFile::VideoStream::CODEC);
-	colorSpace << stream.getValue(MediaFile::VideoStream::COLORSPACE);
-	resolution << (stream.getValue(MediaFile::VideoStream::RESX) + "x" +
-			stream.getValue(MediaFile::VideoStream::RESY));
-	fps << stream.getValue(MediaFile::VideoStream::FPS);
-	tbr << stream.getValue(MediaFile::VideoStream::TBR);
-	tbn << stream.getValue(MediaFile::VideoStream::TBN);
-	tbc << stream.getValue(MediaFile::VideoStream::TBC);
+	bool exist = false;
+	int row = videoStream.get_active_row_item(exist);
+	if(exist){
+		auto stream = actualMediaFile->getFileInfo().videos[row];
+		videoCodec << stream.getValue(MediaFile::VideoStream::CODEC);
+		colorSpace << stream.getValue(MediaFile::VideoStream::COLORSPACE);
+		resolution << (stream.getValue(MediaFile::VideoStream::RESX) + "x" +
+				stream.getValue(MediaFile::VideoStream::RESY));
+		fps << stream.getValue(MediaFile::VideoStream::FPS);
+		tbr << stream.getValue(MediaFile::VideoStream::TBR);
+		tbn << stream.getValue(MediaFile::VideoStream::TBN);
+		tbc << stream.getValue(MediaFile::VideoStream::TBC);
+	}
 }
 void InfoControl::audioStreamChanged(){
-	int row = audioStream.get_active_row_item();
-	auto stream = actualMediaFile->getFileInfo().audios[row];
-	audioCodec << stream.getValue(MediaFile::AudioStream::CODEC);
-	audioBitrate << stream.getValue(MediaFile::AudioStream::BITRATE);
-	samplerate << stream.getValue(MediaFile::AudioStream::SAMPLERATE);
-	channels << stream.getValue(MediaFile::AudioStream::CHANNELS);
+	bool exist = false;
+	int row = audioStream.get_active_row_item(exist);
+	if(exist){
+		auto stream = actualMediaFile->getFileInfo().audios[row];
+		audioCodec << stream.getValue(MediaFile::AudioStream::CODEC);
+		audioBitrate << stream.getValue(MediaFile::AudioStream::BITRATE);
+		samplerate << stream.getValue(MediaFile::AudioStream::SAMPLERATE);
+		channels << stream.getValue(MediaFile::AudioStream::CHANNELS);
+	}
 }
 } /* namespace Gui */

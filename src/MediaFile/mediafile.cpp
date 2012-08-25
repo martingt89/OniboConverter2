@@ -33,6 +33,18 @@ MediaFile::MediaFile(Path filePath,  int fileId) : filePath(filePath) ,fileId(fi
 	valid = false;
 	clearConvertStatus();
 }
+MediaFile::MediaFile(const MediaFile& file){
+	this->filePath = file.filePath;
+	this->fileId = file.fileId;
+	this->fileInfo = file.fileInfo;
+	this->set = file.set;
+	this->valid = file.valid;
+	this->settingsList = file.settingsList;
+	this->status = file.status;
+	this->fraction = file.fraction;
+	this->remainingTime = file.remainingTime;
+}
+
 MediaFile::~MediaFile() {}
 
 bool MediaFile::scanMediaFile(){
@@ -42,7 +54,6 @@ bool MediaFile::scanMediaFile(){
 		fileInfo.audios.clear();
 
 		MediaFileScanner scanner(filePath);
-		//todo error state
 		if(scanner.getFinalStatus() == MediaFileScanner::OK_RESULT){
 			valid = true;
 			fileInfo.startTime = scanner.getStartTime();
@@ -145,6 +156,8 @@ void MediaFile::abort(){
 	}
 	mutex.unlock();
 }
+
+
 std::string MediaFile::timeToHHMMSS(int localTime) {
 	int hours = localTime / ONE_HOUR;
 	localTime -= hours * ONE_HOUR;

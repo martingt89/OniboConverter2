@@ -8,7 +8,7 @@
 #include "convertergui.h"
 
 #include "../MediaFile/mediafile.h"
-#include <iostream> //todo remove
+
 namespace Gui {
 
 static const int MAIN_SCREEN_PAGE = 0;
@@ -29,14 +29,18 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 	refGlade->get_widget("okSettingsButton", okSettingsButton);
 	refGlade->get_widget("cancelSettingsButton", cancelSettingsButton);
 	refGlade->get_widget("convertButton", convertButton);
-	refGlade->get_widget("fileInfoButton", fileInfoButton);
+
+	refGlade->get_widget("returnFromInfo", returnFromInfo);
+
 
 	settingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::settingsButtonClicked));
 	okSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::okSettingsButtonClicked));
 	cancelSettingsButton->signal_clicked().connect(
 			sigc::mem_fun(*this, &ConverterGui::cancelSettingsButtonClicked));
 	convertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::convertButtonClicked));
-	fileInfoButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::fileInfoButtonClicked));
+	returnFromInfo->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::returnInfoClicked));
+	fileControl.signalInfo().connect(sigc::mem_fun(*this, &ConverterGui::fileInfoEvent));
+	fileControl.signalDelete().connect(sigc::mem_fun(*this, &ConverterGui::fileDeleteEvent));
 }
 
 ConverterGui::~ConverterGui() {
@@ -96,10 +100,18 @@ void ConverterGui::convertButtonClicked(){
 		showWarningDialog("Settings are not complete", message);
 		return;
 	}
+	for(auto file : convertFilesList){
+		delete file;
+	}
 	convertFilesList.clear();
 
-	for(FileControl::PathWithFileId path : files){	//todo add filters support
-		MediaFile::MediaFile* mediaFile = new MediaFile::MediaFile(path.path, path.id);
+	for(FileControl::PathWithFileId path : files){
+		MediaFile::MediaFile* mediaFile = NULL;
+		if(idToMediaFile.isExistKey(path.id)){
+			mediaFile = new MediaFile::MediaFile(*idToMediaFile.get(path.id));
+		}else{
+			mediaFile = new MediaFile::MediaFile(path.path, path.id);
+		}
 		mediaFile->setSettingsList(mainSettings.getConvertArguments());
 		mediaFile->clearConvertStatus();
 		convertFilesList.push_back(mediaFile);
@@ -110,22 +122,30 @@ void ConverterGui::convertButtonClicked(){
             &ConverterGui::convertTimer), 1000);
 
 }
-void ConverterGui::fileInfoButtonClicked(){
-	Gui::FileControl::PathWithFileId file;
-	if(fileControl.getSelectedFile(file)){
-		if(!idToMediaFile.isExistKey(file.id)){
-			auto mediaFile = new MediaFile::MediaFile(file.path, file.id);
-			idToMediaFile.set(file.id, mediaFile);
-			mediaFile->scanMediaFile();
-		}
-		auto* mediaFile = idToMediaFile.get(file.id);
-		if(mediaFile->isValid()){
-			infoControl.show(mediaFile);
-			mainNotebook->set_current_page(INFO_SCREEN_PAGE);
-		}else{
-			//todo error message
-		}
+void ConverterGui::fileInfoEvent(const Gui::FileControl::PathWithFileId& file){
+	if(!idToMediaFile.isExistKey(file.id)){
+		auto mediaFile = new MediaFile::MediaFile(file.path, file.id);
+		idToMediaFile.set(file.id, mediaFile);
+		mediaFile->scanMediaFile();
 	}
+	auto* mediaFile = idToMediaFile.get(file.id);
+	if(mediaFile->isValid()){
+		infoControl.show(mediaFile);
+		mainNotebook->set_current_page(INFO_SCREEN_PAGE);
+	}else{
+		showWarningDialog("File is not supported", "File is not supported");
+	}
+}
+void ConverterGui::fileDeleteEvent(const Gui::FileControl::PathWithFileId& file){
+	bool exist = false;
+	MediaFile::MediaFile* mediaFile = idToMediaFile.get(file.id, exist);
+	if(exist){
+		delete mediaFile;
+		idToMediaFile.remove(file.id);
+	}
+}
+void ConverterGui::returnInfoClicked(){
+	mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
 }
 bool ConverterGui::convertTimer(){
 	CppExtension::HashMap<int, MediaFile::MediaFile*> files;

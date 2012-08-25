@@ -14,7 +14,7 @@ namespace MediaFile {
 MediaFileScanner::MediaFileScanner(Path filePath) :
 		durationRegex("Duration: ([\\.:[:digit:]]+), start: ([\\.[:digit:]]+), bitrate: (.*)"),
 		videoStreamRegex("Stream #(.+): Video: ([^,]+), ([^,]+), ([[:digit:]]+)x([[:digit:]]+)[^,]*,(.*)$"),
-		audioStreamRegex("Stream #(.+): Audio: ([^,]+), ([[:digit:]]+) Hz, ([^,]+), ([^,]+), ([^,]+)"),
+		audioStreamRegex("Stream #(.+): Audio: ([^,]+), ([[:digit:]]+) Hz(.*)$"),
 		metadataRegex("^[[:space:]]{4}([^[:space:]]+)[^:]*:[[:space:]]*(.+)$"), filePath(filePath) {
 
 	bitrate = "";
@@ -55,7 +55,6 @@ double MediaFileScanner::getDuration(){
 	return duration;
 }
 std::string MediaFileScanner::getBitrate(){
-	//std::cout<<"bitrate: "<<bitrate<<std::endl;
 	return bitrate;
 }
 std::list<VideoStream> MediaFileScanner::getVideoStreams(){
@@ -159,6 +158,8 @@ void MediaFileScanner::parseVideoStream(const RegexTools::Matcher &matcher){
 	videoStreams.push_back(stream);
 }
 void MediaFileScanner::parseAudioStream(const RegexTools::Matcher &matcher){
+	std::string endLine = matcher.getGroup(4);
+
 	std::string first, rest;
 	trimBy(".", matcher.getGroup(1), first, rest);
 	int firstNumber = toN(first, int());
@@ -167,8 +168,19 @@ void MediaFileScanner::parseAudioStream(const RegexTools::Matcher &matcher){
 	AudioStream stream(firstNumber,secondNumber);
 	stream.setValue(AudioStream::CODEC, matcher.getGroup(2));
 	stream.setValue(AudioStream::SAMPLERATE, matcher.getGroup(3));
-	stream.setValue(AudioStream::CHANNELS, matcher.getGroup(4));
-	stream.setValue(AudioStream::BITRATE, matcher.getGroup(6));
+	std::string tmp = endLine.substr(1) + ",";
+	int i = 0;
+	stream.setValue(AudioStream::BITRATE, "N/A");
+	while(trimBy(",", tmp, first, rest)){
+		if(i == 0){
+			stream.setValue(AudioStream::CHANNELS, first);
+		}
+		if(i == 2){
+			stream.setValue(AudioStream::BITRATE, first);
+		}
+		++i;
+		tmp = rest;
+	}
 	audioStreams.push_back(stream);
 }
 

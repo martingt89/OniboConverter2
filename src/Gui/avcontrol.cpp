@@ -36,6 +36,7 @@ AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 	profilesComboBox.signal_changed().connect(sigc::mem_fun(*this, &AVControl::profileChanged));
 	manualSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &AVControl::manualSettingsClicked));
 	saveProfileAsButton->signal_clicked().connect(sigc::mem_fun(*this, &AVControl::saveProfileClicked));
+
 	isUserInput = false;
 	containers.set_active_row_number(0);
 	isUserInput = true;

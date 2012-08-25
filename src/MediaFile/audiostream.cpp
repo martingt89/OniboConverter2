@@ -6,7 +6,7 @@
  */
 
 #include "audiostream.h"
-
+#include <iostream> //todo remove
 namespace MediaFile {
 
 AudioStream::AudioStream(int firstNumber, int secondNumber): Stream(firstNumber,secondNumber){

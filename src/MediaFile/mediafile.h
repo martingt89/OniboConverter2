@@ -37,6 +37,7 @@ public:
 	};
 public:
 	MediaFile(Path filePath, int fileId);
+	MediaFile(const MediaFile& file);
 	virtual ~MediaFile();
 	void setSettingsList(const Converter::ConvertSettingsList& settingsList);
 	bool scanMediaFile();
@@ -55,6 +56,7 @@ public:
 	bool isEnded();
 	void abort();
 private:
+	std::string timeToHHMMSS(int localTime);
 	std::mutex mutex;
 	Path filePath;
 	int fileId;
@@ -66,8 +68,6 @@ private:
 	ConvertFileState status;
 	double fraction;
 	int remainingTime;
-
-	std::string timeToHHMMSS(int localTime);
 };
 
 } /* namespace MediaFile */
