@@ -8,6 +8,7 @@
 #include "convertergui.h"
 
 #include "../MediaFile/mediafile.h"
+#include <iostream>
 
 namespace Gui {
 
@@ -32,7 +33,7 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 
 	refGlade->get_widget("returnFromInfo", returnFromInfo);
 
-
+	mainWindow->signal_key_release_event().connect(sigc::mem_fun(*this, &ConverterGui::onKeyRelease));
 	settingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::settingsButtonClicked));
 	okSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::okSettingsButtonClicked));
 	cancelSettingsButton->signal_clicked().connect(
@@ -121,6 +122,16 @@ void ConverterGui::convertButtonClicked(){
 	sigc::connection conn = Glib::signal_timeout().connect(sigc::mem_fun(*this,
             &ConverterGui::convertTimer), 1000);
 
+}
+bool ConverterGui::onKeyRelease(GdkEventKey* event){
+	if(event->keyval == GDK_KEY_Escape){
+		if(mainNotebook->get_current_page() == CONFIG_SCREEN_PAGE ){
+			cancelSettingsButtonClicked();
+		}else if(mainNotebook->get_current_page() == INFO_SCREEN_PAGE){
+			returnInfoClicked();
+		}
+	}
+	return false;
 }
 void ConverterGui::fileInfoEvent(const Gui::FileControl::PathWithFileId& file){
 	if(!idToMediaFile.isExistKey(file.id)){

@@ -21,8 +21,6 @@ MediaFileScanner::MediaFileScanner(Path filePath) :
 	duration = -1;
 	parseState = State::START;
 
-	//std::string path = Settings::getSettings()->getValue(Settings::FFPATH); TODO get ffmpeg
-
 	std::string ffmpegPath = "ffmpeg";
 
 	std::list<std::string> args;
@@ -173,10 +171,10 @@ void MediaFileScanner::parseAudioStream(const RegexTools::Matcher &matcher){
 	stream.setValue(AudioStream::BITRATE, "N/A");
 	while(trimBy(",", tmp, first, rest)){
 		if(i == 0){
-			stream.setValue(AudioStream::CHANNELS, first);
+			stream.setValue(AudioStream::CHANNELS, clearString(first));
 		}
 		if(i == 2){
-			stream.setValue(AudioStream::BITRATE, first);
+			stream.setValue(AudioStream::BITRATE, clearString(first));
 		}
 		++i;
 		tmp = rest;
