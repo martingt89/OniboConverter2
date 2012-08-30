@@ -41,6 +41,7 @@ public:
 	void add(const ConvertSettings& argument);
 	void add(const ConvertSettingsList& argument);
 	void print() const;
+	std::list<std::string> getArguments() const;
 	std::string getContainerName() const;
 private:
 	std::list<ConvertSettings> arguments;

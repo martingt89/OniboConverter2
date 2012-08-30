@@ -102,7 +102,7 @@ void Process::readFdWriteToStream(int fd, SafeStream &stream) {
 	char charBuffer;
 	std::stringstream lineBuffer;
 	while (read(fd, &charBuffer, 1) || lineBuffer.str().size() > 0) {
-		if (charBuffer != '\n') {
+		if (charBuffer != '\n' && charBuffer != '\r') {
 			lineBuffer << charBuffer;
 		} else {
 			stream << lineBuffer.str();

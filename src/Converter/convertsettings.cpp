@@ -73,6 +73,23 @@ void ConvertSettingsList::print() const{
 	}
 	std::cout<<std::endl;
 }
+std::list<std::string> ConvertSettingsList::getArguments() const {
+	std::list<std::string> args;
+	for(auto x : arguments){
+		if(x.getCommand() == ConvertSettings::USER_DEFINED){
+			args.push_back(x.getUserCommand());
+		}else{
+			if(x.getCommand() == ConvertSettings::MULTITHREAD){
+				continue;
+			}
+			args.push_back(commandToStr.get(x.getCommand()));
+		}
+		for(auto v : x.getValueList()){
+			args.push_back(v);	//todo trim by spaces
+		}
+	}
+	return args;
+}
 std::string ConvertSettingsList::getContainerName() const{
 	auto iter = std::find_if(arguments.begin(), arguments.end(), [](const ConvertSettings& settings)->bool{
 		return settings.getCommand() == ConvertSettings::CONTAINER;

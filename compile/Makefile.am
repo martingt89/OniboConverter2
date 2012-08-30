@@ -48,6 +48,7 @@ $(SRCPATH)/ProcessExecutor/safeinputstream.cpp \
 $(SRCPATH)/ProcessExecutor/safeoutputstream.cpp \
 $(SRCPATH)/Converter/convertsettings.cpp \
 $(SRCPATH)/Converter/dispenser.cpp \
+$(SRCPATH)/Converter/convertparser.cpp \
 $(SRCPATH)/MediaFile/mediafile.cpp \
 $(SRCPATH)/MediaFile/mediafilescanner.cpp \
 $(SRCPATH)/MediaFile/audiostream.cpp \

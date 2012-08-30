@@ -115,6 +115,7 @@ void ConverterGui::convertButtonClicked(){
 		}
 		mediaFile->setSettingsList(mainSettings.getConvertArguments());
 		mediaFile->setDestinationPath(destinationControl.getDestinationPath());
+		mediaFile->setContainerName(mainSettings.getContainerName());
 		mediaFile->clearConvertStatus();
 		convertFilesList.push_back(mediaFile);
 	}

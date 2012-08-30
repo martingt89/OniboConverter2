@@ -10,9 +10,11 @@
 #include "mediafile.h"
 
 #include "mediafilescanner.h"
-#include <iostream> //todo remove
-#include <unistd.h> //todo remove
+//#include <iostream> //todo remove
+#include "../Converter/convertparser.h"
 #include "../helper.h"
+#include "../globalsettings.h"
+#include "../ProcessExecutor/process.h"
 
 namespace MediaFile {
 
@@ -22,6 +24,7 @@ const static std::string STATE_PROCESSING="processing";
 const static std::string STATE_INVALID="invalid file";
 const static std::string STATE_ABORT="abort";
 const static std::string STATE_OVERWRITE="overwrite?";
+const static std::string STATE_FAIL="fail";
 
 const static int ONE_HOUR = 3600;
 const static int ONE_MINIT = 60;
@@ -34,8 +37,10 @@ MediaFile::MediaFile(Path filePath,  int fileId) : filePath(filePath) ,fileId(fi
 	fileInfo.bitrate = "";
 	set = false;
 	valid = false;
+	isAbort = false;
 	enableOverwrite = false;
 	clearConvertStatus();
+	process = NULL;
 }
 MediaFile::MediaFile(const MediaFile& file){
 	this->filePath = file.filePath;
@@ -48,6 +53,8 @@ MediaFile::MediaFile(const MediaFile& file){
 	this->fraction = file.fraction;
 	this->remainingTime = file.remainingTime;
 	this->enableOverwrite = file.enableOverwrite;
+	this->isAbort = file.isAbort;
+	this->process = file.process;
 }
 
 MediaFile::~MediaFile() {}
@@ -74,7 +81,7 @@ bool MediaFile::scanMediaFile(){
 				fileInfo.audios.push_back(stream);
 			}
 		}else{
-			std::cout<<"Invaid file"<<std::endl;
+//			std::cout<<"Invaid file"<<std::endl;
 			return false;
 		}
 		return true;
@@ -90,16 +97,18 @@ bool MediaFile::isValid(){
 MediaFile::FileInfo MediaFile::getFileInfo(){
 	return fileInfo;
 }
-Path MediaFile::getPath() const{
+Path MediaFile::getPath() const {
 	return filePath;
 }
 void MediaFile::setSettingsList(const Converter::ConvertSettingsList& settingsList){
 	this->settingsList = settingsList;
 	this->containerName = settingsList.getContainerName();
-	settingsList.print();
 }
 void MediaFile::setDestinationPath(const Path& destinationPath){
 	this->destinationPath = destinationPath;
+}
+void MediaFile::setContainerName(const std::string& containerName){
+	this->containerName = containerName;
 }
 void MediaFile::clearConvertStatus(){
 	status = WAITING;
@@ -107,29 +116,56 @@ void MediaFile::clearConvertStatus(){
 	remainingTime = -1;
 	enableOverwrite = false;
 	fileName = filePath.getLastPathPart();
+	isAbort = false;
 }
-void MediaFile::convert(){		//todo replace with real converter
+void MediaFile::convert(){
 	if(valid){
 		std::unique_lock<std::mutex> uniqueLock(mutex);
-		if(status == ABORT){
-			mutex.unlock();
-			return;
-		}
-		while(this->getOutputFilePath().exist() && !enableOverwrite){
+		while(this->getOutputFilePath().exist() && !enableOverwrite && !isAbort){
 			status = OVERWRITE;
 			condition.wait(uniqueLock);
 		}
-
-		status = PROCESSING;
-		//wait for process begin
-		uniqueLock.unlock();
-		//wait for process end
-		for(int i = 0; i < 10 && status != ABORT; i++){
-			usleep(500000);
-			fraction += 0.1;
-			std::cerr<<"File: "<<filePath.getPath()<<" fraction: "<<fraction<<std::endl;
+		if(isAbort){
+			status = ABORT;
+			return;
 		}
-		status = FINISH;
+		status = PROCESSING;
+
+		std::list<std::string> arguments;
+		arguments.push_back("-i");
+		arguments.push_back(filePath.getPath());
+		arguments.push_back("-y");
+		auto args = settingsList.getArguments();
+		for(auto x : args){
+			arguments.push_back(x);
+		}
+		arguments.push_back(getOutputFilePath().getPath());
+		auto ffmpeg = GlobalSettings::getInstance()->getFFmpegPath();
+		Converter::ConvertParser parser(fileInfo.duration);
+		process = new ProcessExecutor::Process(ffmpeg.getPath(), arguments);
+		process->waitForProcessBegin();
+		uniqueLock.unlock();
+		auto& stderr = process->getStdErr();
+		std::string line;
+		while(stderr >> line){
+			double tmpFraction = 0;
+			int tmpTime = 0;
+			parser.processLine(line, tmpFraction, tmpTime);
+			fraction = tmpFraction;
+			remainingTime = tmpTime;
+
+		}
+		int res = process->waitForProcessEnd();
+		if(res != 0){
+			status = FAIL;
+			fraction = 1;
+		}else{
+			status = FINISH;
+		}
+		uniqueLock.lock();
+		delete process;
+		process = NULL;
+		uniqueLock.unlock();
 	}else{
 		status = INVALID_FILE;
 	}
@@ -154,6 +190,7 @@ std::string MediaFile::getConvertStateAsString(){
 	case FINISH: return STATE_OK;
 	case ABORT: return STATE_ABORT;
 	case OVERWRITE: return STATE_OVERWRITE;
+	case FAIL: return STATE_FAIL;
 	default: return STATE_INVALID;
 	}
 	return STATE_INVALID;
@@ -166,14 +203,16 @@ int MediaFile::getFileId(){
 	return fileId;
 }
 bool MediaFile::isEnded(){
-	return (status == FINISH) || (status == INVALID_FILE) || (status == ABORT);
+	return (status == FINISH) || (status == INVALID_FILE) || (status == ABORT) || (status == FAIL);
 }
 void MediaFile::abort(){
 	std::unique_lock<std::mutex> uniqueLock(mutex);
 	if(!isEnded()){
+		isAbort = true;
 		status = ABORT;
-		//subprocess kill
-		//std::cout<<"kill "<<filePath.getPath()<<std::endl;
+		if(process != NULL){
+			process->terminateProcess();
+		}
 	}
 	condition.notify_one();
 }

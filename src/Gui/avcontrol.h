@@ -30,6 +30,7 @@ public:
 	void saveSettingsState();
 	void restoreSettingsState();
 	Converter::ConvertSettingsList getConvertArguments() const;
+	std::string getContainerName();
 private:
 	void getNewProfile(const std::string& name);
 	void userInput();

@@ -82,6 +82,9 @@ Converter::ConvertSettingsList AVControl::getConvertArguments() const{
 	args.add(settingsDialog.getConvertArguments());
 	return args;
 }
+std::string AVControl::getContainerName(){
+	return containers.get_active_row_item().getName();
+}
 void AVControl::userInput(){
 	if(isUserInput){
 //		std::cout<<"user input"<<std::endl;

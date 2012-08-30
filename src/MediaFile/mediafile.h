@@ -8,6 +8,10 @@
 #ifndef MEDIAFILE_H_
 #define MEDIAFILE_H_
 
+namespace ProcessExecutor{
+	class Process;
+}
+
 #include <string>
 #include <vector>
 #include <stdexcept>
@@ -25,7 +29,7 @@ public:
 		NOT_SET, OK, NOT_FOUND, INVALID_FORMAT
 	};
 	enum ConvertFileState{
-		WAITING, PROCESSING, FINISH, INVALID_FILE, ABORT, OVERWRITE
+		WAITING, PROCESSING, FINISH, INVALID_FILE, ABORT, OVERWRITE, FAIL
 	};
 	struct FileInfo{
 		State fileState;
@@ -41,6 +45,7 @@ public:
 	virtual ~MediaFile();
 	void setSettingsList(const Converter::ConvertSettingsList& settingsList);
 	void setDestinationPath(const Path& destinationPath);
+	void setContainerName(const std::string& containerName);
 	bool scanMediaFile();
 	bool isSet();
 	bool isValid();
@@ -56,6 +61,7 @@ public:
 	ConvertFileState getConvertState();
 	int getFileId();
 	bool isEnded();
+
 	void abort();
 	void enableOverwriteFile();
 	Path getOutputFilePath();
@@ -71,6 +77,7 @@ private:
 	FileInfo fileInfo;
 	bool set;
 	bool valid;
+	bool isAbort;
 	Converter::ConvertSettingsList settingsList;
 	volatile bool enableOverwrite;
 	std::string fileName;
@@ -80,6 +87,7 @@ private:
 	ConvertFileState status;
 	double fraction;
 	int remainingTime;
+	ProcessExecutor::Process* process;
 };
 
 } /* namespace MediaFile */
