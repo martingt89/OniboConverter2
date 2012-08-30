@@ -22,6 +22,7 @@
 #include "filecontrol.h"
 #include "convertwindow.h"
 #include "infocontrol.h"
+#include "overwritedialog.h"
 #include "../MediaFile/mediafile.h"
 
 namespace Gui {
@@ -52,6 +53,7 @@ private:
 	DestinationControl destinationControl;
 	FileControl fileControl;
 	InfoControl infoControl;
+	OverwriteDialog overwrite;
 	ConvertWindow* convertWindow;
 	Gtk::MessageDialog warningDialog;
 	Gtk::Window* mainWindow;

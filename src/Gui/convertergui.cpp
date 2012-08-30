@@ -20,17 +20,17 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
 		const Profile::Profiles& profiles) :
 		database(database), mainSettings(database, refGlade, profiles),
-		destinationControl(refGlade), fileControl(refGlade), infoControl(refGlade),
+		destinationControl(refGlade), fileControl(refGlade), infoControl(refGlade), overwrite(refGlade),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
 
 	refGlade->get_widget_derived("convertWindow", convertWindow);
+	overwrite.setConvertWindow(convertWindow);
 	refGlade->get_widget("converterMainWindow", mainWindow);
 	refGlade->get_widget("mainNotebook", mainNotebook);
 	refGlade->get_widget("settingsButton", settingsButton);
 	refGlade->get_widget("okSettingsButton", okSettingsButton);
 	refGlade->get_widget("cancelSettingsButton", cancelSettingsButton);
 	refGlade->get_widget("convertButton", convertButton);
-
 	refGlade->get_widget("returnFromInfo", returnFromInfo);
 
 	mainWindow->signal_key_release_event().connect(sigc::mem_fun(*this, &ConverterGui::onKeyRelease));
@@ -114,6 +114,7 @@ void ConverterGui::convertButtonClicked(){
 			mediaFile = new MediaFile::MediaFile(path.path, path.id);
 		}
 		mediaFile->setSettingsList(mainSettings.getConvertArguments());
+		mediaFile->setDestinationPath(destinationControl.getDestinationPath());
 		mediaFile->clearConvertStatus();
 		convertFilesList.push_back(mediaFile);
 	}
@@ -171,6 +172,9 @@ bool ConverterGui::convertTimer(){
 			running = true;
 		}
 		files.set(file->getFileId(), file);
+		if(file->getConvertState() == MediaFile::MediaFile::OVERWRITE){
+			overwrite.addFile(file);
+		}
 	}
 	convertWindow->display(files, !running);
 	return running;

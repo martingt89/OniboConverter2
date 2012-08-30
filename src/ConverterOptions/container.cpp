@@ -31,7 +31,11 @@ Container::ContainerType Container::getContainerType() const{
 	return containerType;
 }
 Converter::ConvertSettingsList Container::getConvertArguments() const{
-	return Converter::ConvertSettingsList();
+	Converter::ConvertSettingsList args;
+	Converter::ConvertSettings arg(Converter::ConvertSettings::CONTAINER);
+	arg.addValue(name);
+	args.add(arg);
+	return args;
 }
 void Containers::addContainer(const Container& container){
 	containers.set(container.getName(), container);

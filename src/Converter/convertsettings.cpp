@@ -6,6 +6,7 @@
  */
 
 #include "convertsettings.h"
+#include <algorithm>
 #include <iostream> //todo remove iostream
 namespace Converter {
 
@@ -23,13 +24,13 @@ ConvertSettings::~ConvertSettings() {}
 void ConvertSettings::addValue(std::string value){
 	valuesList.push_back(value);
 }
-ConvertSettings::Command ConvertSettings::getCommand(){
+ConvertSettings::Command ConvertSettings::getCommand() const{
 	return settingsType;
 }
 std::string ConvertSettings::getUserCommand(){
 	return userDefind;
 }
-std::list<std::string> ConvertSettings::getValueList(){
+std::list<std::string> ConvertSettings::getValueList() const{
 	return valuesList;
 }
 //
@@ -71,5 +72,15 @@ void ConvertSettingsList::print() const{
 		}
 	}
 	std::cout<<std::endl;
+}
+std::string ConvertSettingsList::getContainerName() const{
+	auto iter = std::find_if(arguments.begin(), arguments.end(), [](const ConvertSettings& settings)->bool{
+		return settings.getCommand() == ConvertSettings::CONTAINER;
+	});
+	if(iter != arguments.end()){
+		std::string container = *iter->getValueList().begin();
+		return container;
+	}
+	return std::string();
 }
 } /* namespace Converter */

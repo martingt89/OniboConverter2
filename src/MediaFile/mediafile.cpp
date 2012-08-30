@@ -5,6 +5,8 @@
  *      Author: martint
  */
 
+//TODO refactor, switch to more classes
+
 #include "mediafile.h"
 
 #include "mediafilescanner.h"
@@ -19,6 +21,7 @@ const static std::string STATE_WAITING="waiting";
 const static std::string STATE_PROCESSING="processing";
 const static std::string STATE_INVALID="invalid file";
 const static std::string STATE_ABORT="abort";
+const static std::string STATE_OVERWRITE="overwrite?";
 
 const static int ONE_HOUR = 3600;
 const static int ONE_MINIT = 60;
@@ -31,6 +34,7 @@ MediaFile::MediaFile(Path filePath,  int fileId) : filePath(filePath) ,fileId(fi
 	fileInfo.bitrate = "";
 	set = false;
 	valid = false;
+	enableOverwrite = false;
 	clearConvertStatus();
 }
 MediaFile::MediaFile(const MediaFile& file){
@@ -43,6 +47,7 @@ MediaFile::MediaFile(const MediaFile& file){
 	this->status = file.status;
 	this->fraction = file.fraction;
 	this->remainingTime = file.remainingTime;
+	this->enableOverwrite = file.enableOverwrite;
 }
 
 MediaFile::~MediaFile() {}
@@ -90,23 +95,34 @@ Path MediaFile::getPath() const{
 }
 void MediaFile::setSettingsList(const Converter::ConvertSettingsList& settingsList){
 	this->settingsList = settingsList;
+	this->containerName = settingsList.getContainerName();
 	settingsList.print();
+}
+void MediaFile::setDestinationPath(const Path& destinationPath){
+	this->destinationPath = destinationPath;
 }
 void MediaFile::clearConvertStatus(){
 	status = WAITING;
 	fraction = 0;
 	remainingTime = -1;
+	enableOverwrite = false;
+	fileName = filePath.getLastPathPart();
 }
 void MediaFile::convert(){		//todo replace with real converter
 	if(valid){
-		mutex.lock();
+		std::unique_lock<std::mutex> uniqueLock(mutex);
 		if(status == ABORT){
 			mutex.unlock();
 			return;
 		}
+		while(this->getOutputFilePath().exist() && !enableOverwrite){
+			status = OVERWRITE;
+			condition.wait(uniqueLock);
+		}
+
 		status = PROCESSING;
 		//wait for process begin
-		mutex.unlock();
+		uniqueLock.unlock();
 		//wait for process end
 		for(int i = 0; i < 10 && status != ABORT; i++){
 			usleep(500000);
@@ -131,15 +147,20 @@ std::string MediaFile::getRemainingTime() {
 int MediaFile::getPercentage(){
 	return (fraction)*100+0.5;
 }
-std::string MediaFile::getConvertState(){
+std::string MediaFile::getConvertStateAsString(){
 	switch(status){
 	case WAITING: return STATE_WAITING;
 	case PROCESSING: return STATE_PROCESSING;
 	case FINISH: return STATE_OK;
 	case ABORT: return STATE_ABORT;
+	case OVERWRITE: return STATE_OVERWRITE;
 	default: return STATE_INVALID;
 	}
 	return STATE_INVALID;
+}
+MediaFile::ConvertFileState MediaFile::getConvertState(){
+	std::unique_lock<std::mutex> uniqueLock(mutex);
+	return status;
 }
 int MediaFile::getFileId(){
 	return fileId;
@@ -148,15 +169,37 @@ bool MediaFile::isEnded(){
 	return (status == FINISH) || (status == INVALID_FILE) || (status == ABORT);
 }
 void MediaFile::abort(){
-	mutex.lock();
+	std::unique_lock<std::mutex> uniqueLock(mutex);
 	if(!isEnded()){
 		status = ABORT;
 		//subprocess kill
 		//std::cout<<"kill "<<filePath.getPath()<<std::endl;
 	}
-	mutex.unlock();
+	condition.notify_one();
 }
 
+void MediaFile::setName(const std::string& fileName){
+	std::unique_lock<std::mutex> uniqueLock(mutex);
+	status = WAITING;
+	this->fileName = fileName;
+	condition.notify_one();
+}
+std::string MediaFile::getContainerName(){
+	return containerName;
+}
+void MediaFile::setOverwievState(){
+	status = OVERWRITE;
+}
+void MediaFile::enableOverwriteFile(){
+	std::unique_lock<std::mutex> uniqueLock(mutex);
+	status = WAITING;
+	enableOverwrite = true;
+	condition.notify_one();
+}
+
+Path MediaFile::getOutputFilePath(){
+	return Path(destinationPath.getPath(), (fileName + "." + containerName));
+}
 
 std::string MediaFile::timeToHHMMSS(int localTime) {
 	int hours = localTime / ONE_HOUR;

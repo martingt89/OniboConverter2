@@ -1,7 +1,11 @@
- - ukladanie uzivatelskych nastaveni
- - pridanie filtrov
- - realna konverzia
- - test existencie vystupneho subora
+ - real conversion
  -----------------------------------
- - 2 pass encoding		//low priority
- - import a export profilov	//low priority
+ - refactor!!!!								//crit
+ 
+ - fix bitrate if empty						//top
+ - rewrite xml parsing and xml generator	//top
+ - add settings dialog
+ 
+ - add filters 								//medium priority
+ - 2 pass encoding							//low priority
+ - import a export profilov					//low priority

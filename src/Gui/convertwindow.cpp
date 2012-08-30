@@ -49,7 +49,7 @@ void ConvertWindow::display(CppExtension::HashMap<int, MediaFile::MediaFile*> fi
 			row[modelColumns.name] = file->getShortName();
 			row[modelColumns.time] = file->getRemainingTime();
 			row[modelColumns.percentage] = file->getPercentage();
-			row[modelColumns.state] = file->getConvertState();
+			row[modelColumns.state] = file->getConvertStateAsString();
 		}
 	}else{
 		typedef Gtk::TreeModel::Children type_children;
@@ -59,7 +59,7 @@ void ConvertWindow::display(CppExtension::HashMap<int, MediaFile::MediaFile*> fi
 			 MediaFile::MediaFile* file = files.get(row[modelColumns.fileID]);
 			 row[modelColumns.time] = file->getRemainingTime();
 			 row[modelColumns.percentage] = file->getPercentage();
-			 	row[modelColumns.state] = file->getConvertState();
+			 	row[modelColumns.state] = file->getConvertStateAsString();
 		}
 	}
 	if(isEnd){
@@ -99,7 +99,7 @@ void ConvertWindow::initConvertTreeView() {
 	convertTreeModel = Gtk::ListStore::create(modelColumns);
 	convertTreeView->set_model(convertTreeModel);
 	convertSelection = convertTreeView->get_selection();
-	convertTreeView->append_column("Id", modelColumns.fileID);
+//	convertTreeView->append_column("Id", modelColumns.fileID);
 	convertTreeView->append_column("Name", modelColumns.name);
 	convertTreeView->append_column("Remaining time", modelColumns.time);
 	convertTreeView->append_column("State", modelColumns.state);

@@ -8,7 +8,7 @@
 #ifndef DISPENSER_H_
 #define DISPENSER_H_
 
-#include <queue>
+#include <deque>
 #include <list>
 #include "../CppExtension/path.h"
 #include "../MediaFile/mediafile.h"
@@ -37,7 +37,7 @@ private:
 	void run();
 	int numberOfThreads;
 	bool enableFileThreading;
-	std::queue<MediaFile::MediaFile*> filesToProcessing;
+	std::deque<MediaFile::MediaFile*> filesToProcessing;
 	std::list<std::thread*> processThreads;
 	std::mutex mutex;
 };

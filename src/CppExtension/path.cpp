@@ -6,14 +6,19 @@
  */
 
 #include "path.h"
+#include <error.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <glibmm/miscutils.h>
+#include <iostream>
 
-Path::Path(std::string path) : path(path) {
-	//test if path exist
+Path::Path(std::string path,  PathType type) : path(path), type(type) {}
+
+Path::Path(std::string first, std::string second, PathType type) : type(type){
+	path = Glib::build_filename(first, second);
 }
 
-Path::~Path() {
-
-}
+Path::~Path() {}
 
 std::string Path::getPath() const{
 	return path;
@@ -32,4 +37,23 @@ std::string Path::getLastPathPart() const{
 	return tmpPath;
 }
 
+bool Path::create() const{
+	int res = mkdir(path.c_str(), 0777);
+	if (res == 0){
+		return true;
+	}
+	if(res == -1 && errno == EEXIST){
+		return true;
+	}
+	return false;
+}
+
+bool Path::exist() const{
+	std::cout<<"testujem: "<<path<<std::endl;
+	struct stat buffer ;
+	if ( stat( path.c_str(), &buffer ) == 0 ){
+		return true;
+	}
+	return false;
+}
 

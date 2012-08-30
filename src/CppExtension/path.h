@@ -12,13 +12,21 @@
 
 class Path {
 public:
-	Path(){};
-	Path(std::string path);
+	enum PathType{
+		FILE, FOLDER, NOSET
+	};
+public:
+	Path(){type = NOSET;};
+	Path(std::string path, PathType type = NOSET);
+	Path(std::string first, std::string second, PathType type = NOSET);
 	virtual ~Path();
+	bool create() const;
 	std::string getPath() const;
 	std::string getLastPathPart() const;
+	bool exist() const;
 private:
 	std::string path;
+	PathType type;
 };
 
 #endif /* PATH_H_ */

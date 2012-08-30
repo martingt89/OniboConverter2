@@ -24,6 +24,9 @@ public:
 	enum State{
 		NOT_SET, OK, NOT_FOUND, INVALID_FORMAT
 	};
+	enum ConvertFileState{
+		WAITING, PROCESSING, FINISH, INVALID_FILE, ABORT, OVERWRITE
+	};
 	struct FileInfo{
 		State fileState;
 		double duration;
@@ -32,14 +35,12 @@ public:
 		std::vector<VideoStream> videos;
 		std::vector<AudioStream> audios;
 	};
-	enum ConvertFileState{
-		WAITING, PROCESSING, FINISH, INVALID_FILE, ABORT
-	};
 public:
 	MediaFile(Path filePath, int fileId);
 	MediaFile(const MediaFile& file);
 	virtual ~MediaFile();
 	void setSettingsList(const Converter::ConvertSettingsList& settingsList);
+	void setDestinationPath(const Path& destinationPath);
 	bool scanMediaFile();
 	bool isSet();
 	bool isValid();
@@ -51,19 +52,30 @@ public:
 	std::string getShortName();
 	std::string getRemainingTime();
 	int getPercentage();
-	std::string getConvertState();
+	std::string getConvertStateAsString();
+	ConvertFileState getConvertState();
 	int getFileId();
 	bool isEnded();
 	void abort();
+	void enableOverwriteFile();
+	Path getOutputFilePath();
+	void setName(const std::string& fileName);
+	std::string getContainerName();
+	void setOverwievState();
 private:
 	std::string timeToHHMMSS(int localTime);
 	std::mutex mutex;
+	std::condition_variable condition;
 	Path filePath;
 	int fileId;
 	FileInfo fileInfo;
 	bool set;
 	bool valid;
 	Converter::ConvertSettingsList settingsList;
+	volatile bool enableOverwrite;
+	std::string fileName;
+	std::string containerName;
+	Path destinationPath;
 	//
 	ConvertFileState status;
 	double fraction;

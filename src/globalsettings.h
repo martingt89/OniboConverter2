@@ -9,6 +9,7 @@
 #define GLOBALSETTINGS_H_
 
 #include "CppExtension/path.h"
+#include "Xml/settingsgenerator.h"
 
 class GlobalSettings {
 public:
@@ -19,6 +20,7 @@ public:
 	Path getXmlConfigFilePath();
 	Path getDefaultProfilesPath();
 	Path getUserProfilesPath();
+	Path getOutputPath();
 
 	void setFFmpegPath(const Path& ffmpegPath);
 	static Path buildPath(const Path& first, const Path& second);
@@ -31,7 +33,9 @@ private:
 	Path defaultProfilesPath;
 	Path userProfilesPath;
 	Path userConfigDir;
-	Path userConfigFile;
+	Path userSettingsFile;
+	Path destinationPath;
+	Xml::SettingsGenerator* generator;
 };
 
 #endif /* GLOBALSETTINGS_H_ */

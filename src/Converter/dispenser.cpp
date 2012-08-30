@@ -17,7 +17,7 @@ Dispenser::~Dispenser() {}
 
 void Dispenser::processMediaFiles(const std::list<MediaFile::MediaFile*>& files){
 	for (auto file : files){
-		filesToProcessing.push(file);
+		filesToProcessing.push_back(file);
 	}
 	if(!enableFileThreading){
 		for(int i = 0; i < numberOfThreads; ++i){
@@ -40,8 +40,21 @@ bool Dispenser::getNextMediaFile(MediaFile::MediaFile*& mediaFile){
 	if(filesToProcessing.empty()){
 		return false;
 	}
-	mediaFile = filesToProcessing.front();
-	filesToProcessing.pop();
-	return true;
+	MediaFile::MediaFile* file;
+	int counter = 0;
+	int maxCycles = filesToProcessing.size();
+	while(!filesToProcessing.empty()){
+		file = filesToProcessing.front();
+		filesToProcessing.pop_front();
+		if(!file->getOutputFilePath().exist() || counter == maxCycles){
+			mediaFile = file;
+			return true;
+		}else{
+			file->setOverwievState();
+			filesToProcessing.push_back(file);
+		}
+		++counter;
+	}
+	return false;
 }
 } /* namespace Converter */
