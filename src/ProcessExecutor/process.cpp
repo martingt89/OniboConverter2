@@ -83,7 +83,7 @@ int Process::waitForProcessEnd(){
 void Process::terminateProcess(){
 	std::unique_lock<std::mutex> m(mutex);
 	if(childPid > 0){
-		kill(childPid, SIGTERM);
+		kill(childPid, SIGKILL);
 	}else{
 		//Process is not running
 	}

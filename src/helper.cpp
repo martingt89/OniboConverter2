@@ -16,6 +16,12 @@ void assert(bool expr, std::string message){
 	}
 }
 
+long getAktualTimeMikro(){
+	timeval time;
+		gettimeofday(&time, NULL);
+		long millis = (time.tv_sec * 1000000) + time.tv_usec;
+}
+
 std::string getActualTimeMiliSec(){
 	timeval time;
 	gettimeofday(&time, NULL);

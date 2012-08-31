@@ -11,6 +11,8 @@
 #include <sstream>
 #include <string>
 
+long getAktualTimeMikro();
+
 int NSD(const int& x, const int& y);
 
 std::string clearString(const std::string& str);

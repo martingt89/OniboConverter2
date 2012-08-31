@@ -152,16 +152,18 @@ void MediaFile::convert(){
 			int tmpTime = 0;
 			parser.processLine(line, tmpFraction, tmpTime);
 			fraction = tmpFraction;
-			remainingTime = tmpTime;
-
+			if(tmpTime > 0){
+				remainingTime = tmpTime;
+			}
 		}
 		int res = process->waitForProcessEnd();
 		if(res != 0){
 			status = FAIL;
-			fraction = 1;
 		}else{
 			status = FINISH;
 		}
+		fraction = 1;
+		remainingTime = 0;
 		uniqueLock.lock();
 		delete process;
 		process = NULL;
