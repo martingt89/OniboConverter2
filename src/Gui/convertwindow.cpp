@@ -10,8 +10,7 @@
 #include <gtkmm/stock.h>
 namespace Gui {
 
-ConvertWindow::ConvertWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refGlade) :
-		Gtk::Window(cobject) {
+ConvertWindow::ConvertWindow(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	converting = false;
 	abort = false;
 
@@ -19,54 +18,33 @@ ConvertWindow::ConvertWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
 	initConvertTreeView();
 	initStopDialog();
 
-	closeConvertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConvertWindow::hide));
-	okConvertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConvertWindow::hide));
+	closeConvertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConvertWindow::closePage));
+	stopConvertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConvertWindow::stopConvertingSignal));
 }
 
 ConvertWindow::~ConvertWindow() {
-	delete convertWindow;
 	delete closeConvertButton;
-	delete okConvertButton;
+	delete stopConvertButton;
 	delete workingIndicator;
 	delete convertTreeView;
 	delete convertWindowMessage;
 }
 
 void ConvertWindow::display(CppExtension::HashMap<int, MediaFile::MediaFile*> files, bool isEnd){
-	if (!convertWindow->get_visible()) {
-		converting = true;
-		abort = false;
-		convertWindowMessage->set_text("");
-		convertTreeModel->clear();
-		closeConvertButton->set_visible(true);
-		okConvertButton->set_visible(false);
-		workingIndicator->set_visible(true);
-		workingIndicator->start();
-		convertWindow->set_visible(true);
-		for (auto file : files.getListOfValues()) {
-			Gtk::TreeModel::Row row = *(convertTreeModel->append());
-			row[modelColumns.fileID] = file->getFileId();
-			row[modelColumns.name] = file->getShortName();
-			row[modelColumns.time] = file->getRemainingTime();
-			row[modelColumns.percentage] = file->getPercentage();
+	typedef Gtk::TreeModel::Children type_children;
+	type_children children = convertTreeModel->children();
+	for(type_children::iterator iter = children.begin(); iter != children.end(); ++iter){
+		Gtk::TreeModel::Row row = *iter;
+		 MediaFile::MediaFile* file = files.get(row[modelColumns.fileID]);
+		 row[modelColumns.time] = file->getRemainingTime();
+		 row[modelColumns.percentage] = file->getPercentage();
 			row[modelColumns.state] = file->getConvertStateAsString();
-		}
-	}else{
-		typedef Gtk::TreeModel::Children type_children;
-		type_children children = convertTreeModel->children();
-		for(type_children::iterator iter = children.begin(); iter != children.end(); ++iter){
-			Gtk::TreeModel::Row row = *iter;
-			 MediaFile::MediaFile* file = files.get(row[modelColumns.fileID]);
-			 row[modelColumns.time] = file->getRemainingTime();
-			 row[modelColumns.percentage] = file->getPercentage();
-			 	row[modelColumns.state] = file->getConvertStateAsString();
-		}
 	}
 	if(isEnd){
 		workingIndicator->stop();
 		workingIndicator->set_visible(false);
-		closeConvertButton->set_visible(false);
-		okConvertButton->set_visible(true);
+		closeConvertButton->set_visible(true);
+		stopConvertButton->set_visible(false);
 		convertWindowMessage->set_text("Converting done");
 		converting = false;
 	}
@@ -74,7 +52,7 @@ void ConvertWindow::display(CppExtension::HashMap<int, MediaFile::MediaFile*> fi
 bool ConvertWindow::isAbort(){
 	return abort;
 }
-void ConvertWindow::on_hide (){		//overload
+void ConvertWindow::stopConvertingSignal(){
 	if(converting){
 		int res = stopConvertingDialog->run();
 		stopConvertingDialog->hide();
@@ -82,13 +60,37 @@ void ConvertWindow::on_hide (){		//overload
 			abort = true;
 		}
 	}else{
-		Gtk::Window::on_hide();
+		hideEvent();
 	}
 }
+void ConvertWindow::initConversion(std::list<MediaFile::MediaFile*> files){
+	converting = true;
+	abort = false;
+	convertWindowMessage->set_text("");
+	convertTreeModel->clear();
+	closeConvertButton->set_visible(false);
+	stopConvertButton->set_visible(true);
+	workingIndicator->set_visible(true);
+	workingIndicator->start();
+	for (auto file : files) {
+		Gtk::TreeModel::Row row = *(convertTreeModel->append());
+		row[modelColumns.fileID] = file->getFileId();
+		row[modelColumns.name] = file->getShortName();
+		row[modelColumns.time] = "N/A";
+		row[modelColumns.percentage] = 0;
+		row[modelColumns.state] = file->getConvertStateAsString();
+	}
+}
+sigc::signal<void>& ConvertWindow::signalHide(){
+	return hideEvent;
+}
+
+void ConvertWindow::closePage(){
+	hideEvent();
+}
 void ConvertWindow::loadWidgets(const Glib::RefPtr<Gtk::Builder>& refGlade) {
-	refGlade->get_widget("convertWindow", convertWindow);
+	refGlade->get_widget("stopConvertButton", stopConvertButton);
 	refGlade->get_widget("closeConvertButton", closeConvertButton);
-	refGlade->get_widget("okConvertButton", okConvertButton);
 	refGlade->get_widget("workingIndicator", workingIndicator);
 	refGlade->get_widget("convertTreeView", convertTreeView);
 	refGlade->get_widget("convertWindowMessage", convertWindowMessage);
@@ -99,7 +101,6 @@ void ConvertWindow::initConvertTreeView() {
 	convertTreeModel = Gtk::ListStore::create(modelColumns);
 	convertTreeView->set_model(convertTreeModel);
 	convertSelection = convertTreeView->get_selection();
-//	convertTreeView->append_column("Id", modelColumns.fileID);
 	convertTreeView->append_column("Name", modelColumns.name);
 	convertTreeView->append_column("Remaining time", modelColumns.time);
 	convertTreeView->append_column("State", modelColumns.state);

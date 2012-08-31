@@ -26,7 +26,7 @@ OverwriteDialog::OverwriteDialog(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	cancel->signal_clicked().connect(sigc::mem_fun(*this, &OverwriteDialog::cancelClicked));
 	overwriteWindow->signal_show().connect(sigc::mem_fun(*this, &OverwriteDialog::show));
 	overwriteWindow->signal_hide().connect(sigc::mem_fun(*this, &OverwriteDialog::hide));
-	convertWindow = NULL;
+//	convertWindow = NULL;
 }
 
 OverwriteDialog::~OverwriteDialog() {}
@@ -49,7 +49,7 @@ void OverwriteDialog::addFile(MediaFile::MediaFile*& file){
 	}
 }
 void OverwriteDialog::setConvertWindow(ConvertWindow* convertWindow){
-	this->convertWindow = convertWindow;
+//	this->convertWindow = convertWindow;
 }
 void OverwriteDialog::showFile(MediaFile::MediaFile*& file){
 	filePath->set_text(file->getPath().getPath());
@@ -57,10 +57,10 @@ void OverwriteDialog::showFile(MediaFile::MediaFile*& file){
 	suffix->set_text("."+file->getContainerName());
 }
 void OverwriteDialog::show(){
-	convertWindow->set_modal(false);
+//	convertWindow->set_modal(false);
 }
 void OverwriteDialog::hide(){
-	convertWindow->set_modal(true);
+//	convertWindow->set_modal(true);
 	cancelClicked();
 }
 void OverwriteDialog::renameClicked(){

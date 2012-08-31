@@ -23,6 +23,7 @@
 #include "convertwindow.h"
 #include "infocontrol.h"
 #include "overwritedialog.h"
+#include "mainwindow.h"
 #include "../MediaFile/mediafile.h"
 
 namespace Gui {
@@ -31,17 +32,18 @@ class ConverterGui {
 public:
 	ConverterGui(ConverterOptions::OptionsDatabase &database,
 			const Glib::RefPtr<Gtk::Builder>& refGlade,
-			const Profile::Profiles& profiles);
+			const Profile::Profiles& profiles,
+			Gui::MainWindow* mainWindow);
 	void setAvailableProfiles(const std::list<Profile::Profile>& availableProfiles);
-	Gtk::Window& getWindow();
 	sigc::signal<void, std::list<MediaFile::MediaFile*> >& signalConvert();
 	virtual ~ConverterGui();
 private:
+	void closeMainWindow();
 	void settingsButtonClicked();
 	void okSettingsButtonClicked();
 	void cancelSettingsButtonClicked();
 	void convertButtonClicked();
-	void returnInfoClicked();
+	void returnToMainPage();
 	bool onKeyRelease(GdkEventKey* event);
 	void fileInfoEvent(const Gui::FileControl::PathWithFileId& file);
 	void fileDeleteEvent(const Gui::FileControl::PathWithFileId& file);
@@ -49,14 +51,16 @@ private:
 	bool convertTimer();
 
 	ConverterOptions::OptionsDatabase &database;
-	AVControl mainSettings;
+	AVControl avControl;
 	DestinationControl destinationControl;
 	FileControl fileControl;
 	InfoControl infoControl;
 	OverwriteDialog overwrite;
-	ConvertWindow* convertWindow;
+	ConvertWindow convertWindow;
+	Gui::MainWindow* mainWindow;
 	Gtk::MessageDialog warningDialog;
-	Gtk::Window* mainWindow;
+//	Gtk::Window* mainWindow;
+
 	Gtk::Button* settingsButton;
 	Gtk::Button* okSettingsButton;
 	Gtk::Button* cancelSettingsButton;

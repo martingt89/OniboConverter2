@@ -15,17 +15,20 @@ namespace Gui {
 static const int MAIN_SCREEN_PAGE = 0;
 static const int CONFIG_SCREEN_PAGE = 1;
 static const int INFO_SCREEN_PAGE = 2;
+static const int CONVERT_SCREEN_PAGE = 3;
 
 ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
-		const Profile::Profiles& profiles) :
-		database(database), mainSettings(database, refGlade, profiles),
-		destinationControl(refGlade), fileControl(refGlade), infoControl(refGlade), overwrite(refGlade),
+		const Profile::Profiles& profiles,
+		Gui::MainWindow* mainWindow) :
+		database(database), avControl(database, refGlade, profiles),
+		destinationControl(refGlade), fileControl(refGlade), infoControl(refGlade),
+		overwrite(refGlade), convertWindow(refGlade), mainWindow(mainWindow),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
 
-	refGlade->get_widget_derived("convertWindow", convertWindow);
-	overwrite.setConvertWindow(convertWindow);
-	refGlade->get_widget("converterMainWindow", mainWindow);
+//	refGlade->get_widget_derived("convertWindow", convertWindow);
+//	overwrite.setConvertWindow(convertWindow);
+//	refGlade->get_widget("converterMainWindow", mainWindow);
 	refGlade->get_widget("mainNotebook", mainNotebook);
 	refGlade->get_widget("settingsButton", settingsButton);
 	refGlade->get_widget("okSettingsButton", okSettingsButton);
@@ -39,13 +42,14 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 	cancelSettingsButton->signal_clicked().connect(
 			sigc::mem_fun(*this, &ConverterGui::cancelSettingsButtonClicked));
 	convertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::convertButtonClicked));
-	returnFromInfo->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::returnInfoClicked));
+	returnFromInfo->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::returnToMainPage));
 	fileControl.signalInfo().connect(sigc::mem_fun(*this, &ConverterGui::fileInfoEvent));
 	fileControl.signalDelete().connect(sigc::mem_fun(*this, &ConverterGui::fileDeleteEvent));
+	convertWindow.signalHide().connect(sigc::mem_fun(*this, &ConverterGui::returnToMainPage));
+	mainWindow->signalClose().connect(sigc::mem_fun(*this, &ConverterGui::closeMainWindow));
 }
 
 ConverterGui::~ConverterGui() {
-	delete mainWindow;
 	delete mainNotebook;
 	delete settingsButton;
 	delete okSettingsButton;
@@ -56,14 +60,23 @@ void ConverterGui::setAvailableProfiles(const std::list<Profile::Profile>& avail
 
 }
 
-Gtk::Window& ConverterGui::getWindow() {
-	return *mainWindow;
-}
 sigc::signal<void, std::list<MediaFile::MediaFile*> >& ConverterGui::signalConvert(){
 	return convertEvent;
 }
+void ConverterGui::closeMainWindow(){
+	int currentPage = mainNotebook->get_current_page();
+	if(currentPage == MAIN_SCREEN_PAGE){
+		mainWindow->exit();
+	}else if(currentPage == CONFIG_SCREEN_PAGE){
+		cancelSettingsButtonClicked();
+	}else if(currentPage == INFO_SCREEN_PAGE){
+		returnToMainPage();
+	}else if(currentPage == CONVERT_SCREEN_PAGE){
+		convertWindow.stopConvertingSignal();
+	}
+}
 void ConverterGui::settingsButtonClicked() {
-	mainSettings.saveSettingsState();
+	avControl.saveSettingsState();
 	mainNotebook->set_current_page(CONFIG_SCREEN_PAGE);
 }
 
@@ -77,7 +90,7 @@ void ConverterGui::showWarningDialog(const std::string& title, const std::string
 
 void ConverterGui::okSettingsButtonClicked() {
 	std::string message = "";
-	bool isComplete = mainSettings.checkSettingsComplete(message);
+	bool isComplete = avControl.checkSettingsComplete(message);
 	if(isComplete){
 		mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
 	}else{
@@ -85,7 +98,7 @@ void ConverterGui::okSettingsButtonClicked() {
 	}
 }
 void ConverterGui::cancelSettingsButtonClicked(){
-	mainSettings.restoreSettingsState();
+	avControl.restoreSettingsState();
 	mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
 }
 void ConverterGui::convertButtonClicked(){
@@ -95,7 +108,7 @@ void ConverterGui::convertButtonClicked(){
 		return;
 	}
 	std::string message = "";
-	bool isComplete = mainSettings.checkSettingsComplete(message);
+	bool isComplete = avControl.checkSettingsComplete(message);
 	if(!isComplete){
 		settingsButtonClicked();
 		showWarningDialog("Settings are not complete", message);
@@ -113,14 +126,16 @@ void ConverterGui::convertButtonClicked(){
 		}else{
 			mediaFile = new MediaFile::MediaFile(path.path, path.id);
 		}
-		mediaFile->setSettingsList(mainSettings.getConvertArguments());
+		mediaFile->setSettingsList(avControl.getConvertArguments());
 		mediaFile->setDestinationPath(destinationControl.getDestinationPath());
-		mediaFile->setContainerName(mainSettings.getContainerName());
+		mediaFile->setContainerName(avControl.getContainerName());
 		mediaFile->clearConvertStatus();
 		convertFilesList.push_back(mediaFile);
 	}
+	convertWindow.initConversion(convertFilesList);
+	mainNotebook->set_current_page(CONVERT_SCREEN_PAGE);
 	convertEvent(convertFilesList);
-	convertTimer();
+
 	sigc::connection conn = Glib::signal_timeout().connect(sigc::mem_fun(*this,
             &ConverterGui::convertTimer), 1000);
 
@@ -130,7 +145,7 @@ bool ConverterGui::onKeyRelease(GdkEventKey* event){
 		if(mainNotebook->get_current_page() == CONFIG_SCREEN_PAGE ){
 			cancelSettingsButtonClicked();
 		}else if(mainNotebook->get_current_page() == INFO_SCREEN_PAGE){
-			returnInfoClicked();
+			returnToMainPage();
 		}
 	}
 	return false;
@@ -157,13 +172,13 @@ void ConverterGui::fileDeleteEvent(const Gui::FileControl::PathWithFileId& file)
 		idToMediaFile.remove(file.id);
 	}
 }
-void ConverterGui::returnInfoClicked(){
+void ConverterGui::returnToMainPage(){
 	mainNotebook->set_current_page(MAIN_SCREEN_PAGE);
 }
 bool ConverterGui::convertTimer(){
 	CppExtension::HashMap<int, MediaFile::MediaFile*> files;
 	bool running = false;
-	if(convertWindow->isAbort()){
+	if(convertWindow.isAbort()){
 		for(auto file : convertFilesList){
 			file->abort();
 		}
@@ -177,7 +192,7 @@ bool ConverterGui::convertTimer(){
 			overwrite.addFile(file);
 		}
 	}
-	convertWindow->display(files, !running);
+	convertWindow.display(files, !running);
 	return running;
 }
 } /* namespace Gui */

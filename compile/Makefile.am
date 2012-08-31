@@ -35,6 +35,7 @@ $(SRCPATH)/Gui/destinationcontrol.cpp \
 $(SRCPATH)/Gui/infocontrol.cpp \
 $(SRCPATH)/Gui/overwritedialog.cpp \
 $(SRCPATH)/Gui/profilenamedialog.cpp \
+$(SRCPATH)/Gui/mainwindow.cpp \
 $(SRCPATH)/Gui/Video/videocontrol.cpp \
 $(SRCPATH)/Gui/Video/encodercontrol.cpp \
 $(SRCPATH)/Gui/Video/resolutiondialog.cpp \

@@ -35,7 +35,7 @@ private:
 	void getNext();
 	MediaFile::MediaFile* actualFile;
 	Gtk::Window* overwriteWindow;
-	ConvertWindow* convertWindow;
+//	ConvertWindow* convertWindow;
 	Gtk::Entry* filePath;
 	Gtk::Entry* newName;
 	Gtk::Button* overwrite;

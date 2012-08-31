@@ -19,7 +19,7 @@
 #include "../MediaFile/mediafile.h"
 namespace Gui {
 
-class ConvertWindow : public Gtk::Window {
+class ConvertWindow {
 private:
 	class ModelColumns: public Gtk::TreeModel::ColumnRecord {
 	public:
@@ -39,28 +39,32 @@ private:
 	};
 	ModelColumns modelColumns;
 public:
-	ConvertWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+	ConvertWindow(const Glib::RefPtr<Gtk::Builder>& builder);
 	virtual ~ConvertWindow();
 	void display(CppExtension::HashMap<int, MediaFile::MediaFile*> files, bool isEnd);
 	bool isAbort();
-protected:
-	virtual void on_hide ();
+	void initConversion(std::list<MediaFile::MediaFile*> files);
+	sigc::signal<void>& signalHide();
+	void stopConvertingSignal();
+
 private:
+	void closePage();
 	void loadWidgets(const Glib::RefPtr<Gtk::Builder>& refGlade);
 	void initConvertTreeView();
 	void initStopDialog();
 
 	bool abort;
 	bool converting;
-	Gtk::Window* convertWindow;
+
 	Gtk::Button* closeConvertButton;
-	Gtk::Button* okConvertButton;
+	Gtk::Button* stopConvertButton;
 	Gtk::Spinner* workingIndicator;
 	Gtk::TreeView* convertTreeView;
 	Gtk::Label* convertWindowMessage;
 	Gtk::MessageDialog* stopConvertingDialog;
 	Glib::RefPtr<Gtk::ListStore> convertTreeModel;
 	Glib::RefPtr<Gtk::TreeView::Selection> convertSelection;
+	sigc::signal<void> hideEvent;
 };
 
 } /* namespace Gui */

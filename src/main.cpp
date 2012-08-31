@@ -15,12 +15,12 @@
 #include "ExternalTools/supportedencodersloader.h"
 #include "Gui/convertergui.h"
 #include "Gui/findffmpegdialog.h"
+#include "Gui/mainwindow.h"
 #include "MediaFile/mediafile.h"
 #include "Profile/profile.h"
 #include "Profile/profileloader.h"
 #include "Converter/dispenser.h"
 #include "globalsettings.h"
-#include <iostream>					//todo remove
 #include <unistd.h>
 
 int getNumberOfCPU(){
@@ -56,7 +56,7 @@ public:
 
 	bool run(Gtk::Main& kit){
 		ffmpeg = GlobalSettings::getInstance()->getFFmpegPath();
-		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/model5.glade");
+		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/model5a.glade");
 
 		ExternalTools::SupportedEncodersLoader encodersLoader;
 		ConverterOptions::SupportedEncoders encoders;
@@ -78,9 +78,13 @@ public:
 			loader.load(defaultProfilesFolder, profiles);
 			loader.load(userprofilesFolder, profiles);
 
-			converterGui = new Gui::ConverterGui(optionsDatabase, builder, profiles);
+			Gui::MainWindow* mainWindow;
+			builder->get_widget_derived("mainWindow", mainWindow);
+			mainWindow->show_all();
+
+			converterGui = new Gui::ConverterGui(optionsDatabase, builder, profiles, mainWindow);
 			converterGui->signalConvert().connect(sigc::mem_fun(*this, &OniboConverter::convert));
-			kit.run(converterGui->getWindow());
+			kit.run();
 		}
 		return false;
 	}
