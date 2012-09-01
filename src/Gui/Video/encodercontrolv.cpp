@@ -1,14 +1,13 @@
 /*
- * videoencodergui.cpp
+ * videocontrolv.cpp
  *
  *  Created on: 8.8.2012
  *      Author: martint
  */
 
-#include "encodercontrol.h"
-#include "../../helper.h"
 #include <gtkmm/stock.h>
-#include <iostream> //todo remove
+#include "encodercontrolv.h"
+#include "../../helper.h"
 
 namespace Gui {
 namespace Video {
@@ -103,39 +102,49 @@ bool EncoderControl::checkSettingsComplete(std::string& message){
 	return true;
 }
 void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
-	std::string formatName;	//todo rewrite to bool variables!!!
+	std::string formatName;
+	bool format = false;
 	if(activeProfile.getVideoFormatName(formatName)){
 		videoFormat.set_active_text(formatName);
-		std::string encoderName;
-		if(activeProfile.getVideoEncoderName(encoderName) ){
-			videoEncoder.set_active_text(encoderName);
-			ConverterOptions::Bitrate bitrate;
-			if(activeProfile.getVideoBitrate(bitrate)){
-				if(!videoBitrate.containes(bitrate.toStr())){
-					videoBitrate.insertBeforeLast(bitrate.toStr(), bitrate);
-					database.addUserVideoBitrate(bitrate);
-				}
-				videoBitrate.set_active_text(bitrate.toStr());
-			}else{
-				videoBitrate.unset_active();
-			}
-			if(videoEncoder.get_active_row_item().hasFFpreset()){
-				ConverterOptions::FFpreset ffpreset;
-				if(activeProfile.getVideoFFpreset(ffpreset)){
-					if(!videoFFpreset.containes(ffpreset.toStr()) && !ffpreset.isBuildIn()){
-						videoFFpreset.insertBeforeLast(ffpreset.toStr(), ffpreset);
-						database.addUserVideoFFpreset(ffpreset);
-					}
-					videoFFpreset.set_active_text(ffpreset.toStr());
-				}else{
-					videoFFpreset.unset_active();
-				}
-			}
-		}else{
-			videoEncoder.unset_active();
+		if(videoFormat.get_active_text() == formatName){
+			format = true;
 		}
 	}else{
 		videoFormat.unset_active();
+	}
+	bool encoder = false;
+	std::string encoderName;
+	if(format && activeProfile.getVideoEncoderName(encoderName)){
+		videoEncoder.set_active_text(encoderName);
+		if(videoEncoder.get_active_text() == encoderName){
+			encoder = true;
+		}
+	}else{
+		videoEncoder.unset_active();
+	}
+	ConverterOptions::Bitrate bitrate;
+	if(encoder && activeProfile.getVideoBitrate(bitrate)){
+		if(!videoBitrate.containes(bitrate.toStr())){
+			videoBitrate.insertBeforeLast(bitrate.toStr(), bitrate);
+			database.addUserVideoBitrate(bitrate);
+		}
+		videoBitrate.set_active_text(bitrate.toStr());
+	}else{
+		videoBitrate.unset_active();
+	}
+	if(encoder && videoEncoder.get_active_row_item().hasFFpreset()){
+		ConverterOptions::FFpreset ffpreset;
+		if(activeProfile.getVideoFFpreset(ffpreset)){
+			if(!videoFFpreset.containes(ffpreset.toStr()) && !ffpreset.isBuildIn()){
+				videoFFpreset.insertBeforeLast(ffpreset.toStr(), ffpreset);
+				database.addUserVideoFFpreset(ffpreset);
+			}
+			videoFFpreset.set_active_text(ffpreset.toStr());
+		}else{
+			videoFFpreset.unset_active();
+		}
+	}else{
+		videoFFpreset.set_sensitive(false);
 	}
 }
 Converter::ConvertSettingsList EncoderControl::getConvertArguments() const{

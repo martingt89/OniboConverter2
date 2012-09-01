@@ -141,6 +141,20 @@ void MediaFile::convert(){
 		}
 		arguments.push_back(getOutputFilePath().getPath());
 		auto ffmpeg = GlobalSettings::getInstance()->getFFmpegPath();
+
+		std::cout<<"converting: "<<std::endl;
+		std::cout<<"converter: "<<ffmpeg.getPath()<<std::endl;
+		unsigned int counter = 0;
+		for(auto x : arguments){
+			std::cout<<++counter<<" -> '"<<x<<"'"<<std::endl;
+		}
+		std::cout<<"end arguments"<<std::endl;
+		std::cout<<"command:"<<std::endl;
+		std::cout<<ffmpeg.getPath();
+		for(auto x : arguments){
+			std::cout<<" "<<x;
+		}
+		std::cout<<std::endl;
 		Converter::ConvertParser parser(fileInfo.duration);
 		process = new ProcessExecutor::Process(ffmpeg.getPath(), arguments);
 		process->waitForProcessBegin();

@@ -10,7 +10,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <glibmm/miscutils.h>
-#include <iostream>
+//#include <iostream>
 
 Path::Path(std::string path,  PathType type) : path(path), type(type) {}
 
@@ -49,7 +49,7 @@ bool Path::create() const{
 }
 
 bool Path::exist() const{
-	std::cout<<"testujem: "<<path<<std::endl;
+//	std::cout<<"testujem: "<<path<<std::endl;
 	struct stat buffer ;
 	if ( stat( path.c_str(), &buffer ) == 0 ){
 		return true;

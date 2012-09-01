@@ -1,4 +1,3 @@
-vcodec=libvpx
 g=120
 rc_lookahead=16
 profile=0

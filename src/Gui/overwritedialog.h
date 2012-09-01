@@ -24,25 +24,24 @@ public:
 	OverwriteDialog(const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~OverwriteDialog();
 	void addFile(MediaFile::MediaFile*& file);
-	void setConvertWindow(ConvertWindow* convertWindow);
 private:
+	void loadWidgets(const Glib::RefPtr<Gtk::Builder>& refGlade);
 	void showFile(MediaFile::MediaFile*& file);
-	void show();
-	void hide();
-	void renameClicked();
 	void overwriteClicked();
 	void cancelClicked();
+	void renameClicked();
 	void getNext();
+	void hide();
+
+	std::list<MediaFile::MediaFile*> files;
 	MediaFile::MediaFile* actualFile;
 	Gtk::Window* overwriteWindow;
-//	ConvertWindow* convertWindow;
 	Gtk::Entry* filePath;
 	Gtk::Entry* newName;
 	Gtk::Button* overwrite;
 	Gtk::Button* rename;
 	Gtk::Button* cancel;
 	Gtk::Label* suffix;
-	std::list<MediaFile::MediaFile*> files;
 };
 
 } /* namespace Gui */

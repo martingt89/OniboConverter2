@@ -37,7 +37,7 @@ $(SRCPATH)/Gui/overwritedialog.cpp \
 $(SRCPATH)/Gui/profilenamedialog.cpp \
 $(SRCPATH)/Gui/mainwindow.cpp \
 $(SRCPATH)/Gui/Video/videocontrol.cpp \
-$(SRCPATH)/Gui/Video/encodercontrol.cpp \
+$(SRCPATH)/Gui/Video/encodercontrolv.cpp \
 $(SRCPATH)/Gui/Video/resolutiondialog.cpp \
 $(SRCPATH)/Gui/Video/bitratedialog.cpp \
 $(SRCPATH)/Gui/Audio/audiocontrol.cpp \

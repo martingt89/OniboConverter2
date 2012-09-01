@@ -28,6 +28,9 @@ SettingsLoader::~SettingsLoader() {}
 
 bool SettingsLoader::load(){
 	path.clear();
+	if(!settingsFilePath.exist()){
+		return false;
+	}
 	try{
 		this->parse_file(settingsFilePath.getPath());
 	}catch(std::exception& ex){

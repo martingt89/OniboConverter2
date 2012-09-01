@@ -1,20 +1,20 @@
 /*
- * videosettingsgui.h
+ * videocontrolv.h
  *
  *  Created on: 8.8.2012
  *      Author: martint
  */
 
-#ifndef VIDEOCONTROL_H_
-#define VIDEOCONTROL_H_
+#ifndef VIDEOCONTROLV_H_
+#define VIDEOCONTROLV_H_
 
 #include <sigc++/sigc++.h>
 #include <gtkmm/builder.h>
-#include "../../ConverterOptions/optionsdatabase.h"
-#include "../WidgetAdapter/comboboxext.h"
-#include "encodercontrol.h"
+#include "encodercontrolv.h"
 #include "resolutiondialog.h"
+#include "../WidgetAdapter/comboboxext.h"
 #include "../../Profile/profile.h"
+#include "../../ConverterOptions/optionsdatabase.h"
 
 namespace Gui {
 namespace Video {
@@ -57,4 +57,4 @@ private:
 
 }
 } /* namespace Gui */
-#endif /* VIDEOCONTROL_H_ */
+#endif /* VIDEOCONTROLV_H_ */

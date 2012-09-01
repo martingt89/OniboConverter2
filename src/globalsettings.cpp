@@ -45,7 +45,9 @@ GlobalSettings::GlobalSettings() {
 	generator = new Xml::SettingsGenerator(userSettingsFile, ffmpegPath, destinationPath);
 }
 
-GlobalSettings::~GlobalSettings() {}
+GlobalSettings::~GlobalSettings() {
+	delete generator;
+}
 
 Path GlobalSettings::getFFmpegPath(){
 	return ffmpegPath;

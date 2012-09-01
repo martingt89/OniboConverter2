@@ -1,9 +1,14 @@
- - refactor!!!!								//crit
- 
- - fix bitrate if empty						//top
- - rewrite xml parsing and xml generator	//top
+ - refactor!!!!										//crit
+
+ - rewrite xml parsing and xml generator			//top
  - add settings dialog
  
- - add filters 								//medium priority
- - 2 pass encoding							//low priority
- - import a export profilov					//low priority
+ - add filters 										//medium priority
+ - 2 pass encoding									//low priority
+ - import a export profilov							//low priority
+
+========================================
+
+ - bitrate, width or height invalid
+ - remove settings that are in ffpreset
+ - add ffpreset disable

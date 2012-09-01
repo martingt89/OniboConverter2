@@ -26,9 +26,6 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 		overwrite(refGlade), convertWindow(refGlade), mainWindow(mainWindow),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
 
-//	refGlade->get_widget_derived("convertWindow", convertWindow);
-//	overwrite.setConvertWindow(convertWindow);
-//	refGlade->get_widget("converterMainWindow", mainWindow);
 	refGlade->get_widget("mainNotebook", mainNotebook);
 	refGlade->get_widget("settingsButton", settingsButton);
 	refGlade->get_widget("okSettingsButton", okSettingsButton);
@@ -150,7 +147,7 @@ bool ConverterGui::onKeyRelease(GdkEventKey* event){
 	}
 	return false;
 }
-void ConverterGui::fileInfoEvent(const Gui::FileControl::PathWithFileId& file){
+void ConverterGui::fileInfoEvent(const Gui::FileControl::PathWithFileId file){
 	if(!idToMediaFile.isExistKey(file.id)){
 		auto mediaFile = new MediaFile::MediaFile(file.path, file.id);
 		idToMediaFile.set(file.id, mediaFile);

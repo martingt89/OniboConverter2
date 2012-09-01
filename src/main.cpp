@@ -80,7 +80,7 @@ public:
 
 			Gui::MainWindow* mainWindow;
 			builder->get_widget_derived("mainWindow", mainWindow);
-			mainWindow->show_all();
+			mainWindow->show();
 
 			converterGui = new Gui::ConverterGui(optionsDatabase, builder, profiles, mainWindow);
 			converterGui->signalConvert().connect(sigc::mem_fun(*this, &OniboConverter::convert));

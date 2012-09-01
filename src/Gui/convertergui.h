@@ -45,7 +45,7 @@ private:
 	void convertButtonClicked();
 	void returnToMainPage();
 	bool onKeyRelease(GdkEventKey* event);
-	void fileInfoEvent(const Gui::FileControl::PathWithFileId& file);
+	void fileInfoEvent(const Gui::FileControl::PathWithFileId file);
 	void fileDeleteEvent(const Gui::FileControl::PathWithFileId& file);
 	void showWarningDialog(const std::string& title, const std::string& message);
 	bool convertTimer();
