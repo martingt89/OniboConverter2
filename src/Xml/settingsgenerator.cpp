@@ -14,9 +14,7 @@ SettingsGenerator::SettingsGenerator(const Path& settingsFile, const Path& ffmpe
 		ffmpegPath(ffmpegPath), destination(destination){
 }
 
-SettingsGenerator::~SettingsGenerator() {
-	// TODO Auto-generated destructor stub
-}
+SettingsGenerator::~SettingsGenerator() {}
 
 void SettingsGenerator::setFFpath(const Path& ffmpegPath){
 	this->ffmpegPath = ffmpegPath;
@@ -24,15 +22,13 @@ void SettingsGenerator::setFFpath(const Path& ffmpegPath){
 void SettingsGenerator::setDestination(const Path& destination){
 	this->destination = destination;
 }
-void SettingsGenerator::save(){
-	XmlGenerator generator;
-	XmlDocument* settings = generator.createDocument("settings");
-	settings->addSubNode(generator.createNode("ffpath"))->addText(ffmpegPath.getPath());
-	settings->addSubNode(generator.createNode("destination"))->addText(destination.getPath());
-	std::stringstream ss;
-	settings->write(ss);
+void SettingsGenerator::save(){					//todo to automat version
+	Xml::Document* settings = new Document();
+	Xml::Node* node = settings->setSubNode(new Xml::Node("settings"));
+	node->addSubNode(new Xml::Node("ffpath"))->setText(ffmpegPath.getPath());
+	node->addSubNode(new Xml::Node("destination"))->setText(destination.getPath());
 	std::ofstream file(settingsFile.getPath());
-	file << ss.str();
+	settings->write(file);
 	file.close();
 	delete settings;
 }

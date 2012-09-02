@@ -31,6 +31,9 @@ void Profile::addProperty(const Options& options, const std::string& propertie){
 		optionsToValue.set(options, propertie);
 	}
 }
+std::string Profile::getProperty(const Options& options) const{
+	return optionsToValue.get(options);
+}
 //
 std::string Profile::getName() const{
 	return optionsToValue.get(NAME_OPT);

@@ -6,7 +6,9 @@
  */
 
 #include "avcontrol.h"
-#include "../Xml/profiletoxmlconverter.h"
+#include "../Xml/profilegenerator.h"
+#include "../globalsettings.h"
+
 namespace Gui {
 
 const static std::string CUSTOM_PROFILE = "--- custom profile ---";
@@ -129,8 +131,11 @@ void AVControl::getNewProfile(const std::string& name){
 	newProfile.addProperty(Profile::Profile::NAME_OPT, name);
 	profilesComboBox.append(name, newProfile);
 	profilesComboBox.save_actual_state();
-	Xml::ProfileToXmlConverter converter;
-	converter.convertToFile(newProfile);
+	//Xml::ProfileToXmlConverter converter;	TODO
+	//converter.convertToFile(newProfile);
+	Path userProfilesPath = GlobalSettings::getInstance()->getUserProfilesPath();
+	Xml::ProfileGenerator generator(userProfilesPath);
+	generator.generateFile(newProfile);
 }
 void AVControl::manualSettingsClicked(){
 	bool change = settingsDialog.start();

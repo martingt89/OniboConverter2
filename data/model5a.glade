@@ -133,7 +133,7 @@
               <object class="GtkButtonBox" id="buttonbox5">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">20</property>
+                <property name="spacing">5</property>
                 <property name="layout_style">start</property>
                 <child>
                   <object class="GtkButton" id="findOk">
@@ -490,6 +490,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="margin_bottom">10</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                       </object>
@@ -2571,7 +2572,7 @@
               <object class="GtkButtonBox" id="buttonbox3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">25</property>
+                <property name="spacing">5</property>
                 <property name="homogeneous">True</property>
                 <property name="layout_style">end</property>
                 <child>

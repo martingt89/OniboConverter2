@@ -9,14 +9,14 @@
 #define AVCONTROL_H_
 
 #include <gtkmm/builder.h>
-#include "../Profile/profile.h"
-#include "../Converter/convertsettings.h"
-#include "../ConverterOptions/optionsdatabase.h"
+#include "manualsettingscontrol.h"
+#include "profilenamedialog.h"
 #include "WidgetAdapter/comboboxext.h"
 #include "Video/videocontrol.h"
 #include "Audio/audiocontrol.h"
-#include "manualsettingscontrol.h"
-#include "profilenamedialog.h"
+#include "../Profile/profile.h"
+#include "../Converter/convertsettings.h"
+#include "../ConverterOptions/optionsdatabase.h"
 
 namespace Gui {
 

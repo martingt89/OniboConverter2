@@ -44,11 +44,11 @@ public:
 		AUDIO_CHANNEL_VALUE_OPT = 21,
 		AUDIO_CHANNEL_NAME_OPT = 22,
 		//
-		MANUAL_COMMAND_OPT = 23,
-		MANUAL_ARG_OPT = 24,
-		UNKNOWN_OPT = 25,
+		END_OPT = 23,
 		//
-		END_OPT = 26
+		MANUAL_COMMAND_OPT = 24,
+		MANUAL_ARG_OPT = 25,
+		UNKNOWN_OPT = 26
 	};
 	struct ManualSettings{
 		std::string command;
@@ -59,6 +59,7 @@ public:
 	Profile();
 	virtual ~Profile();
 	void addProperty(const Options& options, const std::string& propertie);
+	std::string getProperty(const Options& options) const;
 	//
 	std::string getName() const;
 	bool getContainerName(std::string& containerName) const;

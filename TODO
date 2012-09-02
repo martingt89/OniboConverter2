@@ -1,7 +1,6 @@
  - refactor!!!!										//crit
 
- - rewrite xml parsing and xml generator			//top
- - add settings dialog
+ - add settings dialog + config file				//medium
  
  - add filters 										//medium priority
  - 2 pass encoding									//low priority

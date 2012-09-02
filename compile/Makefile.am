@@ -22,7 +22,7 @@ $(SRCPATH)/Profile/profileloader.cpp \
 $(SRCPATH)/Xml/xmlprofileparser.cpp \
 $(SRCPATH)/Xml/xmlgenerator.cpp \
 $(SRCPATH)/Xml/xmlprofiletable.cpp \
-$(SRCPATH)/Xml/profiletoxmlconverter.cpp \
+$(SRCPATH)/Xml/profilegenerator.cpp \
 $(SRCPATH)/Xml/settingsloader.cpp \
 $(SRCPATH)/Xml/settingsgenerator.cpp \
 $(SRCPATH)/Gui/convertergui.cpp \

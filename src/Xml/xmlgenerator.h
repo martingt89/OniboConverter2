@@ -10,42 +10,65 @@
 
 #include <list>
 #include <string>
-#include <sstream>
+#include <memory>
+#include <libxml++/libxml++.h>
 
 namespace Xml {
 
-class XmlNode{
+class PathNode{
 public:
-	XmlNode(const std::string& name);
-	virtual ~XmlNode();
+	PathNode(const std::string& name);
+	PathNode(const std::string& name, const std::string& text);
+	bool operator < (const PathNode& second) const;
+	bool operator == (const PathNode& second) const;
+
+	std::string name;
+	bool haveText;
+	std::string text;
+};
+
+class Node{
+public:
+	Node(const std::string& name);
+	virtual ~Node();
 	void addArguments(const std::string& name, const std::string& value);
-	XmlNode* addSubNode(XmlNode* xml);
-	void addText(const std::string& text);
-	void write(std::stringstream& output);
+	Node* addSubNode(Node* xml);
+	void setParent(Node* parent);
+	Node* getParent();
+	void setText(const std::string& text);
+	void write(std::ostream& output);
 private:
 	std::string name;
 	std::string text;
 	std::list<std::pair<std::string, std::string> > arguments;
-	std::list<XmlNode*> subNode;
+	std::list<Node*> subNode;
+	Node* parent;
 };
 
-class XmlDocument{
+class Document{
 public:
-	XmlDocument(const std::string& name);
-	virtual ~XmlDocument();
-	XmlNode* addSubNode(XmlNode* xml);
-	void write(std::stringstream& output);
+	Document();
+	virtual ~Document();
+	Node* setSubNode(Node* xml);
+	void write(std::ostream& output);
+	Node* getNode();
 private:
-	std::list<XmlNode*> subNode;
-	std::string name;
+	Node* subNode;
 };
 
 class XmlGenerator {
 public:
-	XmlGenerator();
+	XmlGenerator(const std::string& rootName);
 	virtual ~XmlGenerator();
-	XmlDocument* createDocument(const std::string& name) const;
-	XmlNode* createNode(const std::string& name) const;
+	void addPath(const std::vector<PathNode>& path);
+	std::unique_ptr<Document> generateFromPath() ;
+private:
+	void generate(Xml::Node* node, int depth,
+				std::list<std::vector<Xml::PathNode> >::iterator actualLine,
+				std::list<std::vector<Xml::PathNode> >::iterator lastLine,
+				std::vector<std::string> path, bool change);
+	const std::string rootName;
+	std::list<std::vector<Xml::PathNode> > pathData;
 };
 
 } /* namespace Xml */
