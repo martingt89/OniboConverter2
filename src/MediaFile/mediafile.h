@@ -20,6 +20,7 @@ namespace ProcessExecutor{
 #include "audiostream.h"
 #include "../Converter/convertsettings.h"
 #include <thread>
+#include <sstream>
 
 namespace MediaFile {
 
@@ -68,7 +69,9 @@ public:
 	void setName(const std::string& fileName);
 	std::string getContainerName();
 	void setOverwievState();
+	std::string getErrorOutput();
 private:
+	std::stringstream errorOutputBuffer;
 	std::string timeToHHMMSS(int localTime);
 	std::mutex mutex;
 	std::condition_variable condition;

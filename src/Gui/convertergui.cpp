@@ -189,7 +189,7 @@ bool ConverterGui::convertTimer(){
 			overwrite.addFile(file);
 		}
 	}
-	convertWindow.display(files, !running);
+	convertWindow.display(!running);
 	return running;
 }
 } /* namespace Gui */

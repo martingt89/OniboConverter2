@@ -18,7 +18,7 @@ class ConvertParser {
 public:
 	ConvertParser(const double& duration);
 	virtual ~ConvertParser();
-	void processLine(const std::string& line, double& fraction, int& remainingTime);
+	bool processLine(const std::string& line, double& fraction, int& remainingTime);
 private:
 	void addRecord(double diff, double elapsed);
 	double getNumSecPerSec();

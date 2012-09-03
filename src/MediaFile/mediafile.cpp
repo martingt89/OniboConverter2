@@ -117,6 +117,7 @@ void MediaFile::clearConvertStatus(){
 	enableOverwrite = false;
 	fileName = filePath.getLastPathPart();
 	isAbort = false;
+	errorOutputBuffer.clear();
 }
 void MediaFile::convert(){
 	if(valid){
@@ -164,10 +165,14 @@ void MediaFile::convert(){
 		while(stderr >> line){
 			double tmpFraction = 0;
 			int tmpTime = 0;
-			parser.processLine(line, tmpFraction, tmpTime);
-			fraction = tmpFraction;
-			if(tmpTime > 0){
-				remainingTime = tmpTime;
+			bool processOk = parser.processLine(line, tmpFraction, tmpTime);
+			if(processOk){
+				fraction = tmpFraction;
+				if(tmpTime > 0){
+					remainingTime = tmpTime;
+				}
+			}else{
+				errorOutputBuffer << line << std::endl;
 			}
 		}
 		int res = process->waitForProcessEnd();
@@ -244,6 +249,9 @@ std::string MediaFile::getContainerName(){
 }
 void MediaFile::setOverwievState(){
 	status = OVERWRITE;
+}
+std::string MediaFile::getErrorOutput(){
+	return errorOutputBuffer.str();
 }
 void MediaFile::enableOverwriteFile(){
 	std::unique_lock<std::mutex> uniqueLock(mutex);

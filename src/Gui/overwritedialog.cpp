@@ -80,6 +80,7 @@ void OverwriteDialog::getNext(){
 		if(files.size() > 0){
 			actualFile = files.front();
 			files.pop_front();
+			showFile(actualFile);
 			if(!overwriteWindow->get_visible()){
 				overwriteWindow->show();
 			}

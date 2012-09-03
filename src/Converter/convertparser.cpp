@@ -23,15 +23,19 @@ ConvertParser::~ConvertParser() {
 	// TODO Auto-generated destructor stub
 }
 
-void ConvertParser::processLine(const std::string& line, double& fraction, int& remainingTime){
+bool ConvertParser::processLine(const std::string& line, double& fraction, int& remainingTime){
+	remainingTime = -1;
+	fraction = -1;
 	RegexTools::Matcher matcher = lineRegex.getMatcher(line);
 	double aktime = aktualTime;
 	if(matcher.find()){
 		std::string time = matcher.getGroup(1);
 		aktime = toN(time, double());
-	}//else{
-		std::cout<<line<<std::endl;
-	//}
+//		std::cout<<line<<std::endl;
+	}else{
+//		std::cout<<line<<std::endl;
+		return false;
+	}
 	if(aktime > aktualTime){
 		long aktualWorldTime = getAktualTimeMikro();
 		double elapsed = (aktualWorldTime - lastWorldTime)/1000000.0;
@@ -47,6 +51,7 @@ void ConvertParser::processLine(const std::string& line, double& fraction, int& 
 	}
 
 	fraction = aktualTime / duration + 0.005;
+	return true;
 }
 void ConvertParser::addRecord(double diff, double elapsed){
 	if(diffAndTime.size() >= NUM_OF_SAVED_RECORD){
