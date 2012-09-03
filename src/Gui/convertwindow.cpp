@@ -8,7 +8,7 @@
 #include "convertwindow.h"
 #include <gtkmm/cellrendererprogress.h>
 #include <gtkmm/stock.h>
-#include <iostream> //todo remove
+
 namespace Gui {
 
 ConvertWindow::ConvertWindow(const Glib::RefPtr<Gtk::Builder>& refGlade) {

@@ -1,8 +1,9 @@
- - refactor!!!!										//crit
+ - refactor mediafile!!!!
 
  - add settings dialog + config file				//medium
  
  - add filters 										//medium priority
+ - multithread converting for supported encoders	//medium
  - 2 pass encoding									//low priority
  - import a export profiles							//low priority
 
@@ -10,4 +11,3 @@
 
  - bitrate, width or height invalid
  - remove settings that are in ffpreset
- - add ffpreset disable

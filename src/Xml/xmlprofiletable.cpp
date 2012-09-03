@@ -40,8 +40,8 @@ XmlProfileTable::XmlProfileTable() {
 			Profile::Profile::VIDEO_FFPRESET_PREFIX_OPT);
 	add(toList({"profile", "video", "ffpreset", "path"}),
 			Profile::Profile::VIDEO_FFPRESET_PATH_OPT);
-	add(toList({"profile", "video", "ffpreset", "buildin"}),
-			Profile::Profile::VIDEO_FFPRESET_BUILDIN_OPT);
+	add(toList({"profile", "video", "ffpreset", "type"}),
+			Profile::Profile::VIDEO_FFPRESET_TYPE_OPT);
 //---------------------------------------------------------------
 	add(toList({"profile", "audio", "mode"}),
 			Profile::Profile::AUDIO_MODE_OPT);

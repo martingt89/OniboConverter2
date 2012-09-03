@@ -21,7 +21,7 @@
 		<ffpreset>
 			<prefix>libx264</prefix>
 			<path>libx264-superfast.ffpreset</path>
-			<buildin>y</buildin>
+			<type>0</type>
 		</ffpreset>
 	</video>
 	<audio>

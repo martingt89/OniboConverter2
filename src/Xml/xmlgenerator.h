@@ -36,13 +36,15 @@ public:
 	void setParent(Node* parent);
 	Node* getParent();
 	void setText(const std::string& text);
-	void write(std::ostream& output);
+	void write(std::ostream& output, const int depth = 0);
 private:
 	std::string name;
 	std::string text;
 	std::list<std::pair<std::string, std::string> > arguments;
 	std::list<Node*> subNode;
 	Node* parent;
+
+	void intend(const int depth, std::ostream& output);
 };
 
 class Document{
@@ -63,7 +65,7 @@ public:
 	void addPath(const std::vector<PathNode>& path);
 	std::unique_ptr<Document> generateFromPath() ;
 private:
-	void generate(Xml::Node* node, int depth,
+	void generate(Xml::Node* node, unsigned int depth,
 				std::list<std::vector<Xml::PathNode> >::iterator actualLine,
 				std::list<std::vector<Xml::PathNode> >::iterator lastLine,
 				std::vector<std::string> path, bool change);

@@ -57,3 +57,7 @@ bool Path::exist() const{
 	return false;
 }
 
+bool Path::operator==(const Path& path) const{
+	return (this->path == path.path) && (this->type == path.type);
+}
+

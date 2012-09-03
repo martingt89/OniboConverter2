@@ -19,21 +19,24 @@ namespace ConverterOptions {
 
 class FFpreset {
 public:
+	enum FFType{
+		BUILDIN_FFTYPE = 0, USERDEFINED_FFTYPE = 1, DISABLE_FFTYPE = 2
+	};
 	FFpreset();
-	FFpreset(const Path& path, const std::string& prefix, const bool& buildin);
+	FFpreset(const Path& path, const std::string& prefix, const FFType& type);
 	std::string getPrefix() const;
 	virtual ~FFpreset();
 	std::string toStr() const;
 	Converter::ConvertSettingsList getConvertArguments() const;
 	std::string getName() const;
 	Path getPath() const;
-	bool isBuildIn() const;
+	FFType getType() const;
 private:
 	std::string cropName(const std::string& name, const std::string& prefix);
 	std::string name;
 	std::string prefix;
 	Path ffpresetFilePath;
-	bool buildin;
+	FFType type;
 };
 
 class FFpresets{

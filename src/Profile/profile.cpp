@@ -96,6 +96,16 @@ bool Profile::getVideoResolution(ConverterOptions::Resolution& resolution, bool&
 }
 bool Profile::getVideoFFpreset(ConverterOptions::FFpreset& ffpreset) const{
 	bool exist = true;
+
+	int type = toN(optionsToValue.get(VIDEO_FFPRESET_TYPE_OPT, exist), int());
+	if(!exist){
+		return false;
+	}
+	ConverterOptions::FFpreset::FFType fftype = (ConverterOptions::FFpreset::FFType)type;
+	if(fftype == ConverterOptions::FFpreset::DISABLE_FFTYPE){
+		ffpreset = ConverterOptions::FFpreset(std::string(), std::string(), fftype);
+		return true;
+	}
 	std::string path = optionsToValue.get(VIDEO_FFPRESET_PATH_OPT, exist);
 	if(!exist){
 		return false;
@@ -105,11 +115,8 @@ bool Profile::getVideoFFpreset(ConverterOptions::FFpreset& ffpreset) const{
 	if(!exist){
 		return false;
 	}
-	std::string buildin = optionsToValue.get(VIDEO_FFPRESET_BUILDIN_OPT, exist);
 
-	bool isBuildIn = (buildin=="y");
-
-	ffpreset = ConverterOptions::FFpreset(ffFilePath, prefix, isBuildIn);
+	ffpreset = ConverterOptions::FFpreset(ffFilePath, prefix, fftype);
 	return true;
 }
 bool Profile::getVideoFramerate(ConverterOptions::Framerate& framerate, bool& original) const{

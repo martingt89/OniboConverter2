@@ -53,7 +53,7 @@ std::unique_ptr<Document> XmlGenerator::generateFromPath() {
 	return document;
 }
 
-void XmlGenerator::generate(Xml::Node* node, int depth,
+void XmlGenerator::generate(Xml::Node* node, unsigned int depth,
 				std::list<std::vector<Xml::PathNode> >::iterator actualLine,
 				std::list<std::vector<Xml::PathNode> >::iterator lastLine,
 				std::vector<std::string> path, bool change)
@@ -121,17 +121,31 @@ void Node::setParent(Node* parent){
 Node* Node::getParent(){
 	return parent;
 }
-void Node::write(std::ostream& output){
+
+void Node::intend(const int depth, std::ostream& output) {
+	for (int i = 0; i < depth; i++) {
+		output << "\t";
+	}
+}
+
+void Node::write(std::ostream& output, const int depth) {
+	intend(depth, output);
 	output<<"<"<<name;
 	for(auto pair : arguments){
 		output<<" "<<pair.first<<"=\""<<pair.second<<"\"";
 	}
 	output<<">";
 	output<<text;
-	for(auto node : subNode){
-		node->write(output);
+	if(!subNode.empty()){
+		output<<std::endl;
 	}
-	output<<"</"<<name<<">";
+	for(auto node : subNode){
+		node->write(output, depth + 1);
+	}
+	if(!subNode.empty()){
+		intend(depth, output);
+	}
+	output<<"</"<<name<<">"<<std::endl;
 }
 
 //===================================================================

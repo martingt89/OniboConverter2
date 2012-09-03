@@ -135,7 +135,7 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 	if(encoder && videoEncoder.get_active_row_item().hasFFpreset()){
 		ConverterOptions::FFpreset ffpreset;
 		if(activeProfile.getVideoFFpreset(ffpreset)){
-			if(!videoFFpreset.containes(ffpreset.toStr()) && !ffpreset.isBuildIn()){
+			if(!videoFFpreset.containes(ffpreset.toStr()) && !ffpreset.getType()){
 				videoFFpreset.insertBeforeLast(ffpreset.toStr(), ffpreset);
 				database.addUserVideoFFpreset(ffpreset);
 			}
@@ -178,14 +178,10 @@ void EncoderControl::getNewProfile(Profile::Profile& newProfile){
 				toS(videoBitrate.get_active_row_item().getMinBitrate()));
 	}
 	if(encoder && videoFFpreset.isSelectedActivableRow()){
-		if(videoFFpreset.get_active_row_item().isBuildIn()){	//buildin
-			newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_PATH_OPT,
-					toS(videoFFpreset.get_active_row_item().getName()));
-			newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_BUILDIN_OPT, "y");
-		}else{
-			newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_PATH_OPT,
-					videoFFpreset.get_active_row_item().getPath().getPath());
-		}
+		newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_PATH_OPT,
+				toS(videoFFpreset.get_active_row_item().getName()));
+		newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_TYPE_OPT,
+				toS(videoFFpreset.get_active_row_item().getType()));
 		newProfile.addProperty(Profile::Profile::VIDEO_FFPRESET_PREFIX_OPT,
 				toS(videoFFpreset.get_active_row_item().getPrefix()));
 	}
@@ -237,7 +233,8 @@ void EncoderControl::videoFFpresetChanged(){
 			if(res == Gtk::RESPONSE_OK){
 				Glib::RefPtr< Gio::File > file = ffpresetChooser.get_file ();
 				Path ffFile(file->get_path());
-				ConverterOptions::FFpreset ff(ffFile, videoEncoder.get_active_row_item().getFFPrefix(), false);
+				ConverterOptions::FFpreset ff(ffFile, videoEncoder.get_active_row_item().getFFPrefix(),
+						ConverterOptions::FFpreset::USERDEFINED_FFTYPE);
 				database.addUserVideoFFpreset(ff);
 				aktualizeFFpreset(ff.toStr());
 			}else{
@@ -354,6 +351,8 @@ void EncoderControl::aktualizeFFpreset(const std::string name){
 		videoFFpreset.set_active_text(name);
 	}else if(isSetFFpreset){
 		videoFFpreset.set_active_text(actualFFpreset);
+	}else{
+		videoFFpreset.set_active_row_number(0);
 	}
 	videoFFpreset.append(EXTEND_SETTING);
 }

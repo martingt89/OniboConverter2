@@ -24,6 +24,7 @@ public:
 	std::string getPath() const;
 	std::string getLastPathPart() const;
 	bool exist() const;
+	bool operator==(const Path& path) const;
 private:
 	std::string path;
 	PathType type;

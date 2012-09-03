@@ -12,15 +12,22 @@
 #include <iostream> //todo remove
 namespace ConverterOptions {
 
+static const std::string DISABLE_NAME="--- disable ---";
+
 FFpreset::FFpreset(){
 	name = "";
-	buildin = false;
+	type = DISABLE_FFTYPE;
 }
-FFpreset::FFpreset(const Path& path, const std::string& prefix, const bool& buildin){
+
+FFpreset::FFpreset(const Path& path, const std::string& prefix, const FFType& type){
+	if(type == DISABLE_FFTYPE){
+		name = DISABLE_NAME;
+	}else{
+		name = cropName(path.getPath(), prefix);
+	}
 	ffpresetFilePath = path;
-	name = cropName(path.getPath(), prefix);
 	this->prefix = prefix;
-	this->buildin = buildin;
+	this->type = type;
 }
 FFpreset::~FFpreset(){
 
@@ -37,11 +44,14 @@ Path FFpreset::getPath() const{
 std::string FFpreset::getName() const{
 	return ffpresetFilePath.getLastPathPart();
 }
-bool FFpreset::isBuildIn() const{
-	return buildin;
+FFpreset::FFType FFpreset::getType() const{
+	return type;
 }
 Converter::ConvertSettingsList  FFpreset::getConvertArguments() const{
 	Converter::ConvertSettingsList args;
+	if(type == DISABLE_FFTYPE){
+		return args;
+	}
 	Converter::ConvertSettings arg(Converter::ConvertSettings::FFPRESET);
 	arg.addValue(ffpresetFilePath.getPath());
 	args.add(arg);
@@ -79,6 +89,10 @@ void FFpresets::addFFpreset(const FFpreset& ffpreset){
 }
 
 bool FFpresets::loadFromFolder(const Path& path, const bool& buildin){
+	FFpreset::FFType type = FFpreset::USERDEFINED_FFTYPE;
+	if(buildin){
+		type = FFpreset::BUILDIN_FFTYPE;
+	}
 	try{
 		Glib::RefPtr< Gio::File > directory = Gio::File::create_for_path(path.getPath());
 
@@ -102,7 +116,7 @@ bool FFpresets::loadFromFolder(const Path& path, const bool& buildin){
 					Path FFfile(Glib::build_filename(directory->get_path (), file_info->get_name()));
 					std::string filePrefix = match.getGroup(1);
 					if(filePrefix == prefix){
-						FFpreset ff(FFfile, filePrefix, buildin);
+						FFpreset ff(FFfile, filePrefix, type);
 						this->addFFpreset(ff);
 					}
 				}
@@ -116,7 +130,10 @@ bool FFpresets::loadFromFolder(const Path& path, const bool& buildin){
 	return true;
 }
 std::list<FFpreset> FFpresets::getFFpresetList(){
-	return ffpresets;
+	FFpreset disable(std::string(), std::string(), FFpreset::DISABLE_FFTYPE);
+	std::list<FFpreset> ff(ffpresets.begin(), ffpresets.end());
+	ff.push_front(disable);
+	return ff;
 }
 
 } /* namespace ConverterOptions */
