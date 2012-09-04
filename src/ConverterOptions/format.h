@@ -9,6 +9,7 @@
 #define FORMAT_H_
 
 #include "encoder.h"
+#include "../CppExtension/hashmap.h"
 
 namespace ConverterOptions {
 
@@ -37,8 +38,8 @@ public:
 	Format getFormatByName(std::string formatName) const;
 	bool isAudioOnly() const;
 private:
-	std::map<std::string, Format> videoFormats;
-	std::map<std::string, Format> audioFormats;
+	CppExtension::HashMap<std::string, Format> videoFormats;
+	CppExtension::HashMap<std::string, Format> audioFormats;
 };
 
 } /* namespace ConverterOptions */

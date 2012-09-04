@@ -92,19 +92,39 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 		videoStream.set_active_row_number(0);
 	}
 }
+std::string getAsString(const MediaFile::VideoStream& stream,
+		const std::string& nullString,
+		const MediaFile::VideoStream::Video& name){
+	std::string val = nullString;
+	if(stream.getValue(name, val)){
+		return val;
+	}
+	return nullString;
+
+}
+std::string getAsString(const MediaFile::AudioStream& stream,
+		const std::string& nullString,
+		const MediaFile::AudioStream::Audio& name){
+	std::string val = nullString;
+	if(stream.getValue(name, val)){
+		return val;
+	}
+	return nullString;
+
+}
 void InfoControl::videoStreamChanged(){
 	bool exist = false;
 	int row = videoStream.get_active_row_item(exist);
 	if(exist){
 		auto stream = actualMediaFile->getFileInfo().videos[row];
-		videoCodec << stream.getValue(MediaFile::VideoStream::CODEC);
-		colorSpace << stream.getValue(MediaFile::VideoStream::COLORSPACE);
-		resolution << (stream.getValue(MediaFile::VideoStream::RESX) + "x" +
-				stream.getValue(MediaFile::VideoStream::RESY));
-		fps << stream.getValue(MediaFile::VideoStream::FPS);
-		tbr << stream.getValue(MediaFile::VideoStream::TBR);
-		tbn << stream.getValue(MediaFile::VideoStream::TBN);
-		tbc << stream.getValue(MediaFile::VideoStream::TBC);
+		videoCodec << getAsString(stream, "", MediaFile::VideoStream::CODEC);
+		colorSpace << getAsString(stream, "", MediaFile::VideoStream::COLORSPACE);
+		resolution << (getAsString(stream, "", MediaFile::VideoStream::RESX) + "x" +
+				getAsString(stream, "", MediaFile::VideoStream::RESY));
+		fps << getAsString(stream, "", MediaFile::VideoStream::FPS);
+		tbr << getAsString(stream, "", MediaFile::VideoStream::TBR);
+		tbn << getAsString(stream, "", MediaFile::VideoStream::TBN);
+		tbc << getAsString(stream, "", MediaFile::VideoStream::TBC);
 	}
 }
 void InfoControl::audioStreamChanged(){
@@ -112,10 +132,10 @@ void InfoControl::audioStreamChanged(){
 	int row = audioStream.get_active_row_item(exist);
 	if(exist){
 		auto stream = actualMediaFile->getFileInfo().audios[row];
-		audioCodec << stream.getValue(MediaFile::AudioStream::CODEC);
-		audioBitrate << stream.getValue(MediaFile::AudioStream::BITRATE);
-		samplerate << stream.getValue(MediaFile::AudioStream::SAMPLERATE);
-		channels << stream.getValue(MediaFile::AudioStream::CHANNELS);
+		audioCodec << getAsString(stream, "", MediaFile::AudioStream::CODEC);
+		audioBitrate << getAsString(stream, "", MediaFile::AudioStream::BITRATE);
+		samplerate << getAsString(stream, "", MediaFile::AudioStream::SAMPLERATE);
+		channels << getAsString(stream, "", MediaFile::AudioStream::CHANNELS);
 	}
 }
 } /* namespace Gui */

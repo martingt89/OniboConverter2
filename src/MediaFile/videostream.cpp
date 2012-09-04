@@ -12,15 +12,14 @@ namespace MediaFile {
 
 VideoStream::VideoStream(int firstNumber, int secondNumber): Stream(firstNumber,secondNumber){}
 
-void VideoStream::setValue(Video name, std::string value){
+void VideoStream::setValue(const Video& name, const std::string& value){
 	content.set(name, value);
 }
 
-std::string VideoStream::getValue(Video name){
+bool VideoStream::getValue(const Video& name, std::string& value) const{
 	bool isExistParameter = false;
-	std::string value = content.get(name, isExistParameter);
-	assert(!isExistParameter, "Video stream name doesn't exist");
-	return value;
+	value = content.get(name, isExistParameter);
+	return isExistParameter;
 }
 
 } /* namespace MediaFile */

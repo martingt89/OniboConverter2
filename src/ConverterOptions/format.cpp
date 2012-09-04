@@ -6,6 +6,7 @@
  */
 
 #include "format.h"
+#include "../helper.h"
 
 namespace ConverterOptions {
 
@@ -34,38 +35,33 @@ Encoders Format::getEncoders() const{
 
 void Formats::addFormat(const Format& format){
 	if(format.getFormatType() == Format::FORMAT_TYPE_VIDEO){
-		videoFormats[format.getName()] = format;
+		videoFormats.set(format.getName(), format);
 	}else{
-		audioFormats[format.getName()] = format;
+		audioFormats.set(format.getName(), format);
 	}
 }
 std::list<Format> Formats::getVideoFormatsList() const{
-	std::list<Format> videoFormatsList;
-	for(auto videoIterator = videoFormats.begin(); videoIterator != videoFormats.end(); ++videoIterator){
-		videoFormatsList.push_back(videoIterator->second);
-	}
-	return videoFormatsList;
+	return videoFormats.getListOfValues();
 }
 std::list<Format> Formats::getAudioFormatsList() const{
-	std::list<Format> audioFormatsList;
-	for(auto audioIterator = audioFormats.begin(); audioIterator != audioFormats.end(); ++audioIterator){
-		audioFormatsList.push_back(audioIterator->second);
-	}
-	return audioFormatsList;
+	return audioFormats.getListOfValues();
 }
 bool Formats::isAudioOnly() const{
-	return videoFormats.size() == 0;
+	return videoFormats.isEmpty();
 }
-Format Formats::getFormatByName(std::string formatName) const{	//todo format not found
-	auto videoIterator = videoFormats.find(formatName);
-	if(videoIterator != videoFormats.end()){
-		return videoIterator->second;
-	}
-	auto audioIterator = audioFormats.find(formatName);
-	if(audioIterator != audioFormats.end()){
-		return audioIterator->second;
+Format Formats::getFormatByName(std::string formatName) const{
+	bool exist = false;
+	Format format = videoFormats.get(formatName, exist);
+	if(exist){
+		return format;
 	}
 
+	format = audioFormats.get(formatName, exist);
+	if(exist){
+		return format;
+	}
+
+	assert(!exist, "Format name doesn't exist: '"+formatName+"'");
 	return Format();
 }
 

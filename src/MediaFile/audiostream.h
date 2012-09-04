@@ -22,8 +22,8 @@ public:
 public:
 	AudioStream(int firstNumber, int secondNumber);
 	virtual ~AudioStream();
-	void setValue(Audio name, std::string value);
-	std::string getValue(Audio name);
+	void setValue(const Audio& name, const std::string& value);
+	bool getValue(const Audio& name, std::string& value) const;
 private:
 	CppExtension::HashMap<Audio, std::string> content;
 };

@@ -40,7 +40,7 @@ public:
 	ConvertSettingsList(const ConvertSettingsList& arguments);
 	void add(const ConvertSettings& argument);
 	void add(const ConvertSettingsList& argument);
-	void print() const;
+	std::string getPrintString() const;
 	std::list<std::string> getArguments() const;
 	std::string getContainerName() const;
 private:

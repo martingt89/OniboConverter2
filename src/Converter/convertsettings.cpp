@@ -8,7 +8,7 @@
 #include "convertsettings.h"
 #include <algorithm>
 #include "../helper.h"
-#include <iostream> //todo remove iostream
+
 namespace Converter {
 
 CppExtension::HashMap<ConvertSettings::Command, std::string> ConvertSettingsList::commandToStr;
@@ -61,18 +61,20 @@ void ConvertSettingsList::add(const ConvertSettings& argument){
 void ConvertSettingsList::add(const ConvertSettingsList& arguments){
 	std::copy(arguments.arguments.begin(), arguments.arguments.end(), std::back_inserter(this->arguments));
 }
-void ConvertSettingsList::print() const{
+std::string ConvertSettingsList::getPrintString() const{
+	std::stringstream ss;
 	for(auto x : arguments){
 		if(x.getCommand() == ConvertSettings::USER_DEFINED){
-			std::cout<<" "<<x.getUserCommand();
+			ss<<" "<<x.getUserCommand();
 		}else{
-			std::cout<<" "<<commandToStr.get(x.getCommand());
+			ss<<" "<<commandToStr.get(x.getCommand());
 		}
 		for(auto v : x.getValueList()){
-			std::cout<<" "<<v;
+			ss<<" "<<v;
 		}
 	}
-	std::cout<<std::endl;
+	ss<<std::endl;
+	return ss.str();
 }
 std::list<std::string> ConvertSettingsList::getArguments() const {
 	std::list<std::string> args;

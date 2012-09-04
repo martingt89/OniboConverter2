@@ -15,17 +15,14 @@ AudioStream::AudioStream(int firstNumber, int secondNumber): Stream(firstNumber,
 AudioStream::~AudioStream(){
 
 }
-void AudioStream::setValue(Audio name, std::string value){
+void AudioStream::setValue(const Audio& name, const std::string& value){
 	content.set(name, value);
 }
 
-std::string AudioStream::getValue(Audio name){
+bool AudioStream::getValue(const Audio& name, std::string& value) const{
 	bool isExistParameter = false;
-	std::string value = content.get(name, isExistParameter);
-	if(!isExistParameter){
-		//todo log
-	}
-	return value;
+	value = content.get(name, isExistParameter);
+	return isExistParameter;
 }
 
 } /* namespace MediaFile */

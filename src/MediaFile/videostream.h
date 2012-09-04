@@ -21,8 +21,8 @@ public:
 			CODEC, COLORSPACE, RESX, RESY, TBR, TBN, TBC, FPS
 	};
 public:
-	void setValue(Video name, std::string value);
-	std::string getValue(Video name);
+	void setValue(const Video& name, const std::string& value);
+	bool getValue(const Video& name, std::string& value) const;
 	void setStream(int f, int r);
 private:
 	CppExtension::HashMap<Video, std::string> content;
