@@ -10,6 +10,7 @@
 
 #include <sstream>
 #include <string>
+#include <list>
 
 long getAktualTimeMikro();
 
@@ -20,6 +21,8 @@ std::string clearString(const std::string& str);
 void assert(bool expr, std::string message);
 
 std::string getActualTimeMiliSec();
+
+std::list<std::string> trimStringBy(const std::string& string, const std::string& delimiter);
 
 template<class T>
 std::string operator << (const std::string &s,  T i){

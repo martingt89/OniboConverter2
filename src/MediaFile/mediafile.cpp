@@ -10,7 +10,6 @@
 #include "mediafile.h"
 
 #include "mediafilescanner.h"
-//#include <iostream> //todo remove
 #include "../Converter/convertparser.h"
 #include "../helper.h"
 #include "../globalsettings.h"
@@ -143,19 +142,15 @@ void MediaFile::convert(){
 		arguments.push_back(getOutputFilePath().getPath());
 		auto ffmpeg = GlobalSettings::getInstance()->getFFmpegPath();
 
-		std::cout<<"converting: "<<std::endl;
-		std::cout<<"converter: "<<ffmpeg.getPath()<<std::endl;
-		unsigned int counter = 0;
+		std::stringstream textCommand;
+		textCommand<<"command:"<<std::endl;
+		textCommand<<ffmpeg.getPath();
 		for(auto x : arguments){
-			std::cout<<++counter<<" -> '"<<x<<"'"<<std::endl;
+			textCommand<<" "<<x;
 		}
-		std::cout<<"end arguments"<<std::endl;
-		std::cout<<"command:"<<std::endl;
-		std::cout<<ffmpeg.getPath();
-		for(auto x : arguments){
-			std::cout<<" "<<x;
-		}
-		std::cout<<std::endl;
+		textCommand<<std::endl<<std::endl;
+		errorOutputBuffer << textCommand.str();
+
 		Converter::ConvertParser parser(fileInfo.duration);
 		process = new ProcessExecutor::Process(ffmpeg.getPath(), arguments);
 		process->waitForProcessBegin();

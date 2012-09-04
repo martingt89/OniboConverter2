@@ -7,6 +7,7 @@
 
 #include "convertsettings.h"
 #include <algorithm>
+#include "../helper.h"
 #include <iostream> //todo remove iostream
 namespace Converter {
 
@@ -85,7 +86,10 @@ std::list<std::string> ConvertSettingsList::getArguments() const {
 			args.push_back(commandToStr.get(x.getCommand()));
 		}
 		for(auto v : x.getValueList()){
-			args.push_back(v);	//todo trim by spaces
+			auto output = trimStringBy(v, " ");
+			for(std::string arg : output){
+				args.push_back(arg);
+			}
 		}
 	}
 	return args;

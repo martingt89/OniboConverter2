@@ -20,9 +20,7 @@ ProfileNameDialog::ProfileNameDialog(const Glib::RefPtr<Gtk::Builder>& refGlade)
 
 }
 
-ProfileNameDialog::~ProfileNameDialog() {
-	// TODO Auto-generated destructor stub
-}
+ProfileNameDialog::~ProfileNameDialog() {}
 
 bool ProfileNameDialog::getName(std::string& name){
 	profileNameEntry->set_text("");

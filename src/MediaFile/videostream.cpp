@@ -6,13 +6,11 @@
  */
 
 #include "videostream.h"
-#include <iostream> //todo remove
+#include "../helper.h"
 
 namespace MediaFile {
 
-VideoStream::VideoStream(int firstNumber, int secondNumber): Stream(firstNumber,secondNumber){
-
-}
+VideoStream::VideoStream(int firstNumber, int secondNumber): Stream(firstNumber,secondNumber){}
 
 void VideoStream::setValue(Video name, std::string value){
 	content.set(name, value);
@@ -21,9 +19,7 @@ void VideoStream::setValue(Video name, std::string value){
 std::string VideoStream::getValue(Video name){
 	bool isExistParameter = false;
 	std::string value = content.get(name, isExistParameter);
-	if(!isExistParameter){
-		//todo mozno sem nieco pojde
-	}
+	assert(!isExistParameter, "Video stream name doesn't exist");
 	return value;
 }
 

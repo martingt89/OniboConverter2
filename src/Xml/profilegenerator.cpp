@@ -51,7 +51,8 @@ void ProfileGenerator::generateFile(const Profile::Profile& profile){
 
 	std::string xmlFileName = getActualTimeMiliSec()+".xml";
 
-	std::ofstream file(outputDirectory.getPath() +"/"+xmlFileName);	//todo implement path joining
+	Path outputPath(outputDirectory.getPath(), xmlFileName);
+	std::ofstream file(outputPath.getPath());
 	doc->write(file);
 	file.close();
 }

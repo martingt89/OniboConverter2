@@ -8,6 +8,7 @@
 #include "profileloader.h"
 #include <giomm/file.h>
 #include <iostream> //todo remove
+#include <glibmm/miscutils.h>
 
 namespace Profile {
 
@@ -51,8 +52,7 @@ bool ProfileLoader::getRegularFilesFromFolder(const Path& profilesFolder, std::l
 		Glib::RefPtr<Gio::FileInfo> file_info = enumerator->next_file();
 		while (file_info) {
 			if (file_info->get_file_type() == Gio::FILE_TYPE_REGULAR) {
-				profileFiles.push_back(
-						Path(Glib::build_filename(directory->get_path(), file_info->get_name())));
+				profileFiles.push_back(Path(directory->get_path(), file_info->get_name()));
 			}
 			file_info = enumerator->next_file();
 		}

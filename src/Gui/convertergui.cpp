@@ -9,6 +9,8 @@
 
 #include "../MediaFile/mediafile.h"
 #include <iostream>
+#include <glibmm/main.h>
+#include <sigc++/connection.h>
 
 namespace Gui {
 

@@ -22,6 +22,7 @@
 #include "Converter/dispenser.h"
 #include "globalsettings.h"
 #include <unistd.h>
+#include <iostream>//todo remove
 
 int getNumberOfCPU(){
 	int cpus = sysconf(_SC_NPROCESSORS_ONLN);

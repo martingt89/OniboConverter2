@@ -30,9 +30,7 @@ FindFFmpegDialog::FindFFmpegDialog(const Glib::RefPtr<Gtk::Builder>& refGlade, P
 	findChooseFile->signal_clicked().connect(sigc::mem_fun(*this, &FindFFmpegDialog::findChooseFileClicked));
 }
 
-FindFFmpegDialog::~FindFFmpegDialog() {
-	// TODO Auto-generated destructor stub
-}
+FindFFmpegDialog::~FindFFmpegDialog() {}
 
 Gtk::Window& FindFFmpegDialog::getWindow(){
 	return *findFFmpegWindow;

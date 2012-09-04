@@ -19,9 +19,7 @@ ConvertParser::ConvertParser(const double& duration) : duration(duration),
 	lastWorldTime = getAktualTimeMikro();
 }
 
-ConvertParser::~ConvertParser() {
-	// TODO Auto-generated destructor stub
-}
+ConvertParser::~ConvertParser() {}
 
 bool ConvertParser::processLine(const std::string& line, double& fraction, int& remainingTime){
 	remainingTime = -1;
@@ -31,9 +29,7 @@ bool ConvertParser::processLine(const std::string& line, double& fraction, int& 
 	if(matcher.find()){
 		std::string time = matcher.getGroup(1);
 		aktime = toN(time, double());
-//		std::cout<<line<<std::endl;
 	}else{
-//		std::cout<<line<<std::endl;
 		return false;
 	}
 	if(aktime > aktualTime){

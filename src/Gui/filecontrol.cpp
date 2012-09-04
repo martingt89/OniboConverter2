@@ -7,6 +7,7 @@
 
 #include "filecontrol.h"
 #include <gtkmm/stock.h>
+#include <glibmm/convert.h>
 
 namespace Gui {
 

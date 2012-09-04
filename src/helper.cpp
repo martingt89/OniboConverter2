@@ -18,8 +18,9 @@ void assert(bool expr, std::string message){
 
 long getAktualTimeMikro(){
 	timeval time;
-		gettimeofday(&time, NULL);
-		long millis = (time.tv_sec * 1000000) + time.tv_usec;
+	gettimeofday(&time, NULL);
+	long millis = (time.tv_sec * 1000000) + time.tv_usec;
+	return millis;
 }
 
 std::string getActualTimeMiliSec(){
@@ -52,4 +53,19 @@ std::string clearString(const std::string& str){
 		return "";
 	}
 	return beginClear.substr(0, pos+1);
+}
+std::list<std::string> trimStringBy(const std::string& string, const std::string& delimiter){
+	std::list<std::string> output;
+	std::string tmpString = string;
+	std::string::size_type pos = 0;
+	while((pos = tmpString.find(delimiter)) != std::string::npos){
+		if(pos > 0){
+			output.push_back(tmpString.substr(0, pos));
+		}
+		tmpString = tmpString.substr(pos+delimiter.size());
+	}
+	if(tmpString.size() != 0){
+		output.push_back(tmpString);
+	}
+	return output;
 }

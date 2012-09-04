@@ -8,6 +8,7 @@
 #include "ffpreset.h"
 #include "../RegexTools/regextools.h"
 #include <giomm/file.h>
+#include <glibmm/miscutils.h>
 
 #include <iostream> //todo remove
 namespace ConverterOptions {
@@ -113,7 +114,7 @@ bool FFpresets::loadFromFolder(const Path& path, const bool& buildin){
 			if(file_info->get_file_type() == Gio::FILE_TYPE_REGULAR ){
 				RegexTools::Matcher match = ffpresetPatern.getMatcher(file_info->get_name());
 				if(match.find()){
-					Path FFfile(Glib::build_filename(directory->get_path (), file_info->get_name()));
+					Path FFfile(directory->get_path (), file_info->get_name());
 					std::string filePrefix = match.getGroup(1);
 					if(filePrefix == prefix){
 						FFpreset ff(FFfile, filePrefix, type);

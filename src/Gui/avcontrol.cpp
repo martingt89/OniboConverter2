@@ -131,8 +131,6 @@ void AVControl::getNewProfile(const std::string& name){
 	newProfile.addProperty(Profile::Profile::NAME_OPT, name);
 	profilesComboBox.append(name, newProfile);
 	profilesComboBox.save_actual_state();
-	//Xml::ProfileToXmlConverter converter;	TODO
-	//converter.convertToFile(newProfile);
 	Path userProfilesPath = GlobalSettings::getInstance()->getUserProfilesPath();
 	Xml::ProfileGenerator generator(userProfilesPath);
 	generator.generateFile(newProfile);

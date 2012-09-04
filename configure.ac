@@ -6,7 +6,7 @@ AM_INIT_AUTOMAKE([1.10 -Wall no-define])
 
 AC_CONFIG_HEADER([config.h])
 
-IT_PROG_INTLTOOL([0.35.0])
+IT_PROG_INTLTOOL(0.35.0)
 
 CXXFLAGS=""
 
