@@ -29,29 +29,24 @@ GlobalSettings::GlobalSettings() {
 	ffpresetFolder = Path("ffpresets");
 	xmlConfigFilePath = Path("data/audio_video_settings.xml");
 	defaultProfilesPath = Path("data/profiles");
-	userConfigDir = Path(Glib::build_filename(Glib::get_user_config_dir (), CONFIG_FOLDER_NAME));
+	userConfigDir = Path(Glib::get_user_config_dir (), CONFIG_FOLDER_NAME);
 	userConfigDir.create();
-	userProfilesPath = Path(Glib::build_filename(userConfigDir.getPath(), PROFILES_FOLDER_NAME));
+	userProfilesPath = Path(userConfigDir.getPath(), PROFILES_FOLDER_NAME);
 	userProfilesPath.create();
-	userSettingsFile = Path(Glib::build_filename(userConfigDir.getPath(), USER_SETTINGS_FILE));
-	Xml::SettingsLoader loader(userSettingsFile);
-	if(loader.load()){
-		ffmpegPath = loader.getFFConverterPath();
-		destinationPath = loader.getDestinationPath();
-	}else{
-		ffmpegPath = Path("ffmpeg");	//settings file doesn't exist
-		destinationPath = Glib::get_home_dir ();
-	}
-	generator = new Xml::SettingsGenerator(userSettingsFile, ffmpegPath, destinationPath);
+	userSettingsFile = Path(userConfigDir.getPath(), USER_SETTINGS_FILE);
+//	Xml::SettingsLoader loader(userSettingsFile);
+//	if(loader.load()){
+//		ffmpegPath = loader.getFFConverterPath();
+//		destinationPath = loader.getDestinationPath();
+//	}else{
+//		ffmpegPath = Path("ffmpeg");	//settings file doesn't exist
+//		destinationPath = Glib::get_home_dir ();
+//	}
+//	generator = new Xml::SettingsGenerator(userSettingsFile, ffmpegPath, destinationPath);
 }
 
-GlobalSettings::~GlobalSettings() {
-	delete generator;
-}
+GlobalSettings::~GlobalSettings() {}
 
-Path GlobalSettings::getFFmpegPath(){
-	return ffmpegPath;
-}
 Path GlobalSettings::getFFpresetFolder(){
 	return ffpresetFolder;
 }
@@ -63,17 +58,4 @@ Path GlobalSettings::getDefaultProfilesPath(){
 }
 Path GlobalSettings::getUserProfilesPath(){
 	return userProfilesPath;
-}
-Path GlobalSettings::getOutputPath(){
-	return destinationPath;
-}
-
-void GlobalSettings::setFFmpegPath(const Path& ffmpegPath){
-	this->ffmpegPath = ffmpegPath;
-	generator->setFFpath(ffmpegPath);
-	generator->save();
-}
-Path GlobalSettings::buildPath(const Path& first, const Path& second){
-	std::string path = Glib::build_filename(first.getPath(), second.getPath());
-	return Path(path);
 }

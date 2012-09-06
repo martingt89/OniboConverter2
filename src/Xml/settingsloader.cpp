@@ -19,9 +19,9 @@ SettingsLoader::SettingsLoader(const Path& settingsFilePath) {
 	pathToProperty.set(ffmpeg, FFMPEG_PATH_PROPERTY);
 
 	std::list<std::string> destination;
-	ffmpeg.push_back("settings");
-	ffmpeg.push_back("destination");
-	pathToProperty.set(ffmpeg, DESTINATION_PATH_PROPERTY);
+	destination.push_back("settings");
+	destination.push_back("destination");
+	pathToProperty.set(destination, DESTINATION_PATH_PROPERTY);
 }
 
 SettingsLoader::~SettingsLoader() {}

@@ -7,7 +7,7 @@
 
 #include "profilenamedialog.h"
 #include <gtkmm/stock.h>
-
+#include <iostream> //todo remove
 namespace Gui {
 
 ProfileNameDialog::ProfileNameDialog(const Glib::RefPtr<Gtk::Builder>& refGlade) {
@@ -17,7 +17,6 @@ ProfileNameDialog::ProfileNameDialog(const Glib::RefPtr<Gtk::Builder>& refGlade)
 
 	profileNameDialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 	profileNameDialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
-
 }
 
 ProfileNameDialog::~ProfileNameDialog() {}

@@ -25,6 +25,7 @@ private:
 	void searchForFolderClicked();
 	Gtk::Entry* outputFolder;
 	Gtk::Button* searchForFolder;
+	Gtk::MenuItem* outputDestMenu;
 	Gtk::FileChooserDialog folderChooser;
 };
 

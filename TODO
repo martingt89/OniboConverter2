@@ -5,7 +5,7 @@
  - add filters 										//medium priority
  - multithread converting for supported encoders	//medium
  - 2 pass encoding									//low priority
- - import a export profiles							//low priority
+ - import and export profiles						//low priority
 
 ========================================
 

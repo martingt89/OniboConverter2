@@ -14,6 +14,7 @@
 #include <gtkmm/treemodel.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/imagemenuitem.h>
 #include "../CppExtension/path.h"
 #include <list>
 namespace Gui {
@@ -61,6 +62,10 @@ private:
 	Gtk::Button* removeFile;
 	Gtk::Button* clearFiles;
 	Gtk::Button* fileInfoButton;
+	Gtk::ImageMenuItem* addFileMenuItem;
+	Gtk::ImageMenuItem* removeFileMenuItem;
+	Gtk::ImageMenuItem* clearFilesMenuItem;
+	Gtk::ImageMenuItem* fileInfoButtonMenuItem;
 	int fileCounter;
 	sigc::signal<void, PathWithFileId> infoEvent;
 	sigc::signal<void, PathWithFileId> deleteEvent;

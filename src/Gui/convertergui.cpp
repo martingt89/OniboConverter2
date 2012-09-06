@@ -7,10 +7,9 @@
 
 #include "convertergui.h"
 
-#include "../MediaFile/mediafile.h"
-#include <iostream>
 #include <glibmm/main.h>
 #include <sigc++/connection.h>
+#include "../MediaFile/mediafile.h"
 
 namespace Gui {
 
@@ -25,7 +24,7 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 		Gui::MainWindow* mainWindow) :
 		database(database), avControl(database, refGlade, profiles),
 		destinationControl(refGlade), fileControl(refGlade), infoControl(refGlade),
-		overwrite(refGlade), convertWindow(refGlade), mainWindow(mainWindow),
+		overwrite(refGlade), convertWindow(refGlade), settingsDialog(refGlade), mainWindow(mainWindow),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
 
 	refGlade->get_widget("mainNotebook", mainNotebook);
@@ -34,9 +33,15 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 	refGlade->get_widget("cancelSettingsButton", cancelSettingsButton);
 	refGlade->get_widget("convertButton", convertButton);
 	refGlade->get_widget("returnFromInfo", returnFromInfo);
+	refGlade->get_widget("settingsMenuItem", settingsMenuItem);
+	refGlade->get_widget("preferenceMenuItem", preferenceMenuItem);
+	refGlade->get_widget("quitMenuItem", quitMenuItem);
+	refGlade->get_widget("aboutMenuItem", aboutMenuItem);
+	refGlade->get_widget("aboutDialog", aboutDialog);
 
 	mainWindow->signal_key_release_event().connect(sigc::mem_fun(*this, &ConverterGui::onKeyRelease));
 	settingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::settingsButtonClicked));
+	settingsMenuItem->signal_activate().connect(sigc::mem_fun(*this, &ConverterGui::settingsButtonClicked));
 	okSettingsButton->signal_clicked().connect(sigc::mem_fun(*this, &ConverterGui::okSettingsButtonClicked));
 	cancelSettingsButton->signal_clicked().connect(
 			sigc::mem_fun(*this, &ConverterGui::cancelSettingsButtonClicked));
@@ -46,6 +51,9 @@ ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
 	fileControl.signalDelete().connect(sigc::mem_fun(*this, &ConverterGui::fileDeleteEvent));
 	convertWindow.signalHide().connect(sigc::mem_fun(*this, &ConverterGui::returnToMainPage));
 	mainWindow->signalClose().connect(sigc::mem_fun(*this, &ConverterGui::closeMainWindow));
+	quitMenuItem->signal_activate().connect(sigc::mem_fun(*this, &ConverterGui::closeMainWindow));
+	preferenceMenuItem->signal_activate().connect(sigc::mem_fun(settingsDialog, &Settings::UserSettingsDialog::start));
+	aboutMenuItem->signal_activate().connect(sigc::mem_fun(*this, &ConverterGui::showAboutDialog));
 }
 
 ConverterGui::~ConverterGui() {
@@ -141,9 +149,7 @@ void ConverterGui::convertButtonClicked(){
 }
 bool ConverterGui::onKeyRelease(GdkEventKey* event){
 	if(event->keyval == GDK_KEY_Escape){
-		if(mainNotebook->get_current_page() == CONFIG_SCREEN_PAGE ){
-			cancelSettingsButtonClicked();
-		}else if(mainNotebook->get_current_page() == INFO_SCREEN_PAGE){
+		if(mainNotebook->get_current_page() == INFO_SCREEN_PAGE){
 			returnToMainPage();
 		}
 	}
@@ -193,5 +199,9 @@ bool ConverterGui::convertTimer(){
 	}
 	convertWindow.display(!running);
 	return running;
+}
+void ConverterGui::showAboutDialog(){
+	aboutDialog->run();
+	aboutDialog->hide();
 }
 } /* namespace Gui */

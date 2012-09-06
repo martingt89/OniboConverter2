@@ -42,6 +42,9 @@ $(SRCPATH)/Gui/Video/resolutiondialog.cpp \
 $(SRCPATH)/Gui/Video/bitratedialog.cpp \
 $(SRCPATH)/Gui/Audio/audiocontrol.cpp \
 $(SRCPATH)/Gui/Audio/encodercontrola.cpp \
+$(SRCPATH)/Gui/Settings/general.cpp \
+$(SRCPATH)/Gui/Settings/threading.cpp \
+$(SRCPATH)/Gui/Settings/usersettingsdialog.cpp \
 $(SRCPATH)/ExternalTools/supportedencodersloader.cpp \
 $(SRCPATH)/ProcessExecutor/process.cpp \
 $(SRCPATH)/ProcessExecutor/safestream.cpp \
@@ -57,6 +60,7 @@ $(SRCPATH)/MediaFile/stream.cpp \
 $(SRCPATH)/MediaFile/videostream.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/globalsettings.cpp \
+$(SRCPATH)/userpreferences.cpp \
 $(SRCPATH)/main.cpp 
 
 AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -pedantic $(DEPS_CFLAGS)

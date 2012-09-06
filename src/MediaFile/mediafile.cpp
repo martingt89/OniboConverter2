@@ -12,7 +12,7 @@
 #include "mediafilescanner.h"
 #include "../Converter/convertparser.h"
 #include "../helper.h"
-#include "../globalsettings.h"
+#include "../userpreferences.h"
 #include "../ProcessExecutor/process.h"
 
 namespace MediaFile {
@@ -140,11 +140,11 @@ void MediaFile::convert(){
 			arguments.push_back(x);
 		}
 		arguments.push_back(getOutputFilePath().getPath());
-		auto ffmpeg = GlobalSettings::getInstance()->getFFmpegPath();
+		auto extConverter = UserPreferences::getInstance()->getExtConverterPath();
 
 		std::stringstream textCommand;
 		textCommand<<"command:"<<std::endl;
-		textCommand<<ffmpeg.getPath();
+		textCommand<<extConverter.getPath();
 		for(auto x : arguments){
 			textCommand<<" "<<x;
 		}
@@ -152,7 +152,7 @@ void MediaFile::convert(){
 		errorOutputBuffer << textCommand.str();
 
 		Converter::ConvertParser parser(fileInfo.duration);
-		process = new ProcessExecutor::Process(ffmpeg.getPath(), arguments);
+		process = new ProcessExecutor::Process(extConverter.getPath(), arguments);
 		process->waitForProcessBegin();
 		uniqueLock.unlock();
 		auto& stderr = process->getStdErr();

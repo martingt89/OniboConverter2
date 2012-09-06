@@ -8,7 +8,7 @@
 #include "destinationcontrol.h"
 #include <gtkmm/stock.h>
 #include <glibmm/miscutils.h>
-#include "../globalsettings.h"
+#include "../userpreferences.h"
 
 namespace Gui {
 
@@ -17,17 +17,17 @@ DestinationControl::DestinationControl(const Glib::RefPtr<Gtk::Builder>& refGlad
 
 	refGlade->get_widget("outputFolder", outputFolder);
 	refGlade->get_widget("searchFolder", searchForFolder);
+	refGlade->get_widget("outputDestMenu", outputDestMenu);
 
 	folderChooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 	folderChooser.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
-	Path outputDestination = GlobalSettings::getInstance()->getOutputPath();
+	Path outputDestination = UserPreferences::getInstance()->getConvertDestinationPath();
 
 	outputFolder->set_text(outputDestination.getPath());
 
-	searchForFolder->signal_clicked().connect(
-			sigc::mem_fun(*this, &DestinationControl::searchForFolderClicked)
-	);
+	searchForFolder->signal_clicked().connect(	sigc::mem_fun(*this, &DestinationControl::searchForFolderClicked));
+	outputDestMenu->signal_activate().connect(	sigc::mem_fun(*this, &DestinationControl::searchForFolderClicked));
 }
 
 DestinationControl::~DestinationControl() {

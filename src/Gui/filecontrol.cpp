@@ -19,10 +19,16 @@ FileControl::FileControl(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	fileChooser.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
 	refGlade->get_widget("fileTreeView", fileTreeView);
+
 	refGlade->get_widget("addFile", addFile);
 	refGlade->get_widget("removeFile", removeFile);
 	refGlade->get_widget("clearFiles", clearFiles);
 	refGlade->get_widget("fileInfoButton", fileInfoButton);
+
+	refGlade->get_widget("addFileMenuItem", addFileMenuItem);
+	refGlade->get_widget("removeFileMenuItem", removeFileMenuItem);
+	refGlade->get_widget("clearFilesMenuItem", clearFilesMenuItem);
+	refGlade->get_widget("fileInfoButtonMenuItem", fileInfoButtonMenuItem);
 
 	fileTreeModel = Gtk::ListStore::create(modelColumns);
 	fileTreeView->set_model(fileTreeModel);
@@ -40,6 +46,10 @@ FileControl::FileControl(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	removeFile->signal_clicked().connect(sigc::mem_fun(*this, &FileControl::removeFileClicked));
 	clearFiles->signal_clicked().connect(sigc::mem_fun(*this, &FileControl::clearFileClicked));
 	fileInfoButton->signal_clicked().connect(sigc::mem_fun(*this, &FileControl::fileInfoButtonClicked));
+	addFileMenuItem->signal_activate().connect(sigc::mem_fun(*this, &FileControl::addFileClicked));
+	removeFileMenuItem->signal_activate().connect(sigc::mem_fun(*this, &FileControl::removeFileClicked));
+	clearFilesMenuItem->signal_activate().connect(sigc::mem_fun(*this, &FileControl::clearFileClicked));
+	fileInfoButtonMenuItem->signal_activate().connect(sigc::mem_fun(*this, &FileControl::fileInfoButtonClicked));
 	fileTreeView->signal_row_activated().connect(sigc::mem_fun(*this, &FileControl::fileTreeViewActivated));
 }
 

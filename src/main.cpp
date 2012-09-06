@@ -21,8 +21,8 @@
 #include "Profile/profileloader.h"
 #include "Converter/dispenser.h"
 #include "globalsettings.h"
+#include "userpreferences.h"
 #include <unistd.h>
-#include <iostream>//todo remove
 
 int getNumberOfCPU(){
 	int cpus = sysconf(_SC_NPROCESSORS_ONLN);
@@ -38,7 +38,7 @@ class OniboConverter{
 private:
 	Path ffpresetPath;
 	Path xmlFilePath;
-	Path ffmpeg;
+	Path extConverter;
 	Path defaultProfilesFolder;
 	Path userprofilesFolder;
 	Gui::ConverterGui* converterGui;
@@ -56,16 +56,18 @@ public:
 	}
 
 	bool run(Gtk::Main& kit){
-		ffmpeg = GlobalSettings::getInstance()->getFFmpegPath();
-		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/model5a.glade");
+		extConverter = UserPreferences::getInstance()->getExtConverterPath();
+		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/converter.glade");
+		builder->add_from_file("data/dialogs.glade");
+		builder->add_from_file("data/user_settings.glade");
 
 		ExternalTools::SupportedEncodersLoader encodersLoader;
 		ConverterOptions::SupportedEncoders encoders;
 
-		bool res = encodersLoader.scan(encoders, ffmpeg);
+		bool res = encodersLoader.scan(encoders, extConverter);
 
 		if(!res){
-			Gui::FindFFmpegDialog findDialog(builder, ffmpeg);
+			Gui::FindFFmpegDialog findDialog(builder, extConverter);
 			kit.run(findDialog.getWindow());
 			return findDialog.isNewStart();
 		}else{

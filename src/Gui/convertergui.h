@@ -15,8 +15,8 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/notebook.h>
 #include <gtkmm/messagedialog.h>
-#include "../Profile/profile.h"
-#include "../ConverterOptions/optionsdatabase.h"
+#include <gtkmm/imagemenuitem.h>
+#include <gtkmm/aboutdialog.h>
 #include "avcontrol.h"
 #include "destinationcontrol.h"
 #include "filecontrol.h"
@@ -24,6 +24,9 @@
 #include "infocontrol.h"
 #include "overwritedialog.h"
 #include "mainwindow.h"
+#include "Settings/usersettingsdialog.h"
+#include "../Profile/profile.h"
+#include "../ConverterOptions/optionsdatabase.h"
 #include "../MediaFile/mediafile.h"
 
 namespace Gui {
@@ -49,6 +52,7 @@ private:
 	void fileDeleteEvent(const Gui::FileControl::PathWithFileId& file);
 	void showWarningDialog(const std::string& title, const std::string& message);
 	bool convertTimer();
+	void showAboutDialog();
 
 	ConverterOptions::OptionsDatabase &database;
 	AVControl avControl;
@@ -57,9 +61,10 @@ private:
 	InfoControl infoControl;
 	OverwriteDialog overwrite;
 	ConvertWindow convertWindow;
+	Settings::UserSettingsDialog settingsDialog;
+
 	Gui::MainWindow* mainWindow;
 	Gtk::MessageDialog warningDialog;
-//	Gtk::Window* mainWindow;
 
 	Gtk::Button* settingsButton;
 	Gtk::Button* okSettingsButton;
@@ -68,6 +73,13 @@ private:
 	Gtk::Button* fileInfoButton;
 	Gtk::Button* returnFromInfo;
 	Gtk::Notebook* mainNotebook;
+
+	Gtk::MenuItem* settingsMenuItem;
+	Gtk::ImageMenuItem* preferenceMenuItem;
+	Gtk::ImageMenuItem* quitMenuItem;
+	Gtk::ImageMenuItem* aboutMenuItem;
+
+	Gtk::AboutDialog* aboutDialog;
 
 	Gtk::Entry* entry;
 	sigc::signal<void, std::list<MediaFile::MediaFile*> > convertEvent;

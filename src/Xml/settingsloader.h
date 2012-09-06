@@ -17,7 +17,7 @@ namespace Xml {
 class SettingsLoader : public xmlpp::SaxParser {
 private:
 	enum SettingsProperty{
-		FFMPEG_PATH_PROPERTY, DESTINATION_PATH_PROPERTY
+		FFMPEG_PATH_PROPERTY = 0, DESTINATION_PATH_PROPERTY = 1
 	};
 public:
 	SettingsLoader(const Path& settingsFilePath);

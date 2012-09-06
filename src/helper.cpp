@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sys/time.h>
 
+//print message if expr is false!!!! - assert from c
 void assert(bool expr, std::string message){
 	if(!expr){
 		std::cerr<<message<<std::endl;
