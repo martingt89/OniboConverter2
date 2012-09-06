@@ -20,8 +20,8 @@ $(SRCPATH)/CppExtension/path.cpp \
 $(SRCPATH)/Profile/profile.cpp \
 $(SRCPATH)/Profile/profileloader.cpp \
 $(SRCPATH)/Xml/xmlprofileparser.cpp \
+$(SRCPATH)/Xml/xmlparser.cpp \
 $(SRCPATH)/Xml/xmlgenerator.cpp \
-$(SRCPATH)/Xml/xmlprofiletable.cpp \
 $(SRCPATH)/Xml/profilegenerator.cpp \
 $(SRCPATH)/Xml/settingsloader.cpp \
 $(SRCPATH)/Xml/settingsgenerator.cpp \
@@ -61,6 +61,7 @@ $(SRCPATH)/MediaFile/videostream.cpp \
 $(SRCPATH)/helper.cpp \
 $(SRCPATH)/globalsettings.cpp \
 $(SRCPATH)/userpreferences.cpp \
+$(SRCPATH)/xmlfilesdefinitions.cpp \
 $(SRCPATH)/main.cpp 
 
 AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -pedantic $(DEPS_CFLAGS)

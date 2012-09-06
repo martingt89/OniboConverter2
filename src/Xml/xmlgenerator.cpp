@@ -45,10 +45,10 @@ std::unique_ptr<Document> XmlGenerator::generateFromPath() {
 	pathData.sort(cmp);
 
 	std::unique_ptr<Document> document(new Document);
-	Xml::Node* node = new Xml::Node("profile");
+	Xml::Node* node = new Xml::Node(rootName);
 	document->setSubNode(node);
 	std::vector<std::string> path;
-	path.push_back("profile");
+	path.push_back(rootName);
 	generate(node, 0, pathData.begin(), pathData.end(), path, false);
 	return document;
 }

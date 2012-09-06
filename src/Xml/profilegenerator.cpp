@@ -7,7 +7,7 @@
 
 #include <fstream>
 #include "profilegenerator.h"
-#include "xmlprofiletable.h"
+#include "../xmlfilesdefinitions.h"
 #include "../helper.h"
 
 namespace Xml {
@@ -31,7 +31,7 @@ ProfileGenerator::ProfileGenerator(const Path& outputDirectory) : outputDirector
 ProfileGenerator::~ProfileGenerator() {}
 
 void ProfileGenerator::generateFile(const Profile::Profile& profile){
-	XmlProfileTable table;
+	auto& table = XmlFilesDefinitions::getInstance()->getProfileTable();
 	XmlGenerator generator("profile");
 	for(int opt = Profile::Profile::BEGIN_OPT;
 			opt != Profile::Profile::END_OPT; ++opt){

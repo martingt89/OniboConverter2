@@ -1,6 +1,4 @@
  - refactor mediafile!!!!
-
- - add settings dialog + config file				//medium
  
  - add filters 										//medium priority
  - multithread converting for supported encoders	//medium

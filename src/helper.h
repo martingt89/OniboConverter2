@@ -11,6 +11,8 @@
 #include <sstream>
 #include <string>
 #include <list>
+#include <initializer_list>
+
 
 long getAktualTimeMikro();
 
@@ -23,6 +25,8 @@ void assert(bool expr, std::string message);
 std::string getActualTimeMiliSec();
 
 std::list<std::string> trimStringBy(const std::string& string, const std::string& delimiter);
+
+std::list<std::string> toList(const std::initializer_list<std::string>& path);
 
 template<class T>
 std::string operator << (const std::string &s,  T i){

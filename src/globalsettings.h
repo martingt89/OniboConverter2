@@ -19,6 +19,7 @@ public:
 	Path getXmlConfigFilePath();
 	Path getDefaultProfilesPath();
 	Path getUserProfilesPath();
+	Path getUserSettingsFile();
 private:
 	GlobalSettings();
 	static GlobalSettings* instance;

@@ -6,7 +6,7 @@
  */
 
 /**
- * REWRITE, this is only temporary solution
+ * TODO rename
  */
 
 #include "globalsettings.h"
@@ -58,4 +58,7 @@ Path GlobalSettings::getDefaultProfilesPath(){
 }
 Path GlobalSettings::getUserProfilesPath(){
 	return userProfilesPath;
+}
+Path GlobalSettings::getUserSettingsFile(){
+	return userSettingsFile;
 }

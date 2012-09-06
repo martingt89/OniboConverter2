@@ -9,7 +9,7 @@
 #define XMLPROFILEPARSER_H_
 
 #include <libxml++/libxml++.h>
-#include "xmlprofiletable.h"
+#include "../xmlfilesdefinitions.h"
 #include "../CppExtension/path.h"
 #include "../CppExtension/hashmap.h"
 #include "../Profile/profile.h"
@@ -27,7 +27,6 @@ protected:
 	virtual void on_characters(const Glib::ustring& characters);
 	std::list<std::string> path;
 	Profile::Profile* actualProfile;
-	XmlProfileTable xmlProfileTable;
 };
 
 } /* namespace Xml */

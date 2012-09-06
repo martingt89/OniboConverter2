@@ -38,10 +38,14 @@ void XmlProfileParser::on_end_element(const Glib::ustring& name){
 	path.pop_back();
 }
 void XmlProfileParser::on_characters(const Glib::ustring& characters){
+	auto& xmlProfileTable = XmlFilesDefinitions::getInstance()->getProfileTable();
 	if(actualProfile){
 		std::string value = clearString(characters);
 		if(value.size() > 0){
-			Profile::Profile::Options options = xmlProfileTable.getOptionsFromList(path);
+			Profile::Profile::Options options;
+			if(!xmlProfileTable.getOptionsFromList(path, options)){
+				 options = Profile::Profile::UNKNOWN_OPT;
+			}
 			actualProfile->addProperty(options, value);
 		}
 	}

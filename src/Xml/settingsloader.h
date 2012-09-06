@@ -10,30 +10,17 @@
 
 #include "../CppExtension/path.h"
 #include "../CppExtension/hashmap.h"
-#include <libxml++/libxml++.h>
+#include "../userpreferences.h"
 
 namespace Xml {
 
-class SettingsLoader : public xmlpp::SaxParser {
-private:
-	enum SettingsProperty{
-		FFMPEG_PATH_PROPERTY = 0, DESTINATION_PATH_PROPERTY = 1
-	};
+class SettingsLoader{
 public:
 	SettingsLoader(const Path& settingsFilePath);
 	virtual ~SettingsLoader();
-	Path getFFConverterPath();
-	Path getDestinationPath();
-	bool load();
-protected:
-	virtual void on_start_element(const Glib::ustring& name, const AttributeList& attributes);
-	virtual void on_end_element(const Glib::ustring& name);
-	virtual void on_characters(const Glib::ustring& characters);
+	bool load(CppExtension::HashMap<UserPreferences::UserPreferencesOpt, std::string>& optToValue);
 private:
 	Path settingsFilePath;
-	std::list<std::string> path;
-	CppExtension::HashMap<std::list<std::string>, SettingsProperty> pathToProperty;
-	CppExtension::HashMap<SettingsProperty, std::string> propertyToValue;
 };
 
 } /* namespace Xml */

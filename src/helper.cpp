@@ -17,6 +17,14 @@ void assert(bool expr, std::string message){
 	}
 }
 
+std::list<std::string> toList(const std::initializer_list<std::string>& path){
+	std::list<std::string> listPath;
+	for (const std::string& x : path){
+		listPath.push_back(x);
+	}
+	return listPath;
+}
+
 long getAktualTimeMikro(){
 	timeval time;
 	gettimeofday(&time, NULL);

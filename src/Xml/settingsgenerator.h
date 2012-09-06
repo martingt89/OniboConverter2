@@ -8,22 +8,23 @@
 #ifndef SETTINGSGENERATOR_H_
 #define SETTINGSGENERATOR_H_
 
-#include "../CppExtension/path.h"
 #include "xmlgenerator.h"
+#include "../CppExtension/path.h"
+#include "../CppExtension/hashmap.h"
+#include "../userpreferences.h"
 
 namespace Xml {
 
 class SettingsGenerator {
 public:
-	SettingsGenerator(const Path& settingsFile, const Path& ffmpegPath, const Path& destination);
+	SettingsGenerator(const Path& destination);
 	virtual ~SettingsGenerator();
 	void setFFpath(const Path& ffmpegPath);
 	void setDestination(const Path& destination);
-	void save();
+	void save(CppExtension::HashMap<UserPreferences::UserPreferencesOpt, std::string> optToValue);
 private:
+	std::vector<PathNode> toPathVector(std::list<std::string> list, std::string value);
 	Path settingsFile;
-	Path ffmpegPath;
-	Path destination;
 };
 
 } /* namespace Xml */
