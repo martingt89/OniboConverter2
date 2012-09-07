@@ -29,9 +29,9 @@ public:
 		int fileID;
 	};
 public:
-	Dispenser(const int numberOfThreads = 1, const bool enableFileThreading = false);
+	Dispenser();
 	virtual ~Dispenser();
-	void processMediaFiles(const std::list<MediaFile::MediaFile*>& files);
+	void processMediaFiles(const std::list<MediaFile::MediaFile*>& files, const int& numOfThreads, bool fileThreading);
 private:
 	bool getNextMediaFile(MediaFile::MediaFile*& mediaFile);
 	void run();

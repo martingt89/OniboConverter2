@@ -40,7 +40,7 @@
 		<encoder bitrate="video_standard" type="v">mpeg2video</encoder>
 		<encoder bitrate="video_standard" type="v">mpeg1video</encoder>
 		<encoder bitrate="video_standard" type="v">mpeg1video_vdpau</encoder>
-		<encoder bitrate="video_standard" type="v" ffpreset="libvpx">libvpx</encoder>
+		<encoder bitrate="video_standard" type="v" ffpreset="libvpx" multithread="y">libvpx</encoder>
 		<encoder bitrate="video_standard" type="v">vp8</encoder>
 		<!-- Audio encoders -->
 		<encoder bitrate="audio_standard" type="a">libvorbis</encoder>

@@ -7,6 +7,7 @@
     <property name="type_hint">dialog</property>
     <property name="program_name">OniboConverter2</property>
     <property name="version">0.1</property>
+    <property name="logo">expg.png</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="aboutdialog-vbox1">
         <property name="can_focus">False</property>
@@ -37,6 +38,7 @@
   </object>
   <object class="GtkWindow" id="mainWindow">
     <property name="can_focus">False</property>
+    <property name="icon">expg.png</property>
     <child>
       <object class="GtkNotebook" id="mainNotebook">
         <property name="visible">True</property>

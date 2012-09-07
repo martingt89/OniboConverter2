@@ -54,7 +54,7 @@ public:
 	Path getPath() const;
 //	void setMetadata(std::string key, std::string value);
 	void clearConvertStatus();
-	void convert();
+	void convert(const bool enableFileThreading = false, const int numOfThreads =1);
 	std::string getShortName();
 	std::string getRemainingTime();
 	int getPercentage();
@@ -62,6 +62,7 @@ public:
 	ConvertFileState getConvertState();
 	int getFileId();
 	bool isEnded();
+	bool isSupportFileThreding() const;
 
 	void abort();
 	void enableOverwriteFile();

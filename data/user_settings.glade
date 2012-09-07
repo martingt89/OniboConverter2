@@ -279,6 +279,7 @@
                       <object class="GtkCheckButton" id="enableMultForEncoders">
                         <property name="label" translatable="yes">Enable multithread encoding for supported encoders</property>
                         <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>

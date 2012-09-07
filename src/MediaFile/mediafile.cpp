@@ -118,7 +118,7 @@ void MediaFile::clearConvertStatus(){
 	isAbort = false;
 	errorOutputBuffer.clear();
 }
-void MediaFile::convert(){
+void MediaFile::convert(const bool enableFileThreading, const int numOfThreads){
 	if(valid){
 		std::unique_lock<std::mutex> uniqueLock(mutex);
 		while(this->getOutputFilePath().exist() && !enableOverwrite && !isAbort){
@@ -128,6 +128,9 @@ void MediaFile::convert(){
 		if(isAbort){
 			status = ABORT;
 			return;
+		}
+		if(enableFileThreading){
+			settingsList.enableFileThreading(numOfThreads);
 		}
 		status = PROCESSING;
 
@@ -221,6 +224,10 @@ int MediaFile::getFileId(){
 bool MediaFile::isEnded(){
 	return (status == FINISH) || (status == INVALID_FILE) || (status == ABORT) || (status == FAIL);
 }
+bool MediaFile::isSupportFileThreding() const{
+	return settingsList.isSupportFileThreading();
+}
+
 void MediaFile::abort(){
 	std::unique_lock<std::mutex> uniqueLock(mutex);
 	if(!isEnded()){

@@ -10,9 +10,7 @@
 #include <algorithm>
 namespace Profile {
 
-Profile::Profile(){
-
-}
+Profile::Profile(){}
 
 Profile::~Profile() {}
 

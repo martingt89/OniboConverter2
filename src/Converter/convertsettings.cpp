@@ -48,7 +48,7 @@ ConvertSettingsList::ConvertSettingsList(){
 		commandToStr.set(ConvertSettings::NOAUDIO, "-an");
 		commandToStr.set(ConvertSettings::SIZE, "-s");
 		commandToStr.set(ConvertSettings::CHANNELS, "-ac");
-		commandToStr.set(ConvertSettings::MULTITHREAD, "-thread");
+		commandToStr.set(ConvertSettings::MULTITHREAD, "-threads");
 		commandToStr.set(ConvertSettings::FFPRESET, "-fpre");
 	}
 }
@@ -82,7 +82,7 @@ std::list<std::string> ConvertSettingsList::getArguments() const {
 		if(x.getCommand() == ConvertSettings::USER_DEFINED){
 			args.push_back(x.getUserCommand());
 		}else{
-			if(x.getCommand() == ConvertSettings::MULTITHREAD){
+			if(x.getCommand() == ConvertSettings::MULTITHREAD && x.getValueList().size() == 0){
 				continue;
 			}
 			args.push_back(commandToStr.get(x.getCommand()));
@@ -105,5 +105,19 @@ std::string ConvertSettingsList::getContainerName() const{
 		return container;
 	}
 	return std::string();
+}
+bool ConvertSettingsList::isSupportFileThreading() const{
+	auto iter = std::find_if(arguments.begin(), arguments.end(), [](const ConvertSettings& settings)->bool{
+		return settings.getCommand() == ConvertSettings::MULTITHREAD;
+	});
+	return iter != arguments.end();
+}
+void ConvertSettingsList::enableFileThreading(const int& numOfThreads){
+	auto iter = std::find_if(arguments.begin(), arguments.end(), [](const ConvertSettings& settings)->bool{
+		return settings.getCommand() == ConvertSettings::MULTITHREAD;
+	});
+	if(iter != arguments.end()){
+		iter->addValue(toS(numOfThreads));
+	}
 }
 } /* namespace Converter */

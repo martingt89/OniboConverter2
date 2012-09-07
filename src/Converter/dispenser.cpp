@@ -9,17 +9,33 @@
 
 namespace Converter {
 
-Dispenser::Dispenser(const int numberOfThreads, const bool enableFileThreading) :
-		numberOfThreads(numberOfThreads), enableFileThreading(enableFileThreading){
+Dispenser::Dispenser() {
+	numberOfThreads = 1;
+	enableFileThreading = false;
 }
 
 Dispenser::~Dispenser() {}
 
-void Dispenser::processMediaFiles(const std::list<MediaFile::MediaFile*>& files){
+void Dispenser::processMediaFiles(const std::list<MediaFile::MediaFile*>& files,
+		const int& numOfThreads, bool fileThreading){
+	numberOfThreads = numOfThreads;
+	enableFileThreading = false;
+
+	int numOfSupportedThreading = 0;
 	for (auto file : files){
 		filesToProcessing.push_back(file);
+		if(file->isSupportFileThreding()){
+			numOfSupportedThreading++;
+		}
 	}
-	if(!enableFileThreading){
+
+	if(fileThreading && numOfSupportedThreading > 0){
+		enableFileThreading = true;
+	}
+
+	if(enableFileThreading){
+		processThreads.push_back(new std::thread(&Dispenser::run, this));
+	}else{
 		for(int i = 0; i < numberOfThreads; ++i){
 			processThreads.push_back(new std::thread(&Dispenser::run, this));
 		}
@@ -32,7 +48,7 @@ void Dispenser::run(){
 		if(!file->isSet()){
 			file->scanMediaFile();
 		}
-		file->convert();
+		file->convert(enableFileThreading, numberOfThreads);
 	}
 }
 bool Dispenser::getNextMediaFile(MediaFile::MediaFile*& mediaFile){

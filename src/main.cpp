@@ -32,8 +32,6 @@ int getNumberOfCPU(){
 	return cpus;
 }
 
-static const int numberOfThreads = getNumberOfCPU();
-
 class OniboConverter{
 private:
 	Path ffpresetPath;
@@ -44,7 +42,7 @@ private:
 	Gui::ConverterGui* converterGui;
 	Converter::Dispenser dispenser;
 public:
-	OniboConverter(): converterGui(NULL), dispenser(numberOfThreads, false){
+	OniboConverter(): converterGui(NULL){
 		ffpresetPath = GlobalSettings::getInstance()->getFFpresetFolder();
 		xmlFilePath = GlobalSettings::getInstance()->getXmlConfigFilePath();
 		defaultProfilesFolder = GlobalSettings::getInstance()->getDefaultProfilesPath();
@@ -52,7 +50,14 @@ public:
 	}
 
 	void convert(std::list<MediaFile::MediaFile*> mediaFiles){
-		dispenser.processMediaFiles(mediaFiles);
+		int numberOfThreads = 1;
+		if(UserPreferences::getInstance()->isAutomaticNumberOfCPU()){
+			numberOfThreads = getNumberOfCPU();
+		}else{
+			numberOfThreads = UserPreferences::getInstance()->getNumerOfCPU();
+		}
+		bool enableFileMultithreading = UserPreferences::getInstance()->isMultithreadinForEncoders();
+		dispenser.processMediaFiles(mediaFiles, numberOfThreads, enableFileMultithreading);
 	}
 
 	bool run(Gtk::Main& kit){

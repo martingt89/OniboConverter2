@@ -43,6 +43,8 @@ public:
 	std::string getPrintString() const;
 	std::list<std::string> getArguments() const;
 	std::string getContainerName() const;
+	bool isSupportFileThreading() const;
+	void enableFileThreading(const int& numOfThreads);
 private:
 	std::list<ConvertSettings> arguments;
 	static CppExtension::HashMap<ConvertSettings::Command, std::string> commandToStr;
