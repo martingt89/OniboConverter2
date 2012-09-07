@@ -7,11 +7,10 @@
 
 #include "profileloader.h"
 #include <giomm/file.h>
-#include <iostream> //todo remove
+#include <iostream> //todo remove replace with log
 #include <glibmm/miscutils.h>
 
 namespace Profile {
-
 
 ProfileLoader::ProfileLoader() {}
 
@@ -34,7 +33,7 @@ bool ProfileLoader::load(const Path& profilesFolder, Profiles& profiles){
 }
 
 bool ProfileLoader::parseProfileFromFile(const Path& file, Profile& profile){
-	return parser.parseFile(file, profile);
+	return parser.load(file, profile);
 }
 
 bool ProfileLoader::getRegularFilesFromFolder(const Path& profilesFolder, std::list<Path>& profileFiles) {

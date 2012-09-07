@@ -19,10 +19,10 @@ $(SRCPATH)/RegexTools/regextools.cpp \
 $(SRCPATH)/CppExtension/path.cpp \
 $(SRCPATH)/Profile/profile.cpp \
 $(SRCPATH)/Profile/profileloader.cpp \
-$(SRCPATH)/Xml/xmlprofileparser.cpp \
 $(SRCPATH)/Xml/xmlparser.cpp \
 $(SRCPATH)/Xml/xmlgenerator.cpp \
 $(SRCPATH)/Xml/profilegenerator.cpp \
+$(SRCPATH)/Xml/profileparser.cpp \
 $(SRCPATH)/Xml/settingsloader.cpp \
 $(SRCPATH)/Xml/settingsgenerator.cpp \
 $(SRCPATH)/Gui/convertergui.cpp \

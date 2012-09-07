@@ -10,7 +10,7 @@
 
 #include "../CppExtension/path.h"
 #include "profile.h"
-#include "../Xml/xmlprofileparser.h"
+#include "../Xml/profileparser.h"
 #include "../ConverterOptions/ffpreset.h"
 namespace Profile {
 
@@ -22,7 +22,7 @@ public:
 private:
 	bool parseProfileFromFile(const Path& file, Profile& profile);
 	bool getRegularFilesFromFolder(const Path& profilesFolder, std::list<Path>& profileFiles);
-	Xml::XmlProfileParser parser;
+	Xml::ProfileParser parser;
 };
 
 } /* namespace Profile */
