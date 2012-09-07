@@ -94,14 +94,27 @@ bool Matcher::find(){
 	return false;
 }
 std::string Matcher::getGroup(const unsigned int& number) const{
-	if(number >= numberOfGroups){
+	if(number >= numberOfGroups || groups[number].rm_eo == -1 || groups[number].rm_so == -1){
 		return "";
 	}
-
 	int n = groups[number].rm_eo - groups[number].rm_so;
 	return text.substr(backPosition + groups[number].rm_so, n);
 }
+bool Matcher::getGroup(const unsigned int& number, std::string& groupText) const{
+	if(number >= numberOfGroups || groups[number].rm_eo == -1 || groups[number].rm_so == -1){
+		return false;
+	}
 
+	int n = groups[number].rm_eo - groups[number].rm_so;
+
+	try{
+		groupText = text.substr(backPosition + groups[number].rm_so, n);
+	}catch(const std::exception& ex){
+		//todo log???
+		return false;
+	}
+	return true;
+}
 RegexException::RegexException(const std::string& message){
 	this->message = message;
 }

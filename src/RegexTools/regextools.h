@@ -36,10 +36,12 @@ private:
 
 class Matcher{
 public:
-	Matcher (const std::string& text, const regex_t& regex);	//Don't use constructor manualy -> call RegexTools::getMatcher
+	//Don't use constructor manualy -> call RegexTools::getMatcher
+	Matcher (const std::string& text, const regex_t& regex);
 	~Matcher();
 	bool find();
 	std::string getGroup(const unsigned int& number) const;
+	bool getGroup(const unsigned int& number, std::string& text) const;
 private:
 	regex_t regex;
 	regmatch_t *groups;

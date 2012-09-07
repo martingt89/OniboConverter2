@@ -32,21 +32,26 @@ bool ConvertParser::processLine(const std::string& line, double& fraction, int& 
 	}else{
 		return false;
 	}
-	if(aktime > aktualTime){
-		long aktualWorldTime = getAktualTimeMikro();
-		double elapsed = (aktualWorldTime - lastWorldTime)/1000000.0;
-		lastWorldTime = aktualWorldTime;
-		double diff = aktime - aktualTime;
-		aktualTime = aktime;
-		addRecord(diff, elapsed);
-		double speed = getNumSecPerSec();
-		double estimate = duration - aktualTime;
-		remainingTime = estimate / speed;
-	}else{
-		remainingTime = -1;
-	}
+	if(duration >= 0){
+		if(aktime > aktualTime){
+			long aktualWorldTime = getAktualTimeMikro();
+			double elapsed = (aktualWorldTime - lastWorldTime)/1000000.0;
+			lastWorldTime = aktualWorldTime;
+			double diff = aktime - aktualTime;
+			aktualTime = aktime;
+			addRecord(diff, elapsed);
+			double speed = getNumSecPerSec();
+			double estimate = duration - aktualTime;
+			remainingTime = estimate / speed;
+		}else{
+			remainingTime = -1;
+		}
 
-	fraction = aktualTime / duration + 0.005;
+		fraction = aktualTime / duration + 0.005;
+	}else{
+		remainingTime = 0;
+		fraction = 0;
+	}
 	return true;
 }
 void ConvertParser::addRecord(double diff, double elapsed){

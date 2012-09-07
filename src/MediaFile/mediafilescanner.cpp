@@ -12,7 +12,7 @@
 namespace MediaFile {
 
 MediaFileScanner::MediaFileScanner(Path filePath) :
-		durationRegex("Duration: ([\\.:[:digit:]]+), start: ([\\.[:digit:]]+), bitrate: (.*)"),
+		durationRegex("Duration: ([\\.:[:digit:]]+|N/A), start: ([\\.[:digit:]]+), bitrate: (.*)"),
 		videoStreamRegex("Stream #(.+): Video: ([^,]+), ([^,]+), ([[:digit:]]+)x([[:digit:]]+)[^,]*,(.*)$"),
 		audioStreamRegex("Stream #(.+): Audio: ([^,]+), ([[:digit:]]+) Hz(.*)$"),
 		metadataRegex("^[[:space:]]{4}([^[:space:]]+)[^:]*:[[:space:]]*(.+)$"), filePath(filePath) {
@@ -105,20 +105,27 @@ void MediaFileScanner::parseLine(const std::string &line){
 }
 
 void MediaFileScanner::parseDuration(const RegexTools::Matcher &matcher){	//magic, don't touch this
-	bitrate = matcher.getGroup(3);
+	matcher.getGroup(3, bitrate);
+	std::string startPosStr = "";
+	matcher.getGroup(2, startPosStr);
+	startPosition = toN(startPosStr, double());
 
-	startPosition = toN(matcher.getGroup(2), double());
-
-	std::string tmp = matcher.getGroup(1)+":";
-	std::string first;
-	std::string rest;
-	double number;
-	duration = 0;
-	while(trimBy(":", tmp, first, rest)){
-		duration *= 60;
-		number = toN(first, double());
-		duration += number;
-		tmp = rest;
+	std::string tmp = "";
+	matcher.getGroup(1, tmp);
+	if(tmp != "N/A"){
+		tmp += ":";
+		std::string first;
+		std::string rest;
+		double number;
+		duration = 0;
+		while(trimBy(":", tmp, first, rest)){
+			duration *= 60;
+			number = toN(first, double());
+			duration += number;
+			tmp = rest;
+		}
+	}else{
+		duration = -1;
 	}
 }
 

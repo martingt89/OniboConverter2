@@ -45,7 +45,11 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	videoStream.remove_all();
 	audioStream.remove_all();
 	filePath->set_text(actualMediaFile->getPath().getPath());
-	duration << (toS(info.duration) + " sec");
+	if(info.duration >= 0){
+		duration << (toS(info.duration) + " sec");
+	}else{
+		duration << std::string("N/A");
+	}
 	startTime << (toS(info.startTime) + " sec");
 	bitrate << info.bitrate;
 
