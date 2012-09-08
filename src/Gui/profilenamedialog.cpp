@@ -7,7 +7,7 @@
 
 #include "profilenamedialog.h"
 #include <gtkmm/stock.h>
-#include <iostream> //todo remove
+
 namespace Gui {
 
 ProfileNameDialog::ProfileNameDialog(const Glib::RefPtr<Gtk::Builder>& refGlade) {
@@ -26,8 +26,8 @@ bool ProfileNameDialog::getName(std::string& name){
 	profileNameMessage->set_text("");
 	while(profileNameDialog->run() == Gtk::RESPONSE_OK){
 		if(profileNameEntry->get_text().size() == 0){
-			profileNameMessage->set_markup(std::string("<span color='red'>")+
-					"Invalid profile name"+std::string("</span>"));
+			profileNameMessage->set_markup(
+					std::string("<span color='red'>") + "Invalid profile name"+std::string("</span>") );
 		}else{
 			name = profileNameEntry->get_text();
 			profileNameDialog->hide();

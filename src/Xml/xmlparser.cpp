@@ -7,7 +7,7 @@
 
 #include "xmlparser.h"
 #include "../helper.h"
-#include <iostream>
+#include <iostream>	//todo replace with logging
 
 namespace Xml {
 
@@ -15,9 +15,7 @@ XmlParser::XmlParser() {
 	data = NULL;
 }
 
-XmlParser::~XmlParser() {
-	// TODO Auto-generated destructor stub
-}
+XmlParser::~XmlParser() {}
 
 bool XmlParser::parseFile(const Path& filePath, XmlParserData* data){
 	this->data = data;

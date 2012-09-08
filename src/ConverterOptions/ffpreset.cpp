@@ -5,10 +5,10 @@
  *      Author: martint
  */
 
-#include "ffpreset.h"
-#include "../RegexTools/regextools.h"
 #include <giomm/file.h>
 #include <glibmm/miscutils.h>
+#include "ffpreset.h"
+#include "../RegexTools/regextools.h"
 
 namespace ConverterOptions {
 

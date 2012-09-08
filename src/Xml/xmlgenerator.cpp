@@ -6,6 +6,7 @@
  */
 
 #include "xmlgenerator.h"
+#include "../helper.h"
 
 namespace Xml {
 
@@ -26,17 +27,15 @@ struct VectorCompare{
 
 //===================================================================
 
-XmlGenerator::XmlGenerator(const std::string& rootName) : rootName(rootName){
+XmlGenerator::XmlGenerator(const std::string& rootName) : rootName(rootName){}
 
-}
-XmlGenerator::~XmlGenerator(){
+XmlGenerator::~XmlGenerator(){}
 
-}
 void XmlGenerator::addPath(const std::vector<PathNode>& path){
-	if(path.size() == 0 || path[0].name != rootName){
-		//todo assert
-	}else{
+	if(path.size() > 0 && path[0].name == rootName){
 		pathData.push_back(path);
+	}else{
+		//todo log?
 	}
 }
 
@@ -69,11 +68,9 @@ void XmlGenerator::generate(Xml::Node* node, unsigned int depth,
 			}
 			++counter;
 		}
-		if(counter > 0){
-			--counter;
-		}else{
-			//todo assert
-		}
+		assert(counter > 0, "Counter is not great then 0");
+
+		--counter;
 		int diff = depth - counter;
 		for (int i = 0; i < diff; ++i){
 			node = node->getParent();
