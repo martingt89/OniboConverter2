@@ -158,7 +158,8 @@ void AVControl::initProfiles(const Profile::Profiles& profiles,
 		ComboBoxExt<Profile::Profile> &profilesComboBox){
 	profilesComboBox.append(CUSTOM_PROFILE);
 	profilesComboBox.set_active_row_number(0);
-	for(auto profile : profiles){
+	auto profileList = profiles.getProfiles();
+	for(auto profile : profileList){
 		profilesComboBox.append(profile.getName(), profile);
 	}
 }

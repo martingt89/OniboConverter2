@@ -21,6 +21,7 @@
     <property name="border_width">5</property>
     <property name="default_width">600</property>
     <property name="default_height">500</property>
+    <property name="icon">expg.png</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox12">
@@ -96,6 +97,7 @@
     <property name="border_width">5</property>
     <property name="default_width">500</property>
     <property name="default_height">150</property>
+    <property name="icon">expg.png</property>
     <child>
       <object class="GtkBox" id="box49">
         <property name="visible">True</property>
@@ -244,6 +246,7 @@
     <property name="border_width">5</property>
     <property name="default_width">500</property>
     <property name="default_height">400</property>
+    <property name="icon">expg.png</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox13">
@@ -500,6 +503,7 @@
     <property name="border_width">10</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
+    <property name="icon">expg.png</property>
     <property name="type_hint">dialog</property>
     <child>
       <object class="GtkBox" id="box64">
@@ -713,6 +717,7 @@
   <object class="GtkDialog" id="profileNameDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="icon">expg.png</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox15">
@@ -815,6 +820,7 @@
     <property name="border_width">5</property>
     <property name="default_width">500</property>
     <property name="default_height">450</property>
+    <property name="icon">expg.png</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox17">
@@ -1013,6 +1019,7 @@
   <object class="GtkMessageDialog" id="stopConvertingDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="icon">expg.png</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="message_type">question</property>
@@ -1046,6 +1053,7 @@
   <object class="GtkDialog" id="videoBitrateDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="icon">expg.png</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox19">

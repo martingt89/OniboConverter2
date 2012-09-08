@@ -1,8 +1,7 @@
  - refactor mediafile!!!!
  
- - add filters 										//medium priority
- - multithread converting for supported encoders	//medium
- - 2 pass encoding									//low priority
+ - add filters 								//medium priority
+ - 2 pass encoding							//low priority
  - import and export profiles						//low priority
 
 ========================================

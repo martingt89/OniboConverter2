@@ -18,7 +18,7 @@
 #include "Gui/mainwindow.h"
 #include "MediaFile/mediafile.h"
 #include "Profile/profile.h"
-#include "Profile/profileloader.h"
+#include "Profile/profiles.h"
 #include "Converter/dispenser.h"
 #include "globalsettings.h"
 #include "userpreferences.h"
@@ -82,9 +82,7 @@ public:
 
 			Profile::Profiles profiles;
 
-			Profile::ProfileLoader loader;
-			loader.load(defaultProfilesFolder, profiles);
-			loader.load(userprofilesFolder, profiles);
+			profiles.load();
 
 			Gui::MainWindow* mainWindow;
 			builder->get_widget_derived("mainWindow", mainWindow);

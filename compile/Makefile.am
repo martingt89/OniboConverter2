@@ -18,11 +18,11 @@ $(SRCPATH)/ConverterOptions/supportedencoders.cpp \
 $(SRCPATH)/RegexTools/regextools.cpp \
 $(SRCPATH)/CppExtension/path.cpp \
 $(SRCPATH)/Profile/profile.cpp \
-$(SRCPATH)/Profile/profileloader.cpp \
+$(SRCPATH)/Profile/profiles.cpp \
 $(SRCPATH)/Xml/xmlparser.cpp \
 $(SRCPATH)/Xml/xmlgenerator.cpp \
 $(SRCPATH)/Xml/profilegenerator.cpp \
-$(SRCPATH)/Xml/profileparser.cpp \
+$(SRCPATH)/Xml/profileloader.cpp \
 $(SRCPATH)/Xml/settingsloader.cpp \
 $(SRCPATH)/Xml/settingsgenerator.cpp \
 $(SRCPATH)/Gui/convertergui.cpp \

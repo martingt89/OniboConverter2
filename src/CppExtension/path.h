@@ -9,6 +9,7 @@
 #define PATH_H_
 
 #include <string>
+#include <list>
 
 class Path {
 public:
@@ -24,6 +25,7 @@ public:
 	std::string getPath() const;
 	std::string getLastPathPart() const;
 	bool exist() const;
+	bool getSubfiles(std::list<Path>& fileList) const;
 	bool operator==(const Path& path) const;
 private:
 	std::string path;

@@ -10,7 +10,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <glibmm/miscutils.h>
-//#include <iostream>
+#include <iostream>
+#include <giomm/file.h>
 
 Path::Path(std::string path,  PathType type) : path(path), type(type) {}
 
@@ -37,6 +38,31 @@ std::string Path::getLastPathPart() const{
 	return tmpPath;
 }
 
+bool Path::getSubfiles(std::list<Path>& fileList) const{
+	try {
+		Glib::RefPtr<Gio::File> directory = Gio::File::create_for_path(path);
+		if (!directory) {
+			std::cerr << "folder not found" << std::endl;
+			return false;
+		}
+		Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
+		if (!enumerator) {
+			std::cerr << "Gio::File::enumerate_children() returned an empty RefPtr." << std::endl;
+			return false;
+		}
+		Glib::RefPtr<Gio::FileInfo> file_info = enumerator->next_file();
+		while (file_info) {
+			if (file_info->get_file_type() == Gio::FILE_TYPE_REGULAR) {
+				fileList.push_back(Path(directory->get_path(), file_info->get_name()));
+			}
+			file_info = enumerator->next_file();
+		}
+	} catch (const Glib::Exception& ex) {
+		std::cerr << ex.what() << std::endl;
+	}
+	return true;
+}
+
 bool Path::create() const{
 	int res = mkdir(path.c_str(), 0777);
 	if (res == 0){
@@ -49,7 +75,6 @@ bool Path::create() const{
 }
 
 bool Path::exist() const{
-//	std::cout<<"testujem: "<<path<<std::endl;
 	struct stat buffer ;
 	if ( stat( path.c_str(), &buffer ) == 0 ){
 		return true;

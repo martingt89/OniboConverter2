@@ -1,22 +1,22 @@
 /*
- * profileparser.cpp
+ * profileloader.cpp
  *
  *  Created on: 7.9.2012
  *      Author: martin
  */
 
-#include "profileparser.h"
+#include "profileloader.h"
 
 #include "xmlparser.h"
 #include "../xmlfilesdefinitions.h"
 
 namespace Xml {
 
-ProfileParser::ProfileParser() {}
+ProfileLoader::ProfileLoader() {}
 
-ProfileParser::~ProfileParser() {}
+ProfileLoader::~ProfileLoader() {}
 
-bool ProfileParser::load(const Path& profileFilePath, Profile::Profile& profile){
+bool ProfileLoader::load(const Path& profileFilePath, Profile::Profile& profile){
 	XmlParser parser;
 	XmlParserData data;
 	if(!parser.parseFile(profileFilePath, &data)){

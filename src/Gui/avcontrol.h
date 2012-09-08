@@ -14,7 +14,7 @@
 #include "WidgetAdapter/comboboxext.h"
 #include "Video/videocontrol.h"
 #include "Audio/audiocontrol.h"
-#include "../Profile/profile.h"
+#include "../Profile/profiles.h"
 #include "../Converter/convertsettings.h"
 #include "../ConverterOptions/optionsdatabase.h"
 

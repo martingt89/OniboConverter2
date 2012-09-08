@@ -45,7 +45,7 @@ public:
 	FFpresets(const std::string& prefix);
 	FFpresets(const std::string& prefix, const Path& ffpresetsDirectory, const bool& buildin);
 	void addFFpreset(const FFpreset& ffpreset);
-	bool loadFromFolder(const Path& path, const bool& buildin);
+	void loadFromFolder(const Path& path, const bool& buildin);
 	std::list<FFpreset> getFFpresetList();
 private:
 	std::list<FFpreset> ffpresets;

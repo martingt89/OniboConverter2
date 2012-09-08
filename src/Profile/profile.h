@@ -84,7 +84,7 @@ private:
 	std::list<ManualSettings> settings;
 };
 
-typedef std::list<Profile> Profiles;
+//typedef std::list<Profile> Profiles;
 
 } /* namespace Profile */
 #endif /* PROFILE_H_ */
