@@ -1,1 +1,1 @@
-SUBDIRS=compile po
+SUBDIRS=src po

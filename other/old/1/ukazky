@@ -1,0 +1,67 @@
+ ulozenie povodnych ukazok
+	Settings *set = Settings::getSettings();
+	set->setValue(Settings::FFPATH, "ffmpeg");
+	set->setValue(Settings::ENCODERS, "encoders_table.xml");
+	set->setValue(Settings::CONTAINERS, "container_settings.xml");
+	set->setValue(Settings::GUISETTINGS, "gui_settings.xml");
+
+	//	MediaInfo::InfoLoader info("/media/data_int/shared/Filmy/HD filmy/28.Days.Later/dmt-28dl.avi");
+
+//	std::string path = FFTools::ImageCreator::createImage(info.getMediaInfo(), 100);
+//	std::cout<<"path: "<<path<<std::endl;
+
+	FFTools::SuportedEncoders encs;
+
+	AVBox::AVBox box;
+	XML::ContainersParser parser;
+	parser.parse(box);
+
+	AVBox::FormatToEncoders convert;
+	XML::EncodersParser encodersParser;
+	encodersParser.parse(convert);
+
+	std::cout<<box.getContainerList()<<std::endl;
+	std::cout<<box.getContainer("3gp").getVideoFormats()<<std::endl;
+
+	std::list<AVBox::Encoder> listEnc = box.getContainer("mkv").
+			getVideoFormat("H264").getAvailableEncoders(encs, convert);
+
+	std::cout<<listEnc<<std::endl;
+
+	AVBox::GuiSettings guiSettings;
+
+	XML::GuiSettingsParser guiParser;
+
+	guiParser.parse(guiSettings);
+
+//
+//	//std::cout<<"ret: "<<ret<<std::endl;
+//
+//	std::cout<< "Containers: "<<box.getContainerList()<<std::endl;
+//
+//	std::cout<< "mkv: "<<box.getContainer("mkv").getVideoFormats()<<std::endl;
+//	std::cout<< "avi: "<<box.getContainer("avi").getVideoFormats()<<std::endl;
+
+//	AVBox::Encoders convert;
+//
+//	XML::EncodersParser encodersParser;
+//
+//	encodersParser.parse(convert);
+
+//	std::cout<< "mkv: "<<box.getContainer("mkv").getVideoFormat("MPEG4").getAvailableCodecs()<<std::endl;
+//	std::list<std::string>::iterator it;
+//	std::list<std::string> list = box.getContainerList();
+//	for(it = list.begin(); it != list.end(); ++it){
+//		std::cout<<"Container: "<<*it<<std::endl;
+//	}
+
+//	std::cout<<info.getMediaInfo().getState()<<std::endl;
+
+//	FFTools::SuportedEncoders encs;
+
+//	MediaInfo::InfoLoader info("/home/martint/Obrázky/telapathy.jpg");
+//	MediaInfo::InfoLoader info("/home/martint/Obrázky/thumbsup.png");
+//	MediaInfo::InfoLoader info("/home/martint/cv.od");
+
+
+*/

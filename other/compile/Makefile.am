@@ -1,0 +1,99 @@
+bin_PROGRAMS=OniboConverter2
+
+SRCPATH=../src
+
+MediaElement= \
+$(SRCPATH)/MediaElement/audiograde.cpp \
+$(SRCPATH)/MediaElement/channel.cpp \
+$(SRCPATH)/MediaElement/container.cpp \
+$(SRCPATH)/MediaElement/samplerate.cpp \
+$(SRCPATH)/MediaElement/bitrate.cpp \
+$(SRCPATH)/MediaElement/encoder.cpp \
+$(SRCPATH)/MediaElement/resolution.cpp \
+$(SRCPATH)/MediaElement/format.cpp \
+$(SRCPATH)/MediaElement/framerate.cpp \
+$(SRCPATH)/MediaElement/ffpreset.cpp \
+$(SRCPATH)/MediaElement/elementsdb.cpp \
+$(SRCPATH)/MediaElement/elementsrelations.cpp 
+
+Profile=\
+$(SRCPATH)/Profile/configuration.cpp \
+$(SRCPATH)/Profile/profile.cpp \
+$(SRCPATH)/Profile/profiles.cpp 
+
+Xml=\
+$(SRCPATH)/Xml/profileloader.cpp \
+$(SRCPATH)/Xml/xmlparser.cpp \
+$(SRCPATH)/Xml/xmlgenerator.cpp \
+$(SRCPATH)/Xml/settingsloader.cpp \
+$(SRCPATH)/Xml/settingsgenerator.cpp \
+$(SRCPATH)/xmlfilesdefinitions.cpp \
+$(SRCPATH)/Xml/optionsloaderxml.cpp \
+$(SRCPATH)/Xml/profilegenerator.cpp 
+
+MediaFile=\
+$(SRCPATH)/MediaFile/mediafile.cpp \
+$(SRCPATH)/MediaFile/mediafilescanner.cpp \
+$(SRCPATH)/MediaFile/audiostream.cpp \
+$(SRCPATH)/MediaFile/stream.cpp \
+$(SRCPATH)/MediaFile/videostream.cpp 
+
+Gui=\
+$(SRCPATH)/Gui/Settings/general.cpp \
+$(SRCPATH)/Gui/Settings/threading.cpp \
+$(SRCPATH)/Gui/Settings/usersettingsdialog.cpp \
+$(SRCPATH)/Gui/findffmpegdialog.cpp \
+$(SRCPATH)/Gui/convertwindow.cpp \
+$(SRCPATH)/Gui/mainwindow.cpp \
+$(SRCPATH)/Gui/convertergui.cpp \
+$(SRCPATH)/Gui/destinationcontrol.cpp \
+$(SRCPATH)/Gui/filecontrol.cpp \
+$(SRCPATH)/Gui/infocontrol.cpp \
+$(SRCPATH)/Gui/overwritedialog.cpp \
+$(SRCPATH)/Gui/avcontrol.cpp \
+$(SRCPATH)/Gui/manualsettingscontrol.cpp \
+$(SRCPATH)/Gui/profilenamedialog.cpp \
+$(SRCPATH)/Gui/Audio/audiocontrol.cpp \
+$(SRCPATH)/Gui/Audio/encodercontrola.cpp \
+$(SRCPATH)/Gui/Video/videocontrol.cpp \
+$(SRCPATH)/Gui/Video/resolutiondialog.cpp \
+$(SRCPATH)/Gui/Video/bitratedialog.cpp \
+$(SRCPATH)/Gui/Video/encodercontrolv.cpp
+
+ProcessExecutor= \
+$(SRCPATH)/ProcessExecutor/process.cpp \
+$(SRCPATH)/ProcessExecutor/safestream.cpp \
+$(SRCPATH)/ProcessExecutor/safeinputstream.cpp \
+$(SRCPATH)/ProcessExecutor/safeoutputstream.cpp
+
+Converter= \
+$(SRCPATH)/Converter/convertparser.cpp \
+$(SRCPATH)/Converter/dispenser.cpp \
+$(SRCPATH)/Converter/argumentsgenerator.cpp
+
+top= \
+$(SRCPATH)/userpreferences.cpp \
+$(SRCPATH)/systemsettings.cpp \
+$(SRCPATH)/helper.cpp \
+$(SRCPATH)/main.cpp 
+
+other=\
+$(SRCPATH)/CppExtension/path.cpp \
+$(SRCPATH)/RegexTools/regextools.cpp \
+$(SRCPATH)/ConverterOptions/supportedencoders.cpp \
+$(SRCPATH)/ExternalTools/supportedencodersloader.cpp \
+$(SRCPATH)/System/cpu.cpp
+
+OniboConverter2_SOURCES= \
+$(MediaElement) \
+$(Profile) \
+$(Xml) \
+$(MediaFile) \
+$(Gui) \
+$(ProcessExecutor) \
+$(top) \
+$(other)
+
+AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -pedantic $(DEPS_CFLAGS)
+
+OniboConverter2_LDADD = $(DEPS_LIBS)

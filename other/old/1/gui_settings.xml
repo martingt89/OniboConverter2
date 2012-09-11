@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gui_settings>
+	<video>
+		<resolutions ratio="4:3">
+			<resolution name="QVGA">320x240</resolution>
+			<resolution name="VGA">640x480</resolution>
+			<resolution name="PAL">768x576</resolution>
+			<resolution name="SVGA">800x600</resolution>
+			<resolution name="XGA">1024x768</resolution>
+			<resolution name="">1280x960</resolution>
+			<resolution name="SXGA+">1400x1050</resolution>
+			<resolution name="UXGA">1600x1200</resolution>
+			<resolution name="QXGA">2048x1536</resolution>
+		</resolutions>
+		<resolutions ratio="5:4">
+			<resolution name="SXGA">1280x1024</resolution>
+			<resolution name="QSXGA">2560x2048</resolution>
+		</resolutions>
+		<resolutions ratio="16:10">
+			<resolution name="CGA">320x200</resolution>
+			<resolution name="WXGA">1280x800</resolution>
+			<resolution name="">1440x900</resolution>
+			<resolution name="WSXGA+">1680x1050</resolution>
+			<resolution name="WUXGA">1920x1200</resolution>
+			<resolution name="WQXGA">2560x1600</resolution>
+		</resolutions>
+		<resolutions ratio="17:9">
+			<resolution name="2K">2048x1080</resolution>
+		</resolutions>
+		<resolutions ratio="5:3">
+			<resolution name="WVGA">800x480</resolution>
+			<resolution name="WXGA">1280x768</resolution>
+		</resolutions>
+		<resolutions ratio="16:9">
+			<resolution name="WVGA">854x480</resolution>
+			<resolution name="HD 720">1280x720</resolution>
+			<resolution name="">1366x768</resolution>
+			<resolution name="HD 1080">1920x1080</resolution>
+		</resolutions>
+		<resolutions ratio="3:2">
+			<resolution name="">1152x768</resolution>
+			<resolution name="">1280x854</resolution>
+			<resolution name="">1440x960</resolution>
+		</resolutions>
+		<resolutions ratio="128:75">
+			<resolution name="WSVGA">1024x600</resolution>
+		</resolutions>
+		<resolutions ratio="11:9">
+			<resolution name="CIF">352x288</resolution>
+		</resolutions>
+		<bitrates>
+			<bitrate>200</bitrate>
+			<bitrate>500</bitrate>
+			<bitrate>700</bitrate>
+			<bitrate>1200</bitrate>
+			<bitrate>1225</bitrate>
+			<bitrate>1500</bitrate>
+			<bitrate>2000</bitrate>
+			<bitrate>2048</bitrate>
+		</bitrates>
+		<framerates>
+			<framerate>10</framerate>
+			<framerate>15</framerate>
+			<framerate>20</framerate>
+			<framerate>23.976</framerate>
+			<framerate>24</framerate>
+			<framerate>25</framerate>
+			<framerate>29.97</framerate>
+			<framerate>30</framerate>
+		</framerates>
+	</video>
+	<audio>
+		<bitrates>
+			<bitrate>64</bitrate>
+			<bitrate>96</bitrate>
+			<bitrate>128</bitrate>
+			<bitrate>196</bitrate>
+			<bitrate>256</bitrate>
+			<bitrate>320</bitrate>
+		</bitrates>
+		<samplerates>
+			<samplerate>8000</samplerate>
+			<samplerate>16000</samplerate>
+			<samplerate>22050</samplerate>
+			<samplerate>32000</samplerate>
+			<samplerate>44100</samplerate>
+			<samplerate>48000</samplerate>
+		</samplerates>
+	</audio>
+</gui_settings>

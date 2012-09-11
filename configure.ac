@@ -1,8 +1,8 @@
 AC_PREREQ(2.59)
-AC_INIT(OniboConverter2, 1.0)
+AC_INIT(OniboConverter2, [1.0], [martingt89@gmail.com])
 
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE([1.10 -Wall no-define])
+AM_INIT_AUTOMAKE([subdir-objects 1.10 -Wall no-define])
 
 AC_CONFIG_HEADER([config.h])
 
@@ -32,5 +32,5 @@ AM_GLIB_GNU_GETTEXT
 #PROGRAMNAME_LOCALEDIR=[${datadir}/locale]
 #AC_SUBST(PROGRAMNAME_LOCALEDIR)
 
-AC_CONFIG_FILES([Makefile compile/Makefile po/Makefile.in])
+AC_CONFIG_FILES([Makefile src/Makefile po/Makefile.in])
 AC_OUTPUT
