@@ -11,7 +11,6 @@
 #include <gtkmm/builder.h>
 #include <sigc++/sigc++.h>
 #include "../WidgetAdapter/comboboxext.h"
-#include "../../ConverterOptions/optionsdatabase.h"
 #include "encodercontrola.h"
 #include "../../Profile/profile.h"
 
@@ -21,10 +20,10 @@ namespace Audio{
 
 class AudioControl {
 public:
-	AudioControl(ConverterOptions::OptionsDatabase &database, const Glib::RefPtr<Gtk::Builder>& refGlade);
+	AudioControl(MediaElement::ElementsDB& elementsDB, const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~AudioControl();
-	Converter::ConvertSettingsList getConvertArguments() const;
-	void containerChanged(const ConverterOptions::Container& container);
+//	Converter::ConvertSettingsList getConvertArguments() const;
+	void containerChanged(const MediaElement::Container& container);
 	void saveSettingsState();
 	void restoreSettingsState();
 	bool checkSettingsComplete(std::string& message);
@@ -34,19 +33,20 @@ public:
 	void getNewProfile(Profile::Profile& newProfile);
 private:
 	void initAudioMode(ComboBoxExt<int>& audioMode);
-	void initSamplerate(ComboBoxExt<ConverterOptions::Samplerate>& audioSamplerate);
-	void initChannels(ComboBoxExt<ConverterOptions::Channel>& audioChannels);
+	void initSamplerate(ComboBoxExt<MediaElement::Samplerate>& audioSamplerate);
+	void initChannels(ComboBoxExt<MediaElement::Channel>& audioChannels);
 	void audioModeChanged();
 	void audioSamplerateChanged();
 	void audioChannelsChanged();
 	void sendUserInputSignal();
-	ConverterOptions::OptionsDatabase &database;
+	MediaElement::ElementsDB& elementsDB;
+//	ConverterOptions::OptionsDatabase &database;
 	EncoderControlA encoderControl;
 	ComboBoxExt<int> audioMode;
-	ComboBoxExt<ConverterOptions::Samplerate> audioSamplerate;
-	ComboBoxExt<ConverterOptions::Channel> audioChannels;
+	ComboBoxExt<MediaElement::Samplerate> audioSamplerate;
+	ComboBoxExt<MediaElement::Channel> audioChannels;
 	bool isEnabledSignals;
-	ConverterOptions::Container actualContainer;
+	MediaElement::Container actualContainer;
 	sigc::signal<void> userEvent;
 };
 

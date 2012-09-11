@@ -46,7 +46,7 @@ public:
 	void saveSettingsState();
 	void restoreSettingsState();
 	void setActiveProfile(const Profile::Profile& activeProfile);
-	Converter::ConvertSettingsList getConvertArguments() const;
+//	Converter::ConvertSettingsList getConvertArguments() const;
 	void getNewProfile(Profile::Profile& newProfile);
 private:
 	void addCommandClicked();

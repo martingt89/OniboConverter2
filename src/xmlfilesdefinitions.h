@@ -9,20 +9,21 @@
 #define XMLFILESDEFINITIONS_H_
 
 #include "userpreferences.h"
+
 #include "helper.h"
 #include "Xml/converttable.h"
-#include "Profile/profile.h"
+#include "Profile/configuration.h"
 
 class XmlFilesDefinitions{
 public:
 	static XmlFilesDefinitions* getInstance();
 	Xml::ConvertTable<UserPreferences::UserPreferencesOpt>& getUserPreferencesTable();
-	Xml::ConvertTable<Profile::Profile::Options>& getProfileTable();
+	Xml::ConvertTable<Profile::Configuration::Options>& getConfigurationTable();
 private:
 	XmlFilesDefinitions();
 	XmlFilesDefinitions(const XmlFilesDefinitions&);
 	Xml::ConvertTable<UserPreferences::UserPreferencesOpt> userPreferences;
-	Xml::ConvertTable<Profile::Profile::Options> profil;
+	Xml::ConvertTable<Profile::Configuration::Options> profilConfiguration;
 	static XmlFilesDefinitions* instance;
 };
 

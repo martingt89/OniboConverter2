@@ -14,24 +14,23 @@
 #include "resolutiondialog.h"
 #include "bitratedialog.h"
 #include "../WidgetAdapter/comboboxext.h"
-#include "../../ConverterOptions/optionsdatabase.h"
 #include "../../Profile/profile.h"
 namespace Gui {
 namespace Video {
 
 class EncoderControl {
 public:
-	EncoderControl(ConverterOptions::OptionsDatabase &database,
+	EncoderControl(MediaElement::ElementsDB& elementsDB,
 			const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~EncoderControl();
-	void aktualizeSettings(const bool& isVideoActive, const ConverterOptions::Container& container);
+	void aktualizeSettings(const bool& isVideoActive, const MediaElement::Container& container);
 	void disableSettings();
 	void saveSettingsState();
 	void restoreSettingsState();
 	sigc::signal<void>& signalUserInput();
 	bool checkSettingsComplete(std::string& message);
 	void setActiveProfile(const Profile::Profile& activeProfile);
-	Converter::ConvertSettingsList getConvertArguments() const;
+	//Converter::ConvertSettingsList getConvertArguments() const;
 	void getNewProfile(Profile::Profile& newProfile);
 private:
 	void videoFormatChanged();
@@ -39,7 +38,7 @@ private:
 	void videoBitrateChanged();
 	void videoFFpresetChanged();
 
-	void setFormatsFromContainer(const ConverterOptions::Container& container);
+	void setFormatsFromContainer(const MediaElement::Container& container);
 	void aktualizeEncoder();
 	void aktualizeBitrate();
 	void aktualizeFFpreset(const std::string name = "");
@@ -50,16 +49,16 @@ private:
 	sigc::signal<void> userEvent;
 	bool isEnableSignals;
 	bool isUserInput;
-	ConverterOptions::OptionsDatabase &database;
+	MediaElement::ElementsDB& elementsDB;
 
-	ComboBoxExt<ConverterOptions::Format> videoFormat;
-	ComboBoxExt<ConverterOptions::Encoder> videoEncoder;
-	ComboBoxExt<ConverterOptions::Bitrate> videoBitrate;
-	ComboBoxExt<ConverterOptions::FFpreset> videoFFpreset;
+	ComboBoxExt<MediaElement::Format> videoFormat;
+	ComboBoxExt<MediaElement::Encoder> videoEncoder;
+	ComboBoxExt<MediaElement::Bitrate> videoBitrate;
+	ComboBoxExt<MediaElement::FFpreset> videoFFpreset;
 	Gtk::FileChooserDialog ffpresetChooser;
 	BitrateDialog bitrateDialog;
 
-	ConverterOptions::Bitrate lastSetBitrate;
+	MediaElement::Bitrate lastSetBitrate;
 };
 
 }

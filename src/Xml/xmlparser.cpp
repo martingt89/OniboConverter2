@@ -22,7 +22,7 @@ bool XmlParser::parseFile(const Path& filePath, XmlParserData* data){
 	try{
 		this->parse_file(filePath.getPath());
 	}catch(std::exception& ex){
-		std::cout<<"Parse error: "<<ex.what()<<std::endl; //todo log
+		std::cerr<<"Parse error: "<<ex.what()<<std::endl; //todo log
 		data = NULL;
 		return false;
 	}

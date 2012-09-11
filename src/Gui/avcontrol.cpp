@@ -6,17 +6,18 @@
  */
 
 #include "avcontrol.h"
+#include "../systemsettings.h"
 #include "../Xml/profilegenerator.h"
-#include "../globalsettings.h"
 
 namespace Gui {
 
 const static std::string CUSTOM_PROFILE = "--- custom profile ---";
 
-AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
+AVControl::AVControl(MediaElement::ElementsDB& elementsDB,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
-		const Profile::Profiles& profiles) : database(database), profiles(profiles),
-				videoControlGui(database, refGlade), audioControlGui(database, refGlade),
+		const Profile::Profiles& profiles) : elementsDB(elementsDB), profiles(profiles),
+				videoControlGui(elementsDB, refGlade),
+				audioControlGui(elementsDB, refGlade),
 				containers(refGlade, "containres"), profilesComboBox(refGlade, "profilesComboBox"),
 				settingsDialog(refGlade), profileNameDialog(refGlade){
 
@@ -27,7 +28,7 @@ AVControl::AVControl(ConverterOptions::OptionsDatabase &database,
 	refGlade->get_widget("manualSettingsButton", manualSettingsButton);
 	refGlade->get_widget("saveProfileAsButton", saveProfileAsButton);
 
-	initContainers(database, containers);
+	initContainers(elementsDB, containers);
 	initProfiles(profiles, profilesComboBox);
 	videoControlGui.disableSettings();
 	audioControlGui.disableSettings();
@@ -76,20 +77,11 @@ void AVControl::restoreSettingsState(){
 	profilesComboBox.restor_saved_state();
 	isEnabledSignal = true;
 }
-Converter::ConvertSettingsList AVControl::getConvertArguments() const{
-	Converter::ConvertSettingsList args;
-	args.add(containers.get_active_row_item().getConvertArguments());
-	args.add(videoControlGui.getConvertArguments());
-	args.add(audioControlGui.getConvertArguments());
-	args.add(settingsDialog.getConvertArguments());
-	return args;
-}
 std::string AVControl::getContainerName(){
 	return containers.get_active_row_item().getName();
 }
 void AVControl::userInput(){
 	if(isUserInput){
-//		std::cout<<"user input"<<std::endl;
 		profilesComboBox.set_active_row_number(0);	//set custom
 	}
 }
@@ -110,9 +102,9 @@ void AVControl::profileChanged(){
 			return;
 		}
 		isUserInput = false;
-		std::string containerName;
-		if(profilesComboBox.get_active_row_item().getContainerName(containerName)){
-			containers.set_active_text(containerName);
+		MediaElement::Container container;
+		if(profilesComboBox.get_active_row_item().getContainer(container)){
+			containers.set_active_text(container.readableForm());
 			videoControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
 			audioControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
 			settingsDialog.setActiveProfile(profilesComboBox.get_active_row_item());
@@ -123,18 +115,30 @@ void AVControl::profileChanged(){
 	}
 }
 void AVControl::getNewProfile(const std::string& name){
-	Profile::Profile newProfile;
-	newProfile.addProperty(Profile::Profile::CONTAINER_OPT, containers.get_active_row_item().getName());
+	Profile::Profile newProfile(name);
+	newProfile.setContainer(containers.get_active_row_item());
+
 	videoControlGui.getNewProfile(newProfile);
 	audioControlGui.getNewProfile(newProfile);
 	settingsDialog.getNewProfile(newProfile);
-	newProfile.addProperty(Profile::Profile::NAME_OPT, name);
+
 	profilesComboBox.append(name, newProfile);
 	profilesComboBox.save_actual_state();
-	Path userProfilesPath = GlobalSettings::getInstance()->getUserProfilesPath();
+	Path userProfilesPath = SystemSettings::getInstance()->getUserProfilesPath();
 	Xml::ProfileGenerator generator(userProfilesPath);
-	generator.generateFile(newProfile);
+
+	generator.generateFile(Profile::Configuration(newProfile, elementsDB));
 }
+Profile::Profile AVControl::getTmpProfile(){
+	Profile::Profile newProfile("tmp");
+	newProfile.setContainer(containers.get_active_row_item());
+
+	videoControlGui.getNewProfile(newProfile);
+	audioControlGui.getNewProfile(newProfile);
+	settingsDialog.getNewProfile(newProfile);
+	return newProfile;
+}
+
 void AVControl::manualSettingsClicked(){
 	bool change = settingsDialog.start();
 	if(change){
@@ -147,11 +151,11 @@ void AVControl::saveProfileClicked(){
 		getNewProfile(profileName);
 	}
 }
-void AVControl::initContainers(ConverterOptions::OptionsDatabase &database,
-		ComboBoxExt<ConverterOptions::Container> &containers){
-	std::list<ConverterOptions::Container> cont = database.getContainers().getContainers();
-	for(auto containerIter = cont.begin(); containerIter!= cont.end(); ++containerIter){
-		containers.append(containerIter->getName(), *containerIter);
+void AVControl::initContainers(MediaElement::ElementsDB& elementsDB,
+		ComboBoxExt<MediaElement::Container> &containers){
+	std::list<MediaElement::Container> cont = elementsDB.getContainers().getContainers();
+	for(auto container : cont){
+		containers.append(container.readableForm(), container);
 	}
 }
 void AVControl::initProfiles(const Profile::Profiles& profiles,

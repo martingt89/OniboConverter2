@@ -18,8 +18,9 @@ static const int CUSTOM_MODE_ID = 1;
 static const std::string DISABLE_MODE = "disable";
 static const int DISABLE_MODE_ID = 2;
 
-AudioControl::AudioControl(ConverterOptions::OptionsDatabase &database,
-		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database), encoderControl(database, refGlade),
+AudioControl::AudioControl(MediaElement::ElementsDB& elementsDB,
+		const Glib::RefPtr<Gtk::Builder>& refGlade) : elementsDB(elementsDB),
+				encoderControl(elementsDB, refGlade),
 				audioMode(refGlade, "audioMode") , audioSamplerate(refGlade, "audioSamplerate"),
 				audioChannels(refGlade, "audioChannels"){
 
@@ -36,7 +37,7 @@ AudioControl::AudioControl(ConverterOptions::OptionsDatabase &database,
 
 AudioControl::~AudioControl() {}
 
-void AudioControl::containerChanged(const ConverterOptions::Container& container){
+void AudioControl::containerChanged(const MediaElement::Container& container){
 	audioMode.set_sensitive(true);
 	actualContainer = container;
 
@@ -108,25 +109,23 @@ void AudioControl::setActiveProfile(const Profile::Profile& activeProfile){
 		disableSettings();
 	}
 	//
-	ConverterOptions::Samplerate samplerate;
-	bool isOriginal;
-	if(activeProfile.getAudioSamplerate(samplerate, isOriginal)){
-		if(isOriginal){
+	MediaElement::Samplerate samplerate;
+	if(activeProfile.getAudioSamplerate(samplerate)){
+		if(samplerate.isOriginal()){
 			audioSamplerate.set_active_row_number(0);
 		}else{
-			audioSamplerate.set_active_text(samplerate.toStr());
+			audioSamplerate.set_active_text(samplerate.readableForm());
 		}
 	}else{
 		audioSamplerate.unset_active();
 	}
 	//
-	ConverterOptions::Channel channel;
-	bool isOriginalChannel;
-	if(activeProfile.getAudioChannel(channel, isOriginalChannel)){
-		if(isOriginalChannel){
+	MediaElement::Channel channel;
+	if(activeProfile.getAudioChannel(channel)){
+		if(channel.isOriginal()){
 			audioChannels.set_active_row_number(0);
 		}else{
-			audioChannels.set_active_text(channel.toStr());
+			audioChannels.set_active_text(channel.readableForm());
 		}
 	}else{
 		audioChannels.unset_active();
@@ -137,39 +136,37 @@ sigc::signal<void>& AudioControl::signalUserInput(){
 }
 void AudioControl::getNewProfile(Profile::Profile& newProfile){
 	//audio mode
-	newProfile.addProperty(Profile::Profile::AUDIO_MODE_OPT, toS(audioMode.get_active_row_number()));
+	newProfile.setAudioMode(audioMode.get_active_row_number());
+
 	if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
 		encoderControl.getNewProfile(newProfile);
 	}
 	//audio samplerate
 	if(audioSamplerate.isSelectedActivableRow()){
-	newProfile.addProperty(Profile::Profile::AUDIO_SAMPLERATE_OPT,
-			toS(audioSamplerate.get_active_row_item().getValue()));
+		newProfile.setAudioSamplerate(audioSamplerate.get_active_row_item());
 	}
+
 	//audio channels
 	if(audioChannels.isSelectedActivableRow()){
-		newProfile.addProperty(Profile::Profile::AUDIO_CHANNEL_NAME_OPT,
-				audioChannels.get_active_row_item().getName());
-		newProfile.addProperty(Profile::Profile::AUDIO_CHANNEL_VALUE_OPT,
-				toS(audioChannels.get_active_row_item().getValue()));
+		newProfile.setAudioChannel(audioChannels.get_active_row_item());
 	}
 }
-Converter::ConvertSettingsList AudioControl::getConvertArguments() const{
-	Converter::ConvertSettingsList args;
-	if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
-		args.add(audioChannels.get_active_row_item().getConvertArguments());
-		args.add(audioSamplerate.get_active_row_item().getConvertArguments());
-		args.add(encoderControl.getConvertArguments());
-	}else if(audioMode.get_active_row_item() == COPY_MODE_ID){
-		Converter::ConvertSettings arg(Converter::ConvertSettings::ACODEC);	//-acodec
-		arg.addValue("copy");
-		args.add(arg);
-	}else if(audioMode.get_active_row_item() == DISABLE_MODE_ID){
-		Converter::ConvertSettings arg(Converter::ConvertSettings::NOAUDIO);		//-an
-		args.add(arg);
-	}
-	return args;
-}
+//Converter::ConvertSettingsList AudioControl::getConvertArguments() const{
+//	Converter::ConvertSettingsList args;
+//	if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
+//		args.add(audioChannels.get_active_row_item().getConvertArguments());
+//		args.add(audioSamplerate.get_active_row_item().getConvertArguments());
+//		args.add(encoderControl.getConvertArguments());
+//	}else if(audioMode.get_active_row_item() == COPY_MODE_ID){
+//		Converter::ConvertSettings arg(Converter::ConvertSettings::ACODEC);	//-acodec
+//		arg.addValue("copy");
+//		args.add(arg);
+//	}else if(audioMode.get_active_row_item() == DISABLE_MODE_ID){
+//		Converter::ConvertSettings arg(Converter::ConvertSettings::NOAUDIO);		//-an
+//		args.add(arg);
+//	}
+//	return args;
+//}
 void AudioControl::audioModeChanged(){
 	if(isEnabledSignals){
 		isEnabledSignals = false;
@@ -208,25 +205,25 @@ void AudioControl::initAudioMode(ComboBoxExt<int>& audioMode){
 	audioMode.append(DISABLE_MODE, DISABLE_MODE_ID);
 	audioMode.set_active_text(CUSTOM_MODE);
 }
-void AudioControl::initSamplerate(ComboBoxExt<ConverterOptions::Samplerate>& audioSamplerate){
-	auto samplerates = database.getSamplerates().getSamplerates();
-	std::for_each(samplerates.begin(), samplerates.end(),
-			[&audioSamplerate](const ConverterOptions::Samplerate& sample){
-		audioSamplerate.append(sample.toStr(), sample);
-	});
+void AudioControl::initSamplerate(ComboBoxExt<MediaElement::Samplerate>& audioSamplerate){
+	auto samplerates = elementsDB.getSamplerates().getSamplerates();
+	for(auto sample : samplerates){
+		audioSamplerate.append(sample.readableForm(), sample);
+	}
+
 	if(samplerates.size() > 2){
 		audioSamplerate.set_active_row_number(samplerates.size() - 2);
 	}else{
 		audioSamplerate.set_active_row_number(samplerates.size() / 2);
 	}
 }
-void AudioControl::initChannels(ComboBoxExt<ConverterOptions::Channel>& audioChannels){
-	auto channels = database.getChannels();
-	std::for_each(channels.begin(), channels.end(),
-			[&audioChannels](const ConverterOptions::Channel& channel){
-		audioChannels.append(channel.toStr(), channel);
-	});
+void AudioControl::initChannels(ComboBoxExt<MediaElement::Channel>& audioChannels){
+	auto channels = elementsDB.getChannels();
+	for(auto channel : channels){
+		audioChannels.append(channel.readableForm(), channel);
+	}
 	audioChannels.set_active_row_number(0);
 }
-}
+
+} /* namespace Audio */
 } /* namespace Gui */

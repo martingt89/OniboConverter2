@@ -16,8 +16,8 @@ namespace Video {
 static const std::string INVALID_RESOLUTION = "Invalid final resolution";
 static const std::string CUSTOM_MODE = "--- custom ---";
 
-ResolutionControl::ResolutionControl(ConverterOptions::OptionsDatabase &database,
-		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database),
+ResolutionControl::ResolutionControl(MediaElement::ElementsDB& elementsDB,
+		const Glib::RefPtr<Gtk::Builder>& refGlade) : elementsDB(elementsDB),
 				aspectRatio(refGlade, "aspectRatio"){
 
 	refGlade->get_widget("resolutionDialog", resolutionDialog);
@@ -74,8 +74,14 @@ ResolutionControl::~ResolutionControl() {
 	delete resolutionError;
 }
 
-bool ResolutionControl::start(ConverterOptions::Resolution& resolution){
+bool ResolutionControl::start(MediaElement::Resolution& resolution){
 	resolutionError->set_text("");
+	aspectRatio.remove_all();
+	treeModel->clear();
+
+	initAspectRatio(aspectRatio);
+	fillCanavas(treeModel);
+
 	while(1){
 		int res = resolutionDialog->run();
 
@@ -86,15 +92,16 @@ bool ResolutionControl::start(ConverterOptions::Resolution& resolution){
 				resolutionError->set_markup("<span color='red'>"+INVALID_RESOLUTION+"</span>");
 				continue;
 			}
-			std::string aspect = calcAspect(x, y);
+			auto aspectRatio = calcAspect(x, y);
+			MediaElement::AspectRatio aspect(aspectRatio.first, aspectRatio.second);
 			std::string name = "";
 			bool found = false;
-			ConverterOptions::Resolution res = database.getResolutions().getResolutionBySize(x, y, found);
+			MediaElement::Resolution res = elementsDB.getResolutions().getResolutionBySize(x, y, found);
 			if(found){
 				aspect = res.getAspectRatio();
 				name = res.getName();
 			}
-			resolution = ConverterOptions::Resolution(name, aspect, x, y, false);
+			resolution = MediaElement::Resolution(name, aspect, x, y, false);
 			resolutionDialog->hide();
 			return true;
 		}
@@ -103,40 +110,45 @@ bool ResolutionControl::start(ConverterOptions::Resolution& resolution){
 	resolutionDialog->hide();
 	return false;
 }
-void ResolutionControl::initAspectRatio(ComboBoxExt<ConverterOptions::AspectRatio>& aspectRatio){
+void ResolutionControl::initAspectRatio(ComboBoxExt<MediaElement::AspectRatio>& aspectRatio){
 	aspectRatio.append(CUSTOM_MODE);
 	aspectRatio.set_active_row_number(0);
 
-	auto aspectRatioList = database.getResolutions().getAspectRatios();
+	auto aspectRatioList = elementsDB.getResolutions().getAspectRatios();
 	for(auto aspectIter = aspectRatioList.begin(); aspectIter!= aspectRatioList.end(); ++aspectIter){
-		aspectRatio.append((std::string)*aspectIter, *aspectIter);
+		aspectRatio.append(aspectIter->readableForm(), *aspectIter);
 	}
 }
 void ResolutionControl::fillCanavas(Glib::RefPtr<Gtk::ListStore>& treeModel){
 	treeModel->clear();
+	std::set<MediaElement::Resolution> uniqueResol;
 	if(aspectRatio.is_set_first()){	//custom mode
-		auto resolutionList = database.getResolutions().getResolutions();
+		auto resolutionList = elementsDB.getResolutions().getResolutions();
 		std::for_each(resolutionList.begin(), resolutionList.end(),
-				[&](const ConverterOptions::Resolution& resolution){
-
-			Gtk::TreeModel::Row row = *(treeModel->append());
-			row[model.colAspect] = resolution.getAspectRatio();
-			std::string resol = toS(resolution.getValue().first) + "x" + toS(resolution.getValue().second);
-			row[model.colResolution] = resol;
-			row[model.colResolName] = resolution.getName();
-			row[model.resolution] = resolution;
+				[&](const MediaElement::Resolution& resolution){
+			if(uniqueResol.count(resolution) == 0){
+				Gtk::TreeModel::Row row = *(treeModel->append());
+				row[model.colAspect] = resolution.getAspectRatio().readableForm();
+				std::string resol = toS(resolution.getValue().first) + "x" + toS(resolution.getValue().second);
+				row[model.colResolution] = resol;
+				row[model.colResolName] = resolution.getName();
+				row[model.resolution] = resolution;
+				uniqueResol.insert(resolution);
+			}
 		});
 	}else{
-		auto resol = database.getResolutions().getResolutionsByAspectRatio(aspectRatio.get_active_row_item());
+		auto resol = elementsDB.getResolutions().getResolutionsByAspectRatio(aspectRatio.get_active_row_item());
 		std::for_each(resol.begin(), resol.end(),
-						[&](const ConverterOptions::Resolution& resolution){
-
-			Gtk::TreeModel::Row row = *(treeModel->append());
-			row[model.colAspect] = resolution.getAspectRatio();
-			std::string resol = toS(resolution.getValue().first) + "x" + toS(resolution.getValue().second);
-			row[model.colResolution] = resol;
-			row[model.colResolName] = resolution.getName();
-			row[model.resolution] = resolution;
+						[&](const MediaElement::Resolution& resolution){
+			if(uniqueResol.count(resolution) == 0){
+				Gtk::TreeModel::Row row = *(treeModel->append());
+				row[model.colAspect] = resolution.getAspectRatio().readableForm();
+				std::string resol = toS(resolution.getValue().first) + "x" + toS(resolution.getValue().second);
+				row[model.colResolution] = resol;
+				row[model.colResolName] = resolution.getName();
+				row[model.resolution] = resolution;
+				uniqueResol.insert(resolution);
+			}
 		});
 	}
 }
@@ -165,7 +177,7 @@ void ResolutionControl::changedY(){
 void ResolutionControl::doubleClickOnBoard(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn*){
 	Gtk::TreeModel::Row row = *(treeModel->get_iter(path));
 	if(row){
-		ConverterOptions::Resolution resol = row[model.resolution];
+		MediaElement::Resolution resol = row[model.resolution];
 		setResolutiontoEntry(resol);
 		resolutionDialog->response(Gtk::RESPONSE_OK);
 	}
@@ -174,24 +186,24 @@ void ResolutionControl::clickOnBoard(){
 	std::vector<Gtk::TreeModel::Path> rows = treeSelection->get_selected_rows();
 	if(rows.size() > 0){
 		Gtk::TreeModel::Row row = *(treeModel->get_iter(rows[0]));
-		ConverterOptions::Resolution resol = row[model.resolution];
+		MediaElement::Resolution resol = row[model.resolution];
 		setResolutiontoEntry(resol);
 	}
 }
 void ResolutionControl::aspectChanged(){
 	fillCanavas(treeModel);
 }
-void ResolutionControl::setResolutiontoEntry(const ConverterOptions::Resolution& resolution){
+void ResolutionControl::setResolutiontoEntry(const MediaElement::Resolution& resolution){
 	isEnableSignal = false;
 	resolutionEntryX->set_text(toS(resolution.getValue().first));
 	resolutionEntryY->set_text(toS(resolution.getValue().second));
 	isEnableSignal = true;
 }
-std::string ResolutionControl::calcAspect(const int& x, const int& y){
+std::pair<int, int> ResolutionControl::calcAspect(const int& x, const int& y){
 	int nsd = NSD(x, y);
 	int tx = x / nsd;
 	int ty = y / nsd;
-	return toS(tx)+":"+toS(ty);
+	return std::make_pair(tx, ty);
 }
 
 }

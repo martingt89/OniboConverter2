@@ -39,6 +39,14 @@ public:
 		}
 		return keyIter->second;
 	}
+	bool get(const Key& key, Value& value) const{
+		typename std::map<Key, Value>::const_iterator keyIter = map.find(key);
+		if(keyIter == map.end()){
+			return false;
+		}
+		value = keyIter->second;
+		return true;
+	}
 	bool isExistKey(const Key& key) const{
 		return (map.find(key) != map.end());
 	}
@@ -86,6 +94,21 @@ public:
 	}
 	void remove(const Key& key) {
 		multiMap.erase(key);
+	}
+	std::list<Value> getListOfValues() const{
+		std::list<Value> values;
+		for(typename std::map<Key,  std::list<Value> >::const_iterator it = multiMap.begin(); it != multiMap.end(); ++it){
+			auto list = it->second;
+			std::copy(list.begin(), list.end(), std::back_inserter(values));
+		}
+		return values;
+	}
+	std::list<Key> getListOfKeys() const{
+		std::list<Key> keys;
+		for(typename std::map<Key,  std::list<Value> >::const_iterator it = multiMap.begin(); it != multiMap.end(); ++it){
+			keys.push_back(it->first);
+		}
+		return keys;
 	}
 private:
 	std::map<Key, std::list<Value> > multiMap;

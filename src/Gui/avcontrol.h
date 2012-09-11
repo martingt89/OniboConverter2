@@ -15,22 +15,21 @@
 #include "Video/videocontrol.h"
 #include "Audio/audiocontrol.h"
 #include "../Profile/profiles.h"
-#include "../Converter/convertsettings.h"
-#include "../ConverterOptions/optionsdatabase.h"
+#include "../MediaElement/elementsdb.h"
 
 namespace Gui {
 
 class AVControl {
 public:
-	AVControl(ConverterOptions::OptionsDatabase &database,
+	AVControl(MediaElement::ElementsDB& elementsDB,
 			const Glib::RefPtr<Gtk::Builder>& refGlade,
 			const Profile::Profiles& profiles);
 	virtual ~AVControl();
 	bool checkSettingsComplete(std::string& message);
 	void saveSettingsState();
 	void restoreSettingsState();
-	Converter::ConvertSettingsList getConvertArguments() const;
 	std::string getContainerName();
+	Profile::Profile getTmpProfile();
 private:
 	void getNewProfile(const std::string& name);
 	void userInput();
@@ -38,15 +37,15 @@ private:
 	void profileChanged();
 	void manualSettingsClicked();
 	void saveProfileClicked();
-	void initContainers(ConverterOptions::OptionsDatabase &database,
-			ComboBoxExt<ConverterOptions::Container> &containers);
+	void initContainers(MediaElement::ElementsDB& elementsDB,
+			ComboBoxExt<MediaElement::Container> &containers);
 	void initProfiles(const Profile::Profiles& profiles,
 			ComboBoxExt<Profile::Profile> &profilesComboBox);
-	ConverterOptions::OptionsDatabase &database;
+	MediaElement::ElementsDB& elementsDB;
 	const Profile::Profiles& profiles;
 	Video::VideoControl videoControlGui;
 	Audio::AudioControl audioControlGui;
-	ComboBoxExt<ConverterOptions::Container> containers;
+	ComboBoxExt<MediaElement::Container> containers;
 	ComboBoxExt<Profile::Profile> profilesComboBox;
 	ManualSettingsControl settingsDialog;
 	ProfileNameDialog profileNameDialog;

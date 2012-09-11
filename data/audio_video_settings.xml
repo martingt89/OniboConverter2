@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <audio_video_parameters>
-	<bitrates>
-		<bitrate name="video_standard" type="v">
+	<videogrades>
+		<bitrate name="video_standard">
 			<item>200</item>
 			<item>500</item>
 			<item>700</item>
@@ -12,8 +12,9 @@
 			<item>2000</item>
 			<item>2048</item>
 		</bitrate>
-		
-		<bitrate name="audio_standard" type="a">
+	</videogrades>
+	<audiogrades>
+		<bitrate name="standard_bitrate">
 			<item>64</item>
 			<item>80</item>
 			<item>96</item>
@@ -26,30 +27,43 @@
 			<item>320</item>
 			<item>500</item>
 		</bitrate>
-	</bitrates>
-	
+		<quality name="standard_quality">
+			<item>-1</item> <!--"Default"-->
+			<item>0</item>
+			<item>1</item>
+			<item>2</item>
+			<item>3</item>
+			<item>4</item>
+			<item>5</item>
+			<item>6</item>
+			<item>7</item>
+			<item>8</item>
+			<item>9</item>
+			<item>10</item>
+		</quality>
+	</audiogrades>
 	<encoders>
-		<encoder bitrate="video_standard" type="v" ffpreset="libx264" multithread="y">libx264</encoder>
-		<encoder bitrate="video_standard" type="v">h264</encoder>
-		<encoder bitrate="video_standard" type="v">h264_vdpau</encoder>
-		<encoder bitrate="video_standard" type="v">mpeg4</encoder>
-		<encoder bitrate="video_standard" type="v">mpeg4_vdpau</encoder>
-		<encoder bitrate="video_standard" type="v">msmpeg4</encoder>
-		<encoder bitrate="video_standard" type="v">msmpeg4v1</encoder>
-		<encoder bitrate="video_standard" type="v">msmpeg4v2</encoder>
-		<encoder bitrate="video_standard" type="v">mpeg2video</encoder>
-		<encoder bitrate="video_standard" type="v">mpeg1video</encoder>
-		<encoder bitrate="video_standard" type="v">mpeg1video_vdpau</encoder>
-		<encoder bitrate="video_standard" type="v" ffpreset="libvpx" multithread="y">libvpx</encoder>
-		<encoder bitrate="video_standard" type="v">vp8</encoder>
+		<encoder grade_name="video_standard" type="video" ffpreset="libx264" multithread="1">libx264</encoder>
+		<encoder grade_name="video_standard" type="video">h264</encoder>
+		<encoder grade_name="video_standard" type="video">h264_vdpau</encoder>
+		<encoder grade_name="video_standard" type="video">mpeg4</encoder>
+		<encoder grade_name="video_standard" type="video">mpeg4_vdpau</encoder>
+		<encoder grade_name="video_standard" type="video">msmpeg4</encoder>
+		<encoder grade_name="video_standard" type="video">msmpeg4v1</encoder>
+		<encoder grade_name="video_standard" type="video">msmpeg4v2</encoder>
+		<encoder grade_name="video_standard" type="video">mpeg2video</encoder>
+		<encoder grade_name="video_standard" type="video">mpeg1video</encoder>
+		<encoder grade_name="video_standard" type="video">mpeg1video_vdpau</encoder>
+		<encoder grade_name="video_standard" type="video" ffpreset="libvpx" multithread="1">libvpx</encoder>
+		<encoder grade_name="video_standard" type="video">vp8</encoder>
 		<!-- Audio encoders -->
-		<encoder bitrate="audio_standard" type="a">libvorbis</encoder>
-		<encoder bitrate="audio_standard" type="a">vorbis</encoder>
-		<encoder bitrate="audio_standard" type="a">libmp3lame</encoder>
-		<encoder bitrate="audio_standard" type="a">mp3</encoder>
-		<encoder bitrate="audio_standard" type="a">mp3adu</encoder>
-		<encoder bitrate="audio_standard" type="a">mp3adufloat</encoder>
-		<encoder bitrate="audio_standard" type="a">mp3float</encoder>
+		<encoder grade_name="standard_quality" type="audio">libvorbis</encoder>
+		<encoder grade_name="standard_quality" type="audio">vorbis</encoder>
+		<encoder grade_name="standard_bitrate" type="audio">libmp3lame</encoder>
+		<encoder grade_name="standard_bitrate" type="audio">mp3</encoder>
+		<encoder grade_name="standard_bitrate" type="audio">mp3adu</encoder>
+		<encoder grade_name="standard_bitrate" type="audio">mp3adufloat</encoder>
+		<encoder grade_name="standard_bitrate" type="audio">mp3float</encoder>
 	</encoders>
 	
 	<formats>
@@ -77,7 +91,7 @@
 		</format>
 		
 		<format id="VP8" type="video">
-			<encoder ffprefix="libvpx">libvpx</encoder>
+			<encoder>libvpx</encoder>
 			<encoder>vp8</encoder>
 		</format>
 		
@@ -95,18 +109,18 @@
 	</formats>
 	
 	<containers>
-		<container name="3gp">
+		<container type="video" name="3gp">
 			<format>MPEG4</format>
 			<format>MPEG2</format>
 			<format>H264</format>
 			<format>MP3</format>
 			<format>AAC</format>
 		</container>
-		<container name="webm">
+		<container type="video" name="webm">
 			<format>VP8</format>
 			<format>VORBIS</format>
 		</container>
-		<container name="avi">
+		<container type="video" name="avi">
 			<format>MPEG4</format>
 			<format>MPEG2</format>
 			<format>H264</format>
@@ -117,13 +131,13 @@
 			<format>WMA</format>
 			<format>MP2</format>
 		</container>
-		<container name="flv">
+		<container type="video" name="flv">
 			<format>H264</format>
 			<format>AAC</format>
 			<format>AAC</format>
 			<format>MP3</format>
 		</container>
-		<container name="mkv">
+		<container type="video" name="mkv">
 			<format>THEORA</format>
 			<format>H264</format>
 			<format>MPEG4</format>
@@ -135,28 +149,28 @@
 			<format>AC3</format>
 			<format>MP2</format>
 		</container>
-		<container name="mp3">
+		<container type="audio" name="mp3">
 			<format>MP3</format>
 		</container>
-		<container name="mp4">
+		<container type="video" name="mp4">
 			<format>MPEG4</format>
 			<format>H264</format>
 			<format>AAC</format>
 		</container>
-		<container name="mpeg">
+		<container type="video" name="mpeg">
 			<format>MPEG1</format>
 			<format>MPEG2</format>
 			<format>MP3</format>
 			<format>MP2</format>
 		</container>
-		<container name="ogg">
+		<container type="video" name="ogg">
 			<format>VORBIS</format>
 			<format>FLAC</format>
 		</container>
-		<container name="wma">
+		<container type="audio" name="wma">
 			<format>WMA</format>
 		</container>
-		<container name="wmv">
+		<container type="video" name="wmv">
 			<format>WMV</format>
 			<format>WMA</format>
 			<format>MP3</format>

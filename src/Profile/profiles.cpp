@@ -6,20 +6,20 @@
  */
 
 #include "profiles.h"
-#include "../globalsettings.h"
+#include "../systemsettings.h"
 #include "../Xml/profileloader.h"
 
 namespace Profile {
 
-Profiles::Profiles() {}
+Profiles::Profiles(const MediaElement::ElementsDB& elementsDb) : elementsDb(elementsDb) {}
 
 Profiles::~Profiles() {}
 
 void Profiles::load(){
-	Path predefinedProfiles = GlobalSettings::getInstance()->getDefaultProfilesPath();
+	Path predefinedProfiles = SystemSettings::getInstance()->getDefaultProfilesPath();
 	loadProfilesInFolder(predefinedProfiles);
 
-	Path userProfiles = GlobalSettings::getInstance()->getUserProfilesPath();
+	Path userProfiles = SystemSettings::getInstance()->getUserProfilesPath();
 	loadProfilesInFolder(userProfiles);
 }
 
@@ -32,9 +32,9 @@ void Profiles::loadProfilesInFolder(const Path& folder) {
 	std::list<Path> files;
 	if (folder.getSubfiles(files)) {
 		for (auto file : files) {
-			Profile profile;
-			if (loader.load(file, profile)) {
-				profiles.push_back(profile);
+			Configuration profileConfiguration(elementsDb);
+			if (loader.load(file, profileConfiguration)) {
+				profiles.push_back(profileConfiguration.getProfile());
 			}
 		}
 	}

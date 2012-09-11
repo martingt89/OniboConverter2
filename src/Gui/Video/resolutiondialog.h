@@ -14,7 +14,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include "../WidgetAdapter/comboboxext.h"
-#include "../../ConverterOptions/optionsdatabase.h"
+#include "../../MediaElement/elementsdb.h"
 
 namespace Gui {
 namespace Video {
@@ -32,29 +32,29 @@ private:
 		Gtk::TreeModelColumn<std::string> colAspect;
 		Gtk::TreeModelColumn<std::string> colResolution;
 		Gtk::TreeModelColumn<std::string> colResolName;
-		Gtk::TreeModelColumn<ConverterOptions::Resolution> resolution;
+		Gtk::TreeModelColumn<MediaElement::Resolution> resolution;
 	};
 public:
-	ResolutionControl(ConverterOptions::OptionsDatabase &database,
+	ResolutionControl(MediaElement::ElementsDB& elementsDB,
 			const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~ResolutionControl();
-	bool start(ConverterOptions::Resolution& resolution);
+	bool start(MediaElement::Resolution& resolution);
 private:
 	void doubleClickOnBoard(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn*);
 	void clickOnBoard();
 	void changedX();
 	void changedY();
 	void aspectChanged();
-	void initAspectRatio(ComboBoxExt<ConverterOptions::AspectRatio>& aspectRatio);
+	void initAspectRatio(ComboBoxExt<MediaElement::AspectRatio>& aspectRatio);
 	void fillCanavas(Glib::RefPtr<Gtk::ListStore>& treeModel);
-	void setResolutiontoEntry(const ConverterOptions::Resolution& resolution);
-	std::string calcAspect(const int& x, const int& y);
-	ConverterOptions::OptionsDatabase &database;
+	void setResolutiontoEntry(const MediaElement::Resolution& resolution);
+	std::pair<int, int> calcAspect(const int& x, const int& y);
+	MediaElement::ElementsDB& elementsDB;
 	Gtk::Dialog* resolutionDialog;
 	Gtk::Entry* resolutionEntryX;
 	Gtk::Entry* resolutionEntryY;
 	Gtk::Label* resolutionError;
-	ComboBoxExt<ConverterOptions::AspectRatio> aspectRatio;
+	ComboBoxExt<MediaElement::AspectRatio> aspectRatio;
 	ModelColumns model;
 	Gtk::TreeView* resolutionCanavas;
 	Glib::RefPtr<Gtk::ListStore> treeModel;

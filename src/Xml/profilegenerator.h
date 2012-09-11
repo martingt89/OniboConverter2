@@ -10,7 +10,7 @@
 
 #include <vector>
 #include "xmlgenerator.h"
-#include "../Profile/profile.h"
+#include "../Profile/configuration.h"
 
 namespace Xml {
 
@@ -18,7 +18,7 @@ class ProfileGenerator {
 public:
 	ProfileGenerator(const Path& outputDirectory);
 	virtual ~ProfileGenerator();
-	void generateFile(const Profile::Profile& profile);
+	void generateFile(const Profile::Configuration& profile);
 private:
 	std::vector<PathNode> toPathVector(std::list<std::string> list, std::string value);
 	const Path outputDirectory;

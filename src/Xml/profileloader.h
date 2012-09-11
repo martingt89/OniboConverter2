@@ -9,7 +9,7 @@
 #define PROFILELOADER_H_
 
 #include "../CppExtension/path.h"
-#include "../Profile/profile.h"
+#include "../Profile/configuration.h"
 
 namespace Xml {
 
@@ -17,7 +17,7 @@ class ProfileLoader {
 public:
 	ProfileLoader();
 	virtual ~ProfileLoader();
-	bool load(const Path& profileFilePath, Profile::Profile& profile);
+	bool load(const Path& profileFilePath, Profile::Configuration& configuration);
 };
 
 } /* namespace Xml */

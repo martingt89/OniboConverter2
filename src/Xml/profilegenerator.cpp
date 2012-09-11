@@ -30,14 +30,14 @@ ProfileGenerator::ProfileGenerator(const Path& outputDirectory) : outputDirector
 
 ProfileGenerator::~ProfileGenerator() {}
 
-void ProfileGenerator::generateFile(const Profile::Profile& profile){
-	auto& table = XmlFilesDefinitions::getInstance()->getProfileTable();
+void ProfileGenerator::generateFile(const Profile::Configuration& profileConfiguration){
+	auto& table = XmlFilesDefinitions::getInstance()->getConfigurationTable();
 	XmlGenerator generator("profile");
-	for(int opt = Profile::Profile::BEGIN_OPT;
-			opt != Profile::Profile::END_OPT; ++opt){
-		Profile::Profile::Options options = (Profile::Profile::Options)opt;
+	for(int opt = Profile::Configuration::BEGIN_OPT;
+			opt != Profile::Configuration::END_OPT; ++opt){
+		Profile::Configuration::Options options = (Profile::Configuration::Options)opt;
 		auto list = table.getListFromOptions(options);
-		std::string value = profile.getProperty(options);
+		std::string value = profileConfiguration.getProperty(options);
 		std::vector<PathNode> path = toPathVector(list, value);
 		generator.addPath(path);
 	}
@@ -45,15 +45,15 @@ void ProfileGenerator::generateFile(const Profile::Profile& profile){
 	std::unique_ptr<Document> doc = generator.generateFromPath();
 
 	std::list<Profile::Profile::ManualSettings> manualSettings;
-	profile.getManualSettings(manualSettings);
+	profileConfiguration.getManualSettings(manualSettings);
 
-	getManualXml(manualSettings, doc->getNode());
+	getManualXml(manualSettings, (*doc).getNode());
 
 	std::string xmlFileName = getActualTimeMiliSec()+".xml";
 
 	Path outputPath(outputDirectory.getPath(), xmlFileName);
 	std::ofstream file(outputPath.getPath());
-	doc->write(file);
+	(*doc).write(file);
 	file.close();
 }
 

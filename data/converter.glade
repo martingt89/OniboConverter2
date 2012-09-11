@@ -1295,11 +1295,11 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label41">
+                              <object class="GtkLabel" id="audioGradeLabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="xpad">5</property>
-                                <property name="label" translatable="yes">Bitrate</property>
+                                <property name="label" translatable="yes">Grade</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1308,7 +1308,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBoxText" id="audioBitrate">
+                              <object class="GtkComboBoxText" id="audioGrade">
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
@@ -3473,7 +3473,7 @@
       <widget name="videoFramerate"/>
       <widget name="videoFFpreset"/>
       <widget name="audioFormat"/>
-      <widget name="audioBitrate"/>
+      <widget name="audioGrade"/>
       <widget name="audioEncoder"/>
       <widget name="audioSamplerate"/>
       <widget name="audioChannels"/>
@@ -3490,7 +3490,7 @@
       <widget name="label14"/>
       <widget name="label18"/>
       <widget name="label40"/>
-      <widget name="label41"/>
+      <widget name="audioGradeLabel"/>
       <widget name="label42"/>
       <widget name="label43"/>
       <widget name="label30"/>

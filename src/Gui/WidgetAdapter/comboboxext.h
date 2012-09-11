@@ -120,7 +120,15 @@ public:
 	void set_active_text(const std::string& text){
 		comboBoxText->set_active_text(text);
 	}
-
+	bool setActiveItem(const T &item){
+		for(auto it : items){
+			if(it.second == item){
+				comboBoxText->set_active_text(it.first);
+				return true;
+			}
+		}
+		return false;
+	}
 	bool is_sensitive() const{
 		return comboBoxText->get_sensitive();
 	}

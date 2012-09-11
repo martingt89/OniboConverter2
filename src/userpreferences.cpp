@@ -5,11 +5,11 @@
  *      Author: martin
  */
 
+#include <glibmm/miscutils.h>
 #include "userpreferences.h"
 #include "helper.h"
-#include "globalsettings.h"
+#include "systemsettings.h"
 #include "Xml/settingsloader.h"
-#include <glibmm/miscutils.h>
 
 static const std::string EXTERNAL_CONVERTER = "ffmpeg";
 
@@ -28,7 +28,7 @@ UserPreferences::UserPreferences() {
 	setNumberOfCPU(-1, true);
 	setMultithreadingForEncoders(true);
 	//
-	Xml::SettingsLoader loader(GlobalSettings::getInstance()->getUserSettingsFile());
+	Xml::SettingsLoader loader(SystemSettings::getInstance()->getUserSettingsFile());
 	loader.load(optToValue);
 }
 
@@ -87,6 +87,6 @@ bool UserPreferences::isMultithreadinForEncoders() const{
 }
 //
 void UserPreferences::save(){
-	Xml::SettingsGenerator generator(GlobalSettings::getInstance()->getUserSettingsFile());
+	Xml::SettingsGenerator generator(SystemSettings::getInstance()->getUserSettingsFile());
 	generator.save(optToValue);
 }

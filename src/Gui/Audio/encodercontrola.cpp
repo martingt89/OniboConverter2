@@ -6,25 +6,24 @@
  */
 
 #include "encodercontrola.h"
-#include <iostream>
 
 namespace Gui {
 namespace Audio {
-EncoderControlA::EncoderControlA(ConverterOptions::OptionsDatabase &database,
-		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database),
+EncoderControlA::EncoderControlA(MediaElement::ElementsDB& elementsDB,
+		const Glib::RefPtr<Gtk::Builder>& refGlade) : elementsDB(elementsDB),
 				audioFormat(refGlade, "audioFormat"), audioEncoder(refGlade, "audioEncoder"),
-				audioBitrate(refGlade, "audioBitrate"){
+				audioGradeChooser(refGlade, "audioGrade"){
 	isEnableSignals = true;
 	isUserInput = true;
 	audioFormat.signal_changed().connect(sigc::mem_fun(*this, &EncoderControlA::audioFormatChanged));
 	audioEncoder.signal_changed().connect(sigc::mem_fun(*this, &EncoderControlA::audioEncoderChanged));
-	audioBitrate.signal_changed().connect(sigc::mem_fun(*this, &EncoderControlA::audioBitrateChanged));
+	audioGradeChooser.signal_changed().connect(sigc::mem_fun(*this, &EncoderControlA::audioBitrateChanged));
 }
 
 EncoderControlA::~EncoderControlA() {}
 
 void EncoderControlA::aktualizeSettings(const bool& isAudioActive,
-		const ConverterOptions::Container& container){
+		const MediaElement::Container& container){
 	isEnableSignals = false;
 	if(isAudioActive){
 		setFormatsFromContainer(container);
@@ -33,25 +32,25 @@ void EncoderControlA::aktualizeSettings(const bool& isAudioActive,
 	}else{
 		audioFormat.set_sensitive(false);
 		audioEncoder.set_sensitive(false);
-		audioBitrate.set_sensitive(false);
+		audioGradeChooser.set_sensitive(false);
 	}
 	isEnableSignals = true;
 }
 void EncoderControlA::disableSettings(){
 	audioFormat.set_sensitive(false);
 	audioEncoder.set_sensitive(false);
-	audioBitrate.set_sensitive(false);
+	audioGradeChooser.set_sensitive(false);
 }
 void EncoderControlA::saveSettingsState(){
 	audioFormat.save_actual_state();
 	audioEncoder.save_actual_state();
-	audioBitrate.save_actual_state();
+	audioGradeChooser.save_actual_state();
 }
 void EncoderControlA::restoreSettingsState(){
 	isEnableSignals = false;
 	audioFormat.restor_saved_state();
 	audioEncoder.restor_saved_state();
-	audioBitrate.restor_saved_state();
+	audioGradeChooser.restor_saved_state();
 	isEnableSignals = true;
 }
 sigc::signal<void>& EncoderControlA::signalUserInput(){
@@ -66,24 +65,24 @@ bool EncoderControlA::checkSettingsComplete(std::string& message){
 		message = "Audio encoder is not set";
 		return false;
 	}
-	if(!audioBitrate.isSelectedActivableRow()){
-		message = "Audio bitrate is not set";
+	if(!audioGradeChooser.isSelectedActivableRow()){
+		message = "Audio grade is not set";
 		return false;
 	}
 	return true;
 }
 void EncoderControlA::setActiveProfile(const Profile::Profile& activeProfile){
-	std::string formatName;
-	if(activeProfile.getAudioFormatName(formatName)){
-		audioFormat.set_active_text(formatName);
-		std::string encoderName;
-		if(activeProfile.getAudioEncoderName(encoderName)){
-			audioEncoder.set_active_text(encoderName);
-			ConverterOptions::Bitrate bitrate;
-			if(activeProfile.getAudioBitrate(bitrate)){
-				audioBitrate.set_active_text(bitrate.toStr());
+	MediaElement::Format format;
+	if(activeProfile.getAudioFormat(format)){
+		audioFormat.set_active_text(format.readableForm());
+		MediaElement::Encoder encoder;
+		if(activeProfile.getAudioEncoder(encoder)){
+			audioEncoder.set_active_text(encoder.readableForm());
+			MediaElement::AudioGrade audioGrade;
+			if(activeProfile.getAudioGrade(audioGrade)){
+				audioGradeChooser.set_active_text(audioGrade.readableForm());
 			}else{
-				audioBitrate.unset_active();
+				audioGradeChooser.unset_active();
 			}
 		}else{
 			audioEncoder.unset_active();
@@ -92,28 +91,19 @@ void EncoderControlA::setActiveProfile(const Profile::Profile& activeProfile){
 		audioFormat.unset_active();
 	}
 }
-Converter::ConvertSettingsList EncoderControlA::getConvertArguments() const{
-	Converter::ConvertSettingsList args;
-	args.add(audioEncoder.get_active_row_item().getConvertArguments());
-	args.add(audioBitrate.get_active_row_item().getConvertArguments());
-	return args;
-}
 void EncoderControlA::getNewProfile(Profile::Profile& newProfile){
 	bool format = false;
 	if(audioFormat.isSelectedActivableRow()){
 		format = true;
-		newProfile.addProperty(Profile::Profile::AUDIO_FORMAT_OPT,
-				audioFormat.get_active_row_item().getName());
+		newProfile.setAudioFormat(audioFormat.get_active_row_item());
 	}
 	bool encoder = false;
 	if(format && audioEncoder.isSelectedActivableRow()){
 		encoder = true;
-		newProfile.addProperty(Profile::Profile::AUDIO_ENCODER_OPT,
-				audioEncoder.get_active_row_item().getName());
+		newProfile.setAudioEncoder(audioEncoder.get_active_row_item());
 	}
-	if(encoder && audioBitrate.isSelectedActivableRow()){
-		newProfile.addProperty(Profile::Profile::AUDIO_BITRATE_OPT,
-				toS(audioBitrate.get_active_row_item().getValue()));
+	if(encoder && audioGradeChooser.isSelectedActivableRow()){
+		newProfile.setAudioGrade(audioGradeChooser.get_active_row_item());
 	}
 }
 void EncoderControlA::audioFormatChanged(){
@@ -138,7 +128,7 @@ void EncoderControlA::audioBitrateChanged(){
 		sendUserInputSignal();
 	}
 }
-void EncoderControlA::setFormatsFromContainer(const ConverterOptions::Container& container){
+void EncoderControlA::setFormatsFromContainer(const MediaElement::Container& container){
 	bool isSet = audioFormat.is_selected();
 	std::string actualFormat = "-";
 	if(isSet){
@@ -148,16 +138,18 @@ void EncoderControlA::setFormatsFromContainer(const ConverterOptions::Container&
 	audioFormat.remove_all();
 	audioFormat.set_sensitive(true);
 
-	auto formats = container.getFormats().getAudioFormatsList();
-
-	if(formats.size() == 0){
+	auto names = elementsDB.elementsRelations.getFormatsByContainer(container);
+	MediaElement::Formats formats = elementsDB.getFormats();
+	for(auto name : names){
+		MediaElement::Format format;
+		if(formats.getFormatByName(name, MediaElement::Format::FORMAT_TYPE_AUDIO, format)){
+			audioFormat.append(format.getName(), format);
+		}
+	}
+	if(audioFormat.count_of_rows() == 0){
 		this->disableSettings();
 		return;
 	}
-
-	std::for_each(formats.begin(), formats.end(), [&](const ConverterOptions::Format& format){
-		audioFormat.append(format.getName(), format);
-	});
 	if(isSet){
 		audioFormat.set_active_text(actualFormat);
 	}
@@ -178,43 +170,49 @@ void EncoderControlA::aktualizeEncoder(){
 	audioEncoder.set_sensitive(true);
 	audioEncoder.remove_all();
 	auto actualFormat = audioFormat.get_active_row_item();
-	auto encodersList = actualFormat.getEncoders().getEncoders();
-	std::for_each(encodersList.begin(), encodersList.end(), [&](const ConverterOptions::Encoder& encoder){
-		audioEncoder.append(encoder.getName(), encoder);
-	});
+
+	auto names =  elementsDB.elementsRelations.getAudioEncodersByFormat(actualFormat);
+	MediaElement::Encoders encoders = elementsDB.getAudioEncoders();
+	for(auto name : names){
+		MediaElement::Encoder encoder;
+		if(encoders.getEncoderByName(name, encoder)){
+			audioEncoder.append(encoder.getName(), encoder);
+		}
+	}
 	if(isSet){
 		audioEncoder.set_active_text(actualEncoder);
 	}
-	if(audioEncoder.get_active_text() != actualEncoder && encodersList.size() > 0){
+	if(audioEncoder.get_active_text() != actualEncoder && audioEncoder.count_of_rows() > 0){
 		audioEncoder.set_active_row_number(0);
 	}
-	if(encodersList.size() == 0){
+	if(audioEncoder.count_of_rows() == 0){
 		audioEncoder.set_sensitive(false);	//todo text "no supported encoder"
 	}
 }
 void EncoderControlA::aktualizeBitrate(){
 	if(!audioEncoder.isSelectedActivableRow()){
-		audioBitrate.set_sensitive(false);
+		audioGradeChooser.set_sensitive(false);
 		return;
 	}
-	bool isSetBitrate = audioBitrate.is_selected();
+	bool isSetBitrate = audioGradeChooser.is_selected();
 	std::string actualBitrate = "";
 	if(isSetBitrate){
-		actualBitrate = audioBitrate.get_active_text();
+		actualBitrate = audioGradeChooser.get_active_text();
 	}
-	audioBitrate.set_sensitive(true);
-	audioBitrate.remove_all();
+	audioGradeChooser.set_sensitive(true);
+	audioGradeChooser.remove_all();
 	auto actualEncoder = audioEncoder.get_active_row_item();
-	auto bitratesList = actualEncoder.getBitrates();
-	auto userBitrateList = database.getUserVideoBitrate();
-	std::copy(userBitrateList.begin(), userBitrateList.end(), std::back_inserter(bitratesList));
-	std::for_each(bitratesList.begin(), bitratesList.end(), [&](const ConverterOptions::Bitrate& bitrate){
-		audioBitrate.append(bitrate.toStr(), bitrate);
-	});
+	std::string bitratesName = elementsDB.elementsRelations.getAudioGradesByEncoder(actualEncoder);
+	MediaElement::AudioGrades audioGrades;
+	if(elementsDB.getAudioGradesByName(bitratesName, audioGrades)){
+		for(auto grade : audioGrades){
+			audioGradeChooser.append(grade.readableForm(), grade);
+		}
+	}
 	if(isSetBitrate){
-		audioBitrate.set_active_text(actualBitrate);
+		audioGradeChooser.set_active_text(actualBitrate);
 	}else{
-		audioBitrate.set_active_row_number(bitratesList.size() / 2);
+		audioGradeChooser.set_active_row_number(audioGradeChooser.count_of_rows() / 2);
 	}
 }
 void EncoderControlA::sendUserInputSignal(){

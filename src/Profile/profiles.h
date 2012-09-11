@@ -11,18 +11,19 @@
 #include <list>
 #include "profile.h"
 #include "../CppExtension/path.h"
+#include "../MediaElement/elementsdb.h"
 
 namespace Profile {
 
 class Profiles {
 public:
-	Profiles();
+	Profiles(const MediaElement::ElementsDB& elementsDb);
 	virtual ~Profiles();
 	void load();
 	std::list<Profile> getProfiles() const;
 private:
 	std::list<Profile> profiles;
-
+	const MediaElement::ElementsDB& elementsDb;
 	void loadProfilesInFolder(const Path& folder);
 };
 

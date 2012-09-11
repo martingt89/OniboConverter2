@@ -26,18 +26,16 @@
 #include "mainwindow.h"
 #include "Settings/usersettingsdialog.h"
 #include "../Profile/profile.h"
-#include "../ConverterOptions/optionsdatabase.h"
 #include "../MediaFile/mediafile.h"
 
 namespace Gui {
 
 class ConverterGui {
 public:
-	ConverterGui(ConverterOptions::OptionsDatabase &database,
+	ConverterGui(MediaElement::ElementsDB& elementsDB,
 			const Glib::RefPtr<Gtk::Builder>& refGlade,
 			const Profile::Profiles& profiles,
 			Gui::MainWindow* mainWindow);
-	void setAvailableProfiles(const std::list<Profile::Profile>& availableProfiles);
 	sigc::signal<void, std::list<MediaFile::MediaFile*> >& signalConvert();
 	virtual ~ConverterGui();
 private:
@@ -54,7 +52,6 @@ private:
 	bool convertTimer();
 	void showAboutDialog();
 
-	ConverterOptions::OptionsDatabase &database;
 	AVControl avControl;
 	DestinationControl destinationControl;
 	FileControl fileControl;

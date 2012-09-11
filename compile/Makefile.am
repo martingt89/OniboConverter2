@@ -3,65 +3,76 @@ bin_PROGRAMS=OniboConverter2
 SRCPATH=../src
 
 OniboConverter2_SOURCES= \
-$(SRCPATH)/ConverterOptions/optionsdatabase.cpp \
-$(SRCPATH)/ConverterOptions/bitrate.cpp \
-$(SRCPATH)/ConverterOptions/resolution.cpp \
-$(SRCPATH)/ConverterOptions/encoder.cpp \
-$(SRCPATH)/ConverterOptions/samplerate.cpp \
-$(SRCPATH)/ConverterOptions/framerate.cpp \
-$(SRCPATH)/ConverterOptions/format.cpp \
-$(SRCPATH)/ConverterOptions/container.cpp \
-$(SRCPATH)/ConverterOptions/channel.cpp \
-$(SRCPATH)/ConverterOptions/optionsloaderxml.cpp \
-$(SRCPATH)/ConverterOptions/ffpreset.cpp \
-$(SRCPATH)/ConverterOptions/supportedencoders.cpp \
-$(SRCPATH)/RegexTools/regextools.cpp \
-$(SRCPATH)/CppExtension/path.cpp \
+$(SRCPATH)/MediaElement/audiograde.cpp \
+$(SRCPATH)/MediaElement/channel.cpp \
+$(SRCPATH)/MediaElement/container.cpp \
+$(SRCPATH)/MediaElement/samplerate.cpp \
+$(SRCPATH)/MediaElement/bitrate.cpp \
+$(SRCPATH)/MediaElement/encoder.cpp \
+$(SRCPATH)/MediaElement/resolution.cpp \
+$(SRCPATH)/MediaElement/format.cpp \
+$(SRCPATH)/MediaElement/framerate.cpp \
+$(SRCPATH)/MediaElement/ffpreset.cpp \
+$(SRCPATH)/MediaElement/elementsdb.cpp \
+$(SRCPATH)/MediaElement/elementsrelations.cpp \
+\
+$(SRCPATH)/Profile/configuration.cpp \
 $(SRCPATH)/Profile/profile.cpp \
 $(SRCPATH)/Profile/profiles.cpp \
+\
+$(SRCPATH)/Xml/profileloader.cpp \
 $(SRCPATH)/Xml/xmlparser.cpp \
 $(SRCPATH)/Xml/xmlgenerator.cpp \
-$(SRCPATH)/Xml/profilegenerator.cpp \
-$(SRCPATH)/Xml/profileloader.cpp \
 $(SRCPATH)/Xml/settingsloader.cpp \
 $(SRCPATH)/Xml/settingsgenerator.cpp \
-$(SRCPATH)/Gui/convertergui.cpp \
-$(SRCPATH)/Gui/avcontrol.cpp \
-$(SRCPATH)/Gui/filecontrol.cpp \
-$(SRCPATH)/Gui/convertwindow.cpp \
-$(SRCPATH)/Gui/findffmpegdialog.cpp \
-$(SRCPATH)/Gui/manualsettingscontrol.cpp \
-$(SRCPATH)/Gui/destinationcontrol.cpp \
-$(SRCPATH)/Gui/infocontrol.cpp \
-$(SRCPATH)/Gui/overwritedialog.cpp \
-$(SRCPATH)/Gui/profilenamedialog.cpp \
-$(SRCPATH)/Gui/mainwindow.cpp \
-$(SRCPATH)/Gui/Video/videocontrol.cpp \
-$(SRCPATH)/Gui/Video/encodercontrolv.cpp \
-$(SRCPATH)/Gui/Video/resolutiondialog.cpp \
-$(SRCPATH)/Gui/Video/bitratedialog.cpp \
-$(SRCPATH)/Gui/Audio/audiocontrol.cpp \
-$(SRCPATH)/Gui/Audio/encodercontrola.cpp \
-$(SRCPATH)/Gui/Settings/general.cpp \
-$(SRCPATH)/Gui/Settings/threading.cpp \
-$(SRCPATH)/Gui/Settings/usersettingsdialog.cpp \
-$(SRCPATH)/ExternalTools/supportedencodersloader.cpp \
-$(SRCPATH)/ProcessExecutor/process.cpp \
-$(SRCPATH)/ProcessExecutor/safestream.cpp \
-$(SRCPATH)/ProcessExecutor/safeinputstream.cpp \
-$(SRCPATH)/ProcessExecutor/safeoutputstream.cpp \
-$(SRCPATH)/Converter/convertsettings.cpp \
-$(SRCPATH)/Converter/dispenser.cpp \
-$(SRCPATH)/Converter/convertparser.cpp \
+$(SRCPATH)/xmlfilesdefinitions.cpp \
+$(SRCPATH)/Xml/profilegenerator.cpp \
+\
 $(SRCPATH)/MediaFile/mediafile.cpp \
 $(SRCPATH)/MediaFile/mediafilescanner.cpp \
 $(SRCPATH)/MediaFile/audiostream.cpp \
 $(SRCPATH)/MediaFile/stream.cpp \
 $(SRCPATH)/MediaFile/videostream.cpp \
-$(SRCPATH)/helper.cpp \
-$(SRCPATH)/globalsettings.cpp \
+\
+$(SRCPATH)/Xml/optionsloaderxml.cpp \
+$(SRCPATH)/CppExtension/path.cpp \
+$(SRCPATH)/RegexTools/regextools.cpp \
+$(SRCPATH)/ConverterOptions/supportedencoders.cpp \
+$(SRCPATH)/ExternalTools/supportedencodersloader.cpp \
+\
+$(SRCPATH)/Gui/Settings/general.cpp \
+$(SRCPATH)/Gui/Settings/threading.cpp \
+$(SRCPATH)/Gui/Settings/usersettingsdialog.cpp \
+$(SRCPATH)/Gui/findffmpegdialog.cpp \
+$(SRCPATH)/Gui/convertwindow.cpp \
+$(SRCPATH)/Gui/mainwindow.cpp \
+$(SRCPATH)/Gui/convertergui.cpp \
+$(SRCPATH)/Gui/destinationcontrol.cpp \
+$(SRCPATH)/Gui/filecontrol.cpp \
+$(SRCPATH)/Gui/infocontrol.cpp \
+$(SRCPATH)/Gui/overwritedialog.cpp \
+$(SRCPATH)/Gui/avcontrol.cpp \
+$(SRCPATH)/Gui/manualsettingscontrol.cpp \
+$(SRCPATH)/Gui/profilenamedialog.cpp \
+$(SRCPATH)/Gui/Audio/audiocontrol.cpp \
+$(SRCPATH)/Gui/Audio/encodercontrola.cpp \
+$(SRCPATH)/Gui/Video/videocontrol.cpp \
+$(SRCPATH)/Gui/Video/resolutiondialog.cpp \
+$(SRCPATH)/Gui/Video/bitratedialog.cpp \
+$(SRCPATH)/Gui/Video/encodercontrolv.cpp \
+\
+$(SRCPATH)/System/cpu.cpp \
+\
+$(SRCPATH)/ProcessExecutor/process.cpp \
+$(SRCPATH)/ProcessExecutor/safestream.cpp \
+$(SRCPATH)/ProcessExecutor/safeinputstream.cpp \
+$(SRCPATH)/ProcessExecutor/safeoutputstream.cpp \
+$(SRCPATH)/Converter/convertparser.cpp \
+$(SRCPATH)/Converter/dispenser.cpp \
+$(SRCPATH)/Converter/argumentsgenerator.cpp \
 $(SRCPATH)/userpreferences.cpp \
-$(SRCPATH)/xmlfilesdefinitions.cpp \
+$(SRCPATH)/systemsettings.cpp \
+$(SRCPATH)/helper.cpp \
 $(SRCPATH)/main.cpp 
 
 AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -pedantic $(DEPS_CFLAGS)

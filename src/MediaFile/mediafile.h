@@ -15,12 +15,12 @@ namespace ProcessExecutor{
 #include <string>
 #include <vector>
 #include <stdexcept>
-#include "../CppExtension/path.h"
 #include "videostream.h"
 #include "audiostream.h"
-#include "../Converter/convertsettings.h"
 #include <thread>
 #include <sstream>
+#include "../CppExtension/path.h"
+#include "../Profile/profile.h"
 
 namespace MediaFile {
 
@@ -44,7 +44,7 @@ public:
 	MediaFile(Path filePath, int fileId);
 	MediaFile(const MediaFile& file);
 	virtual ~MediaFile();
-	void setSettingsList(const Converter::ConvertSettingsList& settingsList);
+	void setActualProfile(const Profile::Profile& profile);
 	void setDestinationPath(const Path& destinationPath);
 	void setContainerName(const std::string& containerName);
 	bool scanMediaFile();
@@ -82,7 +82,8 @@ private:
 	bool set;
 	bool valid;
 	bool isAbort;
-	Converter::ConvertSettingsList settingsList;
+//	Converter::ConvertSettingsList settingsList;
+	Profile::Profile profile;
 	volatile bool enableOverwrite;
 	std::string fileName;
 	std::string containerName;

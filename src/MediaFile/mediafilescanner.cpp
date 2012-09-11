@@ -33,7 +33,7 @@ MediaFileScanner::MediaFileScanner(Path filePath) :
 	if (process.waitForProcessBegin() != 0) {
 		std::string messages;
 		while (process.getLog() >> messages) {
-			std::cout << "Process::Executor error: " << messages << std::endl;	//todo logging
+			std::cerr << "Process::Executor error: " << messages << std::endl;	//todo logging
 		}
 		//todo excetion
 		return;

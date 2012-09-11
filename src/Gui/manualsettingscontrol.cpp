@@ -83,20 +83,20 @@ void ManualSettingsControl::setActiveProfile(const Profile::Profile& activeProfi
 		row[modelColumns.args] = argString;
 	}
 }
-Converter::ConvertSettingsList ManualSettingsControl::getConvertArguments() const{
-	Converter::ConvertSettingsList args;
-	typedef Gtk::TreeModel::Children type_children;
-	type_children children = commandTreeModel->children();
-	for (type_children::iterator iter = children.begin(); iter != children.end(); ++iter) {
-		Gtk::TreeModel::Row row = *iter;
-		std::string name = (Glib::ustring)row[modelColumns.command];
-		std::string commands = (Glib::ustring)row[modelColumns.args];
-		Converter::ConvertSettings arg(name);
-		arg.addValue(commands);
-		args.add(arg);
-	}
-	return args;
-}
+//Converter::ConvertSettingsList ManualSettingsControl::getConvertArguments() const{
+//	Converter::ConvertSettingsList args;
+//	typedef Gtk::TreeModel::Children type_children;
+//	type_children children = commandTreeModel->children();
+//	for (type_children::iterator iter = children.begin(); iter != children.end(); ++iter) {
+//		Gtk::TreeModel::Row row = *iter;
+//		std::string name = (Glib::ustring)row[modelColumns.command];
+//		std::string commands = (Glib::ustring)row[modelColumns.args];
+//		Converter::ConvertSettings arg(name);
+//		arg.addValue(commands);
+//		args.add(arg);
+//	}
+//	return args;
+//}
 void ManualSettingsControl::getNewProfile(Profile::Profile& newProfile){
 	typedef Gtk::TreeModel::Children type_children;
 	type_children children = commandTreeModel->children();
@@ -104,8 +104,10 @@ void ManualSettingsControl::getNewProfile(Profile::Profile& newProfile){
 		Gtk::TreeModel::Row row = *iter;
 		std::string name = (Glib::ustring)row[modelColumns.command];
 		std::string commands = (Glib::ustring)row[modelColumns.args];
-		newProfile.addProperty(Profile::Profile::MANUAL_COMMAND_OPT, name);
-		newProfile.addProperty(Profile::Profile::MANUAL_ARG_OPT, commands);
+		Profile::Profile::ManualSettings setting;
+		setting.command = name;
+		setting.args.push_back(commands);
+		newProfile.addManualSettings(setting);
 	}
 }
 //=============================================================

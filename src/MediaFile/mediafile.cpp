@@ -14,6 +14,7 @@
 #include "../helper.h"
 #include "../userpreferences.h"
 #include "../ProcessExecutor/process.h"
+#include "../Converter/argumentsgenerator.h"
 
 namespace MediaFile {
 
@@ -47,7 +48,6 @@ MediaFile::MediaFile(const MediaFile& file){
 	this->fileInfo = file.fileInfo;
 	this->set = file.set;
 	this->valid = file.valid;
-	this->settingsList = file.settingsList;
 	this->status = file.status;
 	this->fraction = file.fraction;
 	this->remainingTime = file.remainingTime;
@@ -80,7 +80,6 @@ bool MediaFile::scanMediaFile(){
 				fileInfo.audios.push_back(stream);
 			}
 		}else{
-//			std::cout<<"Invaid file"<<std::endl;
 			return false;
 		}
 		return true;
@@ -99,10 +98,10 @@ MediaFile::FileInfo MediaFile::getFileInfo(){
 Path MediaFile::getPath() const {
 	return filePath;
 }
-void MediaFile::setSettingsList(const Converter::ConvertSettingsList& settingsList){
-	this->settingsList = settingsList;
-	this->containerName = settingsList.getContainerName();
-}
+//void MediaFile::setSettingsList(const Converter::ConvertSettingsList& settingsList){
+////	this->settingsList = settingsList;
+////	this->containerName = settingsList.getContainerName();
+//}
 void MediaFile::setDestinationPath(const Path& destinationPath){
 	this->destinationPath = destinationPath;
 }
@@ -118,6 +117,9 @@ void MediaFile::clearConvertStatus(){
 	isAbort = false;
 	errorOutputBuffer.clear();
 }
+void MediaFile::setActualProfile(const Profile::Profile& profile){
+	this->profile = profile;
+}
 void MediaFile::convert(const bool enableFileThreading, const int numOfThreads){
 	if(valid){
 		std::unique_lock<std::mutex> uniqueLock(mutex);
@@ -129,19 +131,20 @@ void MediaFile::convert(const bool enableFileThreading, const int numOfThreads){
 			status = ABORT;
 			return;
 		}
-		if(enableFileThreading){
-			settingsList.enableFileThreading(numOfThreads);
-		}
+
 		status = PROCESSING;
 
-		std::list<std::string> arguments;
-		arguments.push_back("-i");
-		arguments.push_back(filePath.getPath());
-		arguments.push_back("-y");
-		auto args = settingsList.getArguments();
-		for(auto x : args){
-			arguments.push_back(x);
-		}
+		Converter::ArgumentsGenerator generator;
+
+		generator.setThreading(enableFileThreading, numOfThreads);
+		generator.setProfile(profile);
+
+		std::list<std::string> arguments = generator.generate();
+
+		arguments.push_front("-y");
+		arguments.push_front(filePath.getPath());
+		arguments.push_front("-i");
+
 		arguments.push_back(getOutputFilePath().getPath());
 		auto extConverter = UserPreferences::getInstance()->getExtConverterPath();
 
@@ -225,7 +228,8 @@ bool MediaFile::isEnded(){
 	return (status == FINISH) || (status == INVALID_FILE) || (status == ABORT) || (status == FAIL);
 }
 bool MediaFile::isSupportFileThreding() const{
-	return settingsList.isSupportFileThreading();
+	//return settingsList.isSupportFileThreading();
+	return false;
 }
 
 void MediaFile::abort(){

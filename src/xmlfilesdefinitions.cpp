@@ -19,57 +19,58 @@ XmlFilesDefinitions::XmlFilesDefinitions() {
 	userPreferences.add(toList( { "settings", "encoder_multithread" }),
 			UserPreferences::ENABLE_MULTITHREAD_FOR_ENC);
 	//************************************************************************************************************
-	profil.add(toList( { "profile", "name" }), Profile::Profile::NAME_OPT);
-	profil.add(toList( { "profile", "container" }),
-			Profile::Profile::CONTAINER_OPT);
-	profil.add(toList( { "profile", "video", "mode" }),
-			Profile::Profile::VIDEO_MODE_OPT);
-	profil.add(toList( { "profile", "video", "format" }),
-			Profile::Profile::VIDEO_FORMAT_OPT);
-	profil.add(toList( { "profile", "video", "encoder" }),
-			Profile::Profile::VIDEO_ENCODER_OPT);
-	profil.add(toList( { "profile", "video", "framerate" }),
-			Profile::Profile::VIDEO_FRAMERATE_OPT);
-	profil.add(toList( { "profile", "video", "bitrate", "value" }),
-			Profile::Profile::VIDEO_BITRATE_OPT);
-	profil.add(toList( { "profile", "video", "bitrate", "min" }),
-			Profile::Profile::VIDEO_BITRATE_MIN_OPT);
-	profil.add(toList( { "profile", "video", "bitrate", "max" }),
-			Profile::Profile::VIDEO_BITRATE_MAX_OPT);
-	profil.add(toList( { "profile", "video", "resolution", "x" }),
-			Profile::Profile::VIDEO_RESOLUTION_X_OPT);
-	profil.add(toList( { "profile", "video", "resolution", "y" }),
-			Profile::Profile::VIDEO_RESOLUTION_Y_OPT);
-	profil.add(toList( { "profile", "video", "resolution", "aspect" }),
-			Profile::Profile::VIDEO_RESOLUTION_ASP_OPT);
-	profil.add(toList( { "profile", "video", "resolution", "name" }),
-			Profile::Profile::VIDEO_RESOLUTION_NAME_OPT);
-	profil.add(toList( { "profile", "video", "ffpreset", "prefix" }),
-			Profile::Profile::VIDEO_FFPRESET_PREFIX_OPT);
-	profil.add(toList( { "profile", "video", "ffpreset", "path" }),
-			Profile::Profile::VIDEO_FFPRESET_PATH_OPT);
-	profil.add(toList( { "profile", "video", "ffpreset", "type" }),
-			Profile::Profile::VIDEO_FFPRESET_TYPE_OPT);
+	profilConfiguration.add(toList( { "profile", "name" }), Profile::Configuration::NAME_OPT);
+	profilConfiguration.add(toList( { "profile", "container"}), Profile::Configuration::CONTAINER_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "mode" }),
+			Profile::Configuration::VIDEO_MODE_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "format" }),
+			Profile::Configuration::VIDEO_FORMAT_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "encoder" }),
+			Profile::Configuration::VIDEO_ENCODER_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "framerate" }),
+			Profile::Configuration::VIDEO_FRAMERATE_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "bitrate", "value" }),
+			Profile::Configuration::VIDEO_BITRATE_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "bitrate", "min" }),
+			Profile::Configuration::VIDEO_BITRATE_MIN_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "bitrate", "max" }),
+			Profile::Configuration::VIDEO_BITRATE_MAX_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "resolution", "x" }),
+			Profile::Configuration::VIDEO_RESOLUTION_X_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "resolution", "y" }),
+			Profile::Configuration::VIDEO_RESOLUTION_Y_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "resolution", "aspect" }),
+			Profile::Configuration::VIDEO_RESOLUTION_ASP_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "resolution", "name" }),
+			Profile::Configuration::VIDEO_RESOLUTION_NAME_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "ffpreset", "prefix" }),
+			Profile::Configuration::VIDEO_FFPRESET_PREFIX_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "ffpreset", "path" }),
+			Profile::Configuration::VIDEO_FFPRESET_PATH_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "ffpreset", "type" }),
+			Profile::Configuration::VIDEO_FFPRESET_TYPE_OPT);
 	//---------------------------------------------------------------
-	profil.add(toList( { "profile", "audio", "mode" }),
-			Profile::Profile::AUDIO_MODE_OPT);
-	profil.add(toList( { "profile", "audio", "format" }),
-			Profile::Profile::AUDIO_FORMAT_OPT);
-	profil.add(toList( { "profile", "audio", "encoder" }),
-			Profile::Profile::AUDIO_ENCODER_OPT);
-	profil.add(toList( { "profile", "audio", "bitrate" }),
-			Profile::Profile::AUDIO_BITRATE_OPT);
-	profil.add(toList( { "profile", "audio", "samplerate" }),
-			Profile::Profile::AUDIO_SAMPLERATE_OPT);
-	profil.add(toList( { "profile", "audio", "channel", "value" }),
-			Profile::Profile::AUDIO_CHANNEL_VALUE_OPT);
-	profil.add(toList( { "profile", "audio", "channel", "name" }),
-			Profile::Profile::AUDIO_CHANNEL_NAME_OPT);
+	profilConfiguration.add(toList( { "profile", "audio", "mode" }),
+			Profile::Configuration::AUDIO_MODE_OPT);
+	profilConfiguration.add(toList( { "profile", "audio", "format" }),
+			Profile::Configuration::AUDIO_FORMAT_OPT);
+	profilConfiguration.add(toList( { "profile", "audio", "encoder" }),
+			Profile::Configuration::AUDIO_ENCODER_OPT);
+	profilConfiguration.add(toList( { "profile", "audio", "grade", "value"}),
+			Profile::Configuration::AUDIO_GRADE_VALUE_OPT);
+	profilConfiguration.add(toList( { "profile", "audio", "grade", "type"}),
+			Profile::Configuration::AUDIO_GRADE_TYPE_OPT);
+	profilConfiguration.add(toList( { "profile", "audio", "samplerate" }),
+			Profile::Configuration::AUDIO_SAMPLERATE_OPT);
+	profilConfiguration.add(toList( { "profile", "audio", "channel", "value" }),
+			Profile::Configuration::AUDIO_CHANNEL_VALUE_OPT);
+	profilConfiguration.add(toList( { "profile", "audio", "channel", "name" }),
+			Profile::Configuration::AUDIO_CHANNEL_NAME_OPT);
 	//---------------------------------------------------------------
-	profil.add(toList( { "profile", "manualsettings", "setting", "command" }),
-			Profile::Profile::MANUAL_COMMAND_OPT);
-	profil.add(toList( { "profile", "manualsettings", "setting", "arg" }),
-			Profile::Profile::MANUAL_ARG_OPT);
+	profilConfiguration.add(toList( { "profile", "manualsettings", "setting", "command" }),
+			Profile::Configuration::MANUAL_COMMAND_OPT);
+	profilConfiguration.add(toList( { "profile", "manualsettings", "setting", "arg" }),
+			Profile::Configuration::MANUAL_ARG_OPT);
 	//=====================================================================
 }
 
@@ -84,6 +85,6 @@ Xml::ConvertTable<UserPreferences::UserPreferencesOpt>& XmlFilesDefinitions::get
 	return userPreferences;
 }
 
-Xml::ConvertTable<Profile::Profile::Options>& XmlFilesDefinitions::getProfileTable(){
-	return profil;
+Xml::ConvertTable<Profile::Configuration::Options>& XmlFilesDefinitions::getConfigurationTable(){
+	return profilConfiguration;
 }

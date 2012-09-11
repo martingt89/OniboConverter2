@@ -7,10 +7,7 @@
 
 #include <gtkmm/main.h>
 #include <gtkmm/builder.h>
-#include "ConverterOptions/optionsloaderxml.h"
-#include "ConverterOptions/optionsdatabase.h"
-#include "ConverterOptions/ffpreset.h"
-#include "ConverterOptions/supportedencoders.h"
+
 #include "CppExtension/path.h"
 #include "ExternalTools/supportedencodersloader.h"
 #include "Gui/convertergui.h"
@@ -20,17 +17,10 @@
 #include "Profile/profile.h"
 #include "Profile/profiles.h"
 #include "Converter/dispenser.h"
-#include "globalsettings.h"
+#include "systemsettings.h"
 #include "userpreferences.h"
-#include <unistd.h>
-
-int getNumberOfCPU(){
-	int cpus = sysconf(_SC_NPROCESSORS_ONLN);
-	if(cpus <= 0){
-		cpus = 1;
-	}
-	return cpus;
-}
+#include "MediaElement/elementsdb.h"
+#include "System/cpu.h"
 
 class OniboConverter{
 private:
@@ -43,16 +33,17 @@ private:
 	Converter::Dispenser dispenser;
 public:
 	OniboConverter(): converterGui(NULL){
-		ffpresetPath = GlobalSettings::getInstance()->getFFpresetFolder();
-		xmlFilePath = GlobalSettings::getInstance()->getXmlConfigFilePath();
-		defaultProfilesFolder = GlobalSettings::getInstance()->getDefaultProfilesPath();
-		userprofilesFolder = GlobalSettings::getInstance()->getUserProfilesPath();
+		ffpresetPath = SystemSettings::getInstance()->getFFpresetFolder();
+		xmlFilePath = SystemSettings::getInstance()->getXmlConfigFilePath();
+		defaultProfilesFolder = SystemSettings::getInstance()->getDefaultProfilesPath();
+		userprofilesFolder = SystemSettings::getInstance()->getUserProfilesPath();
 	}
 
 	void convert(std::list<MediaFile::MediaFile*> mediaFiles){
 		int numberOfThreads = 1;
 		if(UserPreferences::getInstance()->isAutomaticNumberOfCPU()){
-			numberOfThreads = getNumberOfCPU();
+			System::CPU cpu;
+			numberOfThreads = cpu.getNumerOfThreads();
 		}else{
 			numberOfThreads = UserPreferences::getInstance()->getNumerOfCPU();
 		}
@@ -66,7 +57,7 @@ public:
 		builder->add_from_file("data/dialogs.glade");
 		builder->add_from_file("data/user_settings.glade");
 
-		ExternalTools::SupportedEncodersLoader encodersLoader;
+		ExternalTools::SupportedEncodersLoader encodersLoader;	//todo move to supported encoders
 		ConverterOptions::SupportedEncoders encoders;
 
 		bool res = encodersLoader.scan(encoders, extConverter);
@@ -76,19 +67,18 @@ public:
 			kit.run(findDialog.getWindow());
 			return findDialog.isNewStart();
 		}else{
-			ConverterOptions::OptionsLoaderXml optionsLoaderFromXml(xmlFilePath, encoders, ffpresetPath);
+			MediaElement::ElementsDB elementsDB;
 
-			ConverterOptions::OptionsDatabase optionsDatabase(&optionsLoaderFromXml);
+			elementsDB.load(xmlFilePath, ffpresetPath, encoders);
 
-			Profile::Profiles profiles;
-
+			Profile::Profiles profiles(elementsDB);
 			profiles.load();
 
 			Gui::MainWindow* mainWindow;
 			builder->get_widget_derived("mainWindow", mainWindow);
 			mainWindow->show();
 
-			converterGui = new Gui::ConverterGui(optionsDatabase, builder, profiles, mainWindow);
+			converterGui = new Gui::ConverterGui(elementsDB, builder, profiles, mainWindow);
 			converterGui->signalConvert().connect(sigc::mem_fun(*this, &OniboConverter::convert));
 			kit.run();
 		}

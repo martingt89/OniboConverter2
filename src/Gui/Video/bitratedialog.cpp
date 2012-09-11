@@ -8,13 +8,12 @@
 #include "bitratedialog.h"
 #include <gtkmm/stock.h>
 #include "../../helper.h"
-#include <iostream>
 
 namespace Gui {
 namespace Video{
 
-BitrateDialog::BitrateDialog(ConverterOptions::OptionsDatabase &database,
-		const Glib::RefPtr<Gtk::Builder>& refGlade) : database(database),
+BitrateDialog::BitrateDialog(MediaElement::ElementsDB &elementsDB,
+		const Glib::RefPtr<Gtk::Builder>& refGlade) : elementsDB(elementsDB),
 				vbdBitrate(refGlade, "vbdBitrate"){
 	isEnableSignal = true;
 	refGlade->get_widget("videoBitrateDialog", videoBitrateDialog);
@@ -49,15 +48,19 @@ BitrateDialog::~BitrateDialog() {
 	delete vbdDisperEnable;
 	delete vbdError;
 }
-bool BitrateDialog::start(const ConverterOptions::Encoder& encoder, ConverterOptions::Bitrate &bitrate){
-	auto bitrates = encoder.getBitrates();
-	auto userBitrates = database.getUserVideoBitrate();
-	std::copy(userBitrates.begin(), userBitrates.end(), std::back_inserter(bitrates));
+bool BitrateDialog::start(const MediaElement::Encoder& encoder, MediaElement::Bitrate &bitrate){
+	std::string bitratersName = elementsDB.elementsRelations.getBitratesByEncoder(encoder);
+	MediaElement::Bitrates bitrates;
+
 	vbdError->set_visible(false);
 	vbdBitrate.remove_all();
-	for(auto bitIter = bitrates.begin(); bitIter != bitrates.end(); ++bitIter){
-		vbdBitrate.uniqueAppend(toS(bitIter->getValue()), *bitIter);
+
+	if(elementsDB.getBitratesByName(bitratersName, bitrates)){
+		for(auto bitrate : bitrates){
+			vbdBitrate.uniqueAppend(bitrate.readableForm(), bitrate);
+		}
 	}
+
 	vbdBitrate.set_active_text(toS(bitrate.getValue()));
 	vbdMinBitrate->set_value(bitrate.getMinBitrate());
 	vbdMaxBitrate->set_value(bitrate.getMaxBitrate());
@@ -149,7 +152,7 @@ void BitrateDialog::dispersionActivate(){
 		isEnableSignal = true;
 	}
 }
-ConverterOptions::Bitrate BitrateDialog::createBitrate(){
+MediaElement::Bitrate BitrateDialog::createBitrate(){
 	int bitrate = toN(vbdBitrate.getValue(), int());
 
 	int min = -1;
@@ -166,7 +169,7 @@ ConverterOptions::Bitrate BitrateDialog::createBitrate(){
 			min = vbdMinBitrate->get_value();
 		}
 	}
-	return ConverterOptions::Bitrate(bitrate, ConverterOptions::Bitrate::VIDEO, min, max);
+	return MediaElement::Bitrate(bitrate, min, max);
 }
 }
 } /* namespace Gui */

@@ -18,11 +18,11 @@ static const int CONFIG_SCREEN_PAGE = 1;
 static const int INFO_SCREEN_PAGE = 2;
 static const int CONVERT_SCREEN_PAGE = 3;
 
-ConverterGui::ConverterGui(ConverterOptions::OptionsDatabase &database,
+ConverterGui::ConverterGui(MediaElement::ElementsDB& elementsDB,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
 		const Profile::Profiles& profiles,
 		Gui::MainWindow* mainWindow) :
-		database(database), avControl(database, refGlade, profiles),
+		avControl(elementsDB, refGlade, profiles),
 		destinationControl(refGlade), fileControl(refGlade), infoControl(refGlade),
 		overwrite(refGlade), convertWindow(refGlade), settingsDialog(refGlade), mainWindow(mainWindow),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
@@ -61,10 +61,6 @@ ConverterGui::~ConverterGui() {
 	delete settingsButton;
 	delete okSettingsButton;
 	delete cancelSettingsButton;
-}
-
-void ConverterGui::setAvailableProfiles(const std::list<Profile::Profile>& availableProfiles) {
-
 }
 
 sigc::signal<void, std::list<MediaFile::MediaFile*> >& ConverterGui::signalConvert(){
@@ -133,7 +129,7 @@ void ConverterGui::convertButtonClicked(){
 		}else{
 			mediaFile = new MediaFile::MediaFile(path.path, path.id);
 		}
-		mediaFile->setSettingsList(avControl.getConvertArguments());
+		mediaFile->setActualProfile(avControl.getTmpProfile());
 		mediaFile->setDestinationPath(destinationControl.getDestinationPath());
 		mediaFile->setContainerName(avControl.getContainerName());
 		mediaFile->clearConvertStatus();

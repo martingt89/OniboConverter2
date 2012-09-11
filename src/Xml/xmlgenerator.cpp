@@ -34,8 +34,6 @@ XmlGenerator::~XmlGenerator(){}
 void XmlGenerator::addPath(const std::vector<PathNode>& path){
 	if(path.size() > 0 && path[0].name == rootName){
 		pathData.push_back(path);
-	}else{
-		//todo log?
 	}
 }
 
@@ -45,7 +43,7 @@ std::unique_ptr<Document> XmlGenerator::generateFromPath() {
 
 	std::unique_ptr<Document> document(new Document);
 	Xml::Node* node = new Xml::Node(rootName);
-	document->setSubNode(node);
+	(*document).setSubNode(node);
 	std::vector<std::string> path;
 	path.push_back(rootName);
 	generate(node, 0, pathData.begin(), pathData.end(), path, false);
@@ -60,7 +58,7 @@ void XmlGenerator::generate(Xml::Node* node, unsigned int depth,
 	if(actualLine == lastLine){
 		return;
 	}
-	if(change){		//test odkade nam to sedi s cestou
+	if(change){
 		unsigned int counter = 0;
 		for(auto x : path){
 			if(((*actualLine).size() <= counter) || (*actualLine)[counter].name != x){

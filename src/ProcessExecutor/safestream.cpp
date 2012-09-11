@@ -17,7 +17,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include "safestream.h"
-#include <iostream>
+
 namespace ProcessExecutor {
 
 SafeStream::SafeStream() {

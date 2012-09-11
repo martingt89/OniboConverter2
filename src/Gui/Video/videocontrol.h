@@ -14,23 +14,22 @@
 #include "resolutiondialog.h"
 #include "../WidgetAdapter/comboboxext.h"
 #include "../../Profile/profile.h"
-#include "../../ConverterOptions/optionsdatabase.h"
 
 namespace Gui {
 namespace Video {
 
 class VideoControl {
 public:
-	VideoControl(ConverterOptions::OptionsDatabase &database, const Glib::RefPtr<Gtk::Builder>& refGlade);
+	VideoControl(MediaElement::ElementsDB& elementsDB, const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~VideoControl();
-	void containerChanged(const ConverterOptions::Container& container);
+	void containerChanged(const MediaElement::Container& container);
 	void saveSettingsState();
 	void restoreSettingsState();
 	bool checkSettingsComplete(std::string& message);
 	void disableSettings();
 	void setActiveProfile(const Profile::Profile& activeProfile);
 	sigc::signal<void>& signalUserInput();
-	Converter::ConvertSettingsList getConvertArguments() const;
+	//Converter::ConvertSettingsList getConvertArguments() const;
 	void getNewProfile(Profile::Profile& newProfile);
 private:
 	void encoderUserInput();
@@ -38,21 +37,22 @@ private:
 	void videoFramerateChanged();
 	void videoResolutinChanged();
 	void initVideoMode(ComboBoxExt<int> &videoMode);
-	void initVideoFramerate(ComboBoxExt<ConverterOptions::Framerate> &videoFramerate);
-	void initVideoResolution(ComboBoxExt<ConverterOptions::Resolution> &videoResolution);
+	void initVideoFramerate(ComboBoxExt<MediaElement::Framerate> &videoFramerate);
+	void initVideoResolution(ComboBoxExt<MediaElement::Resolution> &videoResolution);
 	void sendUserInputSignal();
-	ConverterOptions::OptionsDatabase &database;
+
+	MediaElement::ElementsDB& elementsDB;
 
 	sigc::signal<void> userEvent;
 	EncoderControl encoder;
-	ConverterOptions::Container actualContainer;
+	MediaElement::Container actualContainer;
 	bool isEnabledSignals;
 
 	ComboBoxExt<int> videoMode;
-	ComboBoxExt<ConverterOptions::Framerate> videoFramerate;
-	ComboBoxExt<ConverterOptions::Resolution> videoResolution;
+	ComboBoxExt<MediaElement::Framerate> videoFramerate;
+	ComboBoxExt<MediaElement::Resolution> videoResolution;
 	ResolutionControl resolutionDialog;
-	ConverterOptions::Resolution lastSetResolution;
+	MediaElement::Resolution lastSetResolution;
 };
 
 }
