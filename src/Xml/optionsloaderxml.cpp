@@ -18,7 +18,8 @@ namespace Xml {
 OptionsLoaderXml::OptionsLoaderXml(
 		const Path& xmlFilePath,
 		const ConverterOptions::SupportedEncoders& supportedEncoders,
-		const Path& ffpresetPath) : ffpresetPath(ffpresetPath){
+		const Path& ffpresetPath) :
+				ffpresetPath(ffpresetPath){
 	domParser = NULL;
 	this->supprotedEncoders = supportedEncoders;
 	try{
@@ -49,16 +50,18 @@ MediaElement::Formats OptionsLoaderXml::loadFormats(MediaElement::ElementsRelati
 	extractFormats(root, formats, relations);
 	return formats;
 }
-MediaElement::Encoders OptionsLoaderXml::loadAudioEncoders(MediaElement::ElementsRelations& relations){
+MediaElement::Encoders OptionsLoaderXml::loadAudioEncoders(MediaElement::ElementsRelations& relations,
+		Converter::UnsupportedEncoders& unsuportedEncoders){
 	xmlpp::Element *root = domParser->get_document()->get_root_node();
 	MediaElement::Encoders encoders;
-	extractAudioEncoders(root, encoders, relations);
+	extractAudioEncoders(root, encoders, relations, unsuportedEncoders);
 	return encoders;
 }
-MediaElement::Encoders OptionsLoaderXml::loadVideoEncoders(MediaElement::ElementsRelations& relations){
+MediaElement::Encoders OptionsLoaderXml::loadVideoEncoders(MediaElement::ElementsRelations& relations,
+		Converter::UnsupportedEncoders& unsuportedEncoders){
 	xmlpp::Element *root = domParser->get_document()->get_root_node();
 	MediaElement::Encoders encoders;
-	extractVideoEncoders(root, encoders, relations);
+	extractVideoEncoders(root, encoders, relations, unsuportedEncoders);
 	return encoders;
 }
 CppExtension::HashMap<std::string, MediaElement::Bitrates> OptionsLoaderXml::loadBitrates(){
@@ -241,12 +244,13 @@ void OptionsLoaderXml::extractBitrates(xmlpp::Element* root,
 	}
 }
 void OptionsLoaderXml::extractAudioEncoders(xmlpp::Element* root, MediaElement::Encoders& encoders,
-		MediaElement::ElementsRelations& relations) {
+		MediaElement::ElementsRelations& relations, Converter::UnsupportedEncoders& unsuportedEncoders) {
 	xmlpp::NodeSet encoderSet = root->find("/audio_video_parameters/encoders/encoder");
 	for (auto encoderIter = encoderSet.begin(); encoderIter != encoderSet.end(); ++encoderIter) {
 		xmlpp::Node *encoderNode = *encoderIter;
 		std::string gradeName = getAttributValueFromNode(encoderNode, "grade_name");
 		std::string encoderType = getAttributValueFromNode(encoderNode, "type");
+		std::string level = getAttributValueFromNode(encoderNode, "level");
 		if(encoderType != "audio"){
 			continue;
 		}
@@ -264,11 +268,18 @@ void OptionsLoaderXml::extractAudioEncoders(xmlpp::Element* root, MediaElement::
 			MediaElement::Encoder encoder(encoderName, encoderDescription, false);
 			encoders.addEncoder(encoder);
 			relations.setEncoderToAudioGrade(encoder, gradeName);
+		}else{
+			int numLevel = toN(level, int());
+			Converter::UnsupportedEncoders::PriorityLevel priority = Converter::UnsupportedEncoders::MEDIUM;
+			if(numLevel >= Converter::UnsupportedEncoders::BEGIN && numLevel < Converter::UnsupportedEncoders::END){
+				priority = (Converter::UnsupportedEncoders::PriorityLevel)numLevel;
+			}
+			unsuportedEncoders.addUnsupportedEncoder(encoderName, "", priority);
 		}
 	}
 }
 void OptionsLoaderXml::extractVideoEncoders(xmlpp::Element* root, MediaElement::Encoders& encoders,
-		MediaElement::ElementsRelations& relations) {
+		MediaElement::ElementsRelations& relations, Converter::UnsupportedEncoders& unsuportedEncoders) {
 	xmlpp::NodeSet encoderSet = root->find("/audio_video_parameters/encoders/encoder");
 	for (auto encoderIter = encoderSet.begin(); encoderIter != encoderSet.end(); ++encoderIter) {
 		xmlpp::Node *encoderNode = *encoderIter;
@@ -276,6 +287,7 @@ void OptionsLoaderXml::extractVideoEncoders(xmlpp::Element* root, MediaElement::
 		std::string ffpresetPrefix = getAttributValueFromNode(encoderNode, "ffpreset");
 		std::string encoderType = getAttributValueFromNode(encoderNode, "type");
 		std::string multithread = getAttributValueFromNode(encoderNode, "multithread");
+		std::string level = getAttributValueFromNode(encoderNode, "level");
 		if(encoderType != "video"){
 			continue;
 		}
@@ -296,6 +308,13 @@ void OptionsLoaderXml::extractVideoEncoders(xmlpp::Element* root, MediaElement::
 			if(ffpresetPrefix.size() > 0){
 				relations.setEncoderToFFpreset(encoder, ffpresetPrefix);
 			}
+		}else{
+			int numLevel = toN(level, int());
+			Converter::UnsupportedEncoders::PriorityLevel priority = Converter::UnsupportedEncoders::MEDIUM;
+			if(numLevel >= Converter::UnsupportedEncoders::BEGIN && numLevel < Converter::UnsupportedEncoders::END){
+				priority = (Converter::UnsupportedEncoders::PriorityLevel)numLevel;
+			}
+			unsuportedEncoders.addUnsupportedEncoder(encoderName, "", priority);
 		}
 	}
 }

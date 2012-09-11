@@ -25,7 +25,8 @@ ConverterGui::ConverterGui(MediaElement::ElementsDB& elementsDB,
 		avControl(elementsDB, refGlade, profiles),
 		destinationControl(refGlade), fileControl(refGlade), infoControl(refGlade),
 		overwrite(refGlade), convertWindow(refGlade), settingsDialog(refGlade), mainWindow(mainWindow),
-		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true){
+		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true),
+		unsuportedEncoders(refGlade, elementsDB){
 
 	refGlade->get_widget("mainNotebook", mainNotebook);
 	refGlade->get_widget("settingsButton", settingsButton);
@@ -54,6 +55,11 @@ ConverterGui::ConverterGui(MediaElement::ElementsDB& elementsDB,
 	quitMenuItem->signal_activate().connect(sigc::mem_fun(*this, &ConverterGui::closeMainWindow));
 	preferenceMenuItem->signal_activate().connect(sigc::mem_fun(settingsDialog, &Settings::UserSettingsDialog::start));
 	aboutMenuItem->signal_activate().connect(sigc::mem_fun(*this, &ConverterGui::showAboutDialog));
+
+	auto unssuported = elementsDB.getUnsuprtedEncoders();
+	if(!unssuported.isEmpty() && !UserPreferences::getInstance()->isDisableShowUnEncoders()){
+		unsuportedEncoders.show();
+	}
 }
 
 ConverterGui::~ConverterGui() {

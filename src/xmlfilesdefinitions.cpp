@@ -18,6 +18,8 @@ XmlFilesDefinitions::XmlFilesDefinitions() {
 			UserPreferences::NUM_OF_CPU);
 	userPreferences.add(toList( { "settings", "encoder_multithread" }),
 			UserPreferences::ENABLE_MULTITHREAD_FOR_ENC);
+	userPreferences.add(toList( { "settings", "disable_show_unenc" }),
+				UserPreferences::DISABLE_SHOW_UNENCODER);
 	//************************************************************************************************************
 	profilConfiguration.add(toList( { "profile", "name" }), Profile::Configuration::NAME_OPT);
 	profilConfiguration.add(toList( { "profile", "container"}), Profile::Configuration::CONTAINER_OPT);

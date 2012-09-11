@@ -24,6 +24,7 @@
 #include "infocontrol.h"
 #include "overwritedialog.h"
 #include "mainwindow.h"
+#include "unencodersdialog.h"
 #include "Settings/usersettingsdialog.h"
 #include "../Profile/profile.h"
 #include "../MediaFile/mediafile.h"
@@ -62,6 +63,7 @@ private:
 
 	Gui::MainWindow* mainWindow;
 	Gtk::MessageDialog warningDialog;
+	UnEncodersDialog unsuportedEncoders;
 
 	Gtk::Button* settingsButton;
 	Gtk::Button* okSettingsButton;

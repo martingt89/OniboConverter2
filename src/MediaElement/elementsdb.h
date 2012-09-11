@@ -11,7 +11,7 @@
 #include "mediaelements.h"
 #include "elementsrelations.h"
 #include "../ConverterOptions/supportedencoders.h"
-
+#include "../Converter/unsupportedencoders.h"
 namespace MediaElement {
 
 class ElementsDB {
@@ -35,6 +35,9 @@ public:
 	Resolutions getResolutions() const;
 	Samplerates getSamplerates() const;
 
+	Converter::UnsupportedEncoders getUnsuprtedEncoders() const;
+
+
 	void addUserVideoBitrate(const Bitrate& bitrate);
 	void addUserResolution(const Resolution& resolution);
 	void addUserFFpreset(const std::string& prefix, const FFpreset& ffpreset);
@@ -55,6 +58,7 @@ private:
 	CppExtension::HashMap<std::string, Bitrates> nameToBitrates;
 	CppExtension::HashMap<std::string, AudioGrades> nameToAudioGrade;
 	CppExtension::MultiHashMap<std::string, FFpreset> prefixToFFpresets;
+	Converter::UnsupportedEncoders unsuportedEncoders;
 };
 
 } /* namespace MediaElement */

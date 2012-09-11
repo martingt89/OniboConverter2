@@ -16,8 +16,8 @@ void ElementsDB::load(const Path& configFile, const Path& ffpresetFolder,
 	Xml::OptionsLoaderXml optionsLoaderFromXml(configFile, supportedEncoders, ffpresetFolder);
 	containers = optionsLoaderFromXml.loadContainers(elementsRelations);
 	formats = optionsLoaderFromXml.loadFormats(elementsRelations);
-	audioEncoders = optionsLoaderFromXml.loadAudioEncoders(elementsRelations);
-	videoEncoders = optionsLoaderFromXml.loadVideoEncoders(elementsRelations);
+	audioEncoders = optionsLoaderFromXml.loadAudioEncoders(elementsRelations, unsuportedEncoders);
+	videoEncoders = optionsLoaderFromXml.loadVideoEncoders(elementsRelations, unsuportedEncoders);
 	//
 	nameToBitrates = optionsLoaderFromXml.loadBitrates();
 	nameToAudioGrade = optionsLoaderFromXml.loadAudioGrade();
@@ -80,6 +80,10 @@ Resolutions ElementsDB::getResolutions() const{
 }
 Samplerates ElementsDB::getSamplerates() const{
 	return samplerates;
+}
+
+Converter::UnsupportedEncoders ElementsDB::getUnsuprtedEncoders() const{
+	return unsuportedEncoders;
 }
 
 void ElementsDB::addUserVideoBitrate(const Bitrate& bitrate){

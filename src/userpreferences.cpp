@@ -27,6 +27,7 @@ UserPreferences::UserPreferences() {
 	setExtConverterPath(Path(EXTERNAL_CONVERTER));
 	setNumberOfCPU(-1, true);
 	setMultithreadingForEncoders(true);
+	setDisableShowUnEncoders(false);
 	//
 	Xml::SettingsLoader loader(SystemSettings::getInstance()->getUserSettingsFile());
 	loader.load(optToValue);
@@ -53,6 +54,9 @@ void UserPreferences::setMultithreadingForEncoders(const bool& support){
 		value = 1;
 	}
 	optToValue.set(UserPreferences::ENABLE_MULTITHREAD_FOR_ENC, toS(value));
+}
+void UserPreferences::setDisableShowUnEncoders(const bool& disable){
+	optToValue.set(UserPreferences::DISABLE_SHOW_UNENCODER, toS(disable));
 }
 //
 Path UserPreferences::getConvertDestinationPath() const{
@@ -84,6 +88,12 @@ bool UserPreferences::isMultithreadinForEncoders() const{
 	std::string value = optToValue.get(UserPreferences::ENABLE_MULTITHREAD_FOR_ENC, exist);
 	assert(exist, "Options: UserPreferences::ENABLE_MULTITHREAD_FOR_ENC doesn't exist");
 	return toN(value, int()) == 1;
+}
+bool UserPreferences::isDisableShowUnEncoders() const{
+	bool exist = false;
+	std::string value = optToValue.get(UserPreferences::DISABLE_SHOW_UNENCODER, exist);
+	assert(exist, "Options: UserPreferences::DISABLE_SHOW_UNENCODER doesn't exist");
+	return (bool)toN(value, int());
 }
 //
 void UserPreferences::save(){

@@ -11,7 +11,7 @@
 #include "../ConverterOptions/supportedencoders.h"
 #include "../CppExtension/hashmap.h"
 #include "../MediaElement/elementsrelations.h"
-
+#include "../Converter/unsupportedencoders.h"
 class Path;
 
 namespace xmlpp{
@@ -29,8 +29,10 @@ public:
 	virtual ~OptionsLoaderXml();
 	MediaElement::Containers loadContainers(MediaElement::ElementsRelations& relations);
 	MediaElement::Formats loadFormats(MediaElement::ElementsRelations& relations);
-	MediaElement::Encoders loadAudioEncoders(MediaElement::ElementsRelations& relations);
-	MediaElement::Encoders loadVideoEncoders(MediaElement::ElementsRelations& relations);
+	MediaElement::Encoders loadAudioEncoders(MediaElement::ElementsRelations& relations,
+			Converter::UnsupportedEncoders& unsuportedEncoders);
+	MediaElement::Encoders loadVideoEncoders(MediaElement::ElementsRelations& relations,
+			Converter::UnsupportedEncoders& unsuportedEncoders);
 	CppExtension::HashMap<std::string, MediaElement::Bitrates> loadBitrates();
 	CppExtension::HashMap<std::string, MediaElement::AudioGrades> loadAudioGrade();
 	MediaElement::Framerates loadFramerates();
@@ -48,9 +50,9 @@ private:
 	void extractBitrates(	xmlpp::Element* root,
 			CppExtension::HashMap<std::string, MediaElement::Bitrates>& nameToBitrates);
 	void extractAudioEncoders(xmlpp::Element* root, MediaElement::Encoders& encoders,
-			MediaElement::ElementsRelations& relations);
+			MediaElement::ElementsRelations& relations, Converter::UnsupportedEncoders& unsuportedEncoders);
 	void extractVideoEncoders(xmlpp::Element* root, MediaElement::Encoders& encoders,
-			MediaElement::ElementsRelations& relations);
+			MediaElement::ElementsRelations& relations, Converter::UnsupportedEncoders& unsuportedEncoders);
 	void extractFormats(xmlpp::Element* root,
 			MediaElement::Formats& formats, MediaElement::ElementsRelations& relations);
 	void extractContainers(xmlpp::Element* root,

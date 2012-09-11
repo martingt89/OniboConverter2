@@ -19,7 +19,8 @@ public:
 		EXT_CONVERTER_PATH = 2,
 		NUM_OF_CPU = 3,
 		ENABLE_MULTITHREAD_FOR_ENC = 4,
-		END = 5
+		DISABLE_SHOW_UNENCODER = 5,
+		END = 6
 	};
 public:
 	static UserPreferences* getInstance();
@@ -29,12 +30,14 @@ public:
 	void setExtConverterPath(const Path& path);
 	void setNumberOfCPU(const int& number, bool automatic = false);
 	void setMultithreadingForEncoders(const bool& support);
+	void setDisableShowUnEncoders(const bool& disable);
 	//
 	Path getConvertDestinationPath() const;
 	Path getExtConverterPath() const;
 	int getNumerOfCPU() const;
 	bool isAutomaticNumberOfCPU() const;
 	bool isMultithreadinForEncoders() const;
+	bool isDisableShowUnEncoders() const;
 	//
 	void save();
 private:
