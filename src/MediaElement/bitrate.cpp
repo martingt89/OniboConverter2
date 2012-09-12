@@ -27,15 +27,18 @@ int Bitrate::getMaxBitrate() const{
 	return maxBitrate;
 }
 std::string Bitrate::readableForm() const{
-	std::string min = " ";
+	std::string min = " -";
 	if(minBitrate >= 0){
 		min = " "+toS(minBitrate);
 	}
-	std::string max = " ";
+	std::string max = " -";
 	if(maxBitrate >= 0){
 		max = " "+toS(maxBitrate);
 	}
-	return toS(value) + min + max;
+	if(maxBitrate >= 0 || minBitrate >= 0){
+		return toS(value) + min + max;
+	}
+	return toS(value);
 }
 int Bitrate::getValue() const{
 	return value;

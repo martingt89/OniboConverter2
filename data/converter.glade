@@ -2362,8 +2362,8 @@
                 <property name="homogeneous">True</property>
                 <property name="layout_style">end</property>
                 <child>
-                  <object class="GtkButton" id="okSettingsButton">
-                    <property name="label">gtk-ok</property>
+                  <object class="GtkButton" id="cancelSettingsButton">
+                    <property name="label">gtk-cancel</property>
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -2378,8 +2378,8 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="cancelSettingsButton">
-                    <property name="label">gtk-cancel</property>
+                  <object class="GtkButton" id="okSettingsButton">
+                    <property name="label">gtk-ok</property>
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>

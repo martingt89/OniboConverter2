@@ -28,10 +28,14 @@ BitrateDialog::BitrateDialog(MediaElement::ElementsDB &elementsDB,
 	videoBitrateDialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 	videoBitrateDialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
+	vbdMinEnable->set_active(false);
+	vbdMaxEnable->set_active(false);
+	vbdDisperEnable->set_active(false);
+
 	vbdBitrate.signal_changed().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateChanged));
-	vbdMinBitrate->signal_changed().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMinChanged));
-	vbdMaxBitrate->signal_changed().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMaxChanged));
-	vbdDispersion->signal_changed().connect(sigc::mem_fun(*this, &BitrateDialog::dispersionChanged));
+	vbdMinBitrate->signal_value_changed ().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMinChanged));
+	vbdMaxBitrate->signal_value_changed ().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMaxChanged));
+	vbdDispersion->signal_value_changed ().connect(sigc::mem_fun(*this, &BitrateDialog::dispersionChanged));
 
 	vbdMinEnable->signal_clicked().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMinActivate));
 	vbdMaxEnable->signal_clicked().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMaxActivate));
@@ -57,13 +61,26 @@ bool BitrateDialog::start(const MediaElement::Encoder& encoder, MediaElement::Bi
 
 	if(elementsDB.getBitratesByName(bitratersName, bitrates)){
 		for(auto bitrate : bitrates){
-			vbdBitrate.uniqueAppend(bitrate.readableForm(), bitrate);
+			vbdBitrate.uniqueAppend(toS(bitrate.getValue()), bitrate);
 		}
 	}
 
 	vbdBitrate.set_active_text(toS(bitrate.getValue()));
 	vbdMinBitrate->set_value(bitrate.getMinBitrate());
 	vbdMaxBitrate->set_value(bitrate.getMaxBitrate());
+
+	isEnableSignal = false;
+	if(bitrate.getMinBitrate() < 0){
+		vbdMinEnable->set_active(false);
+	}
+	if(bitrate.getMaxBitrate() < 0){
+		vbdMaxEnable->set_active(false);
+	}
+	vbdDispersion->set_value(0);
+	vbdDisperEnable->set_active(false);
+	isEnableSignal = true;
+
+
 	while(1){
 		int res = videoBitrateDialog->run();
 		if(res == Gtk::RESPONSE_OK){
@@ -71,6 +88,8 @@ bool BitrateDialog::start(const MediaElement::Encoder& encoder, MediaElement::Bi
 				bitrate = createBitrate();
 				videoBitrateDialog->hide();
 				return true;
+			}else{
+				vbdError->set_visible(true);
 			}
 		}else{
 			videoBitrateDialog->hide();
@@ -83,11 +102,11 @@ void BitrateDialog::bitrateChanged(){
 	if(isEnableSignal){
 		isEnableSignal = false;
 		int bitrate = toN(vbdBitrate.getValue(), int());
-		if(bitrate == 0){
-			vbdError->set_visible(true);
-		}else{
-			vbdError->set_visible(false);
-		}
+//		if(bitrate == 0){
+//			vbdError->set_visible(true);
+//		}else{
+//			vbdError->set_visible(false);
+//		}
 		vbdMinBitrate->get_adjustment()->set_upper(bitrate);
 		vbdMinBitrate->update();
 		vbdMaxBitrate->get_adjustment()->set_lower(bitrate);

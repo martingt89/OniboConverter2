@@ -1,10 +1,8 @@
 AC_PREREQ(2.59)
 AC_INIT(OniboConverter2, [1.0], [martingt89@gmail.com])
 
-AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE([subdir-objects 1.10 -Wall no-define])
-
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 
 IT_PROG_INTLTOOL(0.35.0)
 
@@ -13,6 +11,19 @@ CXXFLAGS=""
 AC_PROG_CXX
 
 PKG_CHECK_MODULES([DEPS], [libxml++-2.6, gtkmm-3.0 >= 3.0.0])
+
+# Checks for header files.
+AC_CHECK_HEADERS([string.h sys/time.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
+
+# Checks for library functions.
+AC_FUNC_MALLOC
+AC_FUNC_FORK
+AC_CHECK_FUNCS([gettimeofday mkdir regcomp strerror])
 
 top_builddir=`pwd`
 AC_SUBST([top_builddir])
