@@ -136,6 +136,8 @@ void MediaFile::convert(const bool enableFileThreading, const int numOfThreads){
 
 		Converter::ArgumentsGenerator generator;
 
+
+
 		generator.setThreading(enableFileThreading, numOfThreads);
 		generator.setProfile(profile);
 

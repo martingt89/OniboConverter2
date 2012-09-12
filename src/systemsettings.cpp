@@ -14,6 +14,12 @@ static const std::string CONFIG_FOLDER_NAME = "oniboconverter2";
 static const std::string PROFILES_FOLDER_NAME = "profiles";
 static const std::string USER_SETTINGS_FILE = "settings.xml";
 
+#ifdef PROGDIR and DATADIR
+static const std::string INSTALL_PATH = Path(DATADIR, PROGDIR).getPath();
+#else
+static const std::string INSTALL_PATH = "data";
+#endif
+
 SystemSettings* SystemSettings::getInstance(){
 	if(instance == 0){
 		instance = new SystemSettings();
@@ -22,9 +28,9 @@ SystemSettings* SystemSettings::getInstance(){
 }
 
 SystemSettings::SystemSettings() {
-	ffpresetFolder = Path("ffpresets");
-	xmlConfigFilePath = Path("data/audio_video_settings.xml");
-	defaultProfilesPath = Path("data/profiles");
+	ffpresetFolder = Path(INSTALL_PATH, "ffpresets");
+	xmlConfigFilePath = Path(INSTALL_PATH, "audio_video_settings.xml");
+	defaultProfilesPath = Path(INSTALL_PATH, "profiles");
 	userConfigDir = Path(Glib::get_user_config_dir (), CONFIG_FOLDER_NAME);
 	userConfigDir.create();
 	userProfilesPath = Path(userConfigDir.getPath(), PROFILES_FOLDER_NAME);

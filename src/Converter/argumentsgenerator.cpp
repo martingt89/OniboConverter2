@@ -10,6 +10,11 @@
 
 namespace Converter {
 
+ArgumentsGenerator::ArgumentsGenerator(){
+	numOfThreads = 1;
+	isFileThreading = false;
+}
+
 void ArgumentsGenerator::setProfile(const Profile::Profile& actualProfile){
 	this->actualProfile = actualProfile;
 }
@@ -19,6 +24,11 @@ void ArgumentsGenerator::setThreading(const bool& enableFileThreading, const int
 }
 std::list<std::string> ArgumentsGenerator::generate(){
 	std::list<std::string> args;
+
+	if(isFileThreading){
+		args.push_back("-threads");
+		args.push_back(toS(numOfThreads));
+	}
 	int mode;
 	if(actualProfile.getVideoMode(mode)){
 		if(mode == 0){
@@ -69,7 +79,7 @@ void ArgumentsGenerator::generateVideo(std::list<std::string>& args){
 	if(actualProfile.getVideoBitrate(bitrate)){
 		//todo min and max
 		args.push_back("-vb");
-		args.push_back(toS(bitrate.getValue()));
+		args.push_back(toS(bitrate.getValue())+"k");
 	}
 	MediaElement::Framerate framerate;
 	if(actualProfile.getVideoFramerate(framerate) && !framerate.isOriginal()){
@@ -101,7 +111,7 @@ void ArgumentsGenerator::generateAudio(std::list<std::string>& args){
 	if(actualProfile.getAudioGrade(audioGrade)){
 		if(audioGrade.getType() == MediaElement::AudioGrade::BITRATE_TYPE){
 			args.push_back("-ab");
-			args.push_back(toS(audioGrade.getValue()));
+			args.push_back(toS(audioGrade.getValue())+"k");
 		}else{
 			args.push_back("-aq");
 			args.push_back(toS(audioGrade.getValue()));

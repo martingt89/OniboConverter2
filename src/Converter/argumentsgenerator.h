@@ -15,6 +15,7 @@ namespace Converter {
 
 class ArgumentsGenerator {
 public:
+	ArgumentsGenerator();
 	void setThreading(const bool& enableFileThreading, const int& numOfThreads);
 	void setProfile(const Profile::Profile& actualProfile);
 	std::list<std::string> generate();

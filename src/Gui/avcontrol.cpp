@@ -8,10 +8,11 @@
 #include "avcontrol.h"
 #include "../systemsettings.h"
 #include "../Xml/profilegenerator.h"
+#include <glibmm/i18n.h>
 
 namespace Gui {
 
-const static std::string CUSTOM_PROFILE = "--- custom profile ---";
+const static std::string CUSTOM_PROFILE = _("--- custom profile ---");
 
 AVControl::AVControl(MediaElement::ElementsDB& elementsDB,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
@@ -52,7 +53,7 @@ AVControl::~AVControl() {
 bool AVControl::checkSettingsComplete(std::string& message){
 	message = "";
 	if(!containers.isSelectedActivableRow()){
-		message = "Container is not set";
+		message = _("Container is not set");
 		return false;
 	}
 	bool isSetVideo = videoControlGui.checkSettingsComplete(message);

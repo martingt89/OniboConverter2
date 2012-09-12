@@ -54,7 +54,7 @@
 		<encoder grade_name="video_standard" type="video">mpeg2video</encoder>
 		<encoder grade_name="video_standard" type="video">mpeg1video</encoder>
 		<encoder grade_name="video_standard" type="video">mpeg1video_vdpau</encoder>
-		<encoder grade_name="video_standard" type="video" ffpreset="libvpx" multithread="1">libvpx</encoder>
+		<encoder grade_name="video_standard" type="video" ffpreset="libvpx" multithread="1" level="2">libvpx</encoder>
 		<encoder grade_name="video_standard" type="video">vp8</encoder>
 		<!-- Audio encoders -->
 		<encoder grade_name="standard_quality" type="audio" level="2">libvorbis</encoder>
@@ -64,9 +64,16 @@
 		<encoder grade_name="standard_bitrate" type="audio">mp3adu</encoder>
 		<encoder grade_name="standard_bitrate" type="audio">mp3adufloat</encoder>
 		<encoder grade_name="standard_bitrate" type="audio">mp3float</encoder>
+		<encoder grade_name="standard_bitrate" type="audio" level="2">libvo_aacenc</encoder>
+		<encoder grade_name="standard_bitrate" type="audio">aac</encoder>
 	</encoders>
 	
 	<formats>
+		<format id="AAC" type="audio">
+			<encoder>libvo_aacenc</encoder>
+			<encoder>aac</encoder>
+		</format>
+	
 		<format id="H264" type="video">
 			<encoder>libx264</encoder>
 			<encoder>h264</encoder>
@@ -113,7 +120,6 @@
 			<format>MPEG4</format>
 			<format>MPEG2</format>
 			<format>H264</format>
-			<format>MP3</format>
 			<format>AAC</format>
 		</container>
 		<container type="video" name="webm">

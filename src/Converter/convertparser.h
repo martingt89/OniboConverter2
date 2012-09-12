@@ -22,9 +22,10 @@ public:
 private:
 	void addRecord(double diff, double elapsed);
 	double getNumSecPerSec();
+	double toSecondTime(const std::string& time);
 	double aktualTime;
 	double duration;
-	RegexTools::Regex lineRegex;
+	RegexTools::Regex colonTimeFormat;
 	long lastWorldTime;
 	std::list<std::pair<double, double> > diffAndTime;
 };

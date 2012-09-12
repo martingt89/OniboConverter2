@@ -39,7 +39,6 @@ AM_GLIB_GNU_GETTEXT
 
 # List all available languages here
 
-#AM_GLIB_GNU_GETTEXT
 #PROGRAMNAME_LOCALEDIR=[${datadir}/locale]
 #AC_SUBST(PROGRAMNAME_LOCALEDIR)
 

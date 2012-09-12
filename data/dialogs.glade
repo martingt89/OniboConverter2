@@ -967,7 +967,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xpad">5</property>
-                    <property name="label" translatable="yes">x</property>
+                    <property name="label">x</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1054,6 +1054,7 @@
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="default_height">350</property>
+    <property name="icon">expg.png</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox6">
@@ -1104,7 +1105,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Your ffmepg (avconv) dosn't support this codecs:</property>
+                <property name="label" translatable="yes">Your ffmepg (avconv) dosn't support this encoders</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1121,6 +1122,7 @@
                   <object class="GtkTextView" id="unEncodersText">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="editable">False</property>
                   </object>
                 </child>
               </object>
@@ -1159,6 +1161,7 @@ Pleas install ffmpeg (avconv) with it support </property>
   <object class="GtkDialog" id="videoBitrateDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="default_width">450</property>
     <property name="icon">expg.png</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -1459,6 +1462,13 @@ Pleas install ffmpeg (avconv) with it support </property>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkSizeGroup" id="videoBitrateLabel">
+    <widgets>
+      <widget name="label37"/>
+      <widget name="label38"/>
+      <widget name="label44"/>
+    </widgets>
   </object>
   <object class="GtkSizeGroup" id="videoBitrateSpin">
     <widgets>

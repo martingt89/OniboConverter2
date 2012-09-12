@@ -7,13 +7,14 @@
 
 #include "convertparser.h"
 #include "../helper.h"
+#include <iostream>
 
 namespace Converter {
 
 static const unsigned int NUM_OF_SAVED_RECORD = 25;
 
 ConvertParser::ConvertParser(const double& duration) : duration(duration),
-		lineRegex(".*time=([0-9]+\\.[0-9]+).*") {
+		colonTimeFormat(".*time=([0-9:]+\\.[0-9]+).*"){
 	aktualTime = 0;
 	lastWorldTime = getAktualTimeMikro();
 }
@@ -23,11 +24,11 @@ ConvertParser::~ConvertParser() {}
 bool ConvertParser::processLine(const std::string& line, double& fraction, int& remainingTime){
 	remainingTime = -1;
 	fraction = -1;
-	RegexTools::Matcher matcher = lineRegex.getMatcher(line);
+	RegexTools::Matcher matcher = colonTimeFormat.getMatcher(line);
 	double aktime = aktualTime;
 	if(matcher.find()){
 		std::string time = matcher.getGroup(1);
-		aktime = toN(time, double());
+		aktime = toSecondTime(time);
 	}else{
 		return false;
 	}
@@ -68,4 +69,17 @@ double ConvertParser::getNumSecPerSec(){
 	}
 	return diffTotal / elapsedTotal;
 }
+double ConvertParser::toSecondTime(const std::string& time){
+	std::string::size_type pos;
+	std::string tmpTime = time;
+	double secondTime = 0;
+	while((pos = tmpTime.find(":"))!= std::string::npos){
+		std::string sub = tmpTime.substr(0, pos);
+		secondTime = secondTime*60 + toN(sub, int());
+		tmpTime = tmpTime.substr(pos+1);
+	}
+	secondTime = secondTime*60 + toN(tmpTime, int());
+	return secondTime;
+}
+
 } /* namespace Converter */

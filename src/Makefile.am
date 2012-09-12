@@ -12,14 +12,14 @@ MediaElement/format.cpp \
 MediaElement/framerate.cpp \
 MediaElement/ffpreset.cpp \
 MediaElement/elementsdb.cpp \
-MediaElement/elementsrelations.cpp 
+MediaElement/elementsrelations.cpp
 
-Profile=\
+Profile= \
 Profile/configuration.cpp \
 Profile/profile.cpp \
-Profile/profiles.cpp 
+Profile/profiles.cpp
 
-Xml=\
+Xml= \
 Xml/profileloader.cpp \
 Xml/xmlparser.cpp \
 Xml/xmlgenerator.cpp \
@@ -27,16 +27,16 @@ Xml/settingsloader.cpp \
 Xml/settingsgenerator.cpp \
 xmlfilesdefinitions.cpp \
 Xml/optionsloaderxml.cpp \
-Xml/profilegenerator.cpp 
+Xml/profilegenerator.cpp
 
-MediaFile=\
+MediaFile= \
 MediaFile/mediafile.cpp \
 MediaFile/mediafilescanner.cpp \
 MediaFile/audiostream.cpp \
 MediaFile/stream.cpp \
-MediaFile/videostream.cpp 
+MediaFile/videostream.cpp
 
-Gui=\
+Gui= \
 Gui/Settings/general.cpp \
 Gui/Settings/threading.cpp \
 Gui/Settings/usersettingsdialog.cpp \
@@ -75,9 +75,9 @@ top= \
 userpreferences.cpp \
 systemsettings.cpp \
 helper.cpp \
-main.cpp 
+main.cpp
 
-other=\
+other= \
 CppExtension/path.cpp \
 RegexTools/regextools.cpp \
 ConverterOptions/supportedencoders.cpp \
@@ -95,6 +95,7 @@ $(Converter) \
 $(top) \
 $(other)
 
-AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -pedantic $(DEPS_CFLAGS)
+#AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -pedantic -DDATADIR=\"$(datadir)\" -DPROGDIR=\"@PACKAGE@\" $(DEPS_CFLAGS) 
+AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -pedantic -DDATADIR=\"$(datadir)\" $(DEPS_CFLAGS) 
 
 OniboConverter2_LDADD = $(DEPS_LIBS)

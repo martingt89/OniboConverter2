@@ -7,6 +7,7 @@
 
 #include <gtkmm/main.h>
 #include <gtkmm/builder.h>
+#include <glibmm/i18n.h>
 
 #include "CppExtension/path.h"
 #include "ExternalTools/supportedencodersloader.h"
@@ -21,6 +22,10 @@
 #include "userpreferences.h"
 #include "MediaElement/elementsdb.h"
 #include "System/cpu.h"
+
+#include <config.h>
+
+#include <iostream>
 
 class OniboConverter{
 private:
@@ -87,6 +92,10 @@ public:
 };
 
 int main(int argc, char *argv[]) {
+	bindtextdomain(GETTEXT_PACKAGE, DATADIR"/locale");
+	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+	textdomain(GETTEXT_PACKAGE);
+
 	Gtk::Main kit(argc, argv);
 	OniboConverter oniboConverter;
 	bool repeat = false;
