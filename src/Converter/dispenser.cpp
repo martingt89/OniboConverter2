@@ -19,7 +19,7 @@ Dispenser::~Dispenser() {}
 void Dispenser::processMediaFiles(const std::list<MediaFile::MediaFile*>& files,
 		const int& numOfThreads, bool fileThreading){
 	numberOfThreads = numOfThreads;
-	enableFileThreading = fileThreading;
+	enableFileThreading = false;
 
 	int numOfSupportedThreading = 0;
 	for (auto file : files){

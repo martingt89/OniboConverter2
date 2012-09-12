@@ -32,6 +32,7 @@ public:
 	bool operator==(const Encoder& second) const;
 	std::list<std::string> getArguments(Encoder::Type encoderType,
 			bool enableThreading, int numOfThreads) const;
+	bool isSupportedThreading() const;
 private:
 	std::string name;
 	std::string description;

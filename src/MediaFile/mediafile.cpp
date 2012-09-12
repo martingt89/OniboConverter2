@@ -230,7 +230,10 @@ bool MediaFile::isEnded(){
 	return (status == FINISH) || (status == INVALID_FILE) || (status == ABORT) || (status == FAIL);
 }
 bool MediaFile::isSupportFileThreding() const{
-	//return settingsList.isSupportFileThreading();
+	MediaElement::Encoder encoder;
+	if(profile.getVideoEncoder(encoder)){
+		return encoder.isSupportedThreading();
+	}
 	return false;
 }
 
