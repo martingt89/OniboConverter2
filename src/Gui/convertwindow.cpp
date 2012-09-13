@@ -8,6 +8,7 @@
 #include "convertwindow.h"
 #include <gtkmm/cellrendererprogress.h>
 #include <gtkmm/stock.h>
+#include "../ProcessExecutor/process.h"
 
 namespace Gui {
 
@@ -24,7 +25,7 @@ ConvertWindow::ConvertWindow(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	stopConvertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConvertWindow::stopConvertingSignal));
 	infoConvertButton->signal_clicked().connect(sigc::mem_fun(*this, &ConvertWindow::infoConvertSignal));
 	convertTreeView->signal_row_activated().connect(sigc::mem_fun(*this, &ConvertWindow::fileTreeViewActivated));
-
+	showDestinationButton->signal_clicked().connect(sigc::mem_fun(*this, &ConvertWindow::showDestination));
 }
 
 ConvertWindow::~ConvertWindow() {
@@ -85,7 +86,8 @@ void ConvertWindow::fileTreeViewActivated(const Gtk::TreeModel::Path& path, Gtk:
 	infoConvertSignal();
 }
 
-void ConvertWindow::initConversion(std::list<MediaFile::MediaFile*>& files){
+void ConvertWindow::initConversion(std::list<MediaFile::MediaFile*>& files, const Path& destination){
+	this->destination = destination;
 	for(auto x : files){
 		idToMediaFile.set(x->getFileId(), x);
 	}
@@ -113,10 +115,21 @@ sigc::signal<void>& ConvertWindow::signalHide(){
 void ConvertWindow::closePage(){
 	hideEvent();
 }
+void ConvertWindow::showDestination(){
+	std::list<std::string> args;
+	args.push_back(destination.getPath());
+	ProcessExecutor::Process process("xdg-open", args);
+	int res = process.waitForProcessEnd();
+	if(res != 0){
+		//process.getStdOut() >>
+	}
+	//todo log res
+}
 void ConvertWindow::loadWidgets(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	refGlade->get_widget("stopConvertButton", stopConvertButton);
 	refGlade->get_widget("closeConvertButton", closeConvertButton);
 	refGlade->get_widget("infoConvertButton", infoConvertButton);
+	refGlade->get_widget("openDestinationPath", showDestinationButton);
 	refGlade->get_widget("workingIndicator", workingIndicator);
 	refGlade->get_widget("convertTreeView", convertTreeView);
 	refGlade->get_widget("convertWindowMessage", convertWindowMessage);

@@ -15,6 +15,7 @@
 	</videogrades>
 	<audiogrades>
 		<bitrate name="standard_bitrate">
+			<item>-1</item> <!--"Default"-->
 			<item>64</item>
 			<item>80</item>
 			<item>96</item>

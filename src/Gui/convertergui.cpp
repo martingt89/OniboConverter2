@@ -141,7 +141,7 @@ void ConverterGui::convertButtonClicked(){
 		mediaFile->clearConvertStatus();
 		convertFilesList.push_back(mediaFile);
 	}
-	convertWindow.initConversion(convertFilesList);
+	convertWindow.initConversion(convertFilesList, destinationControl.getDestinationPath());
 	mainNotebook->set_current_page(CONVERT_SCREEN_PAGE);
 	convertEvent(convertFilesList);
 

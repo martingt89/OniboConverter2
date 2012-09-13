@@ -45,12 +45,13 @@ public:
 	virtual ~ConvertWindow();
 	void display(bool isEnd);
 	bool isAbort();
-	void initConversion(std::list<MediaFile::MediaFile*>& files);
+	void initConversion(std::list<MediaFile::MediaFile*>& files, const Path& destination);
 	sigc::signal<void>& signalHide();
 	void stopConvertingSignal();
 
 private:
 	void closePage();
+	void showDestination();
 	void loadWidgets(const Glib::RefPtr<Gtk::Builder>& refGlade);
 	void initConvertTreeView();
 	void initStopDialog();
@@ -66,6 +67,7 @@ private:
 	Gtk::Button* closeConvertButton;
 	Gtk::Button* stopConvertButton;
 	Gtk::Button* infoConvertButton;
+	Gtk::Button* showDestinationButton;
 	Gtk::Spinner* workingIndicator;
 	Gtk::TreeView* convertTreeView;
 	Gtk::Label* convertWindowMessage;
@@ -74,6 +76,7 @@ private:
 	Glib::RefPtr<Gtk::TreeView::Selection> convertSelection;
 	sigc::signal<void> hideEvent;
 	CppExtension::HashMap<int, MediaFile::MediaFile*> idToMediaFile;
+	Path destination;
 };
 
 } /* namespace Gui */
