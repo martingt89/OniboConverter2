@@ -137,8 +137,6 @@ void ConverterGui::convertButtonClicked(){
 		}
 		mediaFile->setActualProfile(avControl.getTmpProfile());
 		mediaFile->setDestinationPath(destinationControl.getDestinationPath());
-		mediaFile->setContainerName(avControl.getContainerName());
-		mediaFile->clearConvertStatus();
 		convertFilesList.push_back(mediaFile);
 	}
 	convertWindow.initConversion(convertFilesList, destinationControl.getDestinationPath());
@@ -147,7 +145,6 @@ void ConverterGui::convertButtonClicked(){
 
 	sigc::connection conn = Glib::signal_timeout().connect(sigc::mem_fun(*this,
             &ConverterGui::convertTimer), 1000);
-
 }
 bool ConverterGui::onKeyRelease(GdkEventKey* event){
 	if(event->keyval == GDK_KEY_Escape){
@@ -161,10 +158,11 @@ void ConverterGui::fileInfoEvent(const Gui::FileControl::PathWithFileId file){
 	if(!idToMediaFile.isExistKey(file.id)){
 		auto mediaFile = new MediaFile::MediaFile(file.path, file.id);
 		idToMediaFile.set(file.id, mediaFile);
-		mediaFile->scanMediaFile();
+		mediaFile->getMediaInfo().scanMediaFile();
 	}
+
 	auto* mediaFile = idToMediaFile.get(file.id);
-	if(mediaFile->isValid()){
+	if(mediaFile->getMediaInfo().getScanStatus() == MediaFile::MediaInfo::OK){
 		infoControl.show(mediaFile);
 		mainNotebook->set_current_page(INFO_SCREEN_PAGE);
 	}else{
@@ -187,15 +185,15 @@ bool ConverterGui::convertTimer(){
 	bool running = false;
 	if(convertWindow.isAbort()){
 		for(auto file : convertFilesList){
-			file->abort();
+			file->getMediaConvert()->abort();
 		}
 	}
 	for(auto file : convertFilesList){
-		if(!file->isEnded()){
+		if(!file->getMediaConvert()->isEnded()){
 			running = true;
 		}
 		files.set(file->getFileId(), file);
-		if(file->getConvertState() == MediaFile::MediaFile::OVERWRITE){
+		if(file->getMediaConvert()->getConvertState() == MediaFile::MediaConvert::OVERWRITE){
 			overwrite.addFile(file);
 		}
 	}

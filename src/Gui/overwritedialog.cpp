@@ -39,9 +39,9 @@ void OverwriteDialog::addFile(MediaFile::MediaFile*& file){
 	}
 }
 void OverwriteDialog::showFile(MediaFile::MediaFile*& file){
-	filePath->set_text(file->getOutputFilePath().getPath());
-	std::string name = file->getOutputFilePath().getLastPathPart();
-	std::string containerSuffix = "."+file->getContainerName();
+	filePath->set_text(file->getMediaConvert()->getOutputFilePath().getPath());
+	std::string name = file->getMediaConvert()->getOutputFilePath().getLastPathPart();
+	std::string containerSuffix = "."+file->getMediaConvert()->getContainerName();
 
 	if(name.substr(name.size()-containerSuffix.size()) == containerSuffix){
 		name = name.substr(0, name.size() - containerSuffix.size());
@@ -54,21 +54,21 @@ void OverwriteDialog::hide(){
 }
 void OverwriteDialog::renameClicked(){
 	if(actualFile != NULL){
-		actualFile->setName(newName->get_text());
+		actualFile->getMediaConvert()->setNewName(newName->get_text());
 	}
 	actualFile = NULL;
 	getNext();
 }
 void OverwriteDialog::overwriteClicked(){
 	if(actualFile != NULL){
-		actualFile->enableOverwriteFile();
+		actualFile->getMediaConvert()->enableOverwriteFile();
 	}
 	actualFile = NULL;
 	getNext();
 }
 void OverwriteDialog::cancelClicked(){
 	if(actualFile != NULL){
-		actualFile->abort();
+		actualFile->getMediaConvert()->abort();
 	}
 	actualFile = NULL;
 	getNext();

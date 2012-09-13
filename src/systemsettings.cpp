@@ -14,7 +14,7 @@ static const std::string CONFIG_FOLDER_NAME = "oniboconverter2";
 static const std::string PROFILES_FOLDER_NAME = "profiles";
 static const std::string USER_SETTINGS_FILE = "settings.xml";
 
-#ifdef PROGDIR and DATADIR
+#ifdef PROGDIR
 static const std::string INSTALL_PATH = Path(DATADIR, PROGDIR).getPath();
 #else
 static const std::string INSTALL_PATH = "data";

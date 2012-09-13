@@ -28,6 +28,8 @@ std::list<std::string> trimStringBy(const std::string& string, const std::string
 
 std::list<std::string> toList(const std::initializer_list<std::string>& path);
 
+std::string secTimeToReadableTime(const long& secTime);
+
 template<class T>
 std::string operator << (const std::string &s,  T i){
 	std::stringstream ss;

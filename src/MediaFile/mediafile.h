@@ -19,80 +19,34 @@ namespace ProcessExecutor{
 #include "audiostream.h"
 #include <thread>
 #include <sstream>
+#include "mediainfo.h"
+#include "mediaconvert.h"
 #include "../CppExtension/path.h"
 #include "../Profile/profile.h"
+#include <memory>
 
 namespace MediaFile {
 
 class MediaFile {
 public:
-	enum State{
-		NOT_SET, OK, NOT_FOUND, INVALID_FORMAT
-	};
-	enum ConvertFileState{
-		WAITING, PROCESSING, FINISH, INVALID_FILE, ABORT, OVERWRITE, FAIL
-	};
-	struct FileInfo{
-		State fileState;
-		double duration;
-		double startTime;
-		std::string bitrate;
-		std::vector<VideoStream> videos;
-		std::vector<AudioStream> audios;
-	};
-public:
-	MediaFile(Path filePath, int fileId);
-	MediaFile(const MediaFile& file);
+	MediaFile(const Path& filePath,  const int& fileId);
 	virtual ~MediaFile();
-	void setActualProfile(const Profile::Profile& profile);
-	void setDestinationPath(const Path& destinationPath);
-	void setContainerName(const std::string& containerName);
-	bool scanMediaFile();
-	bool isSet();
-	bool isValid();
-	FileInfo getFileInfo();
+	MediaInfo& getMediaInfo();
+	std::shared_ptr<MediaConvert> getMediaConvert();
 	Path getPath() const;
-//	void setMetadata(std::string key, std::string value);
-	void clearConvertStatus();
-	void convert(const bool enableFileThreading = false, const int numOfThreads =1);
+	void setDestinationPath(const Path& destinationPath);
+	void setActualProfile(const Profile::Profile& profile);
 	std::string getShortName();
-	std::string getRemainingTime();
-	int getPercentage();
-	std::string getConvertStateAsString();
-	ConvertFileState getConvertState();
 	int getFileId();
-	bool isEnded();
-	bool isSupportFileThreding() const;
-
-	void abort();
-	void enableOverwriteFile();
-	Path getOutputFilePath();
-	void setName(const std::string& fileName);
-	std::string getContainerName();
-	void setOverwievState();
-	std::string getErrorOutput();
+	bool supportThreding() const;
+	void convert(bool enableFileThreading, int numberOfThreads);
 private:
-	std::stringstream errorOutputBuffer;
-	std::string timeToHHMMSS(int localTime);
-	std::mutex mutex;
-	std::condition_variable condition;
+	MediaInfo mediaInfo;
 	Path filePath;
 	int fileId;
-	FileInfo fileInfo;
-	bool set;
-	bool valid;
-	bool isAbort;
-//	Converter::ConvertSettingsList settingsList;
-	Profile::Profile profile;
-	volatile bool enableOverwrite;
-	std::string fileName;
-	std::string containerName;
+	std::shared_ptr<MediaConvert> mediaConvert;
 	Path destinationPath;
-	//
-	ConvertFileState status;
-	double fraction;
-	int remainingTime;
-	ProcessExecutor::Process* process;
+	Profile::Profile profile;
 };
 
 } /* namespace MediaFile */

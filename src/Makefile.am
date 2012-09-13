@@ -31,6 +31,8 @@ Xml/profilegenerator.cpp
 
 MediaFile= \
 MediaFile/mediafile.cpp \
+MediaFile/mediainfo.cpp \
+MediaFile/mediaconvert.cpp \
 MediaFile/mediafilescanner.cpp \
 MediaFile/audiostream.cpp \
 MediaFile/stream.cpp \

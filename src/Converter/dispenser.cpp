@@ -6,6 +6,7 @@
  */
 
 #include "dispenser.h"
+#include <iostream>
 
 namespace Converter {
 
@@ -20,19 +21,16 @@ void Dispenser::processMediaFiles(const std::list<MediaFile::MediaFile*>& files,
 		const int& numOfThreads, bool fileThreading){
 	numberOfThreads = numOfThreads;
 	enableFileThreading = false;
-
 	int numOfSupportedThreading = 0;
 	for (auto file : files){
 		filesToProcessing.push_back(file);
-		if(file->isSupportFileThreding()){
+		if(file->supportThreding()){
 			numOfSupportedThreading++;
 		}
 	}
-
 	if(fileThreading && numOfSupportedThreading > 0){
 		enableFileThreading = true;
 	}
-
 	if(enableFileThreading){
 		processThreads.push_back(new std::thread(&Dispenser::run, this));
 	}else{
@@ -43,10 +41,10 @@ void Dispenser::processMediaFiles(const std::list<MediaFile::MediaFile*>& files,
 	return;
 }
 void Dispenser::run(){
-	MediaFile::MediaFile* file;
+	MediaFile::MediaFile* file = NULL;
 	while(getNextMediaFile(file)){
-		if(!file->isSet()){
-			file->scanMediaFile();
+		if(file->getMediaInfo().getScanStatus() == MediaFile::MediaInfo::NOSCAN){
+			file->getMediaInfo().scanMediaFile();
 		}
 		file->convert(enableFileThreading, numberOfThreads);
 	}
@@ -62,11 +60,11 @@ bool Dispenser::getNextMediaFile(MediaFile::MediaFile*& mediaFile){
 	while(!filesToProcessing.empty()){
 		file = filesToProcessing.front();
 		filesToProcessing.pop_front();
-		if(!file->getOutputFilePath().exist() || counter == maxCycles){
+		if(!file->getMediaConvert()->getOutputFilePath().exist() || counter == maxCycles){
 			mediaFile = file;
 			return true;
 		}else{
-			file->setOverwievState();
+			file->getMediaConvert()->setOverwievState();
 			filesToProcessing.push_back(file);
 		}
 		++counter;

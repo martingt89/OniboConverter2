@@ -17,7 +17,7 @@ public:
 		FILE, FOLDER, NOSET
 	};
 public:
-	Path(){type = NOSET;};
+	Path(){path = "", type = NOSET;};
 	Path(std::string path, PathType type = NOSET);
 	Path(std::string first, std::string second, PathType type = NOSET);
 	virtual ~Path();

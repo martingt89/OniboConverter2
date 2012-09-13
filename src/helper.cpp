@@ -9,6 +9,9 @@
 #include <iostream>
 #include <sys/time.h>
 
+const static int ONE_HOUR_SEC = 3600;
+const static int ONE_MINIT_SEC = 60;
+
 //print message if expr is false!!!! - assert from c
 void assert(bool expr, std::string message){
 	if(!expr){
@@ -23,6 +26,28 @@ std::list<std::string> toList(const std::initializer_list<std::string>& path){
 		listPath.push_back(x);
 	}
 	return listPath;
+}
+
+std::string secTimeToReadableTime(const long& secTime){
+	long hours = secTime / ONE_HOUR_SEC;
+	long elsTime = secTime - hours * ONE_HOUR_SEC;
+
+	int minits = elsTime / ONE_MINIT_SEC;
+	elsTime = elsTime - minits * ONE_MINIT_SEC;
+	std::string time = "";
+	if (hours < 10) {
+		time += "0";
+	}
+	time += toS(hours) + ":";
+	if (minits < 10) {
+		time += "0";
+	}
+	time += toS(minits) + ":";
+	if (elsTime < 10) {
+		time += "0";
+	}
+	time += toS(elsTime);
+	return time;
 }
 
 long getAktualTimeMikro(){

@@ -42,9 +42,9 @@ void ConvertWindow::display(bool isEnd){
 	for(type_children::iterator iter = children.begin(); iter != children.end(); ++iter){
 		Gtk::TreeModel::Row row = *iter;
 		 MediaFile::MediaFile* file = idToMediaFile.get(row[modelColumns.fileID]);
-		 row[modelColumns.time] = file->getRemainingTime();
-		 row[modelColumns.percentage] = file->getPercentage();
-			row[modelColumns.state] = file->getConvertStateAsString();
+		 row[modelColumns.time] = file->getMediaConvert()->getRemainingTime();
+		 row[modelColumns.percentage] = file->getMediaConvert()->getPercentage();
+			row[modelColumns.state] = file->getMediaConvert()->getConvertStateAsString();
 	}
 	if(isEnd){
 		workingIndicator->stop();
@@ -75,8 +75,8 @@ void ConvertWindow::infoConvertSignal(){
 		Gtk::TreeModel::Row row = *iter;
 		int fileId = row[modelColumns.fileID];
 		MediaFile::MediaFile* file = idToMediaFile.get(fileId);
-		if(file->isEnded()){
-			convertOutputText->get_buffer()->set_text(file->getErrorOutput());
+		if(file->getMediaConvert()->isEnded()){	//todo remove?
+			convertOutputText->get_buffer()->set_text(file->getMediaConvert()->getOutput());
 			convertOutputDialog->run();
 			convertOutputDialog->hide();
 		}
@@ -105,7 +105,7 @@ void ConvertWindow::initConversion(std::list<MediaFile::MediaFile*>& files, cons
 		row[modelColumns.name] = file->getShortName();
 		row[modelColumns.time] = "N/A";
 		row[modelColumns.percentage] = 0;
-		row[modelColumns.state] = file->getConvertStateAsString();
+		row[modelColumns.state] = file->getMediaConvert()->getConvertStateAsString();
 	}
 }
 sigc::signal<void>& ConvertWindow::signalHide(){

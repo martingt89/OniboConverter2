@@ -41,20 +41,20 @@ InfoControl::~InfoControl() {}
 
 void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	actualMediaFile = mediaFile;
-	auto info = mediaFile->getFileInfo();
+	MediaFile::MediaInfo info = mediaFile->getMediaInfo();
 	videoStream.remove_all();
 	audioStream.remove_all();
 	filePath->set_text(actualMediaFile->getPath().getPath());
-	if(info.duration >= 0){
-		duration << (toS(info.duration) + " sec");
+	if(info.getDuration() >= 0){
+		duration << (toS(info.getDuration()) + " sec");
 	}else{
 		duration << std::string("N/A");
 	}
-	startTime << (toS(info.startTime) + " sec");
-	bitrate << info.bitrate;
+	startTime << (toS(info.getStartTime()) + " sec");
+	bitrate << info.getBitrate();
 
 	int counter = 0;
-	auto videos = info.videos;
+	auto videos = info.getVideoStreams();
 	for(auto stream : videos){
 		auto pair = stream.getStreamNumber();
 		videoStream.append(toS(pair.first) +"."+ toS(pair.second), counter++);
@@ -63,7 +63,7 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 		videoStream.set_sensitive(true);
 	}
 	counter = 0;
-	auto audios = info.audios;
+	auto audios = info.getAudioStreams();
 	for(auto stream : audios){
 		auto pair = stream.getStreamNumber();
 		audioStream.append(toS(pair.first) +"."+ toS(pair.second), counter++);
@@ -120,7 +120,7 @@ void InfoControl::videoStreamChanged(){
 	bool exist = false;
 	int row = videoStream.get_active_row_item(exist);
 	if(exist){
-		auto stream = actualMediaFile->getFileInfo().videos[row];
+		auto stream = actualMediaFile->getMediaInfo().getVideoStreams()[row];
 		videoCodec << getAsString(stream, "", MediaFile::VideoStream::CODEC);
 		colorSpace << getAsString(stream, "", MediaFile::VideoStream::COLORSPACE);
 		resolution << (getAsString(stream, "", MediaFile::VideoStream::RESX) + "x" +
@@ -135,7 +135,7 @@ void InfoControl::audioStreamChanged(){
 	bool exist = false;
 	int row = audioStream.get_active_row_item(exist);
 	if(exist){
-		auto stream = actualMediaFile->getFileInfo().audios[row];
+		auto stream = actualMediaFile->getMediaInfo().getAudioStreams()[row];
 		audioCodec << getAsString(stream, "", MediaFile::AudioStream::CODEC);
 		audioBitrate << getAsString(stream, "", MediaFile::AudioStream::BITRATE);
 		samplerate << getAsString(stream, "", MediaFile::AudioStream::SAMPLERATE);
