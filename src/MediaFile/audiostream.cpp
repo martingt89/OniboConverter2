@@ -9,12 +9,15 @@
 
 namespace MediaFile {
 
-AudioStream::AudioStream(int firstNumber, int secondNumber): Stream(firstNumber,secondNumber){
+AudioStream::AudioStream(int firstNumber, int secondNumber, std::string name) :
+		Stream(firstNumber,secondNumber, name){
 
 }
+
 AudioStream::~AudioStream(){
 
 }
+
 void AudioStream::setValue(const Audio& name, const std::string& value){
 	content.set(name, value);
 }

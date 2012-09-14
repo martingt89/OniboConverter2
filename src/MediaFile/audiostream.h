@@ -20,7 +20,7 @@ public:
 		CODEC, BITRATE, SAMPLERATE, CHANNELS
 	};
 public:
-	AudioStream(int firstNumber, int secondNumber);
+	AudioStream(int firstNumber, int secondNumber, std::string name = std::string());
 	virtual ~AudioStream();
 	void setValue(const Audio& name, const std::string& value);
 	bool getValue(const Audio& name, std::string& value) const;

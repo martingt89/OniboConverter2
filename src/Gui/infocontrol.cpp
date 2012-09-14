@@ -57,7 +57,7 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	auto videos = info.getVideoStreams();
 	for(auto stream : videos){
 		auto pair = stream.getStreamNumber();
-		videoStream.append(toS(pair.first) +"."+ toS(pair.second), counter++);
+		videoStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+ stream.getStreamName(), counter++);
 	}
 	if(videoStream.count_of_rows() > 0){
 		videoStream.set_sensitive(true);
@@ -66,7 +66,7 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	auto audios = info.getAudioStreams();
 	for(auto stream : audios){
 		auto pair = stream.getStreamNumber();
-		audioStream.append(toS(pair.first) +"."+ toS(pair.second), counter++);
+		audioStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+ stream.getStreamName(), counter++);
 	}
 	if(audioStream.count_of_rows() > 0){
 		audioStream.set_sensitive(true);

@@ -16,7 +16,7 @@ namespace MediaFile {
 
 class VideoStream : public Stream {
 public:
-	VideoStream(int firstNumber, int secondNumber);
+	VideoStream(int firstNumber, int secondNumber, std::string name = "");
 	enum Video{
 			CODEC, COLORSPACE, RESX, RESY, TBR, TBN, TBC, FPS
 	};

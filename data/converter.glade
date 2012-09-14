@@ -2709,7 +2709,6 @@
                   <object class="GtkBox" id="box63">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkBox" id="box65">
                         <property name="visible">True</property>
@@ -2774,7 +2773,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
@@ -2905,7 +2904,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
@@ -3080,7 +3079,6 @@
                   <object class="GtkBox" id="box78">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkBox" id="box79">
                         <property name="visible">True</property>
@@ -3117,7 +3115,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
@@ -3197,7 +3195,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
@@ -3487,6 +3485,26 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkSizeGroup" id="infocolomnsend">
+    <widgets>
+      <widget name="box77"/>
+      <widget name="box82"/>
+    </widgets>
+  </object>
+  <object class="GtkSizeGroup" id="infocolomnsmiddle">
+    <widgets>
+      <widget name="box74"/>
+      <widget name="box80"/>
+    </widgets>
+  </object>
+  <object class="GtkSizeGroup" id="infocolumns">
+    <widgets>
+      <widget name="box65"/>
+      <widget name="box76"/>
+      <widget name="box79"/>
+      <widget name="box81"/>
+    </widgets>
   </object>
   <object class="GtkSizeGroup" id="sett_select">
     <property name="mode">both</property>

@@ -9,12 +9,16 @@
 
 namespace MediaFile {
 
-Stream::Stream(int firstNumber, int secondNumebr): streamNumber(firstNumber, secondNumebr) {
+Stream::Stream(int firstNumber, int secondNumebr, std::string name) :
+		streamNumber(firstNumber, secondNumebr), name(name) {
 }
 
 Stream::~Stream() {}
 
 std::pair<int, int> Stream::getStreamNumber() const{
 	return streamNumber;
+}
+std::string Stream::getStreamName() const{
+	return name;
 }
 } /* namespace MediaFile */

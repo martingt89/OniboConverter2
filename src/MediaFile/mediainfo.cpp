@@ -38,6 +38,7 @@ MediaInfo::ScanStatus MediaInfo::scanMediaFile(){
 		auto audioStreams = scanner.getAudioStreams();
 		for(auto stream : audioStreams){
 			audios.push_back(stream);
+			//std::cout<<"audio stream: "<<stream.getStreamNumber().second<<std::endl;
 		}
 	}else{
 		scanStatus = INVALID;

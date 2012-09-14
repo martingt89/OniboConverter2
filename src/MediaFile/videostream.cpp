@@ -10,7 +10,8 @@
 
 namespace MediaFile {
 
-VideoStream::VideoStream(int firstNumber, int secondNumber): Stream(firstNumber,secondNumber){}
+VideoStream::VideoStream(int firstNumber, int secondNumber, std::string name) :
+		Stream(firstNumber,secondNumber, name){}
 
 void VideoStream::setValue(const Video& name, const std::string& value){
 	content.set(name, value);

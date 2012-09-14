@@ -8,27 +8,28 @@
 #include "mediafilescanner.h"
 
 #include "../helper.h"
+#include "../userpreferences.h"
 #include <iostream> //todo remove
 namespace MediaFile {
 
 MediaFileScanner::MediaFileScanner(Path filePath) :
 		durationRegex("Duration: ([\\.:[:digit:]]+|N/A), start: ([\\.[:digit:]]+), bitrate: (.*)"),
-		videoStreamRegex("Stream #(.+): Video: ([^,]+), ([^,]+), ([[:digit:]]+)x([[:digit:]]+)[^,]*,(.*)$"),
-		audioStreamRegex("Stream #(.+): Audio: ([^,]+), ([[:digit:]]+) Hz(.*)$"),
+		videoStreamRegex("Stream #([0-9]+)[.:]([0-9]+)(.*): Video: ([^,]+), ([^,]+), ([[:digit:]]+)x([[:digit:]]+)[^,]*,(.*)$"),
+		audioStreamRegex("Stream #([0-9]+)[.:]([0-9]+)(.*): Audio: ([^,]+), ([[:digit:]]+) Hz(.*)$"),
 		metadataRegex("^[[:space:]]{4}([^[:space:]]+)[^:]*:[[:space:]]*(.+)$"), filePath(filePath) {
 
 	bitrate = "";
 	duration = -1;
 	parseState = State::START;
 
-	std::string ffmpegPath = "ffmpeg";
+	Path externalConverter = UserPreferences::getInstance()->getExtConverterPath();
 
 	std::list<std::string> args;
 
 	args.push_back("-i");
 	args.push_back(filePath.getPath());
 
-	ProcessExecutor::Process process(ffmpegPath, args);
+	ProcessExecutor::Process process(externalConverter.getPath(), args);
 
 	if (process.waitForProcessBegin() != 0) {
 		std::string messages;
@@ -130,18 +131,17 @@ void MediaFileScanner::parseDuration(const RegexTools::Matcher &matcher){	//magi
 }
 
 void MediaFileScanner::parseVideoStream(const RegexTools::Matcher &matcher){
+	int firstNumber = toN(matcher.getGroup(1), int());
+	int secondNumber = toN(matcher.getGroup(2), int());
+	std::string streamName =  matcher.getGroup(3);
+	VideoStream stream(firstNumber,secondNumber, streamName);
+	stream.setValue(VideoStream::CODEC, matcher.getGroup(4));
+	stream.setValue(VideoStream::COLORSPACE, matcher.getGroup(5));
+	stream.setValue(VideoStream::RESX, matcher.getGroup(6));
+	stream.setValue(VideoStream::RESY, matcher.getGroup(7));
+
+	std::string tmp = matcher.getGroup(8)+",";
 	std::string first, rest;
-	trimBy(".", matcher.getGroup(1), first, rest);
-	int firstNumber = toN(first, int());
-	int secondNumber = toN(rest, int());
-
-	VideoStream stream(firstNumber,secondNumber);
-	stream.setValue(VideoStream::CODEC, matcher.getGroup(2));
-	stream.setValue(VideoStream::COLORSPACE, matcher.getGroup(3));
-	stream.setValue(VideoStream::RESX, matcher.getGroup(4));
-	stream.setValue(VideoStream::RESY, matcher.getGroup(5));
-
-	std::string tmp = matcher.getGroup(6)+",";
 	RegexTools::Regex reg("([^ ]+)[[:space:]]+([^, ]+)");
 	while(trimBy(",", tmp, first, rest)){
 		RegexTools::Matcher m = reg.getMatcher(first);
@@ -163,18 +163,18 @@ void MediaFileScanner::parseVideoStream(const RegexTools::Matcher &matcher){
 	videoStreams.push_back(stream);
 }
 void MediaFileScanner::parseAudioStream(const RegexTools::Matcher &matcher){
-	std::string endLine = matcher.getGroup(4);
+	std::string endLine = matcher.getGroup(6);
 
-	std::string first, rest;
-	trimBy(".", matcher.getGroup(1), first, rest);
-	int firstNumber = toN(first, int());
-	int secondNumber = toN(rest, int());
+	int firstNumber = toN(matcher.getGroup(1), int());
+	int secondNumber = toN(matcher.getGroup(2), int());
+	std::string streamName = matcher.getGroup(3);
 
-	AudioStream stream(firstNumber,secondNumber);
-	stream.setValue(AudioStream::CODEC, matcher.getGroup(2));
-	stream.setValue(AudioStream::SAMPLERATE, matcher.getGroup(3));
+	AudioStream stream(firstNumber,secondNumber, streamName);
+	stream.setValue(AudioStream::CODEC, matcher.getGroup(4));
+	stream.setValue(AudioStream::SAMPLERATE, matcher.getGroup(5));
 	std::string tmp = endLine.substr(1) + ",";
 	int i = 0;
+	std::string first, rest;
 	stream.setValue(AudioStream::BITRATE, "N/A");
 	while(trimBy(",", tmp, first, rest)){
 		if(i == 0){
