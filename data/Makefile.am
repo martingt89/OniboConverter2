@@ -47,4 +47,14 @@ ffpresets_DATA= \
 profilesdir=$(datadir)/@PACKAGE@/profiles/
 #profiles_DATA
 
+desktopdir = $(datadir)/applications
+desktop_DATA = OniboConverter2.desktop
+
+UPDATE_DESKTOP = update-desktop-database $(datadir)/applications || :
+
+install-data-hook: 
+	$(UPDATE_DESKTOP)
+uninstall-hook: 
+	$(UPDATE_DESKTOP)
+
 EXTRA_DIST = $(profiles_DATA) $(ffpresets_DATA) $(converter_DATA)
