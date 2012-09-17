@@ -42,5 +42,5 @@ AM_GLIB_GNU_GETTEXT
 #PROGRAMNAME_LOCALEDIR=[${datadir}/locale]
 #AC_SUBST(PROGRAMNAME_LOCALEDIR)
 
-AC_CONFIG_FILES([Makefile src/Makefile po/Makefile.in])
+AC_CONFIG_FILES([Makefile src/Makefile data/Makefile po/Makefile.in])
 AC_OUTPUT

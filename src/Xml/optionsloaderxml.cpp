@@ -1,10 +1,20 @@
-/*
- * optionsxmlparser.cpp
- *
- *  Created on: 25.7.2012
- *      Author: martint
- */
-
+/* ---------------------------------------------------------------------------
+** Author: Martin Geier
+** optionsloaderxml.cpp is part of OniboConverter2.
+**
+** OniboConverter2 is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+** -------------------------------------------------------------------------*/
 //TODO Refactor - switch to 2 class, a xml parser and a Options structure creator
 
 #include "optionsloaderxml.h"
@@ -12,6 +22,7 @@
 #include "../MediaElement/ffpreset.h"
 #include "../helper.h"
 #include "../CppExtension/path.h"
+#include "iostream"
 
 namespace Xml {
 
@@ -26,7 +37,7 @@ OptionsLoaderXml::OptionsLoaderXml(
 		domParser = new xmlpp::DomParser(xmlFilePath.getPath());
 	}
 	catch(const std::exception& exception){
-		//todo return status
+		std::cerr<<"Error: 'optionsloaderxml.cpp' "<<exception.what()<<std::endl;
 	}
 }
 

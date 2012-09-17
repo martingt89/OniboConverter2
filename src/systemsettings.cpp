@@ -1,10 +1,20 @@
-/*
- * sysstemsettings.cpp
- *
- *  Created on: 24.8.2012
- *      Author: martint
- */
-
+/* ---------------------------------------------------------------------------
+** Author: Martin Geier
+** OniboConverter2.cpp is part of OniboConverter2.
+**
+** RegexTools is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+** -------------------------------------------------------------------------*/
 #include "systemsettings.h"
 #include <glibmm/miscutils.h>
 #include "Xml/settingsloader.h"
@@ -31,6 +41,7 @@ SystemSettings::SystemSettings() {
 	ffpresetFolder = Path(INSTALL_PATH, "ffpresets");
 	xmlConfigFilePath = Path(INSTALL_PATH, "audio_video_settings.xml");
 	defaultProfilesPath = Path(INSTALL_PATH, "profiles");
+	gladeFilesFolder = Path(INSTALL_PATH);
 	userConfigDir = Path(Glib::get_user_config_dir (), CONFIG_FOLDER_NAME);
 	userConfigDir.create();
 	userProfilesPath = Path(userConfigDir.getPath(), PROFILES_FOLDER_NAME);
@@ -54,4 +65,7 @@ Path SystemSettings::getUserProfilesPath(){
 }
 Path SystemSettings::getUserSettingsFile(){
 	return userSettingsFile;
+}
+Path SystemSettings::getGladeFilesFolder(){
+	return gladeFilesFolder;
 }

@@ -1,9 +1,20 @@
-/*
- * xmlparser.cpp
- *
- *  Created on: 7.9.2012
- *      Author: martin
- */
+/* ---------------------------------------------------------------------------
+** Author: Martin Geier
+** xmlparser.cpp is part of OniboConverter2.
+**
+** OniboConverter2 is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+** -------------------------------------------------------------------------*/
 
 #include "xmlparser.h"
 #include "../helper.h"
@@ -21,8 +32,8 @@ bool XmlParser::parseFile(const Path& filePath, XmlParserData* data){
 	this->data = data;
 	try{
 		this->parse_file(filePath.getPath());
-	}catch(std::exception& ex){
-		std::cerr<<"Parse error: "<<ex.what()<<std::endl; //todo log
+	}catch(std::exception& exception){
+		std::cerr<<"Error: 'xmlparser.cpp' "<<exception.what()<<std::endl;
 		data = NULL;
 		return false;
 	}

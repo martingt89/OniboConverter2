@@ -1,9 +1,20 @@
-/*
- * main.cpp
- *
- *  Created on: 18.7.2012
- *      Author: martint
- */
+/* ---------------------------------------------------------------------------
+** Author: Martin Geier
+** main.cpp is part of OniboConverter2.
+**
+** OniboConverter2 is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+** -------------------------------------------------------------------------*/
 
 #include <gtkmm/main.h>
 #include <gtkmm/builder.h>
@@ -58,9 +69,19 @@ public:
 
 	bool run(Gtk::Main& kit){
 		extConverter = UserPreferences::getInstance()->getExtConverterPath();
-		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("data/converter.glade");
-		builder->add_from_file("data/dialogs.glade");
-		builder->add_from_file("data/user_settings.glade");
+		Path converter(SystemSettings::getInstance()->getGladeFilesFolder().getPath(), "converter.glade");
+		Path dialogs(SystemSettings::getInstance()->getGladeFilesFolder().getPath(), "dialogs.glade");
+		Path user_settings(SystemSettings::getInstance()->getGladeFilesFolder().getPath(), "user_settings.glade");
+		//
+		Glib::RefPtr<Gtk::Builder> builder;
+		try{
+			builder = Gtk::Builder::create_from_file(converter.getPath());
+			builder->add_from_file(dialogs.getPath());
+			builder->add_from_file(user_settings.getPath());
+		}catch(const Glib::Exception& exception){
+			std::cerr<<"Error: 'main.cpp' " <<exception.what()<<std::endl;
+			_exit(-1);
+		}
 
 		ExternalTools::SupportedEncodersLoader encodersLoader;	//todo move to supported encoders
 		ConverterOptions::SupportedEncoders encoders;
