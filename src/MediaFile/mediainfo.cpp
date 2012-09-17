@@ -8,7 +8,7 @@
 //todo getmetadata
 
 #include "mediainfo.h"
-#include "mediafilescanner.h"
+#include "mediascanner.h"
 
 namespace MediaFile {
 
@@ -25,8 +25,8 @@ MediaInfo::ScanStatus MediaInfo::scanMediaFile(){
 	videos.clear();
 	audios.clear();
 
-	MediaFileScanner scanner(mediaPath);
-	if(scanner.getFinalStatus() == MediaFileScanner::OK_RESULT){
+	MediaScanner scanner(mediaPath);
+	if(scanner.getFinalStatus() == MediaScanner::OK_RESULT){
 		scanStatus = OK;
 		startTime = scanner.getStartTime();
 		duration = scanner.getDuration();

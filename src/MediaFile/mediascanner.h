@@ -1,12 +1,12 @@
 /*
- * mediafilescanner.h
+ * mediascanner.h
  *
  *  Created on: 20.8.2012
  *      Author: martint
  */
 
-#ifndef MEDIAFILESCANNER_H_
-#define MEDIAFILESCANNER_H_
+#ifndef MEDIASCANNER_H_
+#define MEDIASCANNER_H_
 
 #include <string>
 #include <list>
@@ -18,7 +18,7 @@
 
 namespace MediaFile {
 
-class MediaFileScanner {
+class MediaScanner {
 private:
 	enum State{
 		START, METADATA, DURATION, END, INVALID_DATA, FILE_NOT_FOUND
@@ -28,8 +28,8 @@ public:
 		OK_RESULT, INVALID_DATA_RESULT, FILE_NOT_FOUND_RESULT, OTHER_RESULT
 	};
 public:
-	MediaFileScanner(Path filePath);
-	virtual ~MediaFileScanner();
+	MediaScanner(Path filePath);
+	virtual ~MediaScanner();
 	double getStartTime();
 	double getDuration();
 	std::string getBitrate();
@@ -60,4 +60,4 @@ private:
 };
 
 } /* namespace MediaFile */
-#endif /* MEDIAFILESCANNER_H_ */
+#endif /* MEDIASCANNER_H_ */

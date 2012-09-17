@@ -1,18 +1,18 @@
 /*
- * mediafilescanner.cpp
+ * mediascanner.cpp
  *
  *  Created on: 20.8.2012
  *      Author: martint
  */
 
-#include "mediafilescanner.h"
+#include "mediascanner.h"
 
 #include "../helper.h"
 #include "../userpreferences.h"
 #include <iostream> //todo remove
 namespace MediaFile {
 
-MediaFileScanner::MediaFileScanner(Path filePath) :
+MediaScanner::MediaScanner(Path filePath) :
 		durationRegex("Duration: ([\\.:[:digit:]]+|N/A), start: ([\\.[:digit:]]+), bitrate: (.*)"),
 		videoStreamRegex("Stream #([0-9]+)[.:]([0-9]+)(.*): Video: ([^,]+), ([^,]+), ([[:digit:]]+)x([[:digit:]]+)[^,]*,(.*)$"),
 		audioStreamRegex("Stream #([0-9]+)[.:]([0-9]+)(.*): Audio: ([^,]+), ([[:digit:]]+) Hz(.*)$"),
@@ -45,24 +45,24 @@ MediaFileScanner::MediaFileScanner(Path filePath) :
 	}
 }
 
-MediaFileScanner::~MediaFileScanner() {}
+MediaScanner::~MediaScanner() {}
 
-double MediaFileScanner::getStartTime(){
+double MediaScanner::getStartTime(){
 	return startPosition;
 }
-double MediaFileScanner::getDuration(){
+double MediaScanner::getDuration(){
 	return duration;
 }
-std::string MediaFileScanner::getBitrate(){
+std::string MediaScanner::getBitrate(){
 	return bitrate;
 }
-std::list<VideoStream> MediaFileScanner::getVideoStreams(){
+std::list<VideoStream> MediaScanner::getVideoStreams(){
 	return videoStreams;
 }
-std::list<AudioStream> MediaFileScanner::getAudioStreams(){
+std::list<AudioStream> MediaScanner::getAudioStreams(){
 	return audioStreams;
 }
-MediaFileScanner::ScanResult MediaFileScanner::getFinalStatus(){
+MediaScanner::ScanResult MediaScanner::getFinalStatus(){
 	switch(parseState){
 		case State::END: return  ScanResult::OK_RESULT;
 		case State::FILE_NOT_FOUND: return  ScanResult::FILE_NOT_FOUND_RESULT;
@@ -70,7 +70,7 @@ MediaFileScanner::ScanResult MediaFileScanner::getFinalStatus(){
 		default: return  ScanResult::OTHER_RESULT;
 	}
 }
-void MediaFileScanner::parseLine(const std::string &line){
+void MediaScanner::parseLine(const std::string &line){
 	if(parseState == START){
 		if(line.find("Metadata:")){
 			parseState = METADATA;
@@ -105,7 +105,7 @@ void MediaFileScanner::parseLine(const std::string &line){
 	}
 }
 
-void MediaFileScanner::parseDuration(const RegexTools::Matcher &matcher){	//magic, don't touch this
+void MediaScanner::parseDuration(const RegexTools::Matcher &matcher){	//magic, don't touch this
 	matcher.getGroup(3, bitrate);
 	std::string startPosStr = "";
 	matcher.getGroup(2, startPosStr);
@@ -130,7 +130,7 @@ void MediaFileScanner::parseDuration(const RegexTools::Matcher &matcher){	//magi
 	}
 }
 
-void MediaFileScanner::parseVideoStream(const RegexTools::Matcher &matcher){
+void MediaScanner::parseVideoStream(const RegexTools::Matcher &matcher){
 	int firstNumber = toN(matcher.getGroup(1), int());
 	int secondNumber = toN(matcher.getGroup(2), int());
 	std::string streamName =  matcher.getGroup(3);
@@ -162,7 +162,7 @@ void MediaFileScanner::parseVideoStream(const RegexTools::Matcher &matcher){
 	}
 	videoStreams.push_back(stream);
 }
-void MediaFileScanner::parseAudioStream(const RegexTools::Matcher &matcher){
+void MediaScanner::parseAudioStream(const RegexTools::Matcher &matcher){
 	std::string endLine = matcher.getGroup(6);
 
 	int firstNumber = toN(matcher.getGroup(1), int());
@@ -189,7 +189,7 @@ void MediaFileScanner::parseAudioStream(const RegexTools::Matcher &matcher){
 	audioStreams.push_back(stream);
 }
 
-bool MediaFileScanner::trimBy(const std::string& delimiter, const std::string& input, std::string& first,
+bool MediaScanner::trimBy(const std::string& delimiter, const std::string& input, std::string& first,
 		std::string& rest) {
 	std::string::size_type pos = input.find(delimiter);
 	if (pos == std::string::npos) {

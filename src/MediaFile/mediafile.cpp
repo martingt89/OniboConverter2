@@ -8,7 +8,6 @@
 
 #include "mediafile.h"
 
-#include "mediafilescanner.h"
 #include "../Converter/convertparser.h"
 #include "../helper.h"
 #include "../userpreferences.h"

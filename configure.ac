@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT(OniboConverter2, [1.0], [martingt89@gmail.com])
+AC_INIT(OniboConverter2, [0.1], [martingt89@gmail.com])
 
 AM_INIT_AUTOMAKE([subdir-objects 1.10 -Wall no-define])
 AC_CONFIG_HEADERS([config.h])

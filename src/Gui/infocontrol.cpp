@@ -46,7 +46,7 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	audioStream.remove_all();
 	filePath->set_text(actualMediaFile->getPath().getPath());
 	if(info.getDuration() >= 0){
-		duration << (toS(info.getDuration()) + " sec");
+		duration << secTimeToReadableTime(info.getDuration());
 	}else{
 		duration << std::string("N/A");
 	}

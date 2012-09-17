@@ -33,7 +33,7 @@ MediaFile= \
 MediaFile/mediafile.cpp \
 MediaFile/mediainfo.cpp \
 MediaFile/mediaconvert.cpp \
-MediaFile/mediafilescanner.cpp \
+MediaFile/mediascanner.cpp \
 MediaFile/audiostream.cpp \
 MediaFile/stream.cpp \
 MediaFile/videostream.cpp
