@@ -1,32 +1,33 @@
 OniboConverter2
-===============
+=============
 
-Next version of Onibo-converter, working with external ffmpeg, using gtk3 add support for multiencoding
-
-Early version without lots of functionality. 
+	Next version of Onibo-converter, working with external ffmpeg, using gtk3 and supported multithread encoding
 
 
-Features
-========
+Version 0.1
+==========
 
-multithread encoding
+	- paralel encoding multiple files or paralel encoding one file if it support encoder
+	
+	- support creating and using profiles
+	
+	- support own compile parameters
+	
+	- ffpreset files
 
-profiles support
-
-simple user interface
-
-ffpreset support
-
+	- simple user interface
+	
+	- config files based on xml language
+	
 
 Compile dependency on ubuntu 12.04
 ==============================
 
-libgtkmm-3.0-dev
-libxml++2.6-dev
+	libgtkmm-3.0-dev
+	libxml++2.6-dev
 
 
 Running dependency
 ================
 
-ffmpeg
-realpath	(optional)
+	ffmpeg (avconv)
