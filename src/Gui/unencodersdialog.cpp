@@ -61,6 +61,7 @@ UnEncodersDialog::UnEncodersDialog(const Glib::RefPtr<Gtk::Builder>& refGlade, M
 }
 
 void UnEncodersDialog::show(){
+	unEncodersText->get_buffer()->set_text("");
 	auto encoders = elementsDB.getUnsuprtedEncoders();
 	unEncodersCheck->set_active(UserPreferences::getInstance()->isDisableShowUnEncoders());
 	changed = false;

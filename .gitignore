@@ -1,6 +1,4 @@
-# http://www.gnu.org/software/automake
-
-Makefile.in
+po/Makefile.in
 
 # http://www.gnu.org/software/autoconf
 
