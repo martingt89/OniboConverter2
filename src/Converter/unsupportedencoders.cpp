@@ -22,7 +22,7 @@ namespace Converter {
 
 
 void UnsupportedEncoders::addUnsupportedEncoder(const std::string &name,
-		const std::string &description, PriorityLevel level){
+		const std::string &, PriorityLevel level){
 	encoders.push_back(std::make_pair(name, level));
 }
 bool UnsupportedEncoders::isEmpty(){

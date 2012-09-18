@@ -21,7 +21,7 @@
 
 namespace Gui {
 
-MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refGlade) :
+MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>&) :
 				Gtk::Window(cobject) {}
 
 MainWindow::~MainWindow() {}

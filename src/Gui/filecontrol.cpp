@@ -138,14 +138,14 @@ void FileControl::fileInfoButtonClicked(){
 		infoEvent(file);
 	}
 }
-void FileControl::fileTreeViewActivated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column){
+void FileControl::fileTreeViewActivated(const Gtk::TreeModel::Path&, Gtk::TreeViewColumn*){
 	Gui::FileControl::PathWithFileId file;
 	if(getSelectedFile(file)){
 		infoEvent(file);
 	}
 }
-void FileControl::onFileDrop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
-		const Gtk::SelectionData& selection_data, guint info, guint time) {
+void FileControl::onFileDrop(const Glib::RefPtr<Gdk::DragContext>& context, int, int,
+		const Gtk::SelectionData& selection_data, guint, guint time) {
 	const int length = selection_data.get_length();
 	if ((length >= 0) && (selection_data.get_format() == 8)) {
 		auto uris = selection_data.get_uris();

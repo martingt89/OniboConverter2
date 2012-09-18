@@ -93,7 +93,7 @@ void ConvertWindow::infoConvertSignal(){
 		}
 	}
 }
-void ConvertWindow::fileTreeViewActivated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column){
+void ConvertWindow::fileTreeViewActivated(const Gtk::TreeModel::Path&, Gtk::TreeViewColumn*){
 	infoConvertSignal();
 }
 

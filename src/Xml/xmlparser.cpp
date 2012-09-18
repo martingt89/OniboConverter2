@@ -41,10 +41,10 @@ bool XmlParser::parseFile(const Path& filePath, XmlParserData* data){
 	return true;
 }
 
-void XmlParser::on_start_element(const Glib::ustring& name, const AttributeList& attributes){
+void XmlParser::on_start_element(const Glib::ustring& name, const AttributeList&){
 	path.push_back(name);
 }
-void XmlParser::on_end_element(const Glib::ustring& name){
+void XmlParser::on_end_element(const Glib::ustring&){
 	path.pop_back();
 }
 void XmlParser::on_characters(const Glib::ustring& characters){

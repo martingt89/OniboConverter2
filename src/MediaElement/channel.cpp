@@ -50,7 +50,7 @@ std::string Channel::readableForm() const{
 	if(value < 0){
 		return ORIGINAL;
 	}
-	if(name.size() >= 0){
+	if(name.size() > 0){
 		return name;
 	}
 	return toS(value);
