@@ -1,8 +1,12 @@
 OniboConverter2
 ===============
 
-	Next version of Onibo-converter, working with external ffmpeg, using gtk3 and supported multithread encoding
+	Next version of Onibo-converter, working with external ffmpeg or avconv, using gtk3 and supported multithread encoding
+	
+Plans
+=====
 
+	One file mode with remap & filters support
 
 Version 0.1
 ===========
@@ -35,7 +39,7 @@ Compilation
 	2. download files
 		git clone git://github.com/martingt89/OniboConverter2.git
 	
-	3. go into OniboConverter2 fodler
+	3. go into OniboConverter2 folder
 		cd OniboConverter2
 	
 	4. configure

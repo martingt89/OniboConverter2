@@ -73,13 +73,13 @@ Converter/dispenser.cpp \
 Converter/argumentsgenerator.cpp \
 Converter/unsupportedencoders.cpp
 
-top= \
+Top= \
 userpreferences.cpp \
 systemsettings.cpp \
 helper.cpp \
 main.cpp
 
-other= \
+Other= \
 CppExtension/path.cpp \
 RegexTools/regextools.cpp \
 ConverterOptions/supportedencoders.cpp \
@@ -94,10 +94,10 @@ $(MediaFile) \
 $(Gui) \
 $(ProcessExecutor) \
 $(Converter) \
-$(top) \
-$(other)
+$(Top) \
+$(Other)
 
-AM_CXXFLAGS = -lpthread -std=c++0x -O0 -DDATADIR=\"$(datadir)\" -DPROGDIR=\"@PACKAGE@\" $(DEPS_CFLAGS) 
-#AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -W -Wextra -Werror -pedantic -DDATADIR=\"$(datadir)\" $(DEPS_CFLAGS) 
+#AM_CXXFLAGS = -lpthread -std=c++0x -O0 -DDATADIR=\"$(datadir)\" -DPROGDIR=\"@PACKAGE@\" $(DEPS_CFLAGS) 
+AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -W -Wextra -Werror -pedantic -DDATADIR=\"$(datadir)\" $(DEPS_CFLAGS) 
 
 OniboConverter2_LDADD = $(DEPS_LIBS)

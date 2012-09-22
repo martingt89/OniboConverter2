@@ -26,15 +26,13 @@ namespace ProcessExecutor{
 #include <string>
 #include <vector>
 #include <stdexcept>
-#include "videostream.h"
-#include "audiostream.h"
+#include <memory>
 #include <thread>
 #include <sstream>
 #include "mediainfo.h"
 #include "mediaconvert.h"
 #include "../CppExtension/path.h"
 #include "../Profile/profile.h"
-#include <memory>
 
 namespace MediaFile {
 
