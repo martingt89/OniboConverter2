@@ -7,38 +7,41 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 16:37+0200\n"
-"PO-Revision-Date: 2012-09-12 16:42+0100\n"
+"POT-Creation-Date: 2012-09-22 17:16+0200\n"
+"PO-Revision-Date: 2012-09-22 17:27+0100\n"
 "Last-Translator: Martin Geier <martingt89@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: martingt89 <martingt89@gmail.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Slovak\n"
+"X-Poedit-Country: SLOVAKIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: ../data/converter.glade.h:1
-msgid "_Súbor"
-msgstr ""
+msgid "_File"
+msgstr "_Súbor"
 
 #: ../data/converter.glade.h:2
-msgid "_Upraviť"
-msgstr ""
+msgid "_Edit"
+msgstr "_Upraviť"
 
 #: ../data/converter.glade.h:3
 msgid "Custom settings"
-msgstr ""
+msgstr "Obvyklé nastavenia"
 
 #: ../data/converter.glade.h:4
 msgid "Output destination"
-msgstr ""
+msgstr "Výstupné umiestnenie"
 
 #: ../data/converter.glade.h:5
-msgid "Show unsupported encs"
-msgstr ""
+msgid "Unsupported encoders"
+msgstr "Nepodporované enkódery"
 
 #: ../data/converter.glade.h:6
-msgid "Profile"
-msgstr ""
+msgid "_Profile"
+msgstr "_Profil"
 
 #: ../data/converter.glade.h:7
 msgid "Export"
@@ -49,182 +52,186 @@ msgid "Import"
 msgstr ""
 
 #: ../data/converter.glade.h:9
-msgid "_Pomocník"
-msgstr ""
+msgid "_Help"
+msgstr "_Pomoc"
 
 #: ../data/converter.glade.h:10
-msgid "Destination"
-msgstr ""
+msgid "Profile"
+msgstr "Profil"
 
 #: ../data/converter.glade.h:11
+msgid "Destination"
+msgstr "Umiestnenie"
+
+#: ../data/converter.glade.h:12
 msgid "Search"
 msgstr "Vyhľadať"
 
-#: ../data/converter.glade.h:12
-msgid "Main settings"
-msgstr ""
-
 #: ../data/converter.glade.h:13
-msgid "Media container"
-msgstr ""
+msgid "Main settings"
+msgstr "Hlavné nastavenia"
 
 #: ../data/converter.glade.h:14
+msgid "Media container"
+msgstr "Media kontajner"
+
+#: ../data/converter.glade.h:15
 msgid "1 pass"
 msgstr ""
 
-#: ../data/converter.glade.h:15
+#: ../data/converter.glade.h:16
 msgid "2 pass"
 msgstr ""
 
-#: ../data/converter.glade.h:16
+#: ../data/converter.glade.h:17
 #: ../data/dialogs.glade.h:4
 msgid "Manual settings"
-msgstr ""
-
-#: ../data/converter.glade.h:17
-msgid "Save profil as"
-msgstr ""
+msgstr "ručné nastavenia"
 
 #: ../data/converter.glade.h:18
-msgid "Video settings"
-msgstr ""
+msgid "Save profil as"
+msgstr "Uložiť profil ako"
 
 #: ../data/converter.glade.h:19
-msgid "Video mode"
-msgstr ""
+msgid "Video settings"
+msgstr "Video nastavenia"
 
 #: ../data/converter.glade.h:20
-msgid "Format"
-msgstr "Formát"
+msgid "Video mode"
+msgstr "Video mód"
 
 #: ../data/converter.glade.h:21
-msgid "Bitrate"
-msgstr ""
+msgid "Format"
+msgstr "Format"
 
 #: ../data/converter.glade.h:22
-msgid "Encoder"
-msgstr ""
+msgid "Bitrate"
+msgstr "Bitrate"
 
 #: ../data/converter.glade.h:23
+msgid "Encoder"
+msgstr "Enkóder"
+
+#: ../data/converter.glade.h:24
 msgid "Resolution"
 msgstr "Rozlíšenie"
 
-#: ../data/converter.glade.h:24
-msgid "Framerate [fps]"
-msgstr ""
-
 #: ../data/converter.glade.h:25
-msgid "FFpreset"
-msgstr ""
+msgid "Framerate [fps]"
+msgstr "Framerate [fps]"
 
 #: ../data/converter.glade.h:26
-msgid "Audio settings"
-msgstr ""
+msgid "FFpreset"
+msgstr "FFpreset"
 
 #: ../data/converter.glade.h:27
-msgid "Audio mode"
-msgstr ""
+msgid "Audio settings"
+msgstr "Audio nastavenia"
 
 #: ../data/converter.glade.h:28
-msgid "Grade"
-msgstr ""
+msgid "Audio mode"
+msgstr "Audio mód"
 
 #: ../data/converter.glade.h:29
-msgid "Samplerate"
-msgstr ""
+msgid "Grade"
+msgstr "Kvalita"
 
 #: ../data/converter.glade.h:30
-msgid "Channels"
-msgstr ""
+msgid "Samplerate"
+msgstr "Samplerate"
 
 #: ../data/converter.glade.h:31
+msgid "Channels"
+msgstr "Kanály"
+
+#: ../data/converter.glade.h:32
 msgid "1st pass"
 msgstr ""
 
-#: ../data/converter.glade.h:32
-msgid "<b>Video settings</b>"
-msgstr ""
-
 #: ../data/converter.glade.h:33
+msgid "<b>Video settings</b>"
+msgstr "<b>Video nastavenia</b>"
+
+#: ../data/converter.glade.h:34
 msgid "Copy"
 msgstr "Kopírovať"
 
-#: ../data/converter.glade.h:34
-msgid "Custom"
-msgstr ""
-
 #: ../data/converter.glade.h:35
+msgid "Custom"
+msgstr "Obvyklé"
+
+#: ../data/converter.glade.h:36
 msgid "Disable"
 msgstr "Zakázať"
 
-#: ../data/converter.glade.h:36
-msgid "<b>Audio settings</b>"
-msgstr ""
-
 #: ../data/converter.glade.h:37
+msgid "<b>Audio settings</b>"
+msgstr "<b>Audio nastavenia</b>"
+
+#: ../data/converter.glade.h:38
 msgid "2nd pass"
 msgstr ""
 
-#: ../data/converter.glade.h:38
+#: ../data/converter.glade.h:39
 #: ../data/user_settings.glade.h:4
 msgid "General"
-msgstr "Všeobecné"
+msgstr "Bežné"
 
-#: ../data/converter.glade.h:39
+#: ../data/converter.glade.h:40
 msgid "File"
 msgstr "Súbor"
 
-#: ../data/converter.glade.h:40
+#: ../data/converter.glade.h:41
 msgid "Duration"
 msgstr "Dĺžka"
 
-#: ../data/converter.glade.h:41
+#: ../data/converter.glade.h:42
 msgid "Start time"
 msgstr ""
 
-#: ../data/converter.glade.h:42
+#: ../data/converter.glade.h:43
 msgid "Video stream"
 msgstr ""
 
-#: ../data/converter.glade.h:43
+#: ../data/converter.glade.h:44
 msgid "Video stream number"
 msgstr ""
 
-#: ../data/converter.glade.h:44
-msgid "Codec"
-msgstr ""
-
 #: ../data/converter.glade.h:45
-msgid "Color space"
-msgstr ""
+msgid "Codec"
+msgstr "Kodek"
 
 #: ../data/converter.glade.h:46
+msgid "Color space"
+msgstr "Farebný priestor"
+
+#: ../data/converter.glade.h:47
 msgid "FPS"
 msgstr ""
 
-#: ../data/converter.glade.h:47
+#: ../data/converter.glade.h:48
 msgid "TBR"
 msgstr ""
 
-#: ../data/converter.glade.h:48
+#: ../data/converter.glade.h:49
 msgid "TBN"
 msgstr ""
 
-#: ../data/converter.glade.h:49
+#: ../data/converter.glade.h:50
 msgid "TBC"
 msgstr ""
 
-#: ../data/converter.glade.h:50
+#: ../data/converter.glade.h:51
 msgid "Audio stream"
 msgstr ""
 
-#: ../data/converter.glade.h:51
+#: ../data/converter.glade.h:52
 msgid "Audio stream number"
 msgstr ""
 
-#: ../data/converter.glade.h:52
+#: ../data/converter.glade.h:53
 msgid "Converting..."
-msgstr ""
+msgstr "Konvertovanie..."
 
 #: ../data/dialogs.glade.h:1
 msgid "Converter output"
@@ -287,52 +294,48 @@ msgid "Final resolution"
 msgstr ""
 
 #: ../data/dialogs.glade.h:17
-msgid "x"
-msgstr ""
-
-#: ../data/dialogs.glade.h:18
 msgid "Do you really want to stop converting?"
 msgstr ""
 
-#: ../data/dialogs.glade.h:19
+#: ../data/dialogs.glade.h:18
 msgid "Don't show on startup"
 msgstr ""
 
-#: ../data/dialogs.glade.h:20
+#: ../data/dialogs.glade.h:19
 msgid "Your ffmepg (avconv) dosn't support this encoders"
 msgstr ""
 
-#: ../data/dialogs.glade.h:21
+#: ../data/dialogs.glade.h:20
 msgid ""
 "<b>OniboConverter2 cannot encode with this encodres</b>\n"
 "Pleas install ffmpeg (avconv) with it support "
 msgstr ""
 
-#: ../data/dialogs.glade.h:23
+#: ../data/dialogs.glade.h:22
 msgid "Bitrate settings"
 msgstr ""
 
-#: ../data/dialogs.glade.h:24
+#: ../data/dialogs.glade.h:23
 msgid "Bitrate [kb/s]"
 msgstr ""
 
-#: ../data/dialogs.glade.h:25
+#: ../data/dialogs.glade.h:24
 msgid "<span color=\"red\">Invalid bitrate</span>"
 msgstr ""
 
-#: ../data/dialogs.glade.h:26
+#: ../data/dialogs.glade.h:25
 msgid "Min bitrate [kb/s]"
 msgstr ""
 
-#: ../data/dialogs.glade.h:27
+#: ../data/dialogs.glade.h:26
 msgid "enable"
 msgstr ""
 
-#: ../data/dialogs.glade.h:28
+#: ../data/dialogs.glade.h:27
 msgid "Max bitrate [kb/s]"
 msgstr ""
 
-#: ../data/dialogs.glade.h:29
+#: ../data/dialogs.glade.h:28
 msgid "Dispersion [kb/s]"
 msgstr ""
 
@@ -364,7 +367,11 @@ msgstr ""
 msgid "Threading"
 msgstr ""
 
-#: ../src/Gui/avcontrol.cpp:56
+#: ../src/Gui/avcontrol.cpp:26
+msgid "--- custom profile ---"
+msgstr ""
+
+#: ../src/Gui/avcontrol.cpp:67
 msgid "Container is not set"
-msgstr "Kontajner nie je nastavený"
+msgstr ""
 

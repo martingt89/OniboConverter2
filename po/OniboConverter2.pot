@@ -8,21 +8,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 16:37+0200\n"
+"POT-Creation-Date: 2012-09-22 17:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/converter.glade.h:1
-msgid "_Súbor"
+msgid "_File"
 msgstr ""
 
 #: ../data/converter.glade.h:2
-msgid "_Upraviť"
+msgid "_Edit"
 msgstr ""
 
 #: ../data/converter.glade.h:3
@@ -34,11 +34,11 @@ msgid "Output destination"
 msgstr ""
 
 #: ../data/converter.glade.h:5
-msgid "Show unsupported encs"
+msgid "Unsupported encoders"
 msgstr ""
 
 #: ../data/converter.glade.h:6
-msgid "Profile"
+msgid "_Profile"
 msgstr ""
 
 #: ../data/converter.glade.h:7
@@ -50,178 +50,182 @@ msgid "Import"
 msgstr ""
 
 #: ../data/converter.glade.h:9
-msgid "_Pomocník"
+msgid "_Help"
 msgstr ""
 
 #: ../data/converter.glade.h:10
-msgid "Destination"
+msgid "Profile"
 msgstr ""
 
 #: ../data/converter.glade.h:11
-msgid "Search"
+msgid "Destination"
 msgstr ""
 
 #: ../data/converter.glade.h:12
-msgid "Main settings"
+msgid "Search"
 msgstr ""
 
 #: ../data/converter.glade.h:13
-msgid "Media container"
+msgid "Main settings"
 msgstr ""
 
 #: ../data/converter.glade.h:14
-msgid "1 pass"
+msgid "Media container"
 msgstr ""
 
 #: ../data/converter.glade.h:15
+msgid "1 pass"
+msgstr ""
+
+#: ../data/converter.glade.h:16
 msgid "2 pass"
 msgstr ""
 
-#: ../data/converter.glade.h:16 ../data/dialogs.glade.h:4
+#: ../data/converter.glade.h:17 ../data/dialogs.glade.h:4
 msgid "Manual settings"
 msgstr ""
 
-#: ../data/converter.glade.h:17
+#: ../data/converter.glade.h:18
 msgid "Save profil as"
 msgstr ""
 
-#: ../data/converter.glade.h:18
+#: ../data/converter.glade.h:19
 msgid "Video settings"
 msgstr ""
 
-#: ../data/converter.glade.h:19
+#: ../data/converter.glade.h:20
 msgid "Video mode"
 msgstr ""
 
-#: ../data/converter.glade.h:20
+#: ../data/converter.glade.h:21
 msgid "Format"
 msgstr ""
 
-#: ../data/converter.glade.h:21
+#: ../data/converter.glade.h:22
 msgid "Bitrate"
 msgstr ""
 
-#: ../data/converter.glade.h:22
+#: ../data/converter.glade.h:23
 msgid "Encoder"
 msgstr ""
 
-#: ../data/converter.glade.h:23
+#: ../data/converter.glade.h:24
 msgid "Resolution"
 msgstr ""
 
-#: ../data/converter.glade.h:24
+#: ../data/converter.glade.h:25
 msgid "Framerate [fps]"
 msgstr ""
 
-#: ../data/converter.glade.h:25
+#: ../data/converter.glade.h:26
 msgid "FFpreset"
 msgstr ""
 
-#: ../data/converter.glade.h:26
+#: ../data/converter.glade.h:27
 msgid "Audio settings"
 msgstr ""
 
-#: ../data/converter.glade.h:27
+#: ../data/converter.glade.h:28
 msgid "Audio mode"
 msgstr ""
 
-#: ../data/converter.glade.h:28
+#: ../data/converter.glade.h:29
 msgid "Grade"
 msgstr ""
 
-#: ../data/converter.glade.h:29
+#: ../data/converter.glade.h:30
 msgid "Samplerate"
 msgstr ""
 
-#: ../data/converter.glade.h:30
+#: ../data/converter.glade.h:31
 msgid "Channels"
 msgstr ""
 
-#: ../data/converter.glade.h:31
+#: ../data/converter.glade.h:32
 msgid "1st pass"
 msgstr ""
 
-#: ../data/converter.glade.h:32
+#: ../data/converter.glade.h:33
 msgid "<b>Video settings</b>"
 msgstr ""
 
-#: ../data/converter.glade.h:33
+#: ../data/converter.glade.h:34
 msgid "Copy"
 msgstr ""
 
-#: ../data/converter.glade.h:34
+#: ../data/converter.glade.h:35
 msgid "Custom"
 msgstr ""
 
-#: ../data/converter.glade.h:35
+#: ../data/converter.glade.h:36
 msgid "Disable"
 msgstr ""
 
-#: ../data/converter.glade.h:36
+#: ../data/converter.glade.h:37
 msgid "<b>Audio settings</b>"
 msgstr ""
 
-#: ../data/converter.glade.h:37
+#: ../data/converter.glade.h:38
 msgid "2nd pass"
 msgstr ""
 
-#: ../data/converter.glade.h:38 ../data/user_settings.glade.h:4
+#: ../data/converter.glade.h:39 ../data/user_settings.glade.h:4
 msgid "General"
 msgstr ""
 
-#: ../data/converter.glade.h:39
+#: ../data/converter.glade.h:40
 msgid "File"
 msgstr ""
 
-#: ../data/converter.glade.h:40
+#: ../data/converter.glade.h:41
 msgid "Duration"
 msgstr ""
 
-#: ../data/converter.glade.h:41
+#: ../data/converter.glade.h:42
 msgid "Start time"
 msgstr ""
 
-#: ../data/converter.glade.h:42
+#: ../data/converter.glade.h:43
 msgid "Video stream"
 msgstr ""
 
-#: ../data/converter.glade.h:43
+#: ../data/converter.glade.h:44
 msgid "Video stream number"
 msgstr ""
 
-#: ../data/converter.glade.h:44
+#: ../data/converter.glade.h:45
 msgid "Codec"
 msgstr ""
 
-#: ../data/converter.glade.h:45
+#: ../data/converter.glade.h:46
 msgid "Color space"
 msgstr ""
 
-#: ../data/converter.glade.h:46
+#: ../data/converter.glade.h:47
 msgid "FPS"
 msgstr ""
 
-#: ../data/converter.glade.h:47
+#: ../data/converter.glade.h:48
 msgid "TBR"
 msgstr ""
 
-#: ../data/converter.glade.h:48
+#: ../data/converter.glade.h:49
 msgid "TBN"
 msgstr ""
 
-#: ../data/converter.glade.h:49
+#: ../data/converter.glade.h:50
 msgid "TBC"
 msgstr ""
 
-#: ../data/converter.glade.h:50
+#: ../data/converter.glade.h:51
 msgid "Audio stream"
 msgstr ""
 
-#: ../data/converter.glade.h:51
+#: ../data/converter.glade.h:52
 msgid "Audio stream number"
 msgstr ""
 
-#: ../data/converter.glade.h:52
+#: ../data/converter.glade.h:53
 msgid "Converting..."
 msgstr ""
 
@@ -286,52 +290,48 @@ msgid "Final resolution"
 msgstr ""
 
 #: ../data/dialogs.glade.h:17
-msgid "x"
-msgstr ""
-
-#: ../data/dialogs.glade.h:18
 msgid "Do you really want to stop converting?"
 msgstr ""
 
-#: ../data/dialogs.glade.h:19
+#: ../data/dialogs.glade.h:18
 msgid "Don't show on startup"
 msgstr ""
 
-#: ../data/dialogs.glade.h:20
+#: ../data/dialogs.glade.h:19
 msgid "Your ffmepg (avconv) dosn't support this encoders"
 msgstr ""
 
-#: ../data/dialogs.glade.h:21
+#: ../data/dialogs.glade.h:20
 msgid ""
 "<b>OniboConverter2 cannot encode with this encodres</b>\n"
 "Pleas install ffmpeg (avconv) with it support "
 msgstr ""
 
-#: ../data/dialogs.glade.h:23
+#: ../data/dialogs.glade.h:22
 msgid "Bitrate settings"
 msgstr ""
 
-#: ../data/dialogs.glade.h:24
+#: ../data/dialogs.glade.h:23
 msgid "Bitrate [kb/s]"
 msgstr ""
 
-#: ../data/dialogs.glade.h:25
+#: ../data/dialogs.glade.h:24
 msgid "<span color=\"red\">Invalid bitrate</span>"
 msgstr ""
 
-#: ../data/dialogs.glade.h:26
+#: ../data/dialogs.glade.h:25
 msgid "Min bitrate [kb/s]"
 msgstr ""
 
-#: ../data/dialogs.glade.h:27
+#: ../data/dialogs.glade.h:26
 msgid "enable"
 msgstr ""
 
-#: ../data/dialogs.glade.h:28
+#: ../data/dialogs.glade.h:27
 msgid "Max bitrate [kb/s]"
 msgstr ""
 
-#: ../data/dialogs.glade.h:29
+#: ../data/dialogs.glade.h:28
 msgid "Dispersion [kb/s]"
 msgstr ""
 
@@ -363,6 +363,10 @@ msgstr ""
 msgid "Threading"
 msgstr ""
 
-#: ../src/Gui/avcontrol.cpp:56
+#: ../src/Gui/avcontrol.cpp:26
+msgid "--- custom profile ---"
+msgstr ""
+
+#: ../src/Gui/avcontrol.cpp:67
 msgid "Container is not set"
 msgstr ""

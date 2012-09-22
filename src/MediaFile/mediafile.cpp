@@ -16,7 +16,6 @@
 ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ** -------------------------------------------------------------------------*/
 
-
 #include "mediafile.h"
 
 #include "../Converter/convertparser.h"

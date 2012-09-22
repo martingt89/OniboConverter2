@@ -15,6 +15,7 @@ stamp-h1
 src_old/
 
 *.o
+*.mo
 .deps
 
 #binary file

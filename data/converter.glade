@@ -8,7 +8,7 @@
     <property name="type_hint">dialog</property>
     <property name="program_name">OniboConverter2</property>
     <property name="version">0.1</property>
-    <property name="license" translatable="yes">                    GNU GENERAL PUBLIC LICENSE
+    <property name="license">                    GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. &lt;http://fsf.org/&gt;
@@ -737,7 +737,7 @@ Public License instead of this License.  But first, please read
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">_Súbor</property>
+                    <property name="label" translatable="yes">_File</property>
                     <property name="use_underline">True</property>
                     <child type="submenu">
                       <object class="GtkMenu" id="menu1">
@@ -809,7 +809,7 @@ Public License instead of this License.  But first, please read
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">_Upraviť</property>
+                    <property name="label" translatable="yes">_Edit</property>
                     <property name="use_underline">True</property>
                     <child type="submenu">
                       <object class="GtkMenu" id="menu2">
@@ -867,7 +867,7 @@ Public License instead of this License.  But first, please read
                   <object class="GtkMenuItem" id="menuitem11">
                     <property name="use_action_appearance">False</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Profile</property>
+                    <property name="label" translatable="yes">_Profile</property>
                     <property name="use_underline">True</property>
                     <child type="submenu">
                       <object class="GtkMenu" id="menu3">
@@ -900,7 +900,7 @@ Public License instead of this License.  But first, please read
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">_Pomocník</property>
+                    <property name="label" translatable="yes">_Help</property>
                     <property name="use_underline">True</property>
                     <child type="submenu">
                       <object class="GtkMenu" id="menu4">
