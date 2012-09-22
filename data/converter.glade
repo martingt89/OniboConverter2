@@ -866,6 +866,7 @@ Public License instead of this License.  But first, please read
                 <child>
                   <object class="GtkMenuItem" id="menuitem11">
                     <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">_Profile</property>
                     <property name="use_underline">True</property>
@@ -874,7 +875,7 @@ Public License instead of this License.  But first, please read
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkMenuItem" id="menuitem13">
+                          <object class="GtkMenuItem" id="exportItem">
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -883,7 +884,7 @@ Public License instead of this License.  But first, please read
                           </object>
                         </child>
                         <child>
-                          <object class="GtkMenuItem" id="menuitem12">
+                          <object class="GtkMenuItem" id="importItem">
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>

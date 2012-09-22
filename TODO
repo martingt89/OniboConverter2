@@ -1,7 +1,9 @@
- - add filters 								//medium priority
- - 2 pass encoding							//low priority
- - import and export profiles						//low priority
+
+ - remove settings that are in ffpreset
 
 ========================================
 
- - remove settings that are in ffpreset
+ - add one file mode
+ 	- two pass encoding
+ 	- remaping
+ 	- filters

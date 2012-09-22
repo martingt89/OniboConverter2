@@ -141,8 +141,8 @@ void AVControl::getNewProfile(const std::string& name){
 
 	generator.generateFile(Profile::Configuration(newProfile, elementsDB));
 }
-Profile::Profile AVControl::getTmpProfile(){
-	Profile::Profile newProfile("tmp");
+Profile::Profile AVControl::getTmpProfile(const std::string name){
+	Profile::Profile newProfile(name);
 	newProfile.setContainer(containers.get_active_row_item());
 
 	videoControlGui.getNewProfile(newProfile);
@@ -150,7 +150,15 @@ Profile::Profile AVControl::getTmpProfile(){
 	settingsDialog.getNewProfile(newProfile);
 	return newProfile;
 }
-
+void AVControl::rescanProfiles(){
+	profilesComboBox.remove_all();
+	profilesComboBox.append(CUSTOM_PROFILE);
+	profilesComboBox.set_active_row_number(0);
+	auto profileList = profiles.getProfiles();
+	for(auto profile : profileList){
+		profilesComboBox.append(profile.getName(), profile);
+	}
+}
 void AVControl::manualSettingsClicked(){
 	bool change = settingsDialog.start();
 	if(change){

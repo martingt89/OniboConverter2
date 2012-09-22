@@ -40,7 +40,8 @@ public:
 	void saveSettingsState();
 	void restoreSettingsState();
 	std::string getContainerName();
-	Profile::Profile getTmpProfile();
+	Profile::Profile getTmpProfile(const std::string name = "tmp");
+	void rescanProfiles();
 private:
 	void getNewProfile(const std::string& name);
 	void userInput();

@@ -38,15 +38,23 @@ std::list<Profile> Profiles::getProfiles() const{
 	return profiles;
 }
 
+bool Profiles::loadFromFile(const Path& path, Profile& profile){
+	Configuration profileConfiguration(elementsDb);
+	if (loader.load(path, profileConfiguration)) {
+		profile = profileConfiguration.getProfile();
+		profiles.push_back(profile);
+
+		return true;
+	}
+	return false;
+}
+
 void Profiles::loadProfilesInFolder(const Path& folder) {
-	Xml::ProfileLoader loader;
 	std::list<Path> files;
 	if (folder.getSubfiles(files)) {
 		for (auto file : files) {
-			Configuration profileConfiguration(elementsDb);
-			if (loader.load(file, profileConfiguration)) {
-				profiles.push_back(profileConfiguration.getProfile());
-			}
+			Profile pro;
+			loadFromFile(file, pro);
 		}
 	}
 }

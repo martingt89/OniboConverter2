@@ -31,13 +31,13 @@ static const int CONVERT_SCREEN_PAGE = 3;
 
 ConverterGui::ConverterGui(MediaElement::ElementsDB& elementsDB,
 		const Glib::RefPtr<Gtk::Builder>& refGlade,
-		const Profile::Profiles& profiles,
+		Profile::Profiles& profiles,
 		Gui::MainWindow* mainWindow) :
 		avControl(elementsDB, refGlade, profiles),
 		destinationControl(refGlade), fileControl(refGlade), infoControl(refGlade),
 		overwrite(refGlade), convertWindow(refGlade), settingsDialog(refGlade), mainWindow(mainWindow),
 		warningDialog("Settings are not complete", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true),
-		unsuportedEncoders(refGlade, elementsDB){
+		unsuportedEncoders(refGlade, elementsDB), inportExport(refGlade, elementsDB){
 
 	refGlade->get_widget("mainNotebook", mainNotebook);
 	refGlade->get_widget("settingsButton", settingsButton);
@@ -71,6 +71,8 @@ ConverterGui::ConverterGui(MediaElement::ElementsDB& elementsDB,
 	if(!unssuported.isEmpty() && !UserPreferences::getInstance()->isDisableShowUnEncoders()){
 		unsuportedEncoders.show();
 	}
+	inportExport.setAVControl(&avControl);
+	inportExport.setProfiles(&profiles);
 }
 
 ConverterGui::~ConverterGui() {

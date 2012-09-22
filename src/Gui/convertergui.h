@@ -36,6 +36,7 @@
 #include "overwritedialog.h"
 #include "mainwindow.h"
 #include "unencodersdialog.h"
+#include "importexport.h"
 #include "Settings/usersettingsdialog.h"
 #include "../Profile/profile.h"
 #include "../MediaFile/mediafile.h"
@@ -46,7 +47,7 @@ class ConverterGui {
 public:
 	ConverterGui(MediaElement::ElementsDB& elementsDB,
 			const Glib::RefPtr<Gtk::Builder>& refGlade,
-			const Profile::Profiles& profiles,
+			Profile::Profiles& profiles,
 			Gui::MainWindow* mainWindow);
 	sigc::signal<void, std::list<MediaFile::MediaFile*> >& signalConvert();
 	virtual ~ConverterGui();
@@ -70,11 +71,13 @@ private:
 	InfoControl infoControl;
 	OverwriteDialog overwrite;
 	ConvertWindow convertWindow;
+
 	Settings::UserSettingsDialog settingsDialog;
 
 	Gui::MainWindow* mainWindow;
 	Gtk::MessageDialog warningDialog;
 	UnEncodersDialog unsuportedEncoders;
+	ImportExport inportExport;
 
 	Gtk::Button* settingsButton;
 	Gtk::Button* okSettingsButton;

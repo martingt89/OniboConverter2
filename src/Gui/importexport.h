@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** Author: Martin Geier
-** profiles.h is part of OniboConverter2.
+** importexport.h is part of OniboConverter2.
 **
 ** OniboConverter2 is free software: you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -16,30 +16,34 @@
 ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ** -------------------------------------------------------------------------*/
 
-#ifndef PROFILES_H_
-#define PROFILES_H_
+#ifndef IMPORTEXPORT_H_
+#define IMPORTEXPORT_H_
 
-#include <list>
-#include "profile.h"
-#include "../CppExtension/path.h"
-#include "../MediaElement/elementsdb.h"
-#include "../Xml/profileloader.h"
+#include <gtkmm/builder.h>
+#include <gtkmm/menuitem.h>
+#include <gtkmm/filechooserdialog.h>
+#include "avcontrol.h"
+#include "../Profile/profiles.h"
 
-namespace Profile {
+namespace Gui {
 
-class Profiles {
+class ImportExport {
 public:
-	Profiles(const MediaElement::ElementsDB& elementsDb);
-	virtual ~Profiles();
-	void load();
-	bool loadFromFile(const Path& path, Profile& profile);
-	std::list<Profile> getProfiles() const;
+	ImportExport(const Glib::RefPtr<Gtk::Builder>& refGlade, MediaElement::ElementsDB& elementsDB);
+	virtual ~ImportExport();
+	void setAVControl(AVControl* avcontrol);
+	void setProfiles(Profile::Profiles* profiles);
 private:
-	Xml::ProfileLoader loader;
-	std::list<Profile> profiles;
-	const MediaElement::ElementsDB& elementsDb;
-	void loadProfilesInFolder(const Path& folder);
+	void importProfileClicked();
+	void exportProfileClicked();
+	MediaElement::ElementsDB& elementsDB;
+	Gtk::MenuItem *importProfile;
+	Gtk::MenuItem *exportProfile;
+	Gtk::FileChooserDialog fileSaveDialog;
+	Gtk::FileChooserDialog fileLoadDialog;
+	AVControl* avcontrol;
+	Profile::Profiles* profiles;
 };
 
-} /* namespace Profile */
-#endif /* PROFILES_H_ */
+} /* namespace Gui */
+#endif /* IMPORTEXPORT_H_ */

@@ -32,6 +32,7 @@ int VideoStream::priority() const{
 	int resx = toN(content.get(VideoStream::RESX), int());
 	int resy = toN(content.get(VideoStream::RESY), int());
 	return resx*resx + resy*resy;	//compare slant
+//	return resx*resy;	//compare content
 }
 
 bool VideoStream::getValue(const Video& name, std::string& value) const{

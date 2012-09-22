@@ -82,7 +82,7 @@ am__objects_5 = Gui/Settings/general.$(OBJEXT) \
 	Gui/Video/resolutiondialog.$(OBJEXT) \
 	Gui/Video/bitratedialog.$(OBJEXT) \
 	Gui/Video/encodercontrolv.$(OBJEXT) \
-	Gui/unencodersdialog.$(OBJEXT)
+	Gui/unencodersdialog.$(OBJEXT) Gui/importexport.$(OBJEXT)
 am__objects_6 = ProcessExecutor/process.$(OBJEXT) \
 	ProcessExecutor/safestream.$(OBJEXT) \
 	ProcessExecutor/safeinputstream.$(OBJEXT) \
@@ -303,7 +303,8 @@ Gui/Video/videocontrol.cpp \
 Gui/Video/resolutiondialog.cpp \
 Gui/Video/bitratedialog.cpp \
 Gui/Video/encodercontrolv.cpp \
-Gui/unencodersdialog.cpp
+Gui/unencodersdialog.cpp \
+Gui/importexport.cpp
 
 ProcessExecutor = \
 ProcessExecutor/process.cpp \
@@ -565,6 +566,8 @@ Gui/Video/encodercontrolv.$(OBJEXT): Gui/Video/$(am__dirstamp) \
 	Gui/Video/$(DEPDIR)/$(am__dirstamp)
 Gui/unencodersdialog.$(OBJEXT): Gui/$(am__dirstamp) \
 	Gui/$(DEPDIR)/$(am__dirstamp)
+Gui/importexport.$(OBJEXT): Gui/$(am__dirstamp) \
+	Gui/$(DEPDIR)/$(am__dirstamp)
 ProcessExecutor/$(am__dirstamp):
 	@$(MKDIR_P) ProcessExecutor
 	@: > ProcessExecutor/$(am__dirstamp)
@@ -665,6 +668,7 @@ mostlyclean-compile:
 	-rm -f Gui/destinationcontrol.$(OBJEXT)
 	-rm -f Gui/filecontrol.$(OBJEXT)
 	-rm -f Gui/findffmpegdialog.$(OBJEXT)
+	-rm -f Gui/importexport.$(OBJEXT)
 	-rm -f Gui/infocontrol.$(OBJEXT)
 	-rm -f Gui/mainwindow.$(OBJEXT)
 	-rm -f Gui/manualsettingscontrol.$(OBJEXT)
@@ -728,6 +732,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Gui/$(DEPDIR)/destinationcontrol.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Gui/$(DEPDIR)/filecontrol.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Gui/$(DEPDIR)/findffmpegdialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Gui/$(DEPDIR)/importexport.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Gui/$(DEPDIR)/infocontrol.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Gui/$(DEPDIR)/mainwindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Gui/$(DEPDIR)/manualsettingscontrol.Po@am__quote@

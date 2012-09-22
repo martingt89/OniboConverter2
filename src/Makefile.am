@@ -59,7 +59,8 @@ Gui/Video/videocontrol.cpp \
 Gui/Video/resolutiondialog.cpp \
 Gui/Video/bitratedialog.cpp \
 Gui/Video/encodercontrolv.cpp \
-Gui/unencodersdialog.cpp
+Gui/unencodersdialog.cpp \
+Gui/importexport.cpp
 
 ProcessExecutor= \
 ProcessExecutor/process.cpp \

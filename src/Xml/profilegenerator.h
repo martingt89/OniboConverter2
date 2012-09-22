@@ -29,7 +29,7 @@ class ProfileGenerator {
 public:
 	ProfileGenerator(const Path& outputDirectory);
 	virtual ~ProfileGenerator();
-	void generateFile(const Profile::Configuration& profile);
+	void generateFile(const Profile::Configuration& profile,  std::string profileFileName = std::string());
 private:
 	std::vector<PathNode> toPathVector(std::list<std::string> list, std::string value);
 	const Path outputDirectory;

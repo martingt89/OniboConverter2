@@ -20,7 +20,7 @@
 #include "profilegenerator.h"
 #include "../xmlfilesdefinitions.h"
 #include "../helper.h"
-
+#include <iostream> //todo remove
 namespace Xml {
 
 static void getManualXml(const std::list<Profile::Profile::ManualSettings> manualSettings,
@@ -41,7 +41,7 @@ ProfileGenerator::ProfileGenerator(const Path& outputDirectory) : outputDirector
 
 ProfileGenerator::~ProfileGenerator() {}
 
-void ProfileGenerator::generateFile(const Profile::Configuration& profileConfiguration){
+void ProfileGenerator::generateFile(const Profile::Configuration& profileConfiguration, std::string profileFileName){
 	auto& table = XmlFilesDefinitions::getInstance()->getConfigurationTable();
 	XmlGenerator generator("profile");
 	for(int opt = Profile::Configuration::BEGIN_OPT;
@@ -60,12 +60,20 @@ void ProfileGenerator::generateFile(const Profile::Configuration& profileConfigu
 
 	getManualXml(manualSettings, (*doc).getNode());
 
-	std::string xmlFileName = getActualTimeMiliSec()+".xml";
+	if(profileFileName == std::string()){
+		profileFileName = getActualTimeMiliSec();
+	}
 
+	std::string xmlFileName = profileFileName + ".xml";
 	Path outputPath(outputDirectory.getPath(), xmlFileName);
+	std::cout<<"output: "<<outputPath.getPath()<<std::endl;
 	std::ofstream file(outputPath.getPath());
-	(*doc).write(file);
-	file.close();
+	if(!file){
+		std::cerr<<"Cannot create file"<<std::endl;
+	}else{
+		(*doc).write(file);
+		file.close();
+	}
 }
 
 std::vector<PathNode> ProfileGenerator::toPathVector(std::list<std::string> list, std::string value){
