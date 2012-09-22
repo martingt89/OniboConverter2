@@ -29,6 +29,7 @@ compile/OniboConverter2
 
 /old
 /release
+/debug
 
 #po
 po/POTFILES

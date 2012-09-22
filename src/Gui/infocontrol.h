@@ -38,7 +38,7 @@ private:
 	Gtk::Entry* filePath; Gtk::Label* duration; Gtk::Label* startTime; Gtk::Label* bitrate;
 
 	Gtk::Label* videoCodec; Gtk::Label* colorSpace; Gtk::Label* resolution; Gtk::Label* fps;
-	Gtk::Label* tbr; Gtk::Label* tbn; Gtk::Label* tbc;
+	Gtk::Label* tbr; Gtk::Label* tbn; Gtk::Label* tbc; Gtk::Label* extra;
 
 	Gtk::Label* audioCodec; Gtk::Label* audioBitrate; Gtk::Label* samplerate; Gtk::Label* channels;
 	//

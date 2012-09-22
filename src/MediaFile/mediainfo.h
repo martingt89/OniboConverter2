@@ -51,6 +51,7 @@ private:
 	std::string bitrate;
 	std::vector<VideoStream> videos;
 	std::vector<AudioStream> audios;
+
 };
 
 } /* namespace MediaFile */

@@ -965,6 +965,7 @@ Public License instead of this License.  But first, please read
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="margin_right">10</property>
+                    <property name="margin_top">10</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">20</property>
                     <property name="layout_style">start</property>
@@ -3353,7 +3354,7 @@ Public License instead of this License.  But first, please read
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xpad">10</property>
-                        <property name="label" translatable="yes">Video stream number</property>
+                        <property name="label" translatable="yes">Video stream</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -3363,7 +3364,7 @@ Public License instead of this License.  But first, please read
                     </child>
                     <child>
                       <object class="GtkComboBoxText" id="videoStreamInfo">
-                        <property name="width_request">150</property>
+                        <property name="width_request">200</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="entry_text_column">0</property>
@@ -3569,9 +3570,12 @@ Public License instead of this License.  But first, please read
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkFixed" id="fixed84">
+                          <object class="GtkLabel" id="label31">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
+                            <property name="label" translatable="yes">Extra</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -3632,9 +3636,11 @@ Public License instead of this License.  But first, please read
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkFixed" id="fixed85">
+                          <object class="GtkLabel" id="extraInfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="xpad">10</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -3723,7 +3729,7 @@ Public License instead of this License.  But first, please read
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xpad">10</property>
-                        <property name="label" translatable="yes">Audio stream number</property>
+                        <property name="label" translatable="yes">Audio stream</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -3733,7 +3739,7 @@ Public License instead of this License.  But first, please read
                     </child>
                     <child>
                       <object class="GtkComboBoxText" id="audioStreamInfo">
-                        <property name="width_request">150</property>
+                        <property name="width_request">200</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="entry_text_column">0</property>

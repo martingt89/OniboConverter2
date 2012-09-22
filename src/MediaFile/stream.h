@@ -26,13 +26,22 @@ namespace MediaFile {
 
 class Stream {
 public:
-	Stream(int firstNumber, int secondNumebr, std::string name);
+	Stream(int firstNumber, int secondNumebr, std::string id, std::string name);
 	virtual ~Stream();
 	std::pair<int, int> getStreamNumber() const;
-	std::string getStreamName() const;
+	std::string getStreamLanguage() const;
+	std::string getStreamId() const;
+	bool isDefault() const;
+	void setDefault(bool isDefault);
+	void setCenvertable(bool convertable);
+	bool isCenvertable() const;
 private:
 	std::pair<int, int> streamNumber;
-	std::string name;
+	std::string id;
+	std::string language;
+	bool isDef;
+	bool convertable;
+
 };
 
 } /* namespace MediaFile */

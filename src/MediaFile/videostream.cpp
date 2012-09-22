@@ -21,11 +21,17 @@
 
 namespace MediaFile {
 
-VideoStream::VideoStream(int firstNumber, int secondNumber, std::string name) :
-		Stream(firstNumber,secondNumber, name){}
+VideoStream::VideoStream(int firstNumber, int secondNumber, std::string id, std::string language) :
+		Stream(firstNumber,secondNumber, id, language){}
 
 void VideoStream::setValue(const Video& name, const std::string& value){
 	content.set(name, value);
+}
+
+int VideoStream::priority() const{
+	int resx = toN(content.get(VideoStream::RESX), int());
+	int resy = toN(content.get(VideoStream::RESY), int());
+	return resx*resx + resy*resy;	//compare slant
 }
 
 bool VideoStream::getValue(const Video& name, std::string& value) const{

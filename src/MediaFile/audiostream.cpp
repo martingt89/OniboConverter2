@@ -20,8 +20,8 @@
 
 namespace MediaFile {
 
-AudioStream::AudioStream(int firstNumber, int secondNumber, std::string name) :
-		Stream(firstNumber,secondNumber, name){
+AudioStream::AudioStream(int firstNumber, int secondNumber, std::string id, std::string language) :
+		Stream(firstNumber,secondNumber, id, language){
 
 }
 
@@ -37,6 +37,23 @@ bool AudioStream::getValue(const Audio& name, std::string& value) const{
 	bool isExistParameter = false;
 	value = content.get(name, isExistParameter);
 	return isExistParameter;
+}
+
+int AudioStream::priority() const{
+	std::string chan = content.get(CHANNELS);
+	if(chan == "mono"){
+		return 1;
+	}
+	if(chan == "stereo"){
+		return 2;
+	}
+	if(chan == "5.1"){
+		return 6;
+	}
+	if(chan == "7.1"){
+		return 8;
+	}
+	return 0;
 }
 
 } /* namespace MediaFile */

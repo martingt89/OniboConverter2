@@ -17,7 +17,11 @@
 ** -------------------------------------------------------------------------*/
 
 #include "infocontrol.h"
+
 namespace Gui {
+
+static const std::string DEFAULT_STREAM = "default";
+static const std::string CONVERT_STREAM = "convert";
 
 void operator<<(Gtk::Label*& label, const std::string& text){
 	label->set_text(toS(text));
@@ -38,6 +42,7 @@ InfoControl::InfoControl(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	refGlade->get_widget("tbrInfo", tbr);
 	refGlade->get_widget("tbnInfo", tbn);
 	refGlade->get_widget("tbcInfo", tbc);
+	refGlade->get_widget("extraInfo", extra);
 
 	refGlade->get_widget("audioCodecInfo", audioCodec);
 	refGlade->get_widget("audioBitrateInfo", audioBitrate);
@@ -66,18 +71,33 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 
 	int counter = 0;
 	auto videos = info.getVideoStreams();
+	int videoConvertStream = 0;
 	for(auto stream : videos){
 		auto pair = stream.getStreamNumber();
-		videoStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+ stream.getStreamName(), counter++);
+		if(stream.isCenvertable()){
+			videoStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+
+					stream.getStreamLanguage() + " " + CONVERT_STREAM, counter++);
+			videoConvertStream = videoStream.count_of_rows() -1;
+		}else{
+			videoStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+ stream.getStreamLanguage(), counter++);
+		}
 	}
 	if(videoStream.count_of_rows() > 0){
 		videoStream.set_sensitive(true);
 	}
+
 	counter = 0;
 	auto audios = info.getAudioStreams();
+	int audioConvertStream = 0;
 	for(auto stream : audios){
 		auto pair = stream.getStreamNumber();
-		audioStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+ stream.getStreamName(), counter++);
+		if(stream.isCenvertable()){
+			audioStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+
+					stream.getStreamLanguage() + " " + CONVERT_STREAM, counter++);
+			audioConvertStream = audioStream.count_of_rows() -1;
+		}else{
+			audioStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+ stream.getStreamLanguage() , counter++);
+		}
 	}
 	if(audioStream.count_of_rows() > 0){
 		audioStream.set_sensitive(true);
@@ -90,6 +110,7 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	tbr << std::string();
 	tbn << std::string();
 	tbc << std::string();
+	extra << std::string();
 
 	audioCodec << std::string();
 	audioBitrate << std::string();
@@ -99,12 +120,12 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	if(audioStream.count_of_rows() == 0){
 		audioStream.set_sensitive(false);
 	}else{
-		audioStream.set_active_row_number(0);
+		audioStream.set_active_row_number(audioConvertStream);
 	}
 	if(videoStream.count_of_rows() == 0){
 		videoStream.set_sensitive(false);
 	}else{
-		videoStream.set_active_row_number(0);
+		videoStream.set_active_row_number(videoConvertStream);
 	}
 }
 std::string getAsString(const MediaFile::VideoStream& stream,
@@ -140,6 +161,11 @@ void InfoControl::videoStreamChanged(){
 		tbr << getAsString(stream, "", MediaFile::VideoStream::TBR);
 		tbn << getAsString(stream, "", MediaFile::VideoStream::TBN);
 		tbc << getAsString(stream, "", MediaFile::VideoStream::TBC);
+		if(stream.isDefault()){
+			extra << DEFAULT_STREAM;
+		}else{
+			extra << std::string();
+		}
 	}
 }
 void InfoControl::audioStreamChanged(){

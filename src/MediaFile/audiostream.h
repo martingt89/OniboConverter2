@@ -31,10 +31,11 @@ public:
 		CODEC, BITRATE, SAMPLERATE, CHANNELS
 	};
 public:
-	AudioStream(int firstNumber, int secondNumber, std::string name = std::string());
+	AudioStream(int firstNumber, int secondNumber, std::string id, std::string language = std::string());
 	virtual ~AudioStream();
 	void setValue(const Audio& name, const std::string& value);
 	bool getValue(const Audio& name, std::string& value) const;
+	int priority() const;
 private:
 	CppExtension::HashMap<Audio, std::string> content;
 };

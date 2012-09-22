@@ -43,14 +43,31 @@ MediaInfo::ScanStatus MediaInfo::scanMediaFile(){
 		duration = scanner.getDuration();
 		bitrate = scanner.getBitrate();
 		auto videoStreams = scanner.getVideoStreams();
+
+		int biggest = 0;
 		for(auto stream : videoStreams){
+			stream.setCenvertable(false);
 			videos.push_back(stream);
+			if(stream.priority() > videos[biggest].priority()){
+				biggest = videos.size() -1;
+			}
+		}
+		if(videos.size() > 0){
+			videos[biggest].setCenvertable(true);
 		}
 		auto audioStreams = scanner.getAudioStreams();
+		biggest = 0;
 		for(auto stream : audioStreams){
+			stream.setCenvertable(false);
 			audios.push_back(stream);
-			//std::cout<<"audio stream: "<<stream.getStreamNumber().second<<std::endl;
+			if(stream.priority() > audios[biggest].priority()){
+				biggest = audios.size() -1;
+			}
 		}
+		if(audios.size() > 0){
+			audios[biggest].setCenvertable(true);
+		}
+
 	}else{
 		scanStatus = INVALID;
 	}

@@ -23,10 +23,12 @@
 #include <iostream> //todo remove
 namespace MediaFile {
 
+static const std::string DEFAULT_STREAM = "(default)";
+
 MediaScanner::MediaScanner(Path filePath) :
 		durationRegex("Duration: ([\\.:[:digit:]]+|N/A), start: ([\\.[:digit:]]+), bitrate: (.*)"),
-		videoStreamRegex("Stream #([0-9]+)[.:]([0-9]+)(.*): Video: ([^,]+), ([^,]+), ([[:digit:]]+)x([[:digit:]]+)[^,]*,(.*)$"),
-		audioStreamRegex("Stream #([0-9]+)[.:]([0-9]+)(.*): Audio: ([^,]+), ([[:digit:]]+) Hz(.*)$"),
+		videoStreamRegex("Stream #(([0-9]+)[.:]([0-9]+))(.*): Video: ([^,]+), ([^,]+), ([[:digit:]]+)x([[:digit:]]+)[^,]*,(.*)$"),
+		audioStreamRegex("Stream #(([0-9]+)[.:]([0-9]+))(.*): Audio: ([^,]+), ([[:digit:]]+) Hz(.*)$"),
 		metadataRegex("^[[:space:]]{4}([^[:space:]]+)[^:]*:[[:space:]]*(.+)$"), filePath(filePath) {
 
 	bitrate = "";
@@ -107,9 +109,9 @@ void MediaScanner::parseLine(const std::string &line){
 		RegexTools::Matcher videoMatcher = videoStreamRegex.getMatcher(line);
 		RegexTools::Matcher audioMatcher = audioStreamRegex.getMatcher(line);
 		if(videoMatcher.find()){
-			parseVideoStream(videoMatcher);
+			parseVideoStream(videoMatcher, line);
 		}else if(audioMatcher.find()){
-			parseAudioStream(audioMatcher);
+			parseAudioStream(audioMatcher, line);
 		}else if(line == "At least one output file must be specified"){
 			parseState = State::END;
 		}
@@ -141,17 +143,19 @@ void MediaScanner::parseDuration(const RegexTools::Matcher &matcher){	//magic, d
 	}
 }
 
-void MediaScanner::parseVideoStream(const RegexTools::Matcher &matcher){
-	int firstNumber = toN(matcher.getGroup(1), int());
-	int secondNumber = toN(matcher.getGroup(2), int());
-	std::string streamName =  matcher.getGroup(3);
-	VideoStream stream(firstNumber,secondNumber, streamName);
-	stream.setValue(VideoStream::CODEC, matcher.getGroup(4));
-	stream.setValue(VideoStream::COLORSPACE, matcher.getGroup(5));
-	stream.setValue(VideoStream::RESX, matcher.getGroup(6));
-	stream.setValue(VideoStream::RESY, matcher.getGroup(7));
+void MediaScanner::parseVideoStream(const RegexTools::Matcher &matcher, const std::string& line){
+	int firstNumber = toN(matcher.getGroup(2), int());
+	int secondNumber = toN(matcher.getGroup(3), int());
+	std::string id = matcher.getGroup(1);
+	std::string streamLanguage =  matcher.getGroup(4);
 
-	std::string tmp = matcher.getGroup(8)+",";
+	VideoStream stream(firstNumber,secondNumber, id, streamLanguage);
+	stream.setValue(VideoStream::CODEC, matcher.getGroup(5));
+	stream.setValue(VideoStream::COLORSPACE, matcher.getGroup(6));
+	stream.setValue(VideoStream::RESX, matcher.getGroup(7));
+	stream.setValue(VideoStream::RESY, matcher.getGroup(8));
+
+	std::string tmp = matcher.getGroup(9)+",";
 	std::string first, rest;
 	RegexTools::Regex reg("([^ ]+)[[:space:]]+([^, ]+)");
 	while(trimBy(",", tmp, first, rest)){
@@ -171,18 +175,25 @@ void MediaScanner::parseVideoStream(const RegexTools::Matcher &matcher){
 		}
 		tmp = rest;
 	}
+
+	if(line.find(DEFAULT_STREAM) == (line.size() - DEFAULT_STREAM.size())){
+		stream.setDefault(true);
+	}else{
+		stream.setDefault(false);
+	}
 	videoStreams.push_back(stream);
 }
-void MediaScanner::parseAudioStream(const RegexTools::Matcher &matcher){
-	std::string endLine = matcher.getGroup(6);
+void MediaScanner::parseAudioStream(const RegexTools::Matcher &matcher, const std::string& line){
+	int firstNumber = toN(matcher.getGroup(2), int());
+	int secondNumber = toN(matcher.getGroup(3), int());
+	std::string id = matcher.getGroup(1);
+	std::string streamName = matcher.getGroup(4);
 
-	int firstNumber = toN(matcher.getGroup(1), int());
-	int secondNumber = toN(matcher.getGroup(2), int());
-	std::string streamName = matcher.getGroup(3);
+	AudioStream stream(firstNumber,secondNumber, id, streamName);
+	stream.setValue(AudioStream::CODEC, matcher.getGroup(5));
+	stream.setValue(AudioStream::SAMPLERATE, matcher.getGroup(6));
+	std::string endLine = matcher.getGroup(7);
 
-	AudioStream stream(firstNumber,secondNumber, streamName);
-	stream.setValue(AudioStream::CODEC, matcher.getGroup(4));
-	stream.setValue(AudioStream::SAMPLERATE, matcher.getGroup(5));
 	std::string tmp = endLine.substr(1) + ",";
 	int i = 0;
 	std::string first, rest;
@@ -196,6 +207,11 @@ void MediaScanner::parseAudioStream(const RegexTools::Matcher &matcher){
 		}
 		++i;
 		tmp = rest;
+	}
+	if(line.find(DEFAULT_STREAM) == (line.size() - DEFAULT_STREAM.size())){
+		stream.setDefault(true);
+	}else{
+		stream.setDefault(false);
 	}
 	audioStreams.push_back(stream);
 }

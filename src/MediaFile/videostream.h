@@ -27,7 +27,7 @@ namespace MediaFile {
 
 class VideoStream : public Stream {
 public:
-	VideoStream(int firstNumber, int secondNumber, std::string name = "");
+	VideoStream(int firstNumber, int secondNumber, std::string id, std::string language = std::string());
 	enum Video{
 			CODEC, COLORSPACE, RESX, RESY, TBR, TBN, TBC, FPS
 	};
@@ -35,6 +35,7 @@ public:
 	void setValue(const Video& name, const std::string& value);
 	bool getValue(const Video& name, std::string& value) const;
 	void setStream(int f, int r);
+	int priority() const;
 private:
 	CppExtension::HashMap<Video, std::string> content;
 };

@@ -20,8 +20,10 @@
 
 namespace MediaFile {
 
-Stream::Stream(int firstNumber, int secondNumebr, std::string name) :
-		streamNumber(firstNumber, secondNumebr), name(name) {
+Stream::Stream(int firstNumber, int secondNumebr, std::string id, std::string language) :
+		streamNumber(firstNumber, secondNumebr), id(id), language(language) {
+	isDef = false;
+	convertable = false;
 }
 
 Stream::~Stream() {}
@@ -29,7 +31,22 @@ Stream::~Stream() {}
 std::pair<int, int> Stream::getStreamNumber() const{
 	return streamNumber;
 }
-std::string Stream::getStreamName() const{
-	return name;
+std::string Stream::getStreamId() const{
+	return id;
+}
+std::string Stream::getStreamLanguage() const{
+	return language;
+}
+bool Stream::isDefault() const{
+	return isDef;
+}
+void Stream::setDefault(bool isDefault){
+	isDef = isDefault;
+}
+void Stream::setCenvertable(bool convertable){
+	this->convertable = convertable;
+}
+bool Stream::isCenvertable() const{
+	return convertable;
 }
 } /* namespace MediaFile */
