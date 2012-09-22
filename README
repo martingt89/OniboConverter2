@@ -1,7 +1,7 @@
 OniboConverter2
 ===============
 
-	Next version of Onibo-converter, working with external ffmpeg or avconv, using gtk3 and supported multithread encoding
+	Next version of Onibo-converter, working with external ffmpeg or avconv, using gtk3 and support multithread encoding
 	
 Plans
 =====

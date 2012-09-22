@@ -709,6 +709,8 @@ am__isrc
 INSTALL_DATA
 INSTALL_SCRIPT
 INSTALL_PROGRAM
+DEBUG_FALSE
+DEBUG_TRUE
 target_alias
 host_alias
 build_alias
@@ -750,6 +752,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+enable_debug
 enable_nls
 enable_dependency_tracking
 '
@@ -1386,6 +1389,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-debug    Turn on debugging
   --disable-nls           do not use Native Language Support
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
@@ -2284,6 +2288,38 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
+
+# Check whether --enable-debug was given.
+if test "${enable_debug+set}" = set; then :
+  enableval=$enable_debug; case "${enableval}" in
+yes) debug=true ;;
+no)  debug=false ;;
+*) as_fn_error $? "bad value ${enableval} for --enable-debug" "$LINENO" 5 ;;
+esac
+else
+  debug=false
+fi
+
+ if test x$debug = xtrue; then
+  DEBUG_TRUE=
+  DEBUG_FALSE='#'
+else
+  DEBUG_TRUE='#'
+  DEBUG_FALSE=
+fi
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking uname -m for detecting host operating system architecture" >&5
+$as_echo_n "checking uname -m for detecting host operating system architecture... " >&6; }
+ARCH=`uname -m`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${ARCH}" >&5
+$as_echo "${ARCH}" >&6; }
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking uname -s for detecting host operating system" >&5
+$as_echo_n "checking uname -s for detecting host operating system... " >&6; }
+OSNAME=`uname -s`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${OSNAME}" >&5
+$as_echo "${OSNAME}" >&6; }
 
 am__api_version='1.11'
 
@@ -5793,6 +5829,8 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
+# List all available languages here
+
 ALL_LINGUAS="sk"
 
    for ac_header in locale.h
@@ -6503,11 +6541,6 @@ $as_echo "$LINGUAS" >&6; }
 	< $srcdir/po/POTFILES.in > po/POTFILES
 
 
-# List all available languages here
-
-#PROGRAMNAME_LOCALEDIR=[${datadir}/locale]
-#AC_SUBST(PROGRAMNAME_LOCALEDIR)
-
 ac_config_files="$ac_config_files Makefile src/Makefile data/Makefile data/OniboConverter2.desktop po/Makefile.in"
 
 cat >confcache <<\_ACEOF
@@ -6619,6 +6652,10 @@ LIBOBJS=$ac_libobjs
 LTLIBOBJS=$ac_ltlibobjs
 
 
+if test -z "${DEBUG_TRUE}" && test -z "${DEBUG_FALSE}"; then
+  as_fn_error $? "conditional \"DEBUG\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
  if test -n "$EXEEXT"; then
   am__EXEEXT_TRUE=
   am__EXEEXT_FALSE='#'
@@ -8006,5 +8043,22 @@ fi
 if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: unrecognized options: $ac_unrecognized_opts" >&5
 $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
+fi
+
+
+echo
+echo "===================================="
+echo "Configure report:"
+echo
+echo " Core:"
+echo "             os: ${OSNAME}"
+echo "         prefix: ${prefix}"
+echo "   architecture: ${ARCH}"
+echo
+echo " Debug mode:"
+if test "x$debug" = "xtrue" ; then
+echo "          debug: true";
+else
+echo "          debug: false";
 fi
 

@@ -97,7 +97,10 @@ $(Converter) \
 $(Top) \
 $(Other)
 
-#AM_CXXFLAGS = -lpthread -std=c++0x -O0 -DDATADIR=\"$(datadir)\" -DPROGDIR=\"@PACKAGE@\" $(DEPS_CFLAGS) 
+if DEBUG
 AM_CXXFLAGS = -lpthread -std=c++0x -O0 -g -Wall -W -Wextra -Werror -pedantic -DDATADIR=\"$(datadir)\" $(DEPS_CFLAGS) 
+else
+AM_CXXFLAGS = -lpthread -std=c++0x -O0 -DDATADIR=\"$(datadir)\" -DPROGDIR=\"@PACKAGE@\" $(DEPS_CFLAGS) 
+endif
 
 OniboConverter2_LDADD = $(DEPS_LIBS)
