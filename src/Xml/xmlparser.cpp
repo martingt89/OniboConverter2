@@ -18,7 +18,7 @@
 
 #include "xmlparser.h"
 #include "../helper.h"
-#include <iostream>	//todo replace with logging
+#include "../CppExtension/logger.h"
 
 namespace Xml {
 
@@ -33,7 +33,7 @@ bool XmlParser::parseFile(const Path& filePath, XmlParserData* data){
 	try{
 		this->parse_file(filePath.getPath());
 	}catch(std::exception& exception){
-		std::cerr<<"Error: 'xmlparser.cpp' "<<exception.what()<<std::endl;
+		easylog(CppExtension::Logger::ERROR, exception.what());
 		data = NULL;
 		return false;
 	}

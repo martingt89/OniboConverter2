@@ -94,7 +94,7 @@ am__objects_7 = Converter/convertparser.$(OBJEXT) \
 am__objects_8 = userpreferences.$(OBJEXT) systemsettings.$(OBJEXT) \
 	helper.$(OBJEXT) main.$(OBJEXT)
 am__objects_9 = CppExtension/path.$(OBJEXT) \
-	RegexTools/regextools.$(OBJEXT) \
+	CppExtension/logger.$(OBJEXT) RegexTools/regextools.$(OBJEXT) \
 	ConverterOptions/supportedencoders.$(OBJEXT) \
 	ExternalTools/supportedencodersloader.$(OBJEXT) \
 	System/cpu.$(OBJEXT)
@@ -326,6 +326,7 @@ main.cpp
 
 Other = \
 CppExtension/path.cpp \
+CppExtension/logger.cpp \
 RegexTools/regextools.cpp \
 ConverterOptions/supportedencoders.cpp \
 ExternalTools/supportedencodersloader.cpp \
@@ -606,6 +607,8 @@ CppExtension/$(DEPDIR)/$(am__dirstamp):
 	@: > CppExtension/$(DEPDIR)/$(am__dirstamp)
 CppExtension/path.$(OBJEXT): CppExtension/$(am__dirstamp) \
 	CppExtension/$(DEPDIR)/$(am__dirstamp)
+CppExtension/logger.$(OBJEXT): CppExtension/$(am__dirstamp) \
+	CppExtension/$(DEPDIR)/$(am__dirstamp)
 RegexTools/$(am__dirstamp):
 	@$(MKDIR_P) RegexTools
 	@: > RegexTools/$(am__dirstamp)
@@ -651,6 +654,7 @@ mostlyclean-compile:
 	-rm -f Converter/dispenser.$(OBJEXT)
 	-rm -f Converter/unsupportedencoders.$(OBJEXT)
 	-rm -f ConverterOptions/supportedencoders.$(OBJEXT)
+	-rm -f CppExtension/logger.$(OBJEXT)
 	-rm -f CppExtension/path.$(OBJEXT)
 	-rm -f ExternalTools/supportedencodersloader.$(OBJEXT)
 	-rm -f Gui/Audio/audiocontrol.$(OBJEXT)
@@ -724,6 +728,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Converter/$(DEPDIR)/dispenser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Converter/$(DEPDIR)/unsupportedencoders.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@ConverterOptions/$(DEPDIR)/supportedencoders.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@CppExtension/$(DEPDIR)/logger.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@CppExtension/$(DEPDIR)/path.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@ExternalTools/$(DEPDIR)/supportedencodersloader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Gui/$(DEPDIR)/avcontrol.Po@am__quote@

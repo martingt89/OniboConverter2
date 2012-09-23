@@ -17,7 +17,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include "supportedencodersloader.h"
-
+#include "../CppExtension/logger.h"
 namespace ExternalTools {
 
 SupportedEncodersLoader::SupportedEncodersLoader():
@@ -34,7 +34,7 @@ bool SupportedEncodersLoader::scan(ConverterOptions::SupportedEncoders& encoders
 
 	if(ffmpeg.waitForProcessBegin()){
 		std::string message = getExecutorError(ffmpeg);
-		std::cerr<<message<<std::endl;	//todo add loging
+		easylog(CppExtension::Logger::ERROR, message);
 		return false;
 	}
 

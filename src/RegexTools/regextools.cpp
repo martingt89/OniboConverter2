@@ -107,12 +107,11 @@ bool Matcher::getGroup(const unsigned int& number, std::string& groupText) const
 
 	int n = groups[number].rm_eo - groups[number].rm_so;
 
-	try{
+	if(n > 0 && (backPosition + groups[number].rm_so) <= text.size()){
 		groupText = text.substr(backPosition + groups[number].rm_so, n);
-	}catch(const std::exception& ex){
-		//todo log???
-		return false;
+		return true;
 	}
+
 	return true;
 }
 RegexException::RegexException(const std::string& message){

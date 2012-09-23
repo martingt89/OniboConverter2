@@ -20,7 +20,8 @@
 
 #include "../helper.h"
 #include "../userpreferences.h"
-#include <iostream> //todo remove
+#include "../CppExtension/logger.h"
+
 namespace MediaFile {
 
 static const std::string DEFAULT_STREAM = "(default)";
@@ -45,11 +46,11 @@ MediaScanner::MediaScanner(Path filePath) :
 	ProcessExecutor::Process process(externalConverter.getPath(), args);
 
 	if (process.waitForProcessBegin() != 0) {
+		parseState = State::SCANNER_ERROR;
 		std::string messages;
 		while (process.getLog() >> messages) {
-			std::cerr << "Process::Executor error: " << messages << std::endl;	//todo logging
+			easylog(CppExtension::Logger::ERROR, messages);
 		}
-		//todo excetion
 		return;
 	}
 	std::string line;
@@ -80,6 +81,7 @@ MediaScanner::ScanResult MediaScanner::getFinalStatus(){
 		case State::END: return  ScanResult::OK_RESULT;
 		case State::FILE_NOT_FOUND: return  ScanResult::FILE_NOT_FOUND_RESULT;
 		case State::INVALID_DATA: return  ScanResult::INVALID_DATA_RESULT;
+		case State::SCANNER_ERROR: return ScanResult::SCANNER_ERROR_RESULT;
 		default: return  ScanResult::OTHER_RESULT;
 	}
 }

@@ -82,6 +82,7 @@ main.cpp
 
 Other= \
 CppExtension/path.cpp \
+CppExtension/logger.cpp \
 RegexTools/regextools.cpp \
 ConverterOptions/supportedencoders.cpp \
 ExternalTools/supportedencodersloader.cpp \

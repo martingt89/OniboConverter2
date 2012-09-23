@@ -20,7 +20,7 @@
 #include <gtkmm/cellrendererprogress.h>
 #include <gtkmm/stock.h>
 #include "../ProcessExecutor/process.h"
-
+#include "../CppExtension/logger.h"
 namespace Gui {
 
 ConvertWindow::ConvertWindow(const Glib::RefPtr<Gtk::Builder>& refGlade) {
@@ -132,9 +132,13 @@ void ConvertWindow::showDestination(){
 	ProcessExecutor::Process process("xdg-open", args);
 	int res = process.waitForProcessEnd();
 	if(res != 0){
-		//process.getStdOut() >>
+		std::string message;
+		std::string tmpmes;
+		while(process.getStdErr() >> tmpmes){
+			message += tmpmes;
+		}
+		easylog(CppExtension::Logger::WARNING, message);
 	}
-	//todo log res
 }
 void ConvertWindow::loadWidgets(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	refGlade->get_widget("stopConvertButton", stopConvertButton);

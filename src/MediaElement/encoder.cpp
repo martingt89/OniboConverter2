@@ -47,23 +47,6 @@ bool Encoder::operator<(const Encoder& second) const{
 bool Encoder::operator==(const Encoder& second) const{
 	return this->name == second.name;
 }
-std::list<std::string> Encoder::getArguments(Encoder::Type encoderType,	//TODO remove
-		bool enableThreading, int numOfThreads) const{
-	std::list<std::string> list;
-	if(encoderType == VIDEO){
-		list.push_back("-vcodec");
-		list.push_back(name);
-	}
-	if(enableMultithread && enableThreading){
-		list.push_back("-threads");
-		list.push_back(toS(numOfThreads));
-	}
-	if(encoderType == AUDIO){
-		list.push_back("-acodec");
-		list.push_back(name);
-	}
-	return list;
-}
 bool Encoder::isSupportedThreading() const{
 	return enableMultithread;
 }

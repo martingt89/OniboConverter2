@@ -36,9 +36,7 @@ MediaConvert::MediaConvert(){
 	init();
 }
 
-MediaConvert::~MediaConvert() {
-	// TODO Auto-generated destructor stub
-}
+MediaConvert::~MediaConvert() {}
 
 void MediaConvert::init(){
 	convertState = WAITING;

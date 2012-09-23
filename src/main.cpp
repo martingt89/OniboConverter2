@@ -35,6 +35,7 @@
 #include "System/cpu.h"
 
 #include <config.h>
+#include "CppExtension/logger.h"
 
 #include <iostream>
 
@@ -79,7 +80,7 @@ public:
 			builder->add_from_file(dialogs.getPath());
 			builder->add_from_file(user_settings.getPath());
 		}catch(const Glib::Exception& exception){
-			std::cerr<<"Error: 'main.cpp' " <<exception.what()<<std::endl;
+			easylog(CppExtension::Logger::FATAL, exception.what());
 			_exit(-1);
 		}
 

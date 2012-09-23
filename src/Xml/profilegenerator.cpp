@@ -20,7 +20,8 @@
 #include "profilegenerator.h"
 #include "../xmlfilesdefinitions.h"
 #include "../helper.h"
-#include <iostream> //todo remove
+#include "../CppExtension/logger.h"
+
 namespace Xml {
 
 static void getManualXml(const std::list<Profile::Profile::ManualSettings> manualSettings,
@@ -66,10 +67,9 @@ void ProfileGenerator::generateFile(const Profile::Configuration& profileConfigu
 
 	std::string xmlFileName = profileFileName + ".xml";
 	Path outputPath(outputDirectory.getPath(), xmlFileName);
-	std::cout<<"output: "<<outputPath.getPath()<<std::endl;
 	std::ofstream file(outputPath.getPath());
 	if(!file){
-		std::cerr<<"Cannot create file"<<std::endl;
+		easylog(CppExtension::Logger::ERROR, "Cannot create file: "+outputPath.getPath());
 	}else{
 		(*doc).write(file);
 		file.close();
