@@ -148,7 +148,7 @@ void ResolutionControl::fillCanavas(Glib::RefPtr<Gtk::ListStore>& treeModel){
 			}
 		});
 	}else{
-		auto resol = elementsDB.getResolutions().getResolutionsByAspectRatio(aspectRatio.get_active_row_item());
+		auto resol = elementsDB.getResolutions().getResolutionsByAspectRatio(aspectRatio.getActiveItem());
 		std::for_each(resol.begin(), resol.end(),
 						[&](const MediaElement::Resolution& resolution){
 			if(uniqueResol.count(resolution) == 0){
@@ -168,7 +168,7 @@ void ResolutionControl::changedX(){
 		isEnableSignal = false;
 		if(!aspectRatio.is_set_first()){
 			int x = toN(resolutionEntryX->get_text(), int());
-			int y = aspectRatio.get_active_row_item().convertXtoY(x);
+			int y = aspectRatio.getActiveItem().convertXtoY(x);
 			resolutionEntryY->set_text(toS(y));
 		}
 		isEnableSignal = true;
@@ -179,7 +179,7 @@ void ResolutionControl::changedY(){
 		isEnableSignal = false;
 		if(!aspectRatio.is_set_first()){
 			int y = toN(resolutionEntryY->get_text(), int());
-			int x = aspectRatio.get_active_row_item().convertYtoX(y);
+			int x = aspectRatio.getActiveItem().convertYtoX(y);
 			resolutionEntryX->set_text(toS(x));
 		}
 		isEnableSignal = true;

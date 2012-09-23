@@ -20,6 +20,9 @@
 
 namespace Gui {
 namespace Audio {
+
+static const std::string NO_SUPPORTED_ENCODERS = "no supported encoders";
+
 EncoderControlA::EncoderControlA(MediaElement::ElementsDB& elementsDB,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) : elementsDB(elementsDB),
 				audioFormat(refGlade, "audioFormat"), audioEncoder(refGlade, "audioEncoder"),
@@ -106,15 +109,15 @@ void EncoderControlA::getNewProfile(Profile::Profile& newProfile){
 	bool format = false;
 	if(audioFormat.isSelectedActivableRow()){
 		format = true;
-		newProfile.setAudioFormat(audioFormat.get_active_row_item());
+		newProfile.setAudioFormat(audioFormat.getActiveItem());
 	}
 	bool encoder = false;
 	if(format && audioEncoder.isSelectedActivableRow()){
 		encoder = true;
-		newProfile.setAudioEncoder(audioEncoder.get_active_row_item());
+		newProfile.setAudioEncoder(audioEncoder.getActiveItem());
 	}
 	if(encoder && audioGradeChooser.isSelectedActivableRow()){
-		newProfile.setAudioGrade(audioGradeChooser.get_active_row_item());
+		newProfile.setAudioGrade(audioGradeChooser.getActiveItem());
 	}
 }
 void EncoderControlA::audioFormatChanged(){
@@ -157,7 +160,7 @@ void EncoderControlA::setFormatsFromContainer(const MediaElement::Container& con
 			audioFormat.append(format.getName(), format);
 		}
 	}
-	if(audioFormat.count_of_rows() == 0){
+	if(audioFormat.number_of_rows() == 0){
 		this->disableSettings();
 		return;
 	}
@@ -180,7 +183,7 @@ void EncoderControlA::aktualizeEncoder(){
 	}
 	audioEncoder.set_sensitive(true);
 	audioEncoder.remove_all();
-	auto actualFormat = audioFormat.get_active_row_item();
+	auto actualFormat = audioFormat.getActiveItem();
 
 	auto names =  elementsDB.elementsRelations.getAudioEncodersByFormat(actualFormat);
 	MediaElement::Encoders encoders = elementsDB.getAudioEncoders();
@@ -193,11 +196,12 @@ void EncoderControlA::aktualizeEncoder(){
 	if(isSet){
 		audioEncoder.set_active_text(actualEncoder);
 	}
-	if(audioEncoder.get_active_text() != actualEncoder && audioEncoder.count_of_rows() > 0){
+	if(audioEncoder.get_active_text() != actualEncoder && audioEncoder.number_of_rows() > 0){
 		audioEncoder.set_active_row_number(0);
 	}
-	if(audioEncoder.count_of_rows() == 0){
-		audioEncoder.set_sensitive(false);	//todo text "no supported encoder"
+	if(audioEncoder.number_of_rows() == 0){
+		audioEncoder.appendAndSet(NO_SUPPORTED_ENCODERS);
+		audioEncoder.set_sensitive(false);
 	}
 }
 void EncoderControlA::aktualizeBitrate(){
@@ -212,7 +216,7 @@ void EncoderControlA::aktualizeBitrate(){
 	}
 	audioGradeChooser.set_sensitive(true);
 	audioGradeChooser.remove_all();
-	auto actualEncoder = audioEncoder.get_active_row_item();
+	auto actualEncoder = audioEncoder.getActiveItem();
 	std::string bitratesName = elementsDB.elementsRelations.getAudioGradesByEncoder(actualEncoder);
 	MediaElement::AudioGrades audioGrades;
 	if(elementsDB.getAudioGradesByName(bitratesName, audioGrades)){
@@ -223,7 +227,7 @@ void EncoderControlA::aktualizeBitrate(){
 	if(isSetBitrate){
 		audioGradeChooser.set_active_text(actualBitrate);
 	}else{
-		audioGradeChooser.set_active_row_number(audioGradeChooser.count_of_rows() / 2);
+		audioGradeChooser.set_active_row_number(audioGradeChooser.number_of_rows() / 2);
 	}
 }
 void EncoderControlA::sendUserInputSignal(){

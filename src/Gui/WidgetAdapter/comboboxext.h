@@ -37,6 +37,9 @@ public:
 			delete comboBoxText;
 		}
 	}
+	Glib::SignalProxy0< void > signal_changed(){
+		return comboBoxText->signal_changed();
+	}
 	void append(const std::string& text, const T &item = T()){
 		bool wasSensitive = comboBoxText->get_sensitive();
 		comboBoxText->set_sensitive(true);
@@ -45,6 +48,10 @@ public:
 		if(! (wasSensitive)){
 			comboBoxText->set_sensitive(false);
 		}
+	}
+	void appendAndSet(const std::string& text, const T &item = T()){
+		this->append(text, item);
+		this->set_active_row_number(this->number_of_rows()-1);
 	}
 	void uniqueAppend(const std::string& text, const T &item = T()){
 		if(!this->containes(text)){
@@ -87,20 +94,25 @@ public:
 		return is_sensitive() && is_selected();
 	}
 
-	std::string getValue(){
+	std::string getTextInEntry(){
 		return comboBoxText->get_entry_text();
 	}
-
+//-----------------------------------------------------
 	void set_active_row_number(int index){
 		comboBoxText->set_active(index);
 	}
 	int get_active_row_number(){
 		return comboBoxText->get_active_row_number();
 	}
+//-----------------------------------------------------
 	std::string get_active_text(){
 		return comboBoxText->get_active_text();
 	}
-	T get_active_row_item(bool& isSelected){
+	void set_active_text(const std::string& text){
+		comboBoxText->set_active_text(text);
+	}
+//-----------------------------------------------------
+	T getActiveItem(bool& isSelected){
 		T selectedItem;
 		if(comboBoxText->get_active_row_number() >= 0){
 			isSelected = true;
@@ -111,7 +123,7 @@ public:
 		}
 		return selectedItem;
 	}
-	T get_active_row_item() const{
+	T getActiveItem() const{
 		T selectedItem;
 		if(comboBoxText->get_active_row_number() >= 0){
 			selectedItem = items[comboBoxText->get_active_row_number()].second;
@@ -119,17 +131,6 @@ public:
 			selectedItem = T();
 		}
 		return selectedItem;
-	}
-	void remove_all(){
-		comboBoxText->remove_all();
-		items.clear();
-		items.resize(0);
-	}
-	void set_sensitive(bool sensitive){
-		comboBoxText->set_sensitive(sensitive);
-	}
-	void set_active_text(const std::string& text){
-		comboBoxText->set_active_text(text);
 	}
 	bool setActiveItem(const T &item){
 		for(auto it : items){
@@ -140,6 +141,17 @@ public:
 		}
 		return false;
 	}
+//-----------------------------------------------------
+	void remove_all(){
+		comboBoxText->remove_all();
+		items.clear();
+		items.resize(0);
+	}
+	void set_sensitive(bool sensitive){
+		comboBoxText->set_sensitive(sensitive);
+	}
+
+
 	bool is_sensitive() const{
 		return comboBoxText->get_sensitive();
 	}
@@ -147,21 +159,13 @@ public:
 	bool is_selected() const{
 		return comboBoxText->get_active_row_number() >= 0;
 	}
-	Glib::SignalProxy0< void > signal_changed(){
-		return comboBoxText->signal_changed();
-	}
+
 	void unset_active(){
 		comboBoxText->unset_active();
 	}
-	int count_of_rows() const{
+	int number_of_rows() const{
 		return items.size();
 	}
-//	void set_activable(bool activable){
-//		this->isActivable = activable;
-//	}
-//	bool is_activable(){
-//		return isActivable;
-//	}
 	void save_actual_state(){
 		sensitive = comboBoxText->is_sensitive();
 		saveSelectedRow = comboBoxText->get_active_row_number();
@@ -188,7 +192,6 @@ public:
 private:
 	Gtk::ComboBoxText* comboBoxText;
 	std::vector<std::pair<std::string, T> > items;
-
 	std::vector<std::pair<std::string, T> > saveItems;
 	int saveSelectedRow;
 	bool sensitive;

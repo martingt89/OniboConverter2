@@ -90,7 +90,7 @@ void AVControl::restoreSettingsState(){
 	isEnabledSignal = true;
 }
 std::string AVControl::getContainerName(){
-	return containers.get_active_row_item().getName();
+	return containers.getActiveItem().getName();
 }
 void AVControl::userInput(){
 	if(isUserInput){
@@ -101,8 +101,8 @@ void AVControl::containerChanged(){
 	if(isEnabledSignal){
 		isEnabledSignal = false;
 		if(containers.isSelectedActivableRow()){
-			videoControlGui.containerChanged(containers.get_active_row_item());
-			audioControlGui.containerChanged(containers.get_active_row_item());
+			videoControlGui.containerChanged(containers.getActiveItem());
+			audioControlGui.containerChanged(containers.getActiveItem());
 		}
 		userInput();
 		isEnabledSignal = true;
@@ -115,11 +115,11 @@ void AVControl::profileChanged(){
 		}
 		isUserInput = false;
 		MediaElement::Container container;
-		if(profilesComboBox.get_active_row_item().getContainer(container)){
+		if(profilesComboBox.getActiveItem().getContainer(container)){
 			containers.set_active_text(container.readableForm());
-			videoControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
-			audioControlGui.setActiveProfile(profilesComboBox.get_active_row_item());
-			settingsDialog.setActiveProfile(profilesComboBox.get_active_row_item());
+			videoControlGui.setActiveProfile(profilesComboBox.getActiveItem());
+			audioControlGui.setActiveProfile(profilesComboBox.getActiveItem());
+			settingsDialog.setActiveProfile(profilesComboBox.getActiveItem());
 		}else{
 			containers.unset_active();
 		}
@@ -128,7 +128,7 @@ void AVControl::profileChanged(){
 }
 void AVControl::getNewProfile(const std::string& name){
 	Profile::Profile newProfile(name);
-	newProfile.setContainer(containers.get_active_row_item());
+	newProfile.setContainer(containers.getActiveItem());
 
 	videoControlGui.getNewProfile(newProfile);
 	audioControlGui.getNewProfile(newProfile);
@@ -143,7 +143,7 @@ void AVControl::getNewProfile(const std::string& name){
 }
 Profile::Profile AVControl::getTmpProfile(const std::string name){
 	Profile::Profile newProfile(name);
-	newProfile.setContainer(containers.get_active_row_item());
+	newProfile.setContainer(containers.getActiveItem());
 
 	videoControlGui.getNewProfile(newProfile);
 	audioControlGui.getNewProfile(newProfile);

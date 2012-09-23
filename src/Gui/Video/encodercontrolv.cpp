@@ -23,6 +23,7 @@
 namespace Gui {
 namespace Video {
 static const std::string EXTEND_SETTING = "--- more ---";
+static const std::string NO_SUPPORTED_ENCODERS = "no supported encoders";
 
 EncoderControl::EncoderControl(MediaElement::ElementsDB& elementsDB,
 		const Glib::RefPtr<Gtk::Builder>& refGlade) : elementsDB(elementsDB),
@@ -163,18 +164,18 @@ void EncoderControl::getNewProfile(Profile::Profile& newProfile){
 	bool format = false;
 	if(videoFormat.is_sensitive() && videoFormat.is_selected()){
 		format = true;
-		newProfile.setVideoFormat(videoFormat.get_active_row_item());
+		newProfile.setVideoFormat(videoFormat.getActiveItem());
 	}
 	bool encoder = false;
 	if(format && videoEncoder.is_sensitive() && videoEncoder.is_selected()){
 		encoder = true;
-		newProfile.setVideoEncoder(videoEncoder.get_active_row_item());
+		newProfile.setVideoEncoder(videoEncoder.getActiveItem());
 	}
 	if(encoder && videoBitrate.isSelectedActivableRow()){
-		newProfile.setVideoBitrate(videoBitrate.get_active_row_item());
+		newProfile.setVideoBitrate(videoBitrate.getActiveItem());
 	}
 	if(encoder && videoFFpreset.isSelectedActivableRow()){
-		newProfile.setVideoFFpreset(videoFFpreset.get_active_row_item());
+		newProfile.setVideoFFpreset(videoFFpreset.getActiveItem());
 	}
 }
 void EncoderControl::videoEncoderChanged(){
@@ -193,7 +194,7 @@ void EncoderControl::videoBitrateChanged(){
 		if(videoBitrate.is_set_last()){
 			MediaElement::Bitrate userBitrate = lastSetBitrate;
 			MediaElement::Bitrate savedBitrate = lastSetBitrate;
-			bool set = bitrateDialog.start(videoEncoder.get_active_row_item(), userBitrate);
+			bool set = bitrateDialog.start(videoEncoder.getActiveItem(), userBitrate);
 			if(set){
 				if(!videoBitrate.containes(userBitrate.readableForm())){
 					videoBitrate.insertBeforeLast(userBitrate.readableForm(), userBitrate);
@@ -211,7 +212,7 @@ void EncoderControl::videoBitrateChanged(){
 		}
 		isEnableSignals = true;
 	}
-	lastSetBitrate = videoBitrate.get_active_row_item();
+	lastSetBitrate = videoBitrate.getActiveItem();
 }
 
 void EncoderControl::videoFFpresetChanged(){
@@ -226,7 +227,7 @@ void EncoderControl::videoFFpresetChanged(){
 				Path ffFile(file->get_path());
 
 				std::string prefix;
-				elementsDB.elementsRelations.getFFprefixByEncoder(videoEncoder.get_active_row_item(), prefix);
+				elementsDB.elementsRelations.getFFprefixByEncoder(videoEncoder.getActiveItem(), prefix);
 				MediaElement::FFpreset ff(ffFile, prefix, MediaElement::FFpreset::USERDEFINED_FFTYPE);
 				elementsDB.addUserFFpreset(prefix, ff);
 				aktualizeFFpreset(ff.readableForm());
@@ -264,7 +265,7 @@ void EncoderControl::setFormatsFromContainer(const MediaElement::Container& cont
 	if(videoFormat.get_active_text() != actualFormat){
 		videoFormat.set_active_row_number(0);
 	}
-	if(videoFormat.count_of_rows() == 0){
+	if(videoFormat.number_of_rows() == 0){
 		disableSettings();
 	}
 }
@@ -281,7 +282,7 @@ void EncoderControl::aktualizeEncoder(){
 	videoEncoder.set_sensitive(true);
 	videoEncoder.remove_all();
 
-	auto actualFormat = videoFormat.get_active_row_item();
+	auto actualFormat = videoFormat.getActiveItem();
 
 	std::list<std::string> encodersNames = elementsDB.elementsRelations.getVideoEncodersByFormat(actualFormat);
 	for(std::string name : encodersNames){
@@ -293,11 +294,12 @@ void EncoderControl::aktualizeEncoder(){
 	if(isSet){
 		videoEncoder.set_active_text(actualEncoder);
 	}
-	if(videoEncoder.get_active_text() != actualEncoder && videoEncoder.count_of_rows() > 0){
+	if(videoEncoder.get_active_text() != actualEncoder && videoEncoder.number_of_rows() > 0){
 		videoEncoder.set_active_row_number(0);
 	}
-	if(videoEncoder.count_of_rows() == 0){
-		videoEncoder.set_sensitive(false);					//todo text "no supported encoder"
+	if(videoEncoder.number_of_rows() == 0){
+		videoEncoder.appendAndSet(NO_SUPPORTED_ENCODERS);
+		videoEncoder.set_sensitive(false);
 	}
 }
 
@@ -313,7 +315,7 @@ void EncoderControl::aktualizeBitrate(){
 	}
 	videoBitrate.set_sensitive(true);
 	videoBitrate.remove_all();
-	auto actualEncoder = videoEncoder.get_active_row_item();
+	auto actualEncoder = videoEncoder.getActiveItem();
 
 	std::string bitrateName = elementsDB.elementsRelations.getBitratesByEncoder(actualEncoder);
 	MediaElement::Bitrates bitrates;
@@ -326,7 +328,7 @@ void EncoderControl::aktualizeBitrate(){
 	if(isSetBitrate){
 		videoBitrate.set_active_text(actualBitrate);
 	}else{
-		videoBitrate.set_active_row_number(videoBitrate.count_of_rows() / 2);
+		videoBitrate.set_active_row_number(videoBitrate.number_of_rows() / 2);
 	}
 }
 
@@ -336,7 +338,7 @@ void EncoderControl::aktualizeFFpreset(const std::string name){
 		return;
 	}
 	std::string prefix;
-	if(!elementsDB.elementsRelations.getFFprefixByEncoder(videoEncoder.get_active_row_item(), prefix)){
+	if(!elementsDB.elementsRelations.getFFprefixByEncoder(videoEncoder.getActiveItem(), prefix)){
 		videoFFpreset.set_sensitive(false);
 		return;
 	}

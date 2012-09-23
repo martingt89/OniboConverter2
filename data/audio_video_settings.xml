@@ -67,12 +67,21 @@
 		<encoder grade_name="standard_bitrate" type="audio">mp3float</encoder>
 		<encoder grade_name="standard_bitrate" type="audio" level="2">libvo_aacenc</encoder>
 		<encoder grade_name="standard_bitrate" type="audio">aac</encoder>
+		<encoder grade_name="standard_bitrate" type="audio">ac3</encoder>
+		<encoder grade_name="standard_bitrate" type="audio">ac3_fixed</encoder>
+		<encoder grade_name="standard_bitrate" type="audio">eaac</encoder>
 	</encoders>
 	
 	<formats>
 		<format id="AAC" type="audio">
 			<encoder>libvo_aacenc</encoder>
 			<encoder>aac</encoder>
+		</format>
+		
+		<format id="AC3" type="audio">
+			<encoder>ac3</encoder>
+			<encoder>ac3_fixed</encoder>
+			<encoder>eaac</encoder>
 		</format>
 	
 		<format id="H264" type="video">

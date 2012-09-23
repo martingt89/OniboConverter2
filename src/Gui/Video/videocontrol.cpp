@@ -81,7 +81,7 @@ void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
 	int row;
 	if(activeProfile.getVideoMode(row)){
 		videoMode.set_active_row_number(row);
-		if(videoMode.get_active_row_item() == CUSTOM_MODE_ID){
+		if(videoMode.getActiveItem() == CUSTOM_MODE_ID){
 			encoder.setActiveProfile(activeProfile);
 		}else{
 			disableSettings();
@@ -113,16 +113,16 @@ void VideoControl::getNewProfile(Profile::Profile& newProfile){
 	//video mode
 	newProfile.setVideoMode(videoMode.get_active_row_number());
 
-	if(videoMode.get_active_row_item() == CUSTOM_MODE_ID){
+	if(videoMode.getActiveItem() == CUSTOM_MODE_ID){
 		encoder.getNewProfile(newProfile);
 	}
 	//video framerate
 	if(videoFramerate.is_sensitive() && videoFramerate.is_selected()){
-		newProfile.setVideoFramerate(videoFramerate.get_active_row_item());
+		newProfile.setVideoFramerate(videoFramerate.getActiveItem());
 	}
 	//video resolution
 	if(videoResolution.is_sensitive() && videoResolution.is_selected()){
-		newProfile.setVideoResolution(videoResolution.get_active_row_item());
+		newProfile.setVideoResolution(videoResolution.getActiveItem());
 	}
 }
 void VideoControl::containerChanged(const MediaElement::Container& container){
@@ -132,7 +132,7 @@ void VideoControl::containerChanged(const MediaElement::Container& container){
 		disableSettings();
 	}else{
 		bool isSelected = videoMode.is_selected();
-		bool isEnableVideo = isSelected && (videoMode.get_active_row_item() == CUSTOM_MODE_ID);
+		bool isEnableVideo = isSelected && (videoMode.getActiveItem() == CUSTOM_MODE_ID);
 		encoder.aktualizeSettings(isEnableVideo, container);
 
 		if(isEnableVideo){
@@ -165,7 +165,7 @@ bool VideoControl::checkSettingsComplete(std::string& message){
 			message = "Video mode is not set";
 			return false;
 		}
-		if(videoMode.get_active_row_item() == CUSTOM_MODE_ID){
+		if(videoMode.getActiveItem() == CUSTOM_MODE_ID){
 			if(!videoResolution.isSelectedActivableRow()){
 				message = "Resolution is not set";
 				return false;
@@ -188,7 +188,7 @@ void VideoControl::videoModeChanged(){
 	if(isEnabledSignals){
 		isEnabledSignals = false;
 		bool isSelected = videoMode.is_selected();
-		bool isEnableVideo = isSelected && (videoMode.get_active_row_item() == CUSTOM_MODE_ID);
+		bool isEnableVideo = isSelected && (videoMode.getActiveItem() == CUSTOM_MODE_ID);
 		encoder.aktualizeSettings(isEnableVideo, actualContainer);
 		if(isEnableVideo){
 			videoFramerate.set_sensitive(true);
@@ -230,7 +230,7 @@ void VideoControl::videoResolutinChanged(){
 		}
 		sendUserInputSignal();
 	}
-	lastSetResolution = videoResolution.get_active_row_item();
+	lastSetResolution = videoResolution.getActiveItem();
 }
 void VideoControl::initVideoMode(ComboBoxExt<int> &videoMode){
 	videoMode.append(COPY_MODE, COPY_MODE_ID);

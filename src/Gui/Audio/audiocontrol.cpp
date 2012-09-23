@@ -53,10 +53,10 @@ void AudioControl::containerChanged(const MediaElement::Container& container){
 	actualContainer = container;
 
 	bool isSelected = audioMode.is_selected();
-	bool isEnableAudio = isSelected && (audioMode.get_active_row_item() == CUSTOM_MODE_ID);
+	bool isEnableAudio = isSelected && (audioMode.getActiveItem() == CUSTOM_MODE_ID);
 	encoderControl.aktualizeSettings(isEnableAudio, container);
 
-	if(isEnableAudio){	//add encoderControl.isFormat - callback
+	if(isEnableAudio){	//todo dadd encoderControl.isFormat - callback
 		audioSamplerate.set_sensitive(true);
 		audioChannels.set_sensitive(true);
 	}else{
@@ -83,7 +83,7 @@ bool AudioControl::checkSettingsComplete(std::string& message){
 		message = "Audio mode is not set";
 		return false;
 	}
-	if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
+	if(audioMode.getActiveItem() == CUSTOM_MODE_ID){
 		if(!audioSamplerate.isSelectedActivableRow()){
 			message = "Samplerate is not set";
 			return false;
@@ -109,7 +109,7 @@ void AudioControl::setActiveProfile(const Profile::Profile& activeProfile){
 	int row;
 	if(activeProfile.getAudioMode(row)){
 		audioMode.set_active_row_number(row);
-		if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
+		if(audioMode.getActiveItem() == CUSTOM_MODE_ID){
 			encoderControl.setActiveProfile(activeProfile);
 		}else{
 			disableSettings();
@@ -149,40 +149,24 @@ void AudioControl::getNewProfile(Profile::Profile& newProfile){
 	//audio mode
 	newProfile.setAudioMode(audioMode.get_active_row_number());
 
-	if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
+	if(audioMode.getActiveItem() == CUSTOM_MODE_ID){
 		encoderControl.getNewProfile(newProfile);
 	}
 	//audio samplerate
 	if(audioSamplerate.isSelectedActivableRow()){
-		newProfile.setAudioSamplerate(audioSamplerate.get_active_row_item());
+		newProfile.setAudioSamplerate(audioSamplerate.getActiveItem());
 	}
 
 	//audio channels
 	if(audioChannels.isSelectedActivableRow()){
-		newProfile.setAudioChannel(audioChannels.get_active_row_item());
+		newProfile.setAudioChannel(audioChannels.getActiveItem());
 	}
 }
-//Converter::ConvertSettingsList AudioControl::getConvertArguments() const{
-//	Converter::ConvertSettingsList args;
-//	if(audioMode.get_active_row_item() == CUSTOM_MODE_ID){
-//		args.add(audioChannels.get_active_row_item().getConvertArguments());
-//		args.add(audioSamplerate.get_active_row_item().getConvertArguments());
-//		args.add(encoderControl.getConvertArguments());
-//	}else if(audioMode.get_active_row_item() == COPY_MODE_ID){
-//		Converter::ConvertSettings arg(Converter::ConvertSettings::ACODEC);	//-acodec
-//		arg.addValue("copy");
-//		args.add(arg);
-//	}else if(audioMode.get_active_row_item() == DISABLE_MODE_ID){
-//		Converter::ConvertSettings arg(Converter::ConvertSettings::NOAUDIO);		//-an
-//		args.add(arg);
-//	}
-//	return args;
-//}
 void AudioControl::audioModeChanged(){
 	if(isEnabledSignals){
 		isEnabledSignals = false;
 		bool isSelected = audioMode.is_selected();
-		bool isEnableAudio = isSelected && (audioMode.get_active_row_item() == CUSTOM_MODE_ID);
+		bool isEnableAudio = isSelected && (audioMode.getActiveItem() == CUSTOM_MODE_ID);
 		encoderControl.aktualizeSettings(isEnableAudio, actualContainer);
 		if(isEnableAudio){
 			audioSamplerate.set_sensitive(true);

@@ -77,12 +77,12 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 		if(stream.isCenvertable()){
 			videoStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+
 					stream.getStreamLanguage() + " " + CONVERT_STREAM, counter++);
-			videoConvertStream = videoStream.count_of_rows() -1;
+			videoConvertStream = videoStream.number_of_rows() -1;
 		}else{
 			videoStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+ stream.getStreamLanguage(), counter++);
 		}
 	}
-	if(videoStream.count_of_rows() > 0){
+	if(videoStream.number_of_rows() > 0){
 		videoStream.set_sensitive(true);
 	}
 
@@ -94,12 +94,12 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 		if(stream.isCenvertable()){
 			audioStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+
 					stream.getStreamLanguage() + " " + CONVERT_STREAM, counter++);
-			audioConvertStream = audioStream.count_of_rows() -1;
+			audioConvertStream = audioStream.number_of_rows() -1;
 		}else{
 			audioStream.append(toS(pair.first) +"."+ toS(pair.second) +" "+ stream.getStreamLanguage() , counter++);
 		}
 	}
-	if(audioStream.count_of_rows() > 0){
+	if(audioStream.number_of_rows() > 0){
 		audioStream.set_sensitive(true);
 	}
 
@@ -117,12 +117,12 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	samplerate << std::string();
 	channels << std::string();
 
-	if(audioStream.count_of_rows() == 0){
+	if(audioStream.number_of_rows() == 0){
 		audioStream.set_sensitive(false);
 	}else{
 		audioStream.set_active_row_number(audioConvertStream);
 	}
-	if(videoStream.count_of_rows() == 0){
+	if(videoStream.number_of_rows() == 0){
 		videoStream.set_sensitive(false);
 	}else{
 		videoStream.set_active_row_number(videoConvertStream);
@@ -150,7 +150,7 @@ std::string getAsString(const MediaFile::AudioStream& stream,
 }
 void InfoControl::videoStreamChanged(){
 	bool exist = false;
-	int row = videoStream.get_active_row_item(exist);
+	int row = videoStream.getActiveItem(exist);
 	if(exist){
 		auto stream = actualMediaFile->getMediaInfo().getVideoStreams()[row];
 		videoCodec << getAsString(stream, "", MediaFile::VideoStream::CODEC);
@@ -170,7 +170,7 @@ void InfoControl::videoStreamChanged(){
 }
 void InfoControl::audioStreamChanged(){
 	bool exist = false;
-	int row = audioStream.get_active_row_item(exist);
+	int row = audioStream.getActiveItem(exist);
 	if(exist){
 		auto stream = actualMediaFile->getMediaInfo().getAudioStreams()[row];
 		audioCodec << getAsString(stream, "", MediaFile::AudioStream::CODEC);
