@@ -1,7 +1,11 @@
+v0.2
 
- - remove settings that are in ffpreset
+ - add "encoder not available"
 
 ========================================
+
+v0.x
+ - remove settings that are in ffpreset
 
  - select default video and audio stream
 
@@ -13,6 +17,7 @@
 
 ========================================
 
+desire
  - add one file mode
  	- two pass encoding
  	- remaping
