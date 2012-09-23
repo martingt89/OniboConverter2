@@ -3,6 +3,16 @@
 
 ========================================
 
+ - select default video and audio stream
+
+ - set start time and duration
+
+ - add deinterlace support
+
+ - primitiv crop
+
+========================================
+
  - add one file mode
  	- two pass encoding
  	- remaping
