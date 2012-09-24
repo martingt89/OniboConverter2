@@ -27,10 +27,11 @@ namespace MediaElement {
 class Bitrate {
 public:
 	Bitrate();
-	Bitrate(int bitrate, int minBitrate = -1, int maxBitrate = -1);
+	Bitrate(int bitrate, int bufferSize, int minBitrate, int maxBitrate);
 	int getValue() const;
 	int getMinBitrate() const;
 	int getMaxBitrate() const;
+	int getBufferSize() const;
 	bool operator== (const Bitrate& second) const;
 	std::string readableForm() const;
 
@@ -38,6 +39,7 @@ private:
 	int value;
 	int minBitrate;
 	int maxBitrate;
+	int bufferSize;
 };
 
 typedef std::list<Bitrate> Bitrates;

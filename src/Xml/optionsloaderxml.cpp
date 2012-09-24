@@ -248,7 +248,7 @@ void OptionsLoaderXml::extractBitrates(xmlpp::Element* root,
 		for (auto textSetIter = textSet.begin(); textSetIter != textSet.end(); ++textSetIter) {
 			const xmlpp::TextNode* textNode = dynamic_cast<const xmlpp::TextNode*>(*textSetIter);
 			if (textNode != NULL) {
-				bitrates.push_back( MediaElement::Bitrate(toN(textNode->get_content(), int())));
+				bitrates.push_back( MediaElement::Bitrate(toN(textNode->get_content(), int()), -1, -1, -1));
 			}
 		}
 		nameToBitrates.set(bitratesName, bitrates);

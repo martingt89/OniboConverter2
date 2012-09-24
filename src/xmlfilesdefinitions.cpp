@@ -48,6 +48,8 @@ XmlFilesDefinitions::XmlFilesDefinitions() {
 			Profile::Configuration::VIDEO_BITRATE_MIN_OPT);
 	profilConfiguration.add(toList( { "profile", "video", "bitrate", "max" }),
 			Profile::Configuration::VIDEO_BITRATE_MAX_OPT);
+	profilConfiguration.add(toList( { "profile", "video", "buffer"}),
+			Profile::Configuration::VIDEO_BUFFER_OPT);
 	profilConfiguration.add(toList( { "profile", "video", "resolution", "x" }),
 			Profile::Configuration::VIDEO_RESOLUTION_X_OPT);
 	profilConfiguration.add(toList( { "profile", "video", "resolution", "y" }),

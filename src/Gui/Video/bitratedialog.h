@@ -44,6 +44,15 @@ private:
 	void bitrateMinActivate();
 	void bitrateMaxActivate();
 	void dispersionActivate();
+	void bufferActivate();
+	void bufferChanged();
+
+	bool bitrateMinKeyRelease(GdkEventKey* event);
+	bool bitrateMaxKeyRelease(GdkEventKey* event);
+	bool dispersionKeyRelease(GdkEventKey* event);
+	bool bufferKeyRelease(GdkEventKey* event);
+
+	bool isNumber(guint keyval);
 	MediaElement::Bitrate createBitrate();
 	MediaElement::ElementsDB& elementsDB;
 	Gtk::Dialog* videoBitrateDialog;
@@ -51,9 +60,11 @@ private:
 	Gtk::SpinButton* vbdMinBitrate;
 	Gtk::SpinButton* vbdMaxBitrate;
 	Gtk::SpinButton* vbdDispersion;
+	Gtk::SpinButton* vbdBuffer;
 	Gtk::CheckButton* vbdMinEnable;
 	Gtk::CheckButton* vbdMaxEnable;
 	Gtk::CheckButton* vbdDisperEnable;
+	Gtk::CheckButton* vbdBufferEnable;
 	Gtk::Label* vbdError;
 	bool isEnableSignal;
 };

@@ -25,11 +25,13 @@ Bitrate::Bitrate(){
 	this->value = 0;
 	minBitrate = -1;
 	maxBitrate = -1;
+	bufferSize = -1;
 }
-Bitrate::Bitrate(int bitrate, int minBitrate, int maxBitrate) {
+Bitrate::Bitrate(int bitrate, int bufferSize, int minBitrate, int maxBitrate) {
 	this->value = bitrate;
 	this->minBitrate = minBitrate;
 	this->maxBitrate = maxBitrate;
+	this->bufferSize = bufferSize;
 }
 int Bitrate::getMinBitrate() const{
 	return minBitrate;
@@ -37,7 +39,14 @@ int Bitrate::getMinBitrate() const{
 int Bitrate::getMaxBitrate() const{
 	return maxBitrate;
 }
+int Bitrate::getBufferSize() const{
+	return bufferSize;
+}
 std::string Bitrate::readableForm() const{
+	std::string buff = " -";
+	if(bufferSize >= 0){
+		buff = " "+toS(bufferSize);
+	}
 	std::string min = " -";
 	if(minBitrate >= 0){
 		min = " "+toS(minBitrate);
@@ -46,10 +55,14 @@ std::string Bitrate::readableForm() const{
 	if(maxBitrate >= 0){
 		max = " "+toS(maxBitrate);
 	}
-	if(maxBitrate >= 0 || minBitrate >= 0){
-		return toS(value) + min + max;
+	std::string output = toS(value);
+	if(bufferSize >= 0){
+		output += buff;
 	}
-	return toS(value);
+	if(maxBitrate >= 0 || minBitrate >= 0){
+		return output + min + max;
+	}
+	return output;
 }
 int Bitrate::getValue() const{
 	return value;
@@ -57,6 +70,7 @@ int Bitrate::getValue() const{
 bool Bitrate::operator== (const Bitrate& second) const{
 	return (value == second.value) &&
 			(minBitrate == second.minBitrate) &&
-			(maxBitrate == second.maxBitrate);
+			(maxBitrate == second.maxBitrate) &&
+			(bufferSize == second.bufferSize);
 }
 } /* namespace MediaElement */

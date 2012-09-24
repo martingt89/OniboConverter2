@@ -88,9 +88,21 @@ void ArgumentsGenerator::generateVideo(std::list<std::string>& args){
 	}
 	MediaElement::Bitrate bitrate;
 	if(actualProfile.getVideoBitrate(bitrate)){
-		//todo min and max
 		args.push_back("-vb");
 		args.push_back(toS(bitrate.getValue())+"k");
+
+		if(bitrate.getMaxBitrate() >= bitrate.getValue()){
+			args.push_back("-maxrate");
+			args.push_back(toS(bitrate.getMaxBitrate())+"k");
+		}
+		if(bitrate.getMinBitrate() >= 0 && bitrate.getMinBitrate() <= bitrate.getValue()){
+			args.push_back("-minrate");
+			args.push_back(toS(bitrate.getMinBitrate())+"k");
+		}
+		if(bitrate.getBufferSize() >= 0){
+			args.push_back("-bufsize");
+			args.push_back(toS(bitrate.getBufferSize())+"k");
+		}
 	}
 	MediaElement::Framerate framerate;
 	if(actualProfile.getVideoFramerate(framerate) && !framerate.isOriginal()){

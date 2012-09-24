@@ -50,6 +50,7 @@ Configuration::Configuration(const Profile& profile, MediaElement::ElementsDB el
 		this->addProperty(VIDEO_BITRATE_OPT, toS(bitrate.getValue()));
 		this->addProperty(VIDEO_BITRATE_MIN_OPT, toS(bitrate.getMinBitrate()));
 		this->addProperty(VIDEO_BITRATE_MAX_OPT, toS(bitrate.getMaxBitrate()));
+		this->addProperty(VIDEO_BUFFER_OPT, toS(bitrate.getBufferSize()));
 	}
 	MediaElement::Resolution resolution;
 	if(profile.getVideoResolution(resolution)){
@@ -162,7 +163,11 @@ bool Configuration::getVideoBitrate(MediaElement::Bitrate& videoBitrate) const{
 	if(!exist){
 		bitrateMax = -1;
 	}
-	videoBitrate = MediaElement::Bitrate(bitrate, bitrateMin, bitrateMax);
+	int buffer = toN(optionsToValue.get(VIDEO_BUFFER_OPT, exist), int());
+	if(!exist){
+		buffer = -1;
+	}
+	videoBitrate = MediaElement::Bitrate(bitrate, buffer, bitrateMin, bitrateMax);
 	return true;
 }
 bool Configuration::getVideoResolution(MediaElement::Resolution& resolution) const{

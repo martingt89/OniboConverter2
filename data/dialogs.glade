@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkAdjustment" id="bitrateDialogBuffer">
+    <property name="upper">100000</property>
+    <property name="step_increment">100</property>
+    <property name="page_increment">1000</property>
+  </object>
   <object class="GtkAdjustment" id="bitrateDialogDispersion">
     <property name="upper">100000</property>
     <property name="step_increment">100</property>
@@ -1453,6 +1458,73 @@ Pleas install ffmpeg (avconv) with it support </property>
                 <property name="position">6</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkSeparator" id="separator1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_top">5</property>
+                <property name="margin_bottom">5</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="box4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="label5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xpad">10</property>
+                    <property name="label" translatable="yes">Buffer size [kb]</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="vbdBuffSize">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">•</property>
+                    <property name="adjustment">bitrateDialogBuffer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="vbdBufferEnable">
+                    <property name="label" translatable="yes">enable</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">8</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -1468,6 +1540,7 @@ Pleas install ffmpeg (avconv) with it support </property>
       <widget name="label37"/>
       <widget name="label38"/>
       <widget name="label44"/>
+      <widget name="label5"/>
     </widgets>
   </object>
   <object class="GtkSizeGroup" id="videoBitrateSpin">
@@ -1475,6 +1548,7 @@ Pleas install ffmpeg (avconv) with it support </property>
       <widget name="vbdMinBitrate"/>
       <widget name="vbdMaxBitrate"/>
       <widget name="vbdDispersion"/>
+      <widget name="vbdBuffSize"/>
     </widgets>
   </object>
 </interface>

@@ -31,9 +31,11 @@ BitrateDialog::BitrateDialog(MediaElement::ElementsDB &elementsDB,
 	refGlade->get_widget("vbdMinBitrate", vbdMinBitrate);
 	refGlade->get_widget("vbdMaxBitrate", vbdMaxBitrate);
 	refGlade->get_widget("vbdDispersion", vbdDispersion);
+	refGlade->get_widget("vbdBuffSize", vbdBuffer);
 	refGlade->get_widget("vbdMinEnable", vbdMinEnable);
 	refGlade->get_widget("vbdMaxEnable", vbdMaxEnable);
 	refGlade->get_widget("vbdDisperEnable", vbdDisperEnable);
+	refGlade->get_widget("vbdBufferEnable", vbdBufferEnable);
 	refGlade->get_widget("vbdError", vbdError);
 
 	videoBitrateDialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -42,15 +44,23 @@ BitrateDialog::BitrateDialog(MediaElement::ElementsDB &elementsDB,
 	vbdMinEnable->set_active(false);
 	vbdMaxEnable->set_active(false);
 	vbdDisperEnable->set_active(false);
+	vbdBufferEnable->set_active(false);
 
 	vbdBitrate.signal_changed().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateChanged));
-	vbdMinBitrate->signal_value_changed ().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMinChanged));
+	vbdMinBitrate->signal_value_changed().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMinChanged));
+	vbdBuffer->signal_value_changed().connect(sigc::mem_fun(*this, &BitrateDialog::bufferChanged));
 	vbdMaxBitrate->signal_value_changed ().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMaxChanged));
 	vbdDispersion->signal_value_changed ().connect(sigc::mem_fun(*this, &BitrateDialog::dispersionChanged));
+
+	vbdMinBitrate->signal_key_release_event().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMinKeyRelease), false);
+	vbdMaxBitrate->signal_key_release_event().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMaxKeyRelease), false);
+	vbdDispersion->signal_key_release_event().connect(sigc::mem_fun(*this, &BitrateDialog::dispersionKeyRelease), false);
+	vbdBuffer->signal_key_release_event().connect(sigc::mem_fun(*this, &BitrateDialog::bufferKeyRelease), false);
 
 	vbdMinEnable->signal_clicked().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMinActivate));
 	vbdMaxEnable->signal_clicked().connect(sigc::mem_fun(*this, &BitrateDialog::bitrateMaxActivate));
 	vbdDisperEnable->signal_clicked().connect(sigc::mem_fun(*this, &BitrateDialog::dispersionActivate));
+	vbdBufferEnable->signal_clicked().connect(sigc::mem_fun(*this, &BitrateDialog::bufferActivate));
 }
 
 BitrateDialog::~BitrateDialog() {
@@ -77,20 +87,25 @@ bool BitrateDialog::start(const MediaElement::Encoder& encoder, MediaElement::Bi
 	}
 
 	vbdBitrate.setActiveText(toS(bitrate.getValue()));
+	isEnableSignal = false;
+
 	vbdMinBitrate->set_value(bitrate.getMinBitrate());
 	vbdMaxBitrate->set_value(bitrate.getMaxBitrate());
+	vbdBuffer->set_value(bitrate.getBufferSize());
 
-	isEnableSignal = false;
-	if(bitrate.getMinBitrate() < 0){
-		vbdMinEnable->set_active(false);
-	}
-	if(bitrate.getMaxBitrate() < 0){
-		vbdMaxEnable->set_active(false);
+	vbdMinEnable->set_active(bitrate.getMinBitrate() >= 0);
+	vbdMaxEnable->set_active(bitrate.getMaxBitrate() >= 0);
+
+	if(bitrate.getBufferSize() < 0){
+		vbdBufferEnable->set_active(false);
+		vbdBuffer->set_value(bitrate.getValue());
+	}else{
+		vbdBufferEnable->set_active(true);
 	}
 	vbdDispersion->set_value(0);
 	vbdDisperEnable->set_active(false);
-	isEnableSignal = true;
 
+	isEnableSignal = true;
 
 	while(1){
 		int res = videoBitrateDialog->run();
@@ -113,17 +128,15 @@ void BitrateDialog::bitrateChanged(){
 	if(isEnableSignal){
 		isEnableSignal = false;
 		int bitrate = toN(vbdBitrate.getTextInEntry(), int());
-//		if(bitrate == 0){
-//			vbdError->set_visible(true);
-//		}else{
-//			vbdError->set_visible(false);
-//		}
+
 		vbdMinBitrate->get_adjustment()->set_upper(bitrate);
 		vbdMinBitrate->update();
 		vbdMaxBitrate->get_adjustment()->set_lower(bitrate);
 		vbdMaxBitrate->update();
 		vbdDispersion->get_adjustment()->set_upper(bitrate);
 		vbdDispersion->update();
+		vbdBuffer->get_adjustment()->set_value(bitrate);
+		vbdBuffer->update();
 		isEnableSignal = true;
 	}
 }
@@ -133,6 +146,15 @@ void BitrateDialog::bitrateMinChanged(){
 		isEnableSignal = false;
 		vbdMinEnable->set_active(true);
 		vbdDisperEnable->set_active(false);
+		vbdBufferEnable->set_active(true);
+		isEnableSignal = true;
+	}
+}
+void BitrateDialog::bufferChanged(){
+	if(isEnableSignal){
+		isEnableSignal = false;
+		vbdBufferEnable->set_active(true);
+
 		isEnableSignal = true;
 	}
 }
@@ -140,16 +162,19 @@ void BitrateDialog::bitrateMaxChanged(){
 	if(isEnableSignal){
 		isEnableSignal = false;
 		vbdMaxEnable->set_active(true);
+		vbdBufferEnable->set_active(true);
 		vbdDisperEnable->set_active(false);
 		isEnableSignal = true;
 	}
 }
+
 void BitrateDialog::dispersionChanged(){
 	if(isEnableSignal){
 		isEnableSignal = false;
 		vbdMinEnable->set_active(false);
 		vbdMaxEnable->set_active(false);
 		vbdDisperEnable->set_active(true);
+		vbdBufferEnable->set_active(true);
 		isEnableSignal = true;
 	}
 }
@@ -159,6 +184,7 @@ void BitrateDialog::bitrateMinActivate(){
 		isEnableSignal = false;
 		if(vbdMinEnable->get_active()){
 			vbdDisperEnable->set_active(false);
+			vbdBufferEnable->set_active(true);
 		}
 		isEnableSignal = true;
 	}
@@ -168,6 +194,7 @@ void BitrateDialog::bitrateMaxActivate(){
 		isEnableSignal = false;
 		if(vbdMaxEnable->get_active()){
 			vbdDisperEnable->set_active(false);
+			vbdBufferEnable->set_active(true);
 		}
 		isEnableSignal = true;
 	}
@@ -178,15 +205,61 @@ void BitrateDialog::dispersionActivate(){
 		if(vbdDisperEnable->get_active()){
 			vbdMinEnable->set_active(false);
 			vbdMaxEnable->set_active(false);
+			vbdBufferEnable->set_active(true);
 		}
 		isEnableSignal = true;
 	}
 }
+void BitrateDialog::bufferActivate(){
+	if(isEnableSignal){
+		isEnableSignal = false;
+		if(!vbdBufferEnable->get_active()){
+			vbdMinEnable->set_active(false);
+			vbdMaxEnable->set_active(false);
+			vbdDisperEnable->set_active(false);
+		}
+		isEnableSignal = true;
+	}
+}
+
+/////////////
+bool BitrateDialog::bitrateMinKeyRelease(GdkEventKey* event){
+	if(isNumber(event->keyval)){
+		bitrateMinChanged();
+	}
+	return false;
+}
+bool BitrateDialog::bitrateMaxKeyRelease(GdkEventKey* event){
+	if(isNumber(event->keyval)){
+		bitrateMaxChanged();
+	}
+	return false;
+}
+bool BitrateDialog::dispersionKeyRelease(GdkEventKey* event){
+	if(isNumber(event->keyval)){
+		dispersionChanged();
+	}
+	return false;
+}
+bool BitrateDialog::bufferKeyRelease(GdkEventKey* event){
+	if(isNumber(event->keyval)){
+		bufferChanged();
+	}
+	return false;
+}
+
+bool BitrateDialog::isNumber(guint keyval){
+	return (keyval >= GDK_KEY_0 && keyval <= GDK_KEY_9) ||
+			(keyval >= GDK_KEY_KP_0 && keyval <= GDK_KEY_KP_9);
+}
+/////////////
+
 MediaElement::Bitrate BitrateDialog::createBitrate(){
 	int bitrate = toN(vbdBitrate.getTextInEntry(), int());
 
 	int min = -1;
 	int max = -1;
+	int buff = -1;
 	if(vbdDisperEnable->get_active()){
 		int dispersion = vbdDispersion->get_value();
 		min = bitrate - dispersion;
@@ -199,7 +272,10 @@ MediaElement::Bitrate BitrateDialog::createBitrate(){
 			min = vbdMinBitrate->get_value();
 		}
 	}
-	return MediaElement::Bitrate(bitrate, min, max);
+	if(vbdBufferEnable->get_active()){
+		buff = vbdBuffer->get_value_as_int();
+	}
+	return MediaElement::Bitrate(bitrate, buff, min, max);
 }
 }
 } /* namespace Gui */
