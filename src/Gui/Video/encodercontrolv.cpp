@@ -95,19 +95,19 @@ sigc::signal<void>& EncoderControl::signalUserInput(){
 	return userEvent;
 }
 bool EncoderControl::checkSettingsComplete(std::string& message){
-	if(!videoFormat.isSelectedActivableRow()){
+	if(!videoFormat.isSensitiveAndNotDefault()){
 		message = "Video format is not set";
 		return false;
 	}
-	if(!videoEncoder.isSelectedActivableRow()){
+	if(!videoEncoder.isSensitiveAndNotDefault()){
 		message = "Video encoder is not set";
 		return false;
 	}
-	if(!videoBitrate.isSelectedActivableRow()){
+	if(!videoBitrate.isSensitiveAndNotDefault()){
 		message = "Video bitrate is not set";
 		return false;
 	}
-	if(videoFFpreset.is_sensitive() && !videoFFpreset.is_selected()){
+	if(videoFFpreset.isSensitive() && !videoFFpreset.isNotDefaultLine()){
 		message = "FFpreset is not set";
 		return false;
 	}
@@ -139,7 +139,7 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 			videoBitrate.insertBeforeLast(bitrate.readableForm(), bitrate);
 			elementsDB.addUserVideoBitrate(bitrate);
 		}
-		videoBitrate.set_active_text(bitrate.readableForm());
+		videoBitrate.setActiveText(bitrate.readableForm());
 	}else{
 		videoBitrate.unset_active();
 	}
@@ -152,7 +152,7 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 				videoFFpreset.insertBeforeLast(ffpreset.readableForm(), ffpreset);
 				elementsDB.addUserFFpreset(prefix, ffpreset);
 			}
-			videoFFpreset.set_active_text(ffpreset.readableForm());
+			videoFFpreset.setActiveText(ffpreset.readableForm());
 		}else{
 			videoFFpreset.unset_active();
 		}
@@ -162,19 +162,19 @@ void EncoderControl::setActiveProfile(const Profile::Profile& activeProfile){
 }
 void EncoderControl::getNewProfile(Profile::Profile& newProfile){
 	bool format = false;
-	if(videoFormat.is_sensitive() && videoFormat.is_selected()){
+	if(videoFormat.isSensitiveAndNotDefault()){
 		format = true;
 		newProfile.setVideoFormat(videoFormat.getActiveItem());
 	}
 	bool encoder = false;
-	if(format && videoEncoder.is_sensitive() && videoEncoder.is_selected()){
+	if(format && videoEncoder.isSensitiveAndNotDefault()){
 		encoder = true;
 		newProfile.setVideoEncoder(videoEncoder.getActiveItem());
 	}
-	if(encoder && videoBitrate.isSelectedActivableRow()){
+	if(encoder && videoBitrate.isSensitiveAndNotDefault()){
 		newProfile.setVideoBitrate(videoBitrate.getActiveItem());
 	}
-	if(encoder && videoFFpreset.isSelectedActivableRow()){
+	if(encoder && videoFFpreset.isSensitiveAndNotDefault()){
 		newProfile.setVideoFFpreset(videoFFpreset.getActiveItem());
 	}
 }
@@ -200,12 +200,12 @@ void EncoderControl::videoBitrateChanged(){
 					videoBitrate.insertBeforeLast(userBitrate.readableForm(), userBitrate);
 					elementsDB.addUserVideoBitrate(userBitrate);
 				}
-				videoBitrate.set_active_text(userBitrate.readableForm());
+				videoBitrate.setActiveText(userBitrate.readableForm());
 				if(!(userBitrate == savedBitrate)){
 					sendUserInputSignal();
 				}
 			}else{
-				videoBitrate.set_active_text(lastSetBitrate.readableForm());
+				videoBitrate.setActiveText(lastSetBitrate.readableForm());
 			}
 		}else{
 			sendUserInputSignal();
@@ -242,10 +242,10 @@ void EncoderControl::videoFFpresetChanged(){
 }
 
 void EncoderControl::setFormatsFromContainer(const MediaElement::Container& container){
-	bool isSet = videoFormat.is_selected();
+	bool isSet = videoFormat.isNotDefaultLine();
 	std::string actualFormat = "-";
 	if(isSet){
-		actualFormat = videoFormat.get_active_text();
+		actualFormat = videoFormat.getActiveText();
 	}
 
 	videoFormat.remove_all();
@@ -260,24 +260,24 @@ void EncoderControl::setFormatsFromContainer(const MediaElement::Container& cont
 		}
 	}
 	if(isSet){
-		videoFormat.set_active_text(actualFormat);
+		videoFormat.setActiveText(actualFormat);
 	}
-	if(videoFormat.get_active_text() != actualFormat){
-		videoFormat.set_active_row_number(0);
+	if(videoFormat.getActiveText() != actualFormat){
+		videoFormat.setActiveRowNumber(0);
 	}
 	if(videoFormat.number_of_rows() == 0){
 		disableSettings();
 	}
 }
 void EncoderControl::aktualizeEncoder(){
-	if(!videoFormat.isSelectedActivableRow()){
+	if(!videoFormat.isSensitiveAndNotDefault()){
 		videoEncoder.set_sensitive(false);
 		return;
 	}
-	bool isSet = videoEncoder.is_selected();
+	bool isSet = videoEncoder.isNotDefaultLine();
 	std::string actualEncoder = "-";
 	if(isSet){
-		actualEncoder = videoEncoder.get_active_text();
+		actualEncoder = videoEncoder.getActiveText();
 	}
 	videoEncoder.set_sensitive(true);
 	videoEncoder.remove_all();
@@ -292,10 +292,10 @@ void EncoderControl::aktualizeEncoder(){
 		}
 	}
 	if(isSet){
-		videoEncoder.set_active_text(actualEncoder);
+		videoEncoder.setActiveText(actualEncoder);
 	}
-	if(videoEncoder.get_active_text() != actualEncoder && videoEncoder.number_of_rows() > 0){
-		videoEncoder.set_active_row_number(0);
+	if(videoEncoder.getActiveText() != actualEncoder && videoEncoder.number_of_rows() > 0){
+		videoEncoder.setActiveRowNumber(0);
 	}
 	if(videoEncoder.number_of_rows() == 0){
 		videoEncoder.appendAndSet(NO_SUPPORTED_ENCODERS);
@@ -304,14 +304,14 @@ void EncoderControl::aktualizeEncoder(){
 }
 
 void EncoderControl::aktualizeBitrate(){
-	if(!videoEncoder.isSelectedActivableRow()){
+	if(!videoEncoder.isSensitiveAndNotDefault()){
 		videoBitrate.set_sensitive(false);
 		return;
 	}
-	bool isSetBitrate = videoBitrate.is_selected();
+	bool isSetBitrate = videoBitrate.isNotDefaultLine();
 	std::string actualBitrate = "";
 	if(isSetBitrate){
-		actualBitrate = videoBitrate.get_active_text();
+		actualBitrate = videoBitrate.getActiveText();
 	}
 	videoBitrate.set_sensitive(true);
 	videoBitrate.remove_all();
@@ -326,14 +326,14 @@ void EncoderControl::aktualizeBitrate(){
 	}
 	videoBitrate.append(EXTEND_SETTING);
 	if(isSetBitrate){
-		videoBitrate.set_active_text(actualBitrate);
+		videoBitrate.setActiveText(actualBitrate);
 	}else{
-		videoBitrate.set_active_row_number(videoBitrate.number_of_rows() / 2);
+		videoBitrate.setActiveRowNumber(videoBitrate.number_of_rows() / 2);
 	}
 }
 
 void EncoderControl::aktualizeFFpreset(const std::string name){
-	if(!videoEncoder.isSelectedActivableRow()){
+	if(!videoEncoder.isSensitiveAndNotDefault()){
 		videoFFpreset.set_sensitive(false);
 		return;
 	}
@@ -343,10 +343,10 @@ void EncoderControl::aktualizeFFpreset(const std::string name){
 		return;
 	}
 
-	bool isSetFFpreset = videoFFpreset.is_selected();
+	bool isSetFFpreset = videoFFpreset.isNotDefaultLine();
 	std::string actualFFpreset = "";
 	if(isSetFFpreset){
-		actualFFpreset = videoFFpreset.get_active_text();
+		actualFFpreset = videoFFpreset.getActiveText();
 	}
 	videoFFpreset.set_sensitive(true);
 	videoFFpreset.remove_all();
@@ -357,11 +357,11 @@ void EncoderControl::aktualizeFFpreset(const std::string name){
 	}
 
 	if(name.size() > 0){
-		videoFFpreset.set_active_text(name);
+		videoFFpreset.setActiveText(name);
 	}else if(isSetFFpreset){
-		videoFFpreset.set_active_text(actualFFpreset);
+		videoFFpreset.setActiveText(actualFFpreset);
 	}else{
-		videoFFpreset.set_active_row_number(0);
+		videoFFpreset.setActiveRowNumber(0);
 	}
 	videoFFpreset.append(EXTEND_SETTING);
 }

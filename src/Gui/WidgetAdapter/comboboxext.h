@@ -40,6 +40,7 @@ public:
 	Glib::SignalProxy0< void > signal_changed(){
 		return comboBoxText->signal_changed();
 	}
+//-----------------------------------------------------
 	void append(const std::string& text, const T &item = T()){
 		bool wasSensitive = comboBoxText->get_sensitive();
 		comboBoxText->set_sensitive(true);
@@ -51,7 +52,7 @@ public:
 	}
 	void appendAndSet(const std::string& text, const T &item = T()){
 		this->append(text, item);
-		this->set_active_row_number(this->number_of_rows()-1);
+		this->setActiveRowNumber(this->number_of_rows()-1);
 	}
 	void uniqueAppend(const std::string& text, const T &item = T()){
 		if(!this->containes(text)){
@@ -74,7 +75,7 @@ public:
 			this->append(text, item);
 		}
 	}
-	//
+//-----------------------------------------------------
 	bool containes(const std::string& text){
 		auto iter = std::find_if(items.begin(), items.end(),
 				[text](const std::pair<std::string, T>& pair) -> bool {
@@ -83,32 +84,30 @@ public:
 		return iter != items.end();
 	}
 	bool isSelectedIfActivable(){
-		if(/*isActivable &&*/ is_sensitive()){
-			return is_selected();
+		if(/*isActivable &&*/ isSensitive()){
+			return isNotDefaultLine();
 		}else{
 			return true; //isActivable
 		}
 	}
-
-	bool isSelectedActivableRow(){
-		return is_sensitive() && is_selected();
+	bool isSensitiveAndNotDefault(){
+		return isSensitive() && isNotDefaultLine();
 	}
-
 	std::string getTextInEntry(){
 		return comboBoxText->get_entry_text();
 	}
 //-----------------------------------------------------
-	void set_active_row_number(int index){
+	void setActiveRowNumber(int index){
 		comboBoxText->set_active(index);
 	}
-	int get_active_row_number(){
+	int getActiveRowNumber(){
 		return comboBoxText->get_active_row_number();
 	}
 //-----------------------------------------------------
-	std::string get_active_text(){
+	std::string getActiveText(){
 		return comboBoxText->get_active_text();
 	}
-	void set_active_text(const std::string& text){
+	void setActiveText(const std::string& text){
 		comboBoxText->set_active_text(text);
 	}
 //-----------------------------------------------------
@@ -150,13 +149,12 @@ public:
 	void set_sensitive(bool sensitive){
 		comboBoxText->set_sensitive(sensitive);
 	}
-
-
-	bool is_sensitive() const{
+//-----------------------------------------------------
+	bool isSensitive() const{
 		return comboBoxText->get_sensitive();
 	}
 
-	bool is_selected() const{
+	bool isNotDefaultLine() const{
 		return comboBoxText->get_active_row_number() >= 0;
 	}
 
@@ -180,7 +178,7 @@ public:
 		});
 		this->set_sensitive(sensitive);
 		if(saveSelectedRow >= 0){
-			this->set_active_row_number(saveSelectedRow);
+			this->setActiveRowNumber(saveSelectedRow);
 		}
 	}
 	bool is_set_last() const{

@@ -60,27 +60,11 @@ void VideoControl::disableSettings(){
 sigc::signal<void>& VideoControl::signalUserInput(){
 	return userEvent;
 }
-//Converter::ConvertSettingsList VideoControl::getConvertArguments() const{
-//	Converter::ConvertSettingsList args;
-//	if(videoMode.get_active_row_item() == CUSTOM_MODE_ID){
-//		args.add(videoFramerate.get_active_row_item().getConvertArguments());
-//		args.add(videoResolution.get_active_row_item().getConvertArguments());
-//		args.add(encoder.getConvertArguments());
-//	}else if(videoMode.get_active_row_item() == COPY_MODE_ID){
-//		Converter::ConvertSettings arg(Converter::ConvertSettings::VCODEC);	//-vcodec
-//		arg.addValue("copy");
-//		args.add(arg);
-//	}else if(videoMode.get_active_row_item() == DISABLE_MODE_ID){
-//		Converter::ConvertSettings arg(Converter::ConvertSettings::NOVIDEO);	//-vn
-//		args.add(arg);
-//	}
-//	return args;
-//}
 void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
 	//set mode
 	int row;
 	if(activeProfile.getVideoMode(row)){
-		videoMode.set_active_row_number(row);
+		videoMode.setActiveRowNumber(row);
 		if(videoMode.getActiveItem() == CUSTOM_MODE_ID){
 			encoder.setActiveProfile(activeProfile);
 		}else{
@@ -94,7 +78,7 @@ void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
 	//set framerate
 	MediaElement::Framerate framerate;
 	if(activeProfile.getVideoFramerate(framerate)){
-		videoFramerate.set_active_text(framerate.readableForm());
+		videoFramerate.setActiveText(framerate.readableForm());
 	}else{
 		videoFramerate.unset_active();
 	}
@@ -104,24 +88,24 @@ void VideoControl::setActiveProfile(const Profile::Profile& activeProfile){
 		if(!videoResolution.containes(resolution.readableForm())){
 			videoResolution.insertBeforeLast(resolution.readableForm(), resolution);
 		}
-		videoResolution.set_active_text(resolution.readableForm());
+		videoResolution.setActiveText(resolution.readableForm());
 	}else{
 		videoFramerate.unset_active();
 	}
 }
 void VideoControl::getNewProfile(Profile::Profile& newProfile){
 	//video mode
-	newProfile.setVideoMode(videoMode.get_active_row_number());
+	newProfile.setVideoMode(videoMode.getActiveRowNumber());
 
 	if(videoMode.getActiveItem() == CUSTOM_MODE_ID){
 		encoder.getNewProfile(newProfile);
 	}
 	//video framerate
-	if(videoFramerate.is_sensitive() && videoFramerate.is_selected()){
+	if(videoFramerate.isSensitiveAndNotDefault()){
 		newProfile.setVideoFramerate(videoFramerate.getActiveItem());
 	}
 	//video resolution
-	if(videoResolution.is_sensitive() && videoResolution.is_selected()){
+	if(videoResolution.isSensitiveAndNotDefault()){
 		newProfile.setVideoResolution(videoResolution.getActiveItem());
 	}
 }
@@ -131,7 +115,7 @@ void VideoControl::containerChanged(const MediaElement::Container& container){
 	if(container.getContainerType() == MediaElement::Container::CONTAINER_TYPE_AUDIO){
 		disableSettings();
 	}else{
-		bool isSelected = videoMode.is_selected();
+		bool isSelected = videoMode.isNotDefaultLine();
 		bool isEnableVideo = isSelected && (videoMode.getActiveItem() == CUSTOM_MODE_ID);
 		encoder.aktualizeSettings(isEnableVideo, container);
 
@@ -161,16 +145,16 @@ void VideoControl::restoreSettingsState(){
 }
 bool VideoControl::checkSettingsComplete(std::string& message){
 	if(actualContainer.getContainerType() == MediaElement::Container::CONTAINER_TYPE_AUDIO_VIDEO){
-		if(!videoMode.isSelectedActivableRow()){
+		if(!videoMode.isSensitiveAndNotDefault()){
 			message = "Video mode is not set";
 			return false;
 		}
 		if(videoMode.getActiveItem() == CUSTOM_MODE_ID){
-			if(!videoResolution.isSelectedActivableRow()){
+			if(!videoResolution.isSensitiveAndNotDefault()){
 				message = "Resolution is not set";
 				return false;
 			}
-			if(!videoFramerate.isSelectedActivableRow()){
+			if(!videoFramerate.isSensitiveAndNotDefault()){
 				message = "Video framerate is not set";
 				return false;
 			}
@@ -187,7 +171,7 @@ void VideoControl::encoderUserInput(){
 void VideoControl::videoModeChanged(){
 	if(isEnabledSignals){
 		isEnabledSignals = false;
-		bool isSelected = videoMode.is_selected();
+		bool isSelected = videoMode.isNotDefaultLine();
 		bool isEnableVideo = isSelected && (videoMode.getActiveItem() == CUSTOM_MODE_ID);
 		encoder.aktualizeSettings(isEnableVideo, actualContainer);
 		if(isEnableVideo){
@@ -215,16 +199,16 @@ void VideoControl::videoResolutinChanged(){
 				elementsDB.addUserResolution(newResolution);
 
 				if(videoResolution.containes(resolutionDescription)){
-					videoResolution.set_active_text(resolutionDescription);
+					videoResolution.setActiveText(resolutionDescription);
 				}else{
 					videoResolution.insertBeforeLast(resolutionDescription, newResolution);
-					videoResolution.set_active_text(resolutionDescription);
+					videoResolution.setActiveText(resolutionDescription);
 				}
 			}else{
 				if(lastSetResolution.isSet()){
-					videoResolution.set_active_text(lastSetResolution.readableForm());
+					videoResolution.setActiveText(lastSetResolution.readableForm());
 				}else{
-					videoResolution.set_active_row_number(0);
+					videoResolution.setActiveRowNumber(0);
 				}
 			}
 		}
@@ -236,14 +220,14 @@ void VideoControl::initVideoMode(ComboBoxExt<int> &videoMode){
 	videoMode.append(COPY_MODE, COPY_MODE_ID);
 	videoMode.append(CUSTOM_MODE, CUSTOM_MODE_ID);
 	videoMode.append(DISABLE_MODE, DISABLE_MODE_ID);
-	videoMode.set_active_text(CUSTOM_MODE);
+	videoMode.setActiveText(CUSTOM_MODE);
 }
 void VideoControl::initVideoFramerate(ComboBoxExt<MediaElement::Framerate> &videoFramerate){
 	const std::list<MediaElement::Framerate> framerates = elementsDB.getFramerates().getFramerats();
 	for(auto framerateIter = framerates.begin(); framerateIter != framerates.end(); ++framerateIter){
 		videoFramerate.append(framerateIter->readableForm(), *framerateIter);
 	}
-	videoFramerate.set_active_row_number(0);
+	videoFramerate.setActiveRowNumber(0);
 }
 void VideoControl::initVideoResolution(ComboBoxExt<MediaElement::Resolution> &videoResolution){
 	const std::list<MediaElement::Resolution> resolutions = elementsDB.getResolutions().getResolutions();
@@ -252,7 +236,7 @@ void VideoControl::initVideoResolution(ComboBoxExt<MediaElement::Resolution> &vi
 			videoResolution.append(resolIter->readableForm(), *resolIter);
 		}
 	}
-	videoResolution.set_active_row_number(0);
+	videoResolution.setActiveRowNumber(0);
 	videoResolution.append(MORE_SETTINGS);
 }
 void VideoControl::sendUserInputSignal(){

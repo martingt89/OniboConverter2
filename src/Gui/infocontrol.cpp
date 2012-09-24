@@ -120,12 +120,12 @@ void InfoControl::show(MediaFile::MediaFile*& mediaFile){
 	if(audioStream.number_of_rows() == 0){
 		audioStream.set_sensitive(false);
 	}else{
-		audioStream.set_active_row_number(audioConvertStream);
+		audioStream.setActiveRowNumber(audioConvertStream);
 	}
 	if(videoStream.number_of_rows() == 0){
 		videoStream.set_sensitive(false);
 	}else{
-		videoStream.set_active_row_number(videoConvertStream);
+		videoStream.setActiveRowNumber(videoConvertStream);
 	}
 }
 std::string getAsString(const MediaFile::VideoStream& stream,

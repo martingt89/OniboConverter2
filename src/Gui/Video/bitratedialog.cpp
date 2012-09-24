@@ -76,7 +76,7 @@ bool BitrateDialog::start(const MediaElement::Encoder& encoder, MediaElement::Bi
 		}
 	}
 
-	vbdBitrate.set_active_text(toS(bitrate.getValue()));
+	vbdBitrate.setActiveText(toS(bitrate.getValue()));
 	vbdMinBitrate->set_value(bitrate.getMinBitrate());
 	vbdMaxBitrate->set_value(bitrate.getMaxBitrate());
 

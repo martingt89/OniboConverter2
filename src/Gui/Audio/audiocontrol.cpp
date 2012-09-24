@@ -52,11 +52,11 @@ void AudioControl::containerChanged(const MediaElement::Container& container){
 	audioMode.set_sensitive(true);
 	actualContainer = container;
 
-	bool isSelected = audioMode.is_selected();
+	bool isSelected = audioMode.isNotDefaultLine();
 	bool isEnableAudio = isSelected && (audioMode.getActiveItem() == CUSTOM_MODE_ID);
 	encoderControl.aktualizeSettings(isEnableAudio, container);
 
-	if(isEnableAudio){	//todo dadd encoderControl.isFormat - callback
+	if(isEnableAudio){	//todo add encoderControl.isFormat - callback
 		audioSamplerate.set_sensitive(true);
 		audioChannels.set_sensitive(true);
 	}else{
@@ -79,16 +79,16 @@ void AudioControl::restoreSettingsState(){
 	isEnabledSignals = true;
 }
 bool AudioControl::checkSettingsComplete(std::string& message){
-	if(!audioMode.isSelectedActivableRow()){
+	if(!audioMode.isSensitiveAndNotDefault()){
 		message = "Audio mode is not set";
 		return false;
 	}
 	if(audioMode.getActiveItem() == CUSTOM_MODE_ID){
-		if(!audioSamplerate.isSelectedActivableRow()){
+		if(!audioSamplerate.isSensitiveAndNotDefault()){
 			message = "Samplerate is not set";
 			return false;
 		}
-		if(!audioChannels.isSelectedActivableRow()){
+		if(!audioChannels.isSensitiveAndNotDefault()){
 			message = "Channel is not set";
 			return false;
 		}
@@ -108,7 +108,7 @@ void AudioControl::setActiveProfile(const Profile::Profile& activeProfile){
 	//
 	int row;
 	if(activeProfile.getAudioMode(row)){
-		audioMode.set_active_row_number(row);
+		audioMode.setActiveRowNumber(row);
 		if(audioMode.getActiveItem() == CUSTOM_MODE_ID){
 			encoderControl.setActiveProfile(activeProfile);
 		}else{
@@ -123,9 +123,9 @@ void AudioControl::setActiveProfile(const Profile::Profile& activeProfile){
 	MediaElement::Samplerate samplerate;
 	if(activeProfile.getAudioSamplerate(samplerate)){
 		if(samplerate.isOriginal()){
-			audioSamplerate.set_active_row_number(0);
+			audioSamplerate.setActiveRowNumber(0);
 		}else{
-			audioSamplerate.set_active_text(samplerate.readableForm());
+			audioSamplerate.setActiveText(samplerate.readableForm());
 		}
 	}else{
 		audioSamplerate.unset_active();
@@ -134,9 +134,9 @@ void AudioControl::setActiveProfile(const Profile::Profile& activeProfile){
 	MediaElement::Channel channel;
 	if(activeProfile.getAudioChannel(channel)){
 		if(channel.isOriginal()){
-			audioChannels.set_active_row_number(0);
+			audioChannels.setActiveRowNumber(0);
 		}else{
-			audioChannels.set_active_text(channel.readableForm());
+			audioChannels.setActiveText(channel.readableForm());
 		}
 	}else{
 		audioChannels.unset_active();
@@ -147,25 +147,25 @@ sigc::signal<void>& AudioControl::signalUserInput(){
 }
 void AudioControl::getNewProfile(Profile::Profile& newProfile){
 	//audio mode
-	newProfile.setAudioMode(audioMode.get_active_row_number());
+	newProfile.setAudioMode(audioMode.getActiveRowNumber());
 
 	if(audioMode.getActiveItem() == CUSTOM_MODE_ID){
 		encoderControl.getNewProfile(newProfile);
 	}
 	//audio samplerate
-	if(audioSamplerate.isSelectedActivableRow()){
+	if(audioSamplerate.isSensitiveAndNotDefault()){
 		newProfile.setAudioSamplerate(audioSamplerate.getActiveItem());
 	}
 
 	//audio channels
-	if(audioChannels.isSelectedActivableRow()){
+	if(audioChannels.isSensitiveAndNotDefault()){
 		newProfile.setAudioChannel(audioChannels.getActiveItem());
 	}
 }
 void AudioControl::audioModeChanged(){
 	if(isEnabledSignals){
 		isEnabledSignals = false;
-		bool isSelected = audioMode.is_selected();
+		bool isSelected = audioMode.isNotDefaultLine();
 		bool isEnableAudio = isSelected && (audioMode.getActiveItem() == CUSTOM_MODE_ID);
 		encoderControl.aktualizeSettings(isEnableAudio, actualContainer);
 		if(isEnableAudio){
@@ -198,7 +198,7 @@ void AudioControl::initAudioMode(ComboBoxExt<int>& audioMode){
 	audioMode.append(COPY_MODE, COPY_MODE_ID);
 	audioMode.append(CUSTOM_MODE, CUSTOM_MODE_ID);
 	audioMode.append(DISABLE_MODE, DISABLE_MODE_ID);
-	audioMode.set_active_text(CUSTOM_MODE);
+	audioMode.setActiveText(CUSTOM_MODE);
 }
 void AudioControl::initSamplerate(ComboBoxExt<MediaElement::Samplerate>& audioSamplerate){
 	auto samplerates = elementsDB.getSamplerates().getSamplerates();
@@ -207,9 +207,9 @@ void AudioControl::initSamplerate(ComboBoxExt<MediaElement::Samplerate>& audioSa
 	}
 
 	if(samplerates.size() > 2){
-		audioSamplerate.set_active_row_number(samplerates.size() - 2);
+		audioSamplerate.setActiveRowNumber(samplerates.size() - 2);
 	}else{
-		audioSamplerate.set_active_row_number(samplerates.size() / 2);
+		audioSamplerate.setActiveRowNumber(samplerates.size() / 2);
 	}
 }
 void AudioControl::initChannels(ComboBoxExt<MediaElement::Channel>& audioChannels){
@@ -217,7 +217,7 @@ void AudioControl::initChannels(ComboBoxExt<MediaElement::Channel>& audioChannel
 	for(auto channel : channels){
 		audioChannels.append(channel.readableForm(), channel);
 	}
-	audioChannels.set_active_row_number(0);
+	audioChannels.setActiveRowNumber(0);
 }
 
 } /* namespace Audio */

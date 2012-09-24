@@ -53,7 +53,7 @@ AVControl::AVControl(MediaElement::ElementsDB& elementsDB,
 	saveProfileAsButton->signal_clicked().connect(sigc::mem_fun(*this, &AVControl::saveProfileClicked));
 
 	isUserInput = false;
-	containers.set_active_row_number(0);
+	containers.setActiveRowNumber(0);
 	isUserInput = true;
 }
 
@@ -63,7 +63,7 @@ AVControl::~AVControl() {
 
 bool AVControl::checkSettingsComplete(std::string& message){
 	message = "";
-	if(!containers.isSelectedActivableRow()){
+	if(!containers.isSensitiveAndNotDefault()){
 		message = _("Container is not set");
 		return false;
 	}
@@ -94,13 +94,13 @@ std::string AVControl::getContainerName(){
 }
 void AVControl::userInput(){
 	if(isUserInput){
-		profilesComboBox.set_active_row_number(0);	//set custom
+		profilesComboBox.setActiveRowNumber(0);	//set custom
 	}
 }
 void AVControl::containerChanged(){
 	if(isEnabledSignal){
 		isEnabledSignal = false;
-		if(containers.isSelectedActivableRow()){
+		if(containers.isSensitiveAndNotDefault()){
 			videoControlGui.containerChanged(containers.getActiveItem());
 			audioControlGui.containerChanged(containers.getActiveItem());
 		}
@@ -116,7 +116,7 @@ void AVControl::profileChanged(){
 		isUserInput = false;
 		MediaElement::Container container;
 		if(profilesComboBox.getActiveItem().getContainer(container)){
-			containers.set_active_text(container.readableForm());
+			containers.setActiveText(container.readableForm());
 			videoControlGui.setActiveProfile(profilesComboBox.getActiveItem());
 			audioControlGui.setActiveProfile(profilesComboBox.getActiveItem());
 			settingsDialog.setActiveProfile(profilesComboBox.getActiveItem());
@@ -153,7 +153,7 @@ Profile::Profile AVControl::getTmpProfile(const std::string name){
 void AVControl::rescanProfiles(){
 	profilesComboBox.remove_all();
 	profilesComboBox.append(CUSTOM_PROFILE);
-	profilesComboBox.set_active_row_number(0);
+	profilesComboBox.setActiveRowNumber(0);
 	auto profileList = profiles.getProfiles();
 	for(auto profile : profileList){
 		profilesComboBox.append(profile.getName(), profile);
@@ -181,7 +181,7 @@ void AVControl::initContainers(MediaElement::ElementsDB& elementsDB,
 void AVControl::initProfiles(const Profile::Profiles& profiles,
 		ComboBoxExt<Profile::Profile> &profilesComboBox){
 	profilesComboBox.append(CUSTOM_PROFILE);
-	profilesComboBox.set_active_row_number(0);
+	profilesComboBox.setActiveRowNumber(0);
 	auto profileList = profiles.getProfiles();
 	for(auto profile : profileList){
 		profilesComboBox.append(profile.getName(), profile);

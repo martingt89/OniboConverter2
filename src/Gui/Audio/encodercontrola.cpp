@@ -71,15 +71,15 @@ sigc::signal<void>& EncoderControlA::signalUserInput(){
 	return userEvent;
 }
 bool EncoderControlA::checkSettingsComplete(std::string& message){
-	if(!audioFormat.isSelectedActivableRow()){
+	if(!audioFormat.isSensitiveAndNotDefault()){
 		message = "Audio format is not set";
 		return false;
 	}
-	if(!audioEncoder.isSelectedActivableRow()){
+	if(!audioEncoder.isSensitiveAndNotDefault()){
 		message = "Audio encoder is not set";
 		return false;
 	}
-	if(!audioGradeChooser.isSelectedActivableRow()){
+	if(!audioGradeChooser.isSensitiveAndNotDefault()){
 		message = "Audio grade is not set";
 		return false;
 	}
@@ -88,13 +88,13 @@ bool EncoderControlA::checkSettingsComplete(std::string& message){
 void EncoderControlA::setActiveProfile(const Profile::Profile& activeProfile){
 	MediaElement::Format format;
 	if(activeProfile.getAudioFormat(format)){
-		audioFormat.set_active_text(format.readableForm());
+		audioFormat.setActiveText(format.readableForm());
 		MediaElement::Encoder encoder;
 		if(activeProfile.getAudioEncoder(encoder)){
-			audioEncoder.set_active_text(encoder.readableForm());
+			audioEncoder.setActiveText(encoder.readableForm());
 			MediaElement::AudioGrade audioGrade;
 			if(activeProfile.getAudioGrade(audioGrade)){
-				audioGradeChooser.set_active_text(audioGrade.readableForm());
+				audioGradeChooser.setActiveText(audioGrade.readableForm());
 			}else{
 				audioGradeChooser.unset_active();
 			}
@@ -107,16 +107,16 @@ void EncoderControlA::setActiveProfile(const Profile::Profile& activeProfile){
 }
 void EncoderControlA::getNewProfile(Profile::Profile& newProfile){
 	bool format = false;
-	if(audioFormat.isSelectedActivableRow()){
+	if(audioFormat.isSensitiveAndNotDefault()){
 		format = true;
 		newProfile.setAudioFormat(audioFormat.getActiveItem());
 	}
 	bool encoder = false;
-	if(format && audioEncoder.isSelectedActivableRow()){
+	if(format && audioEncoder.isSensitiveAndNotDefault()){
 		encoder = true;
 		newProfile.setAudioEncoder(audioEncoder.getActiveItem());
 	}
-	if(encoder && audioGradeChooser.isSelectedActivableRow()){
+	if(encoder && audioGradeChooser.isSensitiveAndNotDefault()){
 		newProfile.setAudioGrade(audioGradeChooser.getActiveItem());
 	}
 }
@@ -143,10 +143,10 @@ void EncoderControlA::audioBitrateChanged(){
 	}
 }
 void EncoderControlA::setFormatsFromContainer(const MediaElement::Container& container){
-	bool isSet = audioFormat.is_selected();
+	bool isSet = audioFormat.isNotDefaultLine();
 	std::string actualFormat = "-";
 	if(isSet){
-		actualFormat = audioFormat.get_active_text();
+		actualFormat = audioFormat.getActiveText();
 	}
 
 	audioFormat.remove_all();
@@ -165,21 +165,21 @@ void EncoderControlA::setFormatsFromContainer(const MediaElement::Container& con
 		return;
 	}
 	if(isSet){
-		audioFormat.set_active_text(actualFormat);
+		audioFormat.setActiveText(actualFormat);
 	}
-	if(audioFormat.get_active_text() != actualFormat){
-		audioFormat.set_active_row_number(0);
+	if(audioFormat.getActiveText() != actualFormat){
+		audioFormat.setActiveRowNumber(0);
 	}
 }
 void EncoderControlA::aktualizeEncoder(){
-	if(!audioFormat.isSelectedActivableRow()){
+	if(!audioFormat.isSensitiveAndNotDefault()){
 		audioEncoder.set_sensitive(false);
 		return;
 	}
-	bool isSet = audioEncoder.is_selected();
+	bool isSet = audioEncoder.isNotDefaultLine();
 	std::string actualEncoder = "-";
 	if(isSet){
-		actualEncoder = audioEncoder.get_active_text();
+		actualEncoder = audioEncoder.getActiveText();
 	}
 	audioEncoder.set_sensitive(true);
 	audioEncoder.remove_all();
@@ -194,10 +194,10 @@ void EncoderControlA::aktualizeEncoder(){
 		}
 	}
 	if(isSet){
-		audioEncoder.set_active_text(actualEncoder);
+		audioEncoder.setActiveText(actualEncoder);
 	}
-	if(audioEncoder.get_active_text() != actualEncoder && audioEncoder.number_of_rows() > 0){
-		audioEncoder.set_active_row_number(0);
+	if(audioEncoder.getActiveText() != actualEncoder && audioEncoder.number_of_rows() > 0){
+		audioEncoder.setActiveRowNumber(0);
 	}
 	if(audioEncoder.number_of_rows() == 0){
 		audioEncoder.appendAndSet(NO_SUPPORTED_ENCODERS);
@@ -205,14 +205,14 @@ void EncoderControlA::aktualizeEncoder(){
 	}
 }
 void EncoderControlA::aktualizeBitrate(){
-	if(!audioEncoder.isSelectedActivableRow()){
+	if(!audioEncoder.isSensitiveAndNotDefault()){
 		audioGradeChooser.set_sensitive(false);
 		return;
 	}
-	bool isSetBitrate = audioGradeChooser.is_selected();
+	bool isSetBitrate = audioGradeChooser.isNotDefaultLine();
 	std::string actualBitrate = "";
 	if(isSetBitrate){
-		actualBitrate = audioGradeChooser.get_active_text();
+		actualBitrate = audioGradeChooser.getActiveText();
 	}
 	audioGradeChooser.set_sensitive(true);
 	audioGradeChooser.remove_all();
@@ -225,9 +225,9 @@ void EncoderControlA::aktualizeBitrate(){
 		}
 	}
 	if(isSetBitrate){
-		audioGradeChooser.set_active_text(actualBitrate);
+		audioGradeChooser.setActiveText(actualBitrate);
 	}else{
-		audioGradeChooser.set_active_row_number(audioGradeChooser.number_of_rows() / 2);
+		audioGradeChooser.setActiveRowNumber(audioGradeChooser.number_of_rows() / 2);
 	}
 }
 void EncoderControlA::sendUserInputSignal(){

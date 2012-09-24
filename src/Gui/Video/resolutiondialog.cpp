@@ -123,7 +123,7 @@ bool ResolutionControl::start(MediaElement::Resolution& resolution){
 }
 void ResolutionControl::initAspectRatio(ComboBoxExt<MediaElement::AspectRatio>& aspectRatio){
 	aspectRatio.append(CUSTOM_MODE);
-	aspectRatio.set_active_row_number(0);
+	aspectRatio.setActiveRowNumber(0);
 
 	auto aspectRatioList = elementsDB.getResolutions().getAspectRatios();
 	for(auto aspectIter = aspectRatioList.begin(); aspectIter!= aspectRatioList.end(); ++aspectIter){
