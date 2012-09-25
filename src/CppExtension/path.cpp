@@ -49,7 +49,7 @@ std::string Path::getLastPathPart() const{
 	return tmpPath;
 }
 
-bool Path::getSubfiles(std::list<Path>& fileList) const{
+bool Path::getSubfiles(std::list<Path>& fileList, bool sort) const{
 	try {
 		Glib::RefPtr<Gio::File> directory = Gio::File::create_for_path(path);
 		if (!directory) {
@@ -67,6 +67,9 @@ bool Path::getSubfiles(std::list<Path>& fileList) const{
 				fileList.push_back(Path(directory->get_path(), file_info->get_name()));
 			}
 			file_info = enumerator->next_file();
+		}
+		if(sort){
+			fileList.sort();
 		}
 	} catch (const Glib::Exception& ex) {
 		std::cerr <<"Error: 'path.cpp' path: "<<path<< std::endl;
@@ -96,4 +99,7 @@ bool Path::exist() const{
 
 bool Path::operator==(const Path& path) const{
 	return (this->path == path.path) && (this->type == path.type);
+}
+bool Path::operator<(const Path& path) const{
+	return this->path < path.path;
 }

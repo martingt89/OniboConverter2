@@ -36,8 +36,9 @@ public:
 	std::string getPath() const;
 	std::string getLastPathPart() const;
 	bool exist() const;
-	bool getSubfiles(std::list<Path>& fileList) const;
+	bool getSubfiles(std::list<Path>& fileList, bool sort = false) const;
 	bool operator==(const Path& path) const;
+	bool operator<(const Path& path) const;
 private:
 	std::string path;
 	PathType type;

@@ -34,7 +34,7 @@ Logger* Logger::getInstance(){
 	return instance;
 }
 void Logger::log(LogLevel level, std::string message, std::string fileName, int fileLine, std::string compileTime){
-	std::cerr<<"Level: '"<<level<<"' file: '"<<fileName<<"' line: '"<<fileLine<<"' compile time: '"<<compileTime<<std::endl;
+	std::cerr<<"Level: '"<<level<<"' file: '"<<fileName<<"' line: '"<<fileLine<<"' compile time: '"<<compileTime<<"'"<<std::endl;
 	std::cerr<<"\t"<<message<<std::endl;
 }
 

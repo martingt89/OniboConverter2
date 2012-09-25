@@ -17,8 +17,11 @@
 ** -------------------------------------------------------------------------*/
 
 #include "profiles.h"
+#include <algorithm>
 #include "../systemsettings.h"
 #include "../Xml/profileloader.h"
+#include "../CppExtension/logger.h"
+
 
 namespace Profile {
 
@@ -42,8 +45,15 @@ bool Profiles::loadFromFile(const Path& path, Profile& profile){
 	Configuration profileConfiguration(elementsDb);
 	if (loader.load(path, profileConfiguration)) {
 		profile = profileConfiguration.getProfile();
-		profiles.push_back(profile);
 
+		auto iter = std::find_if(profiles.begin(), profiles.end(), [profile](const Profile& prof)->bool{
+			return prof.getName() == profile.getName();
+		});
+		if(iter == profiles.end()){
+			profiles.push_back(profile);
+		}else{
+			easylog(CppExtension::Logger::WARNING, "Profile with name '"+profile.getName()+"' already exist");
+		}
 		return true;
 	}
 	return false;
@@ -51,7 +61,7 @@ bool Profiles::loadFromFile(const Path& path, Profile& profile){
 
 void Profiles::loadProfilesInFolder(const Path& folder) {
 	std::list<Path> files;
-	if (folder.getSubfiles(files)) {
+	if (folder.getSubfiles(files, true)) {
 		for (auto file : files) {
 			Profile pro;
 			loadFromFile(file, pro);
