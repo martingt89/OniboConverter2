@@ -22,6 +22,15 @@ Version 0.1
 	- simple user interface
 	
 	- config files based on xml language
+	
+Version 0.2
+===========
+
+	- import and export profiles
+	
+	- convert buffer options
+	
+	- variable video bitrate settings
 
 Compile dependency
 ==================
